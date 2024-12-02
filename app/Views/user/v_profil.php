@@ -14,37 +14,47 @@
      <section class="content">
       <div class="container-fluid">
         <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-              <!-- <div class="card-header">
-                <p class="text-right" style="margin: 0px;"><button class="btn btn-xs btn-primary" id="excel"><i class="fas fa-excel"></i>Download Excel</button></p>
-              </div> -
-               
-
+        <div class="col-md-6">
+        <div class="card card-info">
+              <div class="card-header">
+                <h3 class="card-title">Profil</h3>
               </div>
               <!-- /.card-header -->
-              <div class="card-body">
-                <h1 class="text-center">Selamat Datang di Aplikasi SIMAYA</h1>
-                <hr>
-                <div class="text-center">
-                    <img src="<?= base_url() ?>/assets/images/alursimaya.jpg" class="img-fluid" alt="SIMAYA">
-                </div>
-              </div>
-              <!-- /.card-body -->
-              <!-- <div class="card-footer clearfix">
-                <ul class="pagination pagination-sm m-0 float-right">
-                  <li class="page-item"><a class="page-link" href="#">«</a></li>
-                  <li class="page-item"><a class="page-link" href="#">1</a></li>
-                  <li class="page-item"><a class="page-link" href="#">2</a></li>
-                  <li class="page-item"><a class="page-link" href="#">3</a></li>
-                  <li class="page-item"><a class="page-link" href="#">»</a></li>
-                </ul>
-              </div> -->
-            </div>
-            <!-- /.card -->
+              <!-- form start -->
+              <form>
+                <div class="card-body">
 
+                <div class="form-group">
+                    <label for="kta">Nama</label>
+                    <input type="text" class="form-control" id="kta" placeholder="" value="<?= $result['nama'] ?>">
+                  </div>
+
+
+                <div class="form-group">
+                    <label for="kta">Email</label>
+                    <input disabled readonly type="text" class="form-control" id="kta" placeholder="" value="<?= $result['email'] ?>">
+                  </div>
+
+
+                <div class="form-group">
+                    <label for="kta">Telp</label>
+                    <input type="text" class="form-control" id="kta" placeholder="" value="<?= $result['notelp'] ?>">
+                  </div>
+
+
+                </div>
+                <!-- /.card-body -->
+
+                <div class="card-footer">
+                </div>
+              </form>
+            </div>
           </div>
           <!-- /.col -->
+
+
+
+
         </div>
         <!-- /.row -->
       </div>
@@ -83,6 +93,15 @@
         "url": "<?= base_url() ?>/adminlte/plugins/datatables/Indonesian.json"
     }
     });
+
+    //Initialize Select2 Elements
+    $('.select2').select2();
+
+    //Initialize Select2 Elements
+    $('.select2bs4').select2({
+      theme: 'bootstrap4'
+    });
+
   });
 </script>
 <?= $this->endSection(); ?>

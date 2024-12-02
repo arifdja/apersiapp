@@ -190,4 +190,21 @@ class User extends BaseController
 
         }
     }
+
+    public function profil()
+    {
+        $menu = getMenu();
+
+        $model = new UserModel();
+        $result = $model->where(['email' => session()->get('email')])->first();
+        
+        $data = [
+			'title' => 'Form Pengajuan',
+			'breadcrumb' => ['Profil'],
+			'stringmenu' => $menu, 
+			'validation' => \Config\Services::validation(),
+            'result' => $result
+        ];
+        return view('user/v_profil',$data);
+    }
 }

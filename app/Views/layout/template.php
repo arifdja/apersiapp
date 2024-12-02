@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>MONEV | KEMENKEU</title>
+  <title>SIMAYA</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="shortcut icon" href="<?php echo base_url() ?>/assets/images/favicon.gif" type="image/x-icon" />
@@ -38,7 +38,7 @@
   <script type="text/javascript">
     // Set timeout variables.
     var timoutNow = 1800000; // Timeout of 30 mins - time in ms
-    var logoutUrl = "<?= base_url('user/aRldfads'); ?>"; // URL to logout page.
+    var logoutUrl = "<?= base_url('/logout'); ?>"; // URL to logout page.
 
     var timeoutTimer;
 
@@ -91,38 +91,8 @@
     </ul>
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
-      <!-- Messages Dropdown Menu -->
-       <li class="nav-item dropdown">
-        <a class="nav-link" data-toggle="dropdown" href="#">
-          Role
-        </a>
-        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-        
-        </div>
-      </li> 
-      <li class="nav-item dropdown">
-        <a class="nav-link" data-toggle="dropdown" href="#">
-         Pilih TA (<?= session('ta') ?>)
-          <!-- <span class="badge badge-warning navbar-badge">15</span> -->
-        </a>
-        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" style="max-width:200px;min-width:100px;">
-          <div class="dropdown-divider"></div>
-          <a href="/user/changeTA/2021" class="dropdown-item text-center">
-          2021
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="/user/changeTA/2022" class="dropdown-item text-center">
-          2022
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="/user/changeTA/2023" class="dropdown-item text-center">
-          2023
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="/user/changeTA/2024" class="dropdown-item text-center">
-          2024
-          </a>
-      </li> 
+      
+      
        <li class="nav-item">
         <a class="nav-link" href="/logout">
           Logout
@@ -139,8 +109,8 @@
       <!-- <img src="<?= base_url() ?>/adminlte/dist/img/logomonev.png"
            alt="AdminLTE Logo"
            class="brand-image img-rounded"
-           > -->MONEV 
-      <span class="brand-text font-weight-light"> <?= session('ta'); ?></span>
+           > -->SIMAYA 
+      <span class="brand-text font-weight-light"> </span>
     </a>
 
  <!-- Sidebar -->
@@ -148,33 +118,25 @@
       <!-- Sidebar user (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image" style="padding-top:15px">
-          <?php if (session('kdgrpuser')=='admin' 
-          || session('kdgrpuser')=='ekp' 
-          || session('kdgrpuser')=='monev' 
-          || session('kdgrpuser')=='start' 
-          || session('kdgrpuser')=='dja400' 
-          || session('kdgrpuser')=='dja500' 
-          || session('kdgrpuser')=='dja600' 
-          || session('kdgrpuser')=='kppn' 
-          || session('kdgrpuser')=='kanwil' 
-          || session('kdgrpuser')=='admindjpb' 
+          <?php if (session('kdgrpuser')=='developer' 
+          || session('kdgrpuser')=='admin' 
+          || session('kdgrpuser')=='dpd' 
           )  : ?>
-          <img src="<?= base_url() ?>/adminlte\dist\img\avatar.png" class="img-circle elevation-2" alt="User Image">
+          <img src="<?= base_url() ?>/adminlte\dist\img\avatar5.png" class="img-circle elevation-2" alt="User Image">
           <?php else : ?>
-          <img src="<?= base_url() ?>/assets/profile/<?= session('kddept') ?>.png" class="img-circle elevation-2" alt="User Image">
+          <img src="<?= base_url() ?>/assets/profile/<?= session('kdgrpuser') ?>.png" class="img-circle elevation-2" alt="User Image">
           <?php endif ?>
         </div>
         <div class="info" style="white-space:normal !important;padding-top:0px">
-          <a href="/app2021/profil/formProfil" class="d-block"><?php echo session('username'); ?> <br><?php echo session('userid'); ?> <br>(<?php echo session('nmgrpuser'); ?>)</a>
+          <a href="/profil" class="d-block"><?php echo ucwords(session('nama')); ?> <br><?php echo session('email'); ?> <br>(<?php echo ucfirst(session('kdgrpuser')); ?>)</a>
         </div>
       </div>
 
       <!-- Sidebar Menu -->
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-          <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
-        
+          
+        <?= $stringmenu; ?>
           
       <!-- /.sidebar-menu -->
     </div>
@@ -205,9 +167,9 @@
 <!-- /.content-wrapper -->
 <footer class="main-footer">
   <div class="float-right d-none d-sm-block">
-    <b>Aplikasi MONEV KEMENKEU</b> 1.0.0 <?php $closed = date("Y-m-d H:i:s");  echo $closed; ?>
+    <b>SIMAYA</b> 1.0.0 <?php $closed = date("Y-m-d H:i:s");  echo $closed; ?>
   </div>
-  <strong>Copyright &copy; 2023 <a href="#">DSP DJA KEMENKEU</a>. </strong> All rights
+  <strong>Copyright &copy; 2024 <a href="#">SIMAYA</a>. </strong> All rights
   reserved.
 </footer>
 </div>

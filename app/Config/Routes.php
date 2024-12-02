@@ -16,3 +16,6 @@ $routes->get('/form_register', 'User::form_register');
 $routes->post('/register', 'User::register');
 
 $routes->get('/developer', 'Developer::index',['filter' => 'auth']);
+$routes->get('/developer/form_pengajuan', 'Developer::form_pengajuan',['filter' => 'auth']);
+$routes->get('/developer/dashboard', 'Developer::dashboard',['filter' => 'auth']);
+$routes->get('/profil', 'User::profil',['filter' => 'auth']);

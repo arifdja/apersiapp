@@ -13,19 +13,31 @@ class Developer extends BaseController
 			'breadcrumb' => ['Developer','Welcome'],
 			'stringmenu' => $menu, 
         ];
-        return view('developer/v_welcome');
+        return view('developer/v_welcome',$data);
     }
 
-    public function form_register()
+    public function form_pengajuan()
 	{
-        $menu = "";
+        $menu = getMenu();
         
         $data = [
-			'title' => 'Register',
-			'breadcrumb' => ['Home','Profil'],
+			'title' => 'Form Pengajuan',
+			'breadcrumb' => ['Developer','Form Pengajuan'],
 			'stringmenu' => $menu, 
 			'validation' => \Config\Services::validation(), 
         ];
-		return view('user/form_register',$data);
+		return view('developer/form_pengajuan',$data);
     }
+
+    public function dashboard()
+	{
+		$menu = getMenu();
+
+        $data = [
+			'title' => 'Dashboard',
+			'breadcrumb' => ['Developer','Dashboard'],
+			'stringmenu' => $menu, 
+        ];
+        return view('developer/v_dashboard',$data);
+	}
 }

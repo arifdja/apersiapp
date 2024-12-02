@@ -58,7 +58,7 @@
       <?= form_open('validateuser','autocomplete="off"'); ?>
       <?= csrf_field() ?>
         <div class="input-group mb-3"> 
-        <input autofocus autocomplete="off" type="text" name="username" value="<?= set_value('username')?>" class="form-control <?= $validation->hasError('username') ? 'is-invalid' : ''; ?>" placeholder="Username">
+        <input autofocus autocomplete="off" type="email" name="username" value="<?= set_value('username')?>" class="form-control <?= $validation->hasError('username') ? 'is-invalid' : ''; ?>" placeholder="Username">
           <div class="input-group-append input-group-sm">
             <div class="input-group-text input-group-sm">
               <span class="fas fa-user"></span>
