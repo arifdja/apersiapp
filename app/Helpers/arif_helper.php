@@ -14,7 +14,6 @@ if (! function_exists('getMenu'))
         $db      = \Config\Database::connect($dbgroup);
         $builder = $db->table('t_menu');
         $builder->where('kdgrpuser', $session->get('kdgrpuser'));
-        $builder->where('ta', $session->get('ta'));
         $builder->where('is_active', 1);
         $builder->where('is_main_menu', 0);
         $builder->orderBy('kode');
@@ -22,7 +21,6 @@ if (! function_exists('getMenu'))
         foreach ($querymm->getResultArray() as $mm) {
             $builder = $db->table('t_menu');
             $builder->where('kdgrpuser', $session->get('kdgrpuser'));
-       		$builder->where('ta', $session->get('ta'));
             $builder->where('is_active', 1);
             $builder->where('is_main_menu', $mm['kode']);
             $builder->orderBy('kode');
