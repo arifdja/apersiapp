@@ -37,6 +37,8 @@
     </style>
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
 </head>
 <body class="hold-transition login-page">
 <div class="login-box">
@@ -50,10 +52,9 @@
                       </div>
     
     <div class="card-body login-card-body text-center" style="border-radius:15px">
-    <p class="login-box-msg">
-      <!-- <img src="<?php echo base_url('assets/images/logomonev.png') ?>" alt="" style="width:100%"> -->
-<h2>  SIMAYA</h2>
-      </p>
+      <div class="register-logo">
+        <a href="#"><b>SI</b>MAYA</a>
+      </div>
       <?= form_open('validateuser','autocomplete="off"'); ?>
       <?= csrf_field() ?>
         <div class="input-group mb-3"> 
@@ -82,6 +83,10 @@
           <input type="checkbox" class="form-check-input" id="check">
           <label class="form-check-label" for="exampleCheck2">Tampilkan Password</label>
         </div>
+        <p>
+            <!-- Google reCAPTCHA Widget -->
+            <div class="g-recaptcha" data-sitekey="6LdGWZAqAAAAAF-815CNbkjzW2g3R3I6L6H_cWg4"></div>
+        </p>
         <div class="row">
           <div class="col-12">
             <button type="submit" class="btn btn-primary btn-block" style="background-color: #35B5FE !important; border:none">Login</button>

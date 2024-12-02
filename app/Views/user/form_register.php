@@ -36,6 +36,7 @@
     </style>
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 <body class="hold-transition login-page">
 <div class="login-box">
@@ -127,6 +128,11 @@
                                     <label class="form-check-label" for="exampleCheck2">Tampilkan Password</label>
                                 </div>
                             </div>
+
+                            <p>
+                                <!-- Google reCAPTCHA Widget -->
+                                <div class="g-recaptcha" data-sitekey="6LdGWZAqAAAAAF-815CNbkjzW2g3R3I6L6H_cWg4"></div>
+                            </p>
 
                             <div class="form-group row">
                                 <div class="col-sm-12">

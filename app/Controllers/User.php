@@ -19,6 +19,19 @@ class User extends BaseController
 
     public function validateUser()
     {
+
+        $recaptchaResponse = $this->request->getPost('g-recaptcha-response');
+        $secretKey = '6LdGWZAqAAAAAHT8Jkxwyuku7rvXuVFwP1Piz7pQ'; // Masukkan Secret Key Anda
+
+        // Verifikasi reCAPTCHA
+        $url = "https://www.google.com/recaptcha/api/siteverify";
+        $response = file_get_contents($url . "?secret={$secretKey}&response={$recaptchaResponse}");
+        $responseKeys = json_decode($response, true);
+
+        if (!$responseKeys['success']) {
+            return redirect()->back()->withInput()->with('captcha_error', 'Invalid CAPTCHA. Please try again.');
+        }
+
 		$username   = $this->request->getVar('username');
         $password   = $this->request->getVar('password');
         
@@ -142,6 +155,19 @@ class User extends BaseController
             $validation = \Config\Services::validation();
             return redirect()->to('/form_register')->withInput()->with('validation',  $this->validator);
         } else {
+
+            $recaptchaResponse = $this->request->getPost('g-recaptcha-response');
+            $secretKey = '6LdGWZAqAAAAAHT8Jkxwyuku7rvXuVFwP1Piz7pQ'; // Masukkan Secret Key Anda
+
+            // Verifikasi reCAPTCHA
+            $url = "https://www.google.com/recaptcha/api/siteverify";
+            $response = file_get_contents($url . "?secret={$secretKey}&response={$recaptchaResponse}");
+            $responseKeys = json_decode($response, true);
+
+            if (!$responseKeys['success']) {
+                return redirect()->back()->withInput()->with('captcha_error', 'Invalid CAPTCHA. Please try again.');
+            }
+
             $data = [
                 "email" => $this->request->getVar('email'),
                 "password" => password_hash($this->request->getVar('pbru'), PASSWORD_DEFAULT),
