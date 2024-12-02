@@ -85,7 +85,7 @@
         <div class="row">
           <div class="col-12">
             <button type="submit" class="btn btn-primary btn-block" style="background-color: #35B5FE !important; border:none">Login</button>
-            <button type="submit" class="btn btn-primary btn-block" style="background-color: #35B5FE !important; border:none">Register</button>
+            <a href="<?= base_url('form_register') ?>" class="btn btn-primary btn-block" style="background-color: #35B5FE !important; border:none">Register</a>
           
           </div>
           <!-- /.col -->

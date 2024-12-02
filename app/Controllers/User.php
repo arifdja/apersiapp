@@ -3,18 +3,13 @@
 namespace App\Controllers;
 
 use App\Models\UserModel;
-use App\Models\MenuModel;
 
 class User extends BaseController
 {
-    // public function index(): string
-    // {
-    //     return view('welcome_message');
-    // }
     public function login(): string
     {
         $data['validation'] = \Config\Services::validation();
-        return view('v_login', $data);
+        return view('user/v_login', $data);
     }
 
     public function hashpassword($password)
@@ -120,9 +115,10 @@ class User extends BaseController
             ],
             'email' => [
                 'label' => 'Alamat Email',
-                'rules' => 'trim|required|valid_email',
+                'rules' => 'trim|required|valid_email|checkEmail',
                 'errors' => [
-                    'required' => '{field} harus diisi'
+                    'required' => '{field} harus diisi',
+                    'checkEmail' => 'Email {field} sudah terdaftar'
                 ]
             ],
             'pbru' => [

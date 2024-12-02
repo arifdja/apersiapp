@@ -17,6 +17,18 @@ class ArifRules
     //     }
     //     return true;
     // } 
+
+    public function checkEmail(string $str, string &$error = null): bool
+    {
+        session();
+        $model = new UserModel();
+        $data = $model->where('email', $str)->first();
+        if ($data) {
+            $error = "Email sudah terdaftar";
+            return false;
+        }
+        return true;
+    } 
     
     public function strengthPassword(string $str, string &$error = null): bool
     {

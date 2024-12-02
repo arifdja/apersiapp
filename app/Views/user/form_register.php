@@ -130,7 +130,7 @@
 
                             <div class="form-group row">
                                 <div class="col-sm-12">
-                                    <button type="submit" class="btn btn-primary">Daftar</button>
+                                    <button type="submit" class="btn btn-primary btn-block" style="background-color: #35B5FE !important; border:none">Daftar</button>
                                 </div>
                             </div>
                         </div>
