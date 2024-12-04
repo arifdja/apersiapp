@@ -106,7 +106,7 @@ class User extends BaseController
 			'stringmenu' => $menu, 
 			'validation' => \Config\Services::validation(), 
         ];
-		return view('user/form_register',$data);
+		return view('user/form_register2',$data);
     }
 
     public function register()

@@ -34,6 +34,9 @@
         opacity: 0;
       }
     }
+    .content-wrapper {
+      margin-left: 0px !important;
+    }
   </style>
   <script type="text/javascript">
     // Set timeout variables.
@@ -71,77 +74,13 @@
 </script>
 
 </head>
-<body class="hold-transition sidebar-mini text-sm sidebar-collapse" onload="StartTimers();" onmousemove="ResetTimers();">
+<body class="text-sm" onload="StartTimers();" onmousemove="ResetTimers();">
 
 <div class="wrapper">
-  <!-- Navbar -->
-  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-    <!-- Left navbar links -->
-    <ul class="navbar-nav">
-      <li class="nav-item">
-        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-      </li>
-      <li class="nav-item d-none d-sm-inline-block">
-        <span class="nav-link"></span>
-      </li>
-      <!--
-      <li class="nav-item d-none d-sm-inline-block">
-        <a href="#" class="nav-link">Contact</a>
-      </li> -->
-    </ul>
-    <!-- Right navbar links -->
-    <ul class="navbar-nav ml-auto">
-      
-      
-       <li class="nav-item">
-        <a class="nav-link" href="/logout">
-          Logout
-        </a>
-      </li>
-    </ul>
-  </nav>
+ 
   <!-- /.navbar -->
 
- <!-- Main Sidebar Container -->
- <aside class="main-sidebar sidebar-light-primary elevation-4">
-    <!-- Brand Logo -->
-    <a href="#" class="brand-link">
-      <!-- <img src="<?= base_url() ?>/adminlte/dist/img/logomonev.png"
-           alt="AdminLTE Logo"
-           class="brand-image img-rounded"
-           > -->SITAMBANG 
-      <span class="brand-text font-weight-light"> </span>
-    </a>
-
- <!-- Sidebar -->
- <div class="sidebar">
-      <!-- Sidebar user (optional) -->
-      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        <div class="image" style="padding-top:15px">
-          <?php if (session('kdgrpuser')=='developer' 
-          || session('kdgrpuser')=='operator' 
-          || session('kdgrpuser')=='rumput' 
-          )  : ?>
-          <img src="<?= base_url() ?>/adminlte\dist\img\avatar5.png" class="img-circle elevation-2" alt="User Image">
-          <?php else : ?>
-          <img src="<?= base_url() ?>/assets/profile/<?= session('kdgrpuser') ?>.png" class="img-circle elevation-2" alt="User Image">
-          <?php endif ?>
-        </div>
-        <div class="info" style="white-space:normal !important;padding-top:0px">
-          <a href="/profil" class="d-block"><?php echo ucwords(session('nama')); ?> <br><?php echo session('email'); ?> <br>(<?php echo ucfirst(session('kdgrpuser')); ?>)</a>
-        </div>
-      </div>
-
-      <!-- Sidebar Menu -->
-      <nav class="mt-2">
-        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-          
-        <?= $stringmenu; ?>
-          
-      <!-- /.sidebar-menu -->
-    </div>
-    <!-- /.sidebar -->
-  </aside>
+ 
   
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">

@@ -19,3 +19,4 @@ $routes->get('/developer', 'Developer::index',['filter' => 'auth']);
 $routes->get('/developer/form_pengajuan', 'Developer::form_pengajuan',['filter' => 'auth']);
 $routes->get('/developer/dashboard', 'Developer::dashboard',['filter' => 'auth']);
 $routes->get('/profil', 'User::profil',['filter' => 'auth']);
+$routes->get('/operator', 'Operator::index',['filter' => 'auth']);
