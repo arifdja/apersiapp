@@ -17,7 +17,7 @@
         <div class="col-md-6">
         <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Registrasi Developer</h3>
+                <h3 class="card-title">Pendaftaran Developer</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
