@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>SIMAYA</title>
+  <title>SITAMBANG</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="shortcut icon" href="<?php echo base_url() ?>/assets/images/favicon.gif" type="image/x-icon" />
@@ -49,7 +49,7 @@
     <div class="card-body login-card-body text-center" style="border-radius:15px">
     <p class="login-box-msg">
       <!-- <img src="<?php echo base_url('assets/images/logomonev.png') ?>" alt="" style="width:100%"> -->
-<h4>  PENDAFTARAN</h4>
+<h5>  PENDAFTARAN PENGEMBANG</h5>
       </p>
                         <?= form_open('register','class="form-horizontal"'); ?>
                         <?= csrf_field() ?>
@@ -144,7 +144,7 @@
                         <!-- /.card-body -->
                     </form>
                
-    <p class="text-center" style="padding-top:10px;font-size:12px"><strong>Copyright &copy; 2024 <a style="color:#35B5FE" href="#">SIMAYA</a> </strong></p>
+    <p class="text-center" style="padding-top:10px;font-size:12px"><strong>Copyright &copy; 2024 <a style="color:#35B5FE" href="#">SITAMBANG</a> </strong></p>
     
 
     </div>

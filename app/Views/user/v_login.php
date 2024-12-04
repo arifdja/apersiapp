@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>SIMAYA</title>
+  <title>SITAMBANG</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="shortcut icon" href="<?php echo base_url() ?>/assets/images/favicon.gif" type="image/x-icon" />
@@ -53,7 +53,7 @@
     
     <div class="card-body login-card-body text-center" style="border-radius:15px">
       <div class="register-logo">
-        <a href="#"><b>SI</b>MAYA</a>
+        <a href="#"><b>SI</b>TAMBANG</a>
       </div>
       <?= form_open('validateuser','autocomplete="off"'); ?>
       <?= csrf_field() ?>
@@ -90,7 +90,7 @@
         <div class="row">
           <div class="col-12">
             <button type="submit" class="btn btn-primary btn-block" style="background-color: #35B5FE !important; border:none">Login</button>
-            <a href="<?= base_url('form_register') ?>" class="btn btn-primary btn-block" style="background-color: #35B5FE !important; border:none">Register</a>
+            <a href="<?= base_url('form_register') ?>" class="btn btn-primary btn-block" style="background-color: #35B5FE !important; border:none">Daftar</a>
           
           </div>
           <!-- /.col -->
@@ -98,7 +98,7 @@
         </div>
       <?= form_close() ?>
    
-    <p class="text-center" style="padding-top:10px;font-size:12px"><strong>Copyright &copy; 2024 <a style="color:#35B5FE" href="#">SIMAYA</a> </strong></p>
+    <p class="text-center" style="padding-top:10px;font-size:12px"><strong>Copyright &copy; 2024 <a style="color:#35B5FE" href="#">SITAMBANG</a> </strong></p>
     
 
     </div>

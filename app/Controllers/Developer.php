@@ -40,4 +40,7 @@ class Developer extends BaseController
         ];
         return view('developer/v_dashboard',$data);
 	}
+
+
+
 }
