@@ -14,6 +14,10 @@ $routes->get('/logout', 'User::logout');
 $routes->get('/profil', 'User::profil');
 $routes->get('/form_register', 'User::form_register');
 $routes->post('/register', 'User::register');
+$routes->post('/get_kabupaten', 'User::get_kabupaten');
+$routes->post('/get_kota', 'User::get_kota');
+$routes->post('/get_kecamatan', 'User::get_kecamatan');
+
 
 $routes->get('/developer', 'Developer::index',['filter' => 'auth']);
 $routes->get('/developer/form_pengajuan', 'Developer::form_pengajuan',['filter' => 'auth']);

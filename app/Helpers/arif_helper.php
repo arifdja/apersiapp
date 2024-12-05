@@ -12,14 +12,14 @@ if (! function_exists('getMenu'))
 
         $session = \Config\Services::session();
         $db      = \Config\Database::connect($dbgroup);
-        $builder = $db->table('t_menu');
+        $builder = $db->table('menu');
         $builder->where('kdgrpuser', $session->get('kdgrpuser'));
         $builder->where('is_active', 1);
         $builder->where('is_main_menu', 0);
         $builder->orderBy('kode');
         $querymm = $builder->get();
         foreach ($querymm->getResultArray() as $mm) {
-            $builder = $db->table('t_menu');
+            $builder = $db->table('menu');
             $builder->where('kdgrpuser', $session->get('kdgrpuser'));
             $builder->where('is_active', 1);
             $builder->where('is_main_menu', $mm['kode']);
@@ -925,5 +925,38 @@ if (! function_exists('getAllProgram'))
         $builder->select('kddept,kdunit,kdprogram,nmprogram');
         $querymm = $builder->get();
         return $querymm->getResultArray(); 
+    }
+}
+
+if (!function_exists('create_dropdown')) {
+    /**
+     * Generate an HTML dropdown menu
+     *
+     * @param string $name Name attribute of the select element
+     * @param array $options Array of options in the format [value => label]
+     * @param mixed $selected Value of the option to be selected
+     * @param array $attributes Additional attributes for the select element
+     * @return string HTML string for the dropdown menu
+     */
+    function create_dropdown($name, $options = [], $selected = null, $attributes = [])
+    {
+        // Start the select element
+        $attrString = '';
+        foreach ($attributes as $key => $value) {
+            $attrString .= $key . '="' . htmlspecialchars($value, ENT_QUOTES) . '" ';
+        }
+        
+        $html = '<select name="' . htmlspecialchars($name, ENT_QUOTES) . '" ' . $attrString . '>';
+        
+        // Add options
+        foreach ($options as $value => $label) {
+            $isSelected = ($value == $selected) ? 'selected' : '';
+            $html .= '<option value="' . htmlspecialchars($value, ENT_QUOTES) . '" ' . $isSelected . '>' . htmlspecialchars($label, ENT_QUOTES) . '</option>';
+        }
+        
+        // Close the select element
+        $html .= '</select>';
+        
+        return $html;
     }
 }

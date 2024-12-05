@@ -3,6 +3,12 @@
 namespace App\Controllers;
 
 use App\Models\UserModel;
+use App\Models\ProvinsiModel;
+use App\Models\KotaModel;
+use App\Models\KecamatanModel;
+use App\Models\KelurahanModel;
+use App\Models\KabupatenModel;
+
 
 class User extends BaseController
 {
@@ -96,14 +102,70 @@ class User extends BaseController
         return redirect()->to('/login');
     }
 
+    public function get_kabupaten()
+    {
+        $provinsiId = $this->request->getPost('provinsi_id');
+
+        $kabupatenModel = new KabupatenModel();
+        $kabupaten = $kabupatenModel->where('idprovinsi', $provinsiId)->findAll();
+
+        return $this->response->setJSON(
+            [
+                'kabupaten' => $kabupaten,
+                'csrfName' => csrf_token(), 
+                'csrfHash' => csrf_hash(),
+            ]
+        );
+    }
+
+    public function get_kota()
+    {
+        $kabupatenId = $this->request->getPost('kabupaten_id');
+
+        $kotaModel = new KotaModel();
+        $kota = $kotaModel->where('idkabupaten', $kabupatenId)->findAll();
+
+        return $this->response->setJSON(
+            [
+                'kota' => $kota,
+                'csrfName' => csrf_token(), 
+                'csrfHash' => csrf_hash(),
+            ]
+        );
+    }
+
+    public function get_kecamatan()
+    {
+        $kotaId = $this->request->getPost('kota_id');
+
+        $kecamatanModel = new KecamatanModel();
+        $kecamatan = $kecamatanModel->where('idkota', $kotaId)->findAll();
+
+        return $this->response->setJSON(
+            [
+                'kecamatan' => $kecamatan,
+                'csrfName' => csrf_token(), 
+                'csrfHash' => csrf_hash(),
+            ]
+        );
+    }
+
     public function form_register()
 	{
         $menu = "";
+        $model = new ProvinsiModel();
+        $provinsi = $model->findAll();
+
+        $dropdownprovinsi['provinsi'] = ['' => 'Pilih Provinsi'];
+        foreach ($provinsi as $prov) {
+            $dropdownprovinsi['provinsi'][$prov['id']] = $prov['namaprovinsi'];
+        }
         
         $data = [
 			'title' => 'Register',
 			'breadcrumb' => ['Home','Profil'],
 			'stringmenu' => $menu, 
+			'dropdownprovinsi' => $dropdownprovinsi,
 			'validation' => \Config\Services::validation(), 
         ];
 		return view('user/form_register2',$data);
@@ -111,17 +173,14 @@ class User extends BaseController
 
     public function register()
 	{
+
+        // Get uploaded file
+        // $fileberkaskta = $this->request->getFile('berkaskta');    
+
         if (!$this->validate([
             'nama' => [
                 'label' => 'Nama',
                 'rules' => 'trim|required',
-                'errors' => [
-                    'required' => '{field} harus diisi'
-                ]
-            ],
-            'telp' => [
-                'label' => 'Telepon',
-                'rules' => 'trim|required|numeric',
                 'errors' => [
                     'required' => '{field} harus diisi'
                 ]
@@ -132,6 +191,50 @@ class User extends BaseController
                 'errors' => [
                     'required' => '{field} harus diisi',
                     'checkEmail' => 'Email {field} sudah terdaftar'
+                ]
+            ],
+            'telp' => [
+                'label' => 'Telepon',
+                'rules' => 'trim|required|numeric',
+                'errors' => [
+                    'required' => '{field} harus diisi'
+                ]
+            ],
+            'lokasiref' => [
+                'label' => 'Lokasi',
+                'rules' => 'trim|required',
+                'errors' => [
+                    'required' => '{field} harus diisi'
+                ]
+            ],
+            'kode_pos' => [
+                'label' => 'Kode Pos',
+                'rules' => 'trim|required',
+                'errors' => [
+                    'required' => '{field} harus diisi'
+                ]
+            ],
+            'detail_alamat' => [
+                'label' => 'Detail Alamat',
+                'rules' => 'trim|required',
+                'errors' => [
+                    'required' => '{field} harus diisi'
+                ]
+            ],
+            'kta' => [
+                'label' => 'KTA',
+                'rules' => 'trim|required',
+                'errors' => [
+                    'required' => '{field} harus diisi'
+                ]
+            ],
+            'berkaskta' => [
+                'label' => 'Kartu Tanda Anggota (KTA)',
+                'rules' => 'uploaded[berkaskta]|max_size[berkaskta,10000]|ext_in[berkaskta,pdf]',
+                'errors' => [
+                    'uploaded' => '{field} harus diisi',
+                    'ext_in' => '{field} harus berformat pdf',
+                    'max_size' => '{field} maksimal 2 MB'
                 ]
             ],
             'pbru' => [
@@ -168,24 +271,44 @@ class User extends BaseController
                 return redirect()->back()->withInput()->with('captcha_error', 'Invalid CAPTCHA. Please try again.');
             }
 
-            $data = [
-                "email" => $this->request->getVar('email'),
-                "password" => password_hash($this->request->getVar('pbru'), PASSWORD_DEFAULT),
-                "kdgrpuser" => 'developer',
-                "nama" => $this->request->getVar('nama'),
-                "notelp" => $this->request->getVar('telp'),
-            ];
+            $fileberkaskta = $this->request->getFile('berkaskta');
 
-            $user = new UserModel();
-            $save = $user->save($data);
-            if ($save) {
-                session()->setFlashdata('type','Success');
-                session()->setFlashdata('msg','Berhasil Register, Silahkan login');
+            if ($fileberkaskta->isValid() && !$fileberkaskta->hasMoved()) {
+                // Move the file to a permanent location
+                $newFileName = $fileberkaskta->getRandomName();
+                $fileberkaskta->move(WRITEPATH . 'uploads', $newFileName);
+                session()->set('uploaded_file', $newFileName);
+
+
+                $data = [
+                    "email" => $this->request->getVar('email'),
+                    "password" => password_hash($this->request->getVar('pbru'), PASSWORD_DEFAULT),
+                    "kdgrpuser" => 'developer',
+                    "nama" => $this->request->getVar('nama'),
+                    "alamatref" => $this->request->getVar('lokasiref'),
+                    "alamatinput" => $this->request->getVar('detail_alamat'),
+                    "notelp" => $this->request->getVar('telp'),
+                    "kodepos" => $this->request->getVar('kode_pos'),
+                    "kta" => $this->request->getVar('kta'),
+                    "berkaskta" => $fileberkaskta->getName()
+                ];
+    
+                $user = new UserModel();
+                $save = $user->save($data);
+                if ($save) {
+                    session()->setFlashdata('type','Success');
+                    session()->setFlashdata('msg','Berhasil Register, Silahkan login');
+                } else {
+                    session()->setFlashdata('type','Success');
+                    session()->setFlashdata('msg',$user->errors());
+                }
+                return redirect()->to('/login');
+
             } else {
-                session()->setFlashdata('type','Success');
-                session()->setFlashdata('msg',$user->errors());
+                session()->setFlashdata('type','Warning');
+                session()->setFlashdata('msg','There was an issue uploading the file.');
+                return redirect()->to('/form_register');
             }
-            return redirect()->to('/login');
 
 
         }
