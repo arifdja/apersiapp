@@ -1,5 +1,6 @@
 <?php
 
+use Ramsey\Uuid\Guid\Guid;
 
 //--------------------------------------------------------------------
 
@@ -958,5 +959,13 @@ if (!function_exists('create_dropdown')) {
         $html .= '</select>';
         
         return $html;
+    }
+}
+
+if (!function_exists('generate_uuid')) {
+    function generate_uuid()
+    {
+        $uuid = Guid::uuid4();
+        return $uuid->toString();
     }
 }

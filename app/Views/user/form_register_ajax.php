@@ -45,7 +45,7 @@
                                 <h3 class="card-title">Pendaftaran Developer</h3>
                           </div>
                           <div class="card-body">
-                                <?= form_open_multipart('register','class="form-horizontal"'); ?>
+                                <?= form_open('register_ajax',['id' => 'formregister', 'class' => 'form-horizontal']); ?>
                                 <input type="hidden" id="<?= csrf_token() ?>" name="<?= csrf_token() ?>" value="<?= csrf_hash() ?>" />
                                 <div class="card-body">
                                     <div class="row">
@@ -55,39 +55,33 @@
                                                     <input type="text" 
                                                           name="nama"
                                                           required 
-                                                          class="form-control <?= ((session()->getFlashdata('validation')) && session('validation')->hasError('nama')) ? 'is-invalid' : ''; ?>"
+                                                          class="form-control"
                                                           id="nama" 
                                                           placeholder="Isi Nama Lengkap"
                                                           value="<?= old('nama') ?>">
-                                                    <?php if (session()->getFlashdata('validation')): ?>
-                                                        <span style="color: red;"><?= session('validation')->getError('nama') ?></span>
-                                                    <?php endif; ?>
+                                                          <span id="spannama" style="color: red;"></span>
                                               </div>
                                               <div class="form-group">
                                                     <label for="email">Email</label>
                                                     <input type="email" 
                                                           name="email"
                                                           required 
-                                                          class="form-control <?= ((session()->getFlashdata('validation')) && session('validation')->hasError('email')) ? 'is-invalid' : ''; ?>"
+                                                          class="form-control"
                                                           id="email" 
                                                           placeholder="Isi Email"
                                                           value="<?= old('email') ?>">
-                                                    <?php if (session()->getFlashdata('validation')): ?>
-                                                        <span style="color: red;"><?= session('validation')->getError('email') ?></span>
-                                                    <?php endif; ?>
+                                                          <span id="spanemail" style="color: red;"></span>
                                               </div>
                                               <div class="form-group">
                                                     <label for="telp">Telepon</label>
                                                     <input type="number" 
                                                           name="telp"
                                                           required 
-                                                          class="form-control <?= ((session()->getFlashdata('validation')) && session('validation')->hasError('telp')) ? 'is-invalid' : ''; ?>"
+                                                          class="form-control"
                                                           id="telp" 
                                                           placeholder="Isi Telepon"
                                                           value="<?= old('telp') ?>">
-                                                    <?php if (session()->getFlashdata('validation')): ?>
-                                                        <span style="color: red;"><?= session('validation')->getError('telp') ?></span>
-                                                    <?php endif; ?>
+                                                          <span id="spantelp" style="color: red;"></span>
                                               </div>
                                               <div class="form-group">
                                                     <label for="provinsi">Provinsi</label>
@@ -95,15 +89,17 @@
                                               </div>
                                               <div class="form-group">
                                                     <label for="kabupaten">Kabupaten</label>
-                                                    <select id="kabupaten" class="form-control" required>
+                                                    <select id="kabupaten" name="kabupaten" class="form-control" required>
                                                         <option value="" selected disabled>Pilih Kabupaten</option>
                                                     </select>
+                                                    <span id="spankabupaten" style="color: red;"></span>
                                               </div>
                                               <div class="form-group">
                                                     <label for="kota">Kota</label>
-                                                    <select id="kota" class="form-control" required>
+                                                    <select id="kota" name="kota" class="form-control" required>
                                                         <option value="" selected disabled>Pilih Kota</option>
                                                     </select>
+                                                    <span id="spankota" style="color: red;"></span>
                                               </div>
                                               <div class="form-group">
                                                     <label for="kecamatan">Kecamatan</label>
@@ -111,30 +107,32 @@
                                                         <option value="" selected disabled>Pilih Kecamatan</option>
                                                     </select>
                                               </div>
-                                          </div>
-                                          <div class="col-md-6">
+                                              
                                               <div class="form-group">
                                                     <label for="kode_pos">Kode Pos</label>
                                                     <input type="text" value="<?= old('kode_pos') ?>" id="kode_pos" name="kode_pos" class="form-control" placeholder="Masukkan Kode Pos" required>
+                                                    <span id="spankode_pos" style="color: red;"></span>
                                               </div>
+                                              
+                                          </div>
+                                          <div class="col-md-6">
                                               <div class="form-group">
                                                     <label for="detail_alamat">Detail Alamat</label>
                                                     <textarea id="detail_alamat"  name="detail_alamat" class="form-control" rows="3" placeholder="Masukkan detail alamat seperti nama jalan, nomor rumah, RT/RW" required><?= old('detail_alamat') ?></textarea>
+                                                    <span id="spanalamat" style="color: red;"></span>
                                               </div>
                                               <div class="form-group">
                                                     <label for="exampleInputFile">Kartu Tanda Anggota (KTA)</label>
                                                     <input type="text" name="kta" 
                                                           required 
-                                                          class="form-control <?= ((session()->getFlashdata('validation')) && session('validation')->hasError('kta')) ? 'is-invalid' : ''; ?>"
+                                                          class="form-control"
                                                           id="kta" 
                                                           placeholder="Isi KTA"
                                                           value="<?= old('kta') ?>">
-                                                          <?php if (session()->getFlashdata('validation')): ?>
-                                                              <span style="color: red;"><?= session('validation')->getError('kta') ?></span>
-                                                          <?php endif; ?>
+                                                          <span id="spankta" style="color: red;"></span>
                                                     <div class="input-group" style="margin-top: 10px;">
                                                         <div class="custom-file">
-                                                              <input type="file" class="custom-file-input" name="berkaskta" id="exampleInputFile" accept=".pdf" required>
+                                                              <input type="file" class="custom-file-input" name="berkaskta" id="berkaskta" accept=".pdf" required>
                                                               <label class="custom-file-label" for="exampleInputFile">Choose file</label>
                                                         </div>
                                                     </div>
@@ -142,35 +140,30 @@
                                                           <small>Format file yang diizinkan: PDF</small>,
                                                           <small>Maksimal ukuran file: 10 MB</small>
                                                     </div>
-                                                    <?php if(session()->getFlashdata('validation')): ?>
-                                                        <span style="color: red;"><?= session('validation')->getError('berkaskta') ?></span>
-                                                    <?php endif; ?>
+                                                    <span id="spanberkaskta" style="color: red;"></span>
                                               </div>
                                               <div class="form-group">
                                                     <label for="pbru">Password</label>
                                                     <input type="password" 
                                                           name="pbru"
                                                           required 
-                                                          class="form-control <?= ((session()->getFlashdata('validation')) && session('validation')->hasError('pbru')) ? 'is-invalid' : ''; ?>"
+                                                          class="form-control"
                                                           id="pbru" 
                                                           placeholder="Isi Password"
                                                           value="<?= old('pbru') ?>">
-                                                    <?php if (session()->getFlashdata('validation')): ?>
-                                                        <span style="color: red;"><?= session('validation')->getError('pbru') ?></span>
-                                                    <?php endif; ?>
+                                                          <span id="spanpbru" style="color: red;"></span>
                                               </div>
                                               <div class="form-group">
                                                     <label for="pbru2">Ulangi Password</label>
                                                     <input type="password" 
                                                           name="pbru2"
                                                           required 
-                                                          class="form-control <?= ((session()->getFlashdata('validation')) && session('validation')->hasError('pbru2')) ? 'is-invalid' : ''; ?>"
+                                                          class="form-control"
                                                           id="pbru2" 
                                                           placeholder="Isi Ulang Password"
                                                           value="<?= old('pbru2') ?>">
-                                                    <?php if (session()->getFlashdata('validation')): ?>
-                                                        <span style="color: red;"><?= session('validation')->getError('pbru2') ?></span>
-                                                    <?php endif; ?>
+                                                          <span id="spanpbru2" style="color: red;"></span>
+                                                    
                                               </div>
                                               <div class="form-group">
                                                     <div class="col-sm-12">
@@ -206,6 +199,119 @@
 <?= $this->section('south'); ?>
 <script>
     $(document).ready(function () {
+        // Handle form submission
+        $('#formregister').on('submit', function (e) {
+            e.preventDefault(); // Prevent the default form submission
+
+            // Create FormData object
+            var formData = new FormData(this);
+
+            // Send AJAX request
+            $.ajax({
+                url: "<?= site_url('register_ajax') ?>", // Controller method to handle the upload
+                type: "POST",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    // Handle success response
+                    if(response.status == 'success'){
+                      Swal.fire({
+                          icon: 'success',
+                          title: 'Berhasil!',
+                          text: 'Pendaftaran berhasil, silahkan login',
+                          showConfirmButton: false,
+                          timer: 2000
+                      }).then(() => {
+                          window.location.href = '<?= site_url('login') ?>';
+                      });
+                    }
+                },
+                error: function (xhr, status, error) {
+                    // Handle error response
+                    if(xhr.responseJSON.status == 'error'){
+                      if(xhr.responseJSON.message.pbru){
+                        $('#pbru').addClass('is-invalid');
+                      }
+                      if(xhr.responseJSON.message.pbru2){
+                        $('#pbru2').addClass('is-invalid');
+                      }
+                      console.log(xhr.responseJSON);
+                        if(xhr.responseJSON.message.nama){
+                        $('#nama').addClass('is-invalid');
+                        $('#spannama').html(xhr.responseJSON.message.nama);
+                      }
+                      if(xhr.responseJSON .message.email){
+                        $('#email').addClass('is-invalid');
+                        $('#spanemail').html(xhr.responseJSON.message.email);
+                      }
+                      if(xhr.responseJSON.message.telp){
+                        $('#telp').addClass('is-invalid');
+                        $('#spantelp').html(xhr.responseJSON.message.telp);
+                      }
+                      if(xhr.responseJSON.message.provinsi){
+                        $('#provinsi').addClass('is-invalid');
+                        $('#spanprovinsi').html(xhr.responseJSON.message.provinsi);
+                      }
+                      if(xhr.responseJSON.message.kabupaten){
+                        $('#kabupaten').addClass('is-invalid');
+                        $('#spankabupaten').html(xhr.responseJSON.message.kabupaten);
+                      }
+                      if(xhr.responseJSON.message.kota){
+                        $('#kota').addClass('is-invalid');
+                        $('#spankota').html(xhr.responseJSON.message.kota);
+                      }
+                      if(xhr.responseJSON.message.kecamatan){
+                        $('#kecamatan').addClass('is-invalid');
+                        $('#spankecamatan').html(xhr.responseJSON.message.kecamatan);
+                      }
+                      if(xhr.responseJSON.message.kode_pos){
+                        $('#kode_pos').addClass('is-invalid');
+                        $('#spankode_pos').html(xhr.responseJSON.message.kode_pos);
+                      }
+                      if(xhr.responseJSON.message.detail_alamat){
+                        $('#detail_alamat').addClass('is-invalid');
+                        $('#spanalamat').html(xhr.responseJSON.message.detail_alamat);
+                      }
+                      if(xhr.responseJSON.message.kta){
+                        $('#kta').addClass('is-invalid');
+                        $('#spankta').html(xhr.responseJSON.message.kta);
+                      }
+                      if(xhr.responseJSON.message.berkaskta){
+                        $('#berkaskta').addClass('is-invalid');
+                        $('#spanberkaskta').html(xhr.responseJSON.message.berkaskta);
+                      }
+                      if(xhr.responseJSON.message.pbru){
+                        $('#pbru').addClass('is-invalid');
+                        $('#spanpbru').html(xhr.responseJSON.message.pbru);
+                      }
+                      if(xhr.responseJSON.message.pbru2){
+                        $('#pbru2').addClass('is-invalid');
+                        $('#spanpbru2').html(xhr.responseJSON.message.pbru2);
+                      }
+                      if(xhr.responseJSON.message.captcha){
+                        Swal.fire({
+                          icon: 'error',
+                          title: 'Error',
+                          text: 'Invalid CAPTCHA. Please try again.'
+                        });
+                      }
+                      if(xhr.responseJSON.message.simpan){
+                        Swal.fire({
+                          icon: 'error',
+                          title: 'Error',
+                          text: 'Gagal menyimpan data'
+                        });
+                      }
+                    }
+                }
+            });
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+      
 
         // Fungsi untuk membersihkan semua input
         $('#clear').click(function() {
@@ -221,6 +327,11 @@
             $('#kecamatan').html('<option value="" selected disabled>Pilih Kecamatan</option>');
             grecaptcha.reset();
         });
+
+        var oldKabupatenSelection = $('#kabupaten').val();
+        var oldKotaSelection = $('#kota').val();
+        var oldKecamatanSelection = $('#kecamatan').val();
+
       
         $('#provinsi').change(function () {
 
@@ -249,7 +360,7 @@
                   Swal.fire({
                     icon: 'error',
                     title: 'Error!',
-                    text: 'Gagal memuat data kecamatan. Silakan coba lagi.'
+                    text: 'Gagal memuat data kabupaten. Silakan coba lagi.'
                   });
                 }
             });
@@ -311,6 +422,9 @@
                   $('#<?= csrf_token() ?>').val(response.csrfHash);
                 },
                 error: function () {
+                  $('#kabupaten').val(oldKabupatenSelection);
+                  $('#kota').val(oldKotaSelection);
+                  $('#kecamatan').val(oldKecamatanSelection);
                   Swal.fire({
                     icon: 'error',
                     title: 'Error!',

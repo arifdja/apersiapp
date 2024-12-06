@@ -10,6 +10,7 @@ use App\Models\KelurahanModel;
 use App\Models\KabupatenModel;
 
 
+
 class User extends BaseController
 {
     public function login(): string
@@ -168,15 +169,11 @@ class User extends BaseController
 			'dropdownprovinsi' => $dropdownprovinsi,
 			'validation' => \Config\Services::validation(), 
         ];
-		return view('user/form_register2',$data);
+		return view('user/form_register_ajax',$data);
     }
 
     public function register()
 	{
-
-        // Get uploaded file
-        // $fileberkaskta = $this->request->getFile('berkaskta');    
-
         if (!$this->validate([
             'nama' => [
                 'label' => 'Nama',
@@ -228,15 +225,6 @@ class User extends BaseController
                     'required' => '{field} harus diisi'
                 ]
             ],
-            'berkaskta' => [
-                'label' => 'Kartu Tanda Anggota (KTA)',
-                'rules' => 'uploaded[berkaskta]|max_size[berkaskta,10000]|ext_in[berkaskta,pdf]',
-                'errors' => [
-                    'uploaded' => '{field} harus diisi',
-                    'ext_in' => '{field} harus berformat pdf',
-                    'max_size' => '{field} maksimal 2 MB'
-                ]
-            ],
             'pbru' => [
                 'label' => 'Password',
                 'rules' => 'required|regex_match[^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$]',
@@ -254,9 +242,9 @@ class User extends BaseController
                 ]
             ]
             ])) {
-                
-            $validation = \Config\Services::validation();
-            return redirect()->to('/form_register')->withInput()->with('validation',  $this->validator);
+
+            return redirect()->back()->withInput()->with('validation', $this->validator);
+
         } else {
 
             $recaptchaResponse = $this->request->getPost('g-recaptcha-response');
@@ -270,17 +258,38 @@ class User extends BaseController
             if (!$responseKeys['success']) {
                 return redirect()->back()->withInput()->with('captcha_error', 'Invalid CAPTCHA. Please try again.');
             }
-
+           
             $fileberkaskta = $this->request->getFile('berkaskta');
+            if ($fileberkaskta->getMimeType() != 'application/pdf') {
+                session()->setFlashdata('uploaded_file', 'File harus berformat PDF');
+                $data = ['errors' => 'The file has already been moved.'];
+                return view('user/form_register', $data);
+            }
 
-            if ($fileberkaskta->isValid() && !$fileberkaskta->hasMoved()) {
+            if ($fileberkaskta->getSize() > 10240) {
+                session()->setFlashdata('uploaded_file', 'File harus berformat PDF');
+                $data = ['errors' => 'The file has already been moved.'];
+                return view('user/form_register', $data);
+            }
+
+            if ($fileberkaskta->getExtension() != 'pdf') {
+                session()->setFlashdata('uploaded_file', 'File harus berformat PDF');
+                $data = ['errors' => 'The file has already been moved.'];
+                return view('user/form_register', $data);
+            }
+
+            // echo "str";exit;
+
+
+            if (!$fileberkaskta->hasMoved()) {
+                $uuid = generate_uuid();
                 // Move the file to a permanent location
-                $newFileName = $fileberkaskta->getRandomName();
+                $newFileName = "kta_".$uuid."_".$fileberkaskta->getRandomName();
                 $fileberkaskta->move(WRITEPATH . 'uploads', $newFileName);
-                session()->set('uploaded_file', $newFileName);
 
 
                 $data = [
+                    "uuid" => $uuid,
                     "email" => $this->request->getVar('email'),
                     "password" => password_hash($this->request->getVar('pbru'), PASSWORD_DEFAULT),
                     "kdgrpuser" => 'developer',
@@ -290,7 +299,7 @@ class User extends BaseController
                     "notelp" => $this->request->getVar('telp'),
                     "kodepos" => $this->request->getVar('kode_pos'),
                     "kta" => $this->request->getVar('kta'),
-                    "berkaskta" => $fileberkaskta->getName()
+                    "berkaskta" => $newFileName
                 ];
     
                 $user = new UserModel();
@@ -312,6 +321,168 @@ class User extends BaseController
 
 
         }
+    }
+
+    
+    public function register_ajax()
+	{
+        // Check if it's an AJAX request
+        if (!$this->request->isAJAX()) {
+            return $this->response->setJSON(['message' => 'Invalid request'])->setStatusCode(400);
+        }    
+
+        $validationRules = [
+            'nama' => [
+                'label' => 'Nama',
+                'rules' => 'trim|required',
+                'errors' => [
+                    'required' => '{field} harus diisi'
+                ]
+            ],
+            'email' => [
+                'label' => 'Alamat Email',
+                'rules' => 'trim|required|valid_email|checkEmail',
+                'errors' => [
+                    'required' => '{field} harus diisi',
+                    'checkEmail' => 'Email {field} sudah terdaftar'
+                ]
+            ],
+            'telp' => [
+                'label' => 'Telepon',
+                'rules' => 'trim|required|numeric',
+                'errors' => [
+                    'required' => '{field} harus diisi'
+                ]
+            ],
+            'lokasiref' => [
+                'label' => 'Lokasi',
+                'rules' => 'trim|required',
+                'errors' => [
+                    'required' => '{field} harus diisi'
+                ]
+            ],
+            'kode_pos' => [
+                'label' => 'Kode Pos',
+                'rules' => 'trim|required',
+                'errors' => [
+                    'required' => '{field} harus diisi'
+                ]
+            ],
+            'detail_alamat' => [
+                'label' => 'Detail Alamat',
+                'rules' => 'trim|required',
+                'errors' => [
+                    'required' => '{field} harus diisi'
+                ]
+            ],
+            'kta' => [
+                'label' => 'KTA',
+                'rules' => 'trim|required',
+                'errors' => [
+                    'required' => '{field} harus diisi'
+                ]
+            ],
+            'berkaskta' => [
+                'label' => 'KTA',
+                'rules' => 'uploaded[berkaskta]|max_size[berkaskta,10240]|ext_in[berkaskta,pdf]|mime_in[berkaskta,application/pdf]',
+                'errors' => [
+                    'uploaded' => '{field} harus diisi',
+                    'max_size' => '{field} maksimal 10 MB',
+                    'ext_in' => '{field} harus berformat PDF',
+                    'mime_in' => '{field} harus berformat PDF'
+                ]
+            ],
+            'pbru' => [
+                'label' => 'Password',
+                'rules' => 'required|regex_match[^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$]',
+                'errors' => [
+                    'required' => '{field} harus diisi',
+                    'regex_match' => '{field} Panjang minimal 8 karakter, Minimal satu huruf besar, Minimal satu huruf kecil, Minimal satu angka, dan Minimal satu simbol'
+                ]
+            ],
+            'pbru2' => [
+                'label' => 'Ulangi Password',
+                'rules' => 'required|matches[pbru]',
+                'errors' => [
+                    'required' => '{field} harus diisi',
+                    'matches' => '{field} harus sama dengan Password'
+                ]
+            ]
+        ];
+
+        if (!$this->validate($validationRules)) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => $this->validator->getErrors()
+            ])->setStatusCode(400);
+
+        } 
+
+        $recaptchaResponse = $this->request->getPost('g-recaptcha-response');
+        $secretKey = '6LdGWZAqAAAAAHT8Jkxwyuku7rvXuVFwP1Piz7pQ'; // Masukkan Secret Key Anda
+
+        // Verifikasi reCAPTCHA
+        $url = "https://www.google.com/recaptcha/api/siteverify";
+        $response = file_get_contents($url . "?secret={$secretKey}&response={$recaptchaResponse}");
+        $responseKeys = json_decode($response, true);
+
+        if (!$responseKeys['success']) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => [
+                    'captcha' => 'Invalid CAPTCHA. Please try again.'
+                ]
+            ])->setStatusCode(400);
+        }
+
+        $fileberkaskta = $this->request->getFile('berkaskta');
+        
+        if ($fileberkaskta->isValid() && !$fileberkaskta->hasMoved()) {
+            $uuid = generate_uuid();
+            // Move the file to a permanent location
+            $newFileName = "kta_".$uuid."_".$fileberkaskta->getRandomName();
+            $fileberkaskta->move(WRITEPATH . 'uploads', $newFileName);
+
+            $data = [
+                "uuid" => $uuid,
+                "email" => $this->request->getVar('email'),
+                "password" => password_hash($this->request->getVar('pbru'), PASSWORD_DEFAULT),
+                "kdgrpuser" => 'developer',
+                "nama" => $this->request->getVar('nama'),
+                "alamatref" => $this->request->getVar('lokasiref'),
+                "alamatinput" => $this->request->getVar('detail_alamat'),
+                "notelp" => $this->request->getVar('telp'),
+                "kodepos" => $this->request->getVar('kode_pos'),
+                "kta" => $this->request->getVar('kta'),
+                "berkaskta" => $newFileName
+            ];
+
+            $user = new UserModel();
+            $save = $user->save($data);
+            if ($save) { 
+                return $this->response->setJSON([
+                    'status' => 'success',
+                    'message' => 'File uploaded successfully!',
+                    'file_name' => $newFileName,
+                ]);
+            } else {
+                return $this->response->setJSON([
+                    'status' => 'error',
+                    'message' => [
+                        'simpan' => 'Gagal menyimpan data'
+                    ]
+                ])->setStatusCode(400);
+            }
+
+        } else {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => [
+                    'simpan' => 'Gagal menyimpan data'
+                ]
+            ])->setStatusCode(400);
+        }
+        
     }
 
     public function profil()
