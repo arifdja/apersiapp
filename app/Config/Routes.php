@@ -30,3 +30,10 @@ $routes->get('/operator/approval_developer', 'Operator::approvalDeveloper',['fil
 $routes->get('/downloadkta/(:any)', 'FileController::downloadkta/$1',['filter' => 'auth']);
 $routes->post('/operator/do_approve_developer', 'Operator::do_approve_developer');
 $routes->post('/operator/dont_approve_developer', 'Operator::dont_approve_developer');
+
+$routes->get('/developer/form_pengajuan_pt', 'Developer::form_pengajuan_pt',['filter' => 'auth']);
+$routes->get('/developer/form_pengajuan_dana', 'Developer::form_pengajuan_dana',['filter' => 'auth']);
+
+$routes->get('/rumput', 'Rumput::index',['filter' => 'auth']);
+
+$routes->get('/unauthorized', 'Unauthorized::index');

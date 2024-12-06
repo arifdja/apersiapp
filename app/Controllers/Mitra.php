@@ -4,6 +4,15 @@ namespace App\Controllers;
 
 class Mitra extends BaseController
 {
+    public function __construct()
+    {
+        $access = ['mitra'];
+		if (!in_array(session('kdgrpuser'),$access)) {
+			echo view('errors/html/error_403');
+			die();
+		}
+    }
+
     public function index(): string
     {
         $menu = getMenu();

@@ -4,6 +4,16 @@ namespace App\Controllers;
 
 class Rumput extends BaseController
 {
+    
+    public function __construct()
+    {
+        $access = ['rumput'];
+		if (!in_array(session('kdgrpuser'),$access)) {
+			echo view('errors/html/error_403');
+			die();
+		}
+    }
+
     public function index(): string
     {
         $menu = getMenu();

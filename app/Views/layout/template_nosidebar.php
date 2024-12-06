@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>SITAMBANG</title>
+  <title><?= SITE_NAME ?></title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="shortcut icon" href="<?php echo base_url() ?>/assets/images/favicon.gif" type="image/x-icon" />
@@ -108,7 +108,7 @@
   <div class="float-right d-none d-sm-block">
     <b>SITAMBANG</b> 1.0.0 <?php $closed = date("Y-m-d H:i:s");  echo $closed; ?>
   </div>
-  <strong>Copyright &copy; 2024 <a href="#">SITAMBANG</a>. </strong> All rights
+  <strong>Copyright &copy; 2024 <a href="#"><?= SITE_NAME ?></a>. </strong> All rights
   reserved.
 </footer>
 </div>

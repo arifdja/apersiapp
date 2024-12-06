@@ -9,6 +9,4 @@ class Unauthorized extends BaseController
         return view('errors/html/error_403');
     }
 
-
-
 }

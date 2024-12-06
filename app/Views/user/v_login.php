@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>SITAMBANG</title>
+  <title><?= SITE_NAME ?></title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="shortcut icon" href="<?php echo base_url() ?>/assets/images/favicon.gif" type="image/x-icon" />
@@ -53,7 +53,7 @@
     
     <div class="card-body login-card-body text-center" style="border-radius:15px">
       <div class="register-logo">
-        <a href="#"><b>SI</b>TAMBANG</a>
+        <a href="#"><b><?= SITE_NAME ?></b></a>
       </div>
       <?= form_open('validateuser','autocomplete="off"'); ?>
       <?= csrf_field() ?>
@@ -98,7 +98,7 @@
         </div>
       <?= form_close() ?>
    
-    <p class="text-center" style="padding-top:10px;font-size:12px"><strong>Copyright &copy; 2024 <a style="color:#35B5FE" href="#">SITAMBANG</a> </strong></p>
+    <p class="text-center" style="padding-top:10px;font-size:12px"><strong>Copyright &copy; 2024 <a style="color:#35B5FE" href="#"><?= SITE_NAME ?></a> </strong></p>
     
 
     </div>

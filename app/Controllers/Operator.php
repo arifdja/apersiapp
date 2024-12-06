@@ -5,16 +5,24 @@ use App\Models\UserModel;
 
 class Operator extends BaseController
 {
+    
+    public function __construct()
+    {
+        $access = ['operator'];
+		if (!in_array(session('kdgrpuser'),$access)) {
+			echo view('errors/html/error_403');
+			die();
+		}
+    }
+
     public function index(): string
     {
         $menu = getMenu();
         
         $data = [
-			'title' => 'Welcome',
-			'breadcrumb' => ['Developer','Welcome'],
 			'stringmenu' => $menu, 
         ];
-        return view('developer/v_welcome',$data);
+        return view('v_welcome',$data);
     }
 
     public function approvalDeveloper()

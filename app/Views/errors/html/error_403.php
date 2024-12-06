@@ -22,10 +22,10 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="error-page">
-                    <h2 class="headline text-warning"> 404</h2>
+                    <h2 class="headline text-warning"> 403</h2>
                     <div class="error-content">
-                        <h3><i class="fas fa-exclamation-triangle text-warning"></i> Halaman tidak ditemukan.</h3>
-                        <p>Maaf, halaman yang Anda cari tidak dapat ditemukan.</p>
+                        <h3><i class="fas fa-exclamation-triangle text-warning"></i> Tidak Ada Hak Akses.</h3>
+                        <p>Maaf, Anda tidak memiliki izin untuk mengakses halaman ini.</p>
                         <p>Silakan kembali ke halaman sebelumnya atau hubungi administrator jika diperlukan.</p>
                         <a href="<?= previous_url() ?>">Kembali</a>
                     </div>
