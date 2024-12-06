@@ -47,7 +47,7 @@
                     </thead>
                     <tbody>
                     <?php foreach ($result as $key => $value) : ?>
-                      <tr>
+                      <tr class="baris<?= $value['uuid']; ?>">
                         
                     <input type="hidden" class="csrf" name="<?= csrf_token() ?>" value="<?= csrf_hash() ?>" />
                         <td><?= $key+1; ?>.</td>
@@ -198,8 +198,7 @@
         success: function (response) {
           if(response.status == 'success'){
             $(".csrf").val(response.csrf);
-            $(".statusvalidator"+response.uuid).html('Rejected');
-            $(".aksi"+response.uuid).html('-');
+            $(".baris"+response.uuid).remove();
             Swal.fire({
               icon: 'success',
               title: 'Data berhasil ditolak!',
