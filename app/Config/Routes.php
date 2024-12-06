@@ -24,4 +24,9 @@ $routes->get('/developer', 'Developer::index',['filter' => 'auth']);
 $routes->get('/developer/form_pengajuan', 'Developer::form_pengajuan',['filter' => 'auth']);
 $routes->get('/developer/dashboard', 'Developer::dashboard',['filter' => 'auth']);
 $routes->get('/profil', 'User::profil',['filter' => 'auth']);
+
 $routes->get('/operator', 'Operator::index',['filter' => 'auth']);
+$routes->get('/operator/approval_developer', 'Operator::approvalDeveloper',['filter' => 'auth']);
+$routes->get('/downloadkta/(:any)', 'FileController::downloadkta/$1',['filter' => 'auth']);
+$routes->post('/operator/do_approve_developer', 'Operator::do_approve_developer');
+$routes->post('/operator/dont_approve_developer', 'Operator::dont_approve_developer');

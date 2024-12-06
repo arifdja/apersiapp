@@ -2,21 +2,8 @@
 
 namespace App\Controllers;
 
-class Developer extends BaseController
+class Mitra extends BaseController
 {
-
-    public function __construct()
-    {
-        if (!session()->has('isLoggedIn')) {
-            return redirect()->to('/login')->send();
-        }
-
-        // Periksa role jika diperlukan
-        if (session()->get('kdgrpuser') !== 'developer') {
-            return redirect()->to('/unauthorized')->send();
-        }
-    }
-
     public function index(): string
     {
         $menu = getMenu();
