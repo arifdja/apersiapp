@@ -142,6 +142,7 @@
 </script>
 <script>
   $(document).ready(function(){
+
     $(".approve").click(function(e){
         e.preventDefault();
         var uuid = $(this).attr('kunci');
@@ -163,7 +164,7 @@
               $(".aksi"+response.uuid).html('-');
               Swal.fire({
                 icon: 'success',
-                title: 'Data berhasil disetujui!',
+                title: 'Pendaftaran developer berhasil disetujui!',
                 text: response.message,
               });
             }
@@ -173,49 +174,72 @@
             Swal.fire({
               icon: 'error',
               title: 'Oops...',
-              text: 'Data gagal disetujui!',
+              text: 'Pendaftaran developer gagal disetujui!',
             });
           }
         });
 
     });
 
-
     $(".reject").click(function(e){
       e.preventDefault();
-      var uuid = $(this).attr('kunci');
-      var csrfHash = $(this).closest('tr').find('.csrf').val();
+      
+    Swal.fire({
+        text: "Keterangan penolakan",
+        input: 'textarea',
+        showCancelButton: true,
+        confirmButtonColor: "#DC3545",  
+        confirmButtonText: "Tolak"      
+    }).then((result) => {
+        if (result.value) {
+            var uuid = $(this).attr('kunci');
+            var csrfHash = $(this).closest('tr').find('.csrf').val();
+            var keteranganpenolakan = result.value;
 
-      $.ajax({
-        type: "post",
-        headers: {'X-Requested-With': 'XMLHttpRequest'},
-        url: "<?= base_url(); ?>/operator/dont_approve_developer",
-        data: {
-          csrf_test_name:csrfHash,
-          uuid:uuid
-        },  
-        dataType: "json",
-        success: function (response) {
-          if(response.status == 'success'){
-            $(".csrf").val(response.csrf);
-            $(".baris"+response.uuid).remove();
             Swal.fire({
-              icon: 'success',
-              title: 'Data berhasil ditolak!',
-              text: response.message,
+                title: 'Mohon tunggu...',
+                text: 'Sedang memproses data',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                showConfirmButton: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
             });
-          }
-        },
-        error: function (xhr, status, error) {
-          $(".csrf").val(xhr.responseJSON.csrf);
-          Swal.fire({   
-            icon: 'error',
-            title: 'Oops...',   
-            text: 'Data gagal ditolak!',
-          });
+
+            $.ajax({
+                type: "post", 
+                headers: {'X-Requested-With': 'XMLHttpRequest'},
+                url: "<?= base_url(); ?>/operator/dont_approve_developer",
+                data: {
+                csrf_test_name:csrfHash,
+                uuid:uuid,
+                keteranganpenolakan:keteranganpenolakan
+                },  
+                dataType: "json",
+                success: function (response) {
+                if(response.status == 'success'){
+                    $(".csrf").val(response.csrf);
+                    $(".baris"+response.uuid).remove();
+                    Swal.fire({
+                    icon: 'success',
+                    title: 'Pendaftaran developer berhasil ditolak!',
+                    text: response.message,
+                    });
+                }
+                },
+                error: function (xhr, status, error) {
+                $(".csrf").val(xhr.responseJSON.csrf);
+                Swal.fire({   
+                    icon: 'error',
+                    title: 'Oops...',   
+                    text: 'Pendaftaran developer gagal ditolak!',
+                });
+                }
+            }); 
         }
-      });   
     });
   });
+}); 
 </script>
 <?= $this->endSection(); ?>

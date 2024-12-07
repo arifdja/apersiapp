@@ -58,18 +58,6 @@
       window.location = logoutUrl;
     }
   </script>
-
-<!--psa-->
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-CEEQVWPQY1"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-CEEQVWPQY1');
-</script>
-
 </head>
 <body class="hold-transition sidebar-mini text-sm sidebar-collapse" onload="StartTimers();" onmousemove="ResetTimers();">
 

@@ -12,6 +12,7 @@ class PTModel extends Model
     protected $allowedFields = 
     [
         'uuid',
+        'uuiddeveloper',
         'namapt',
         'alamatref',
         'alamatinput',

@@ -19,10 +19,10 @@ class User extends BaseController
         return view('user/v_login', $data);
     }
 
-    public function hashpassword($password)
-    {
-        echo password_hash($password, PASSWORD_DEFAULT);
-    }
+    // public function hashpassword($password)
+    // {
+    //     echo password_hash($password, PASSWORD_DEFAULT);
+    // }
 
     public function validateUser()
     {
@@ -61,19 +61,32 @@ class User extends BaseController
         }
         
         $model = new UserModel();
-        $data = $model->where(['email' => $username])->first();
+        $data = $model->where([
+            'email' => $username
+            ])->first();
        
         
         if ($data) {
+
+            if($data['kdgrpuser'] == 'developer' && ($data['statusvalidator'] == 0 || $data['statusvalidator'] == '')){
+                session()->setFlashdata('type','Warning');
+                session()->setFlashdata('msg','U05 Gagal Login');
+                return redirect()->to('/login');
+            }
             $pass = $data['password'];
             $verify_pass = password_verify($password, $pass);
             if ($verify_pass) {
                 $ses_data = [
                     'uuid' => $data['uuid'],
-                    'nama' => $data['nama'],
                     'email' => $data['email'],
-                    'notelp' => $data['notelp'],
                     'kdgrpuser' => $data['kdgrpuser'],
+                    'nama' => $data['nama'],
+                    'notelp' => $data['notelp'],
+                    'alamatref' => $data['alamatref'],
+                    'alamatinput' => $data['alamatinput'],
+                    'kodepos' => $data['kodepos'],
+                    'kta' => $data['kta'],
+                    'berkaskta' => $data['berkaskta'],
                     'logged_in' => true
                 ];
                 session()->set($ses_data);
@@ -83,12 +96,12 @@ class User extends BaseController
                
             } else {
                 session()->setFlashdata('type','Warning');
-                session()->setFlashdata('msg','Password yang anda masukkan salah');
+                session()->setFlashdata('msg','U01 Gagal Login');
                 return redirect()->to('/login');
             }
         } else {
             session()->setFlashdata('type','Warning');
-            session()->setFlashdata('msg','Userid tidak terdaftar');
+            session()->setFlashdata('msg','U02 Gagal Login');
             return redirect()->to('/login');
         }	
     }
@@ -286,7 +299,7 @@ class User extends BaseController
             $uuid = generate_uuid();
             // Move the file to a permanent location
             $newFileName = "kta_".$uuid."_".$fileberkaskta->getRandomName();
-            $fileberkaskta->move(WRITEPATH . 'uploads', $newFileName);
+            $fileberkaskta->move(WRITEPATH . 'uploads/kta', $newFileName);
 
             $data = [
                 "uuid" => $uuid,
@@ -300,7 +313,9 @@ class User extends BaseController
                 "kodepos" => $this->request->getVar('kode_pos'),
                 "kta" => $this->request->getVar('kta'),
                 "berkaskta" => $newFileName,
-                "statusvalidator" => 0 // pending
+                "statusvalidator" => 0, // pending
+                "validated_at" => date('Y-m-d H:i:s'),
+                "validated_by" => session('uuid')
             ];
 
             $user = new UserModel();
@@ -309,13 +324,12 @@ class User extends BaseController
                 return $this->response->setJSON([
                     'status' => 'success',
                     'message' => 'File uploaded successfully!',
-                    'file_name' => $newFileName,
                 ]);
             } else {
                 return $this->response->setJSON([
                     'status' => 'error',
                     'message' => [
-                        'simpan' => 'Gagal menyimpan data'
+                        'simpan' => 'U03 Gagal menyimpan data'
                     ]
                 ])->setStatusCode(400);
             }
@@ -324,7 +338,7 @@ class User extends BaseController
             return $this->response->setJSON([
                 'status' => 'error',
                 'message' => [
-                    'simpan' => 'Gagal menyimpan data'
+                    'simpan' => 'U04 Gagal menyimpan data'
                 ]
             ])->setStatusCode(400);
         }

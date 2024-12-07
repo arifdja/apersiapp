@@ -969,3 +969,35 @@ if (!function_exists('generate_uuid')) {
         return $uuid->toString();
     }
 }
+
+
+if (!function_exists('sendMail')) {
+
+    function sendMail($recipient,$subject,$message)
+    {
+        $email = \Config\Services::email();
+
+        $email->setFrom('readonlysistem@gmail.com', SITE_NAME);
+        $email->setTo($recipient);
+        $email->setSubject($subject);
+        $email->setMessage($message);
+
+        if ($email->send()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
+
+
+if (!function_exists('delete_file')) {
+
+    function delete_file(string $filePath): bool
+    {
+        if (file_exists($filePath)) {
+            return unlink($filePath);
+        }
+        return false; // File tidak ditemukan
+    }
+}

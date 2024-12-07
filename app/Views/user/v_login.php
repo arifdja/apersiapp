@@ -89,8 +89,8 @@
         </p>
         <div class="row">
           <div class="col-12">
-            <button type="submit" class="btn btn-primary btn-block" style="background-color: #35B5FE !important; border:none">Login</button>
-            <a href="<?= base_url('form_register') ?>" class="btn btn-primary btn-block" style="background-color: #35B5FE !important; border:none">Daftar</a>
+            <button type="submit" class="btn btn-primary btn-block" style="background-color: #35B5FE !important; border:none">Masuk</button>
+            <a href="<?= base_url('form_register') ?>" class="btn btn-primary btn-block" style="background-color: #35B5FE !important; border:none">Pendaftaran</a>
           
           </div>
           <!-- /.col -->

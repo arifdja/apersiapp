@@ -174,18 +174,22 @@
                                               <p>
                                                     <div class="g-recaptcha" data-sitekey="6LdGWZAqAAAAAF-815CNbkjzW2g3R3I6L6H_cWg4"></div>
                                               </p>
+                                              <div class="form-group">
+                                                <div class="col-sm-6">
+                                                      <a id="clear" href="#" class="btn btn-danger">Hapus isian</a>
+                                                      <button type="submit" class="btn btn-primary" style="background-color: #35B5FE !important; border:none">Proses Pendaftaran</button>
+                                                </div>
+                                              </div>
                                           </div>
                                     </div>
                                 </div>
                                 
                           </div>
                           <div class="card-footer">
-                                <div class="form-group">
-                                    <div class="col-sm-6">
-                                          <a id="clear" href="#" class="btn btn-danger">Batal</a>
-                                          <button type="submit" class="btn btn-primary" style="background-color: #35B5FE !important; border:none">Daftar</button>
-                                    </div>
-                                </div>
+                          <div class="form-group">
+                            <div class="col-sm-6">
+                             <a href="<?= site_url('login') ?>" class="btn btn-info" style="background-color: #35B5FE !important; border:none">Kembali ke Halaman Login</a>
+                            </div>
                           </div>
                       </div>
                 </div>
@@ -219,9 +223,9 @@
                       Swal.fire({
                           icon: 'success',
                           title: 'Berhasil!',
-                          text: 'Pendaftaran berhasil, silahkan login',
+                          text: 'Pendaftaran berhasil, mohon tunggu validasi dari admin dan akan diinformasikan melalui email',
                           showConfirmButton: false,
-                          timer: 2000
+                          timer: 3000
                       }).then(() => {
                           window.location.href = '<?= site_url('login') ?>';
                       });

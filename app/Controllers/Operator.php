@@ -69,7 +69,7 @@ class Operator extends BaseController
             return $this->response->setJSON([
                 'status' => 'error',
                 'message' => [
-                    'simpan' => 'Data gagal disetujui!'
+                    'simpan' => 'O01 Data gagal disetujui!'
                 ],
                 'csrf' => csrf_hash(),
                 'uuid' => $uuid
@@ -85,13 +85,14 @@ class Operator extends BaseController
         }
 
         $uuid = $this->request->getPost('uuid');
-        
 
-        // $data = [
-        //     'statusvalidator' => 2,
-        //     'approved_at' => date('Y-m-d H:i:s'),
-        //     'approved_by' => session()->get('uuid')
-        // ];
+        $user = new UserModel();
+        $userData = $user->where('uuid',$uuid)->first();
+
+        $sendMail = sendMail($userData['email'],'Pengajuan Akun Developer Ditolak','Pengajuan developer dengan nama '.$userData['nama'].' ditolak oleh admin dengan keterangan penolakan '.$this->request->getPost('keteranganpenolakan'));
+
+        $filePath = WRITEPATH . 'uploads/kta/'.$userData['berkaskta'];
+        delete_file($filePath);
 
         $user = new UserModel();
         $delete = $user->where('uuid',$uuid)->delete();
@@ -116,25 +117,6 @@ class Operator extends BaseController
         }
     }
 
-    public function sendEmail()
-    {
-        $email = \Config\Services::email();
-
-        // Configure sender and recipient
-        $email->setFrom('readonlysistem@gmail.com', SITE_NAME);
-        $email->setTo('emailearif@gmail.com');
-        $email->setSubject('Test Email from CodeIgniter');
-        $email->setMessage('<p>This is a test email sent from <strong>CodeIgniter 4.5</strong> using Gmail SMTP.</p>');
-
-        // Send email and handle response
-        if ($email->send()) {
-            echo 'Email sent successfully!';
-        } else {
-            // Print error message if email fails
-            $data = $email->printDebugger(['headers']);
-            print_r($data);
-        }
-    }
 
 
 

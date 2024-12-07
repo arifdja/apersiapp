@@ -13,6 +13,7 @@ class PengajuanModel extends Model
         'suratpermohonan',
         'berkassuratpermohonan',
         'uuidpt',
+        'dpd',
         'namapj',
         'ktppj',
         'berkasktppj',

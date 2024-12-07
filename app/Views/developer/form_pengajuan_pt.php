@@ -205,7 +205,7 @@
           <div class="card-footer">
             <div class="form-group">
               <div class="col-sm-6">
-                    <button type="submit" class="btn btn-primary" style="background-color: #35B5FE !important; border:none">Daftar</button>
+                    <button type="submit" class="btn btn-primary" style="background-color: #35B5FE !important; border:none">Tambah PT</button>
               </div>
             </div>
           </div>
