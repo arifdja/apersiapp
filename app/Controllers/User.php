@@ -28,7 +28,7 @@ class User extends BaseController
     {
 
         $recaptchaResponse = $this->request->getPost('g-recaptcha-response');
-        $secretKey = '6LdGWZAqAAAAAHT8Jkxwyuku7rvXuVFwP1Piz7pQ'; // Masukkan Secret Key Anda
+        $secretKey = env('secretKey'); // Masukkan Secret Key Anda
 
         // Verifikasi reCAPTCHA
         $url = "https://www.google.com/recaptcha/api/siteverify";
@@ -264,7 +264,7 @@ class User extends BaseController
         } 
 
         $recaptchaResponse = $this->request->getPost('g-recaptcha-response');
-        $secretKey = '6LdGWZAqAAAAAHT8Jkxwyuku7rvXuVFwP1Piz7pQ'; // Masukkan Secret Key Anda
+        $secretKey = env('secretKey'); // Masukkan Secret Key Anda
 
         // Verifikasi reCAPTCHA
         $url = "https://www.google.com/recaptcha/api/siteverify";
