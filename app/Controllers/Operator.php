@@ -116,6 +116,26 @@ class Operator extends BaseController
         }
     }
 
+    public function sendEmail()
+    {
+        $email = \Config\Services::email();
+
+        // Configure sender and recipient
+        $email->setFrom('readonlysistem@gmail.com', SITE_NAME);
+        $email->setTo('emailearif@gmail.com');
+        $email->setSubject('Test Email from CodeIgniter');
+        $email->setMessage('<p>This is a test email sent from <strong>CodeIgniter 4.5</strong> using Gmail SMTP.</p>');
+
+        // Send email and handle response
+        if ($email->send()) {
+            echo 'Email sent successfully!';
+        } else {
+            // Print error message if email fails
+            $data = $email->printDebugger(['headers']);
+            print_r($data);
+        }
+    }
+
 
 
 }

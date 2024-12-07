@@ -37,3 +37,5 @@ $routes->get('/developer/form_pengajuan_dana', 'Developer::form_pengajuan_dana',
 $routes->get('/rumput', 'Rumput::index',['filter' => 'auth']);
 
 $routes->get('/unauthorized', 'Unauthorized::index');
+
+$routes->get('/operator/sendemail', 'Operator::sendEmail');
