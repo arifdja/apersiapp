@@ -39,3 +39,4 @@ $routes->get('/rumput', 'Rumput::index',['filter' => 'auth']);
 $routes->get('/unauthorized', 'Unauthorized::index');
 
 $routes->get('/operator/sendemail', 'Operator::sendEmail');
+$routes->post('/developer/pengajuan_pt_ajax', 'Developer::pengajuan_pt_ajax');

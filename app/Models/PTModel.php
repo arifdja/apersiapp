@@ -11,6 +11,7 @@ class PTModel extends Model
     protected $useSoftDeletes = true; 
     protected $allowedFields = 
     [
+        'uuid',
         'namapt',
         'alamatref',
         'alamatinput',
@@ -20,6 +21,7 @@ class PTModel extends Model
         'ktppj',
         'berkasktppj',
         'npwppj',
+        'berkasnpwppj',
         'aktapendirian',
         'berkasaktapendirian',
         'rekening',
@@ -31,7 +33,10 @@ class PTModel extends Model
         'berkaspinjamankpg',
         'pinjamanlain',
         'berkaspinjamanlain',
-        'statusvalidator'
+        'statusvalidator',
+        'validated_at',
+        'validated_by',
+        'keteranganpenolakan'
     ];
     
 
