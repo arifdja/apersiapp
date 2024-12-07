@@ -10,6 +10,7 @@ class PengajuanModel extends Model
 	protected $useTimestamps = true;
     protected $useSoftDeletes = true; 
     protected $allowedFields = [
+        'uuid',
         'suratpermohonan',
         'berkassuratpermohonan',
         'uuidpt',

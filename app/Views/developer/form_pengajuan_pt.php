@@ -17,7 +17,7 @@
         </div>
           <div class="card-body">
             
-          <?= form_open('operator/pengajuan_pt',['id' => 'formpengajuanpt', 'class' => 'form-horizontal']); ?>
+          <?= form_open_multipart('developer/pengajuan_pt',['id' => 'formpengajuanpt', 'class' => 'form-horizontal']); ?>
           <input type="hidden" id="<?= csrf_token() ?>" name="<?= csrf_token() ?>" value="<?= csrf_hash() ?>"/>
           <div class="form-group">
               <label for="nama_pt">Nama PT</label>
