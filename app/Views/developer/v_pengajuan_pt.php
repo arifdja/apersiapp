@@ -15,7 +15,9 @@
         <div class="row">
           <div class="col-md-12">
             <div class="card">
-              <!-- /.card-header -->
+              <div class="card-header">
+                <button class="btn btn-info btn-xs" onclick="window.location.href='<?= site_url('developer/form_pengajuan_pt') ?>'">Tambah Pengajuan PT</button>
+              </div>
               <div class="card-body table-responsive p-2">
                 <table class="table table-head-fixed text-nowrap">
                   <thead>
@@ -48,7 +50,7 @@
                       <td><a href="<?= base_url() ?>/download/rekening/<?= $p['berkasrekening'] ?>" target="_blank"><?= $p['rekening'] ?></a></td>
                       <td><?= $p['namaprovinsi'] ?> - <?= $p['namakabupaten'] ?> - <?= $p['namakecamatan'] ?> - <?= $p['alamatinput'] ?></td>
                       <td align="right"><a href="<?= base_url() ?>/download/pinjaman_kpl/<?= $p['berkaspinjamankpl'] ?>" target="_blank"><?= number_format($p['pinjamankpl'],0,',','.') ?></a></td>
-                      <td align="right"><a href="<?= base_url() ?>/download/pinjaman_kpg/<?= $p['berkaspinjamankpg'] ?>" target="_blank"><?= number_format($p['pinjamankpg'],0,',','.') ?></a></td>
+                      <td align="right"><a href="<?= base_url() ?>/download/pinjaman_kyg/<?= $p['berkaspinjamankyg'] ?>" target="_blank"><?= number_format($p['pinjamankyg'],0,',','.') ?></a></td>
                       <td align="right"><a href="<?= base_url() ?>/download/pinjaman_lain/<?= $p['berkaspinjamanlain'] ?>" target="_blank"><?= number_format($p['pinjamanlain'],0,',','.') ?></a></td>
                       <td><?= ($p['statusvalidator'] == '1') ? '<span class="badge bg-success">Diterima</span>' : '<span class="badge bg-danger">Ditolak</span>' ?></td>
                     </tr>
@@ -152,11 +154,11 @@
                       if(xhr.responseJSON.message.berkaspinjaman_kpl){
                         $('#berkaspinjaman_kpl').addClass('is-invalid');
                       }
-                      if(xhr.responseJSON.message.pinjaman_kpg){
-                        $('#pinjaman_kpg').addClass('is-invalid');
+                      if(xhr.responseJSON.message.pinjaman_kyg){
+                        $('#pinjaman_kyg').addClass('is-invalid');
                       }
-                      if(xhr.responseJSON.message.berkaspinjaman_kpg){
-                        $('#berkaspinjaman_kpg').addClass('is-invalid');
+                      if(xhr.responseJSON.message.berkaspinjaman_kyg){
+                        $('#berkaspinjaman_kyg').addClass('is-invalid');
                       }
                       if(xhr.responseJSON.message.pinjaman_lain){
                         $('#pinjaman_lain').addClass('is-invalid');

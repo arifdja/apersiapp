@@ -226,16 +226,16 @@ class Developer extends BaseController
                     'mime_in' => '{field} harus berformat PDF'
                 ]
             ],
-            'pinjaman_kpg' => [
-                'label' => 'Pinjaman KPG',
+            'pinjaman_kyg' => [
+                'label' => 'Pinjaman KYG',
                 'rules' => 'trim|required',
                 'errors' => [
                     'required' => '{field} harus diisi'
                 ]
             ],
-            'berkaspinjaman_kpg' => [
-                'label' => 'Pinjaman KPG',
-                'rules' => 'uploaded[berkaspinjaman_kpg]|max_size[berkaspinjaman_kpg,10240]|ext_in[berkaspinjaman_kpg,pdf]|mime_in[berkaspinjaman_kpg,application/pdf]',
+            'berkaspinjaman_kyg' => [
+                'label' => 'Pinjaman KYG',
+                'rules' => 'uploaded[berkaspinjaman_kyg]|max_size[berkaspinjaman_kyg,10240]|ext_in[berkaspinjaman_kyg,pdf]|mime_in[berkaspinjaman_kyg,application/pdf]',
                 'errors' => [
                     'uploaded' => '{field} harus diisi',
                     'max_size' => '{field} maksimal 10 MB',
@@ -278,7 +278,7 @@ class Developer extends BaseController
         $fileberkasakta_pendirian = $this->request->getFile('berkasakta_pendirian');
         $fileberkasrekening = $this->request->getFile('berkasrekening');
         $fileberkaspinjaman_kpl = $this->request->getFile('berkaspinjaman_kpl');
-        $fileberkaspinjaman_kpg = $this->request->getFile('berkaspinjaman_kpg');
+        $fileberkaspinjaman_kyg = $this->request->getFile('berkaspinjaman_kyg');
         $fileberkaspinjaman_lain = $this->request->getFile('berkaspinjaman_lain');
 
         
@@ -289,7 +289,7 @@ class Developer extends BaseController
             $fileberkasakta_pendirian->isValid() && !$fileberkasakta_pendirian->hasMoved() &&
             $fileberkasrekening->isValid() && !$fileberkasrekening->hasMoved() &&
             $fileberkaspinjaman_kpl->isValid() && !$fileberkaspinjaman_kpl->hasMoved() &&
-            $fileberkaspinjaman_kpg->isValid() && !$fileberkaspinjaman_kpg->hasMoved() &&
+            $fileberkaspinjaman_kyg->isValid() && !$fileberkaspinjaman_kyg->hasMoved() &&
             $fileberkaspinjaman_lain->isValid() && !$fileberkaspinjaman_lain->hasMoved()
         ) {
             $uuid = generate_uuid();
@@ -300,7 +300,7 @@ class Developer extends BaseController
             $newfilenameberkasakta_pendirian = "akta_pendirian_".$uuid."_".$fileberkasakta_pendirian->getRandomName();
             $newfilenameberkasrekening = "rekening_".$uuid."_".$fileberkasrekening->getRandomName();
             $newfilenameberkaspinjaman_kpl = "pinjaman_kpl_".$uuid."_".$fileberkaspinjaman_kpl->getRandomName();
-            $newfilenameberkaspinjaman_kpg = "pinjaman_kpg_".$uuid."_".$fileberkaspinjaman_kpg->getRandomName();
+            $newfilenameberkaspinjaman_kyg = "pinjaman_kyg_".$uuid."_".$fileberkaspinjaman_kyg->getRandomName();
             $newfilenameberkaspinjaman_lain = "pinjaman_lain_".$uuid."_".$fileberkaspinjaman_lain->getRandomName();
             
             $fileberkasnpwppt->move(WRITEPATH . 'uploads/npwp_pt', $newfilenameberkasnpwppt);
@@ -309,7 +309,7 @@ class Developer extends BaseController
             $fileberkasakta_pendirian->move(WRITEPATH . 'uploads/akta_pendirian', $newfilenameberkasakta_pendirian);
             $fileberkasrekening->move(WRITEPATH . 'uploads/rekening', $newfilenameberkasrekening);
             $fileberkaspinjaman_kpl->move(WRITEPATH . 'uploads/pinjaman_kpl', $newfilenameberkaspinjaman_kpl);
-            $fileberkaspinjaman_kpg->move(WRITEPATH . 'uploads/pinjaman_kpg', $newfilenameberkaspinjaman_kpg);
+            $fileberkaspinjaman_kyg->move(WRITEPATH . 'uploads/pinjaman_kyg', $newfilenameberkaspinjaman_kyg);
             $fileberkaspinjaman_lain->move(WRITEPATH . 'uploads/pinjaman_lain', $newfilenameberkaspinjaman_lain);
            
             $data = [
@@ -332,8 +332,8 @@ class Developer extends BaseController
                 "berkasrekening" => $newfilenameberkasrekening,
                 "pinjamankpl" => $this->request->getVar('pinjaman_kpl'),
                 "berkaspinjamankpl" => $newfilenameberkaspinjaman_kpl,
-                "pinjamankpg" => $this->request->getVar('pinjaman_kpg'),
-                "berkaspinjamankpg" => $newfilenameberkaspinjaman_kpg,
+                "pinjamankyg" => $this->request->getVar('pinjaman_kyg'),
+                "berkaspinjamankyg" => $newfilenameberkaspinjaman_kyg,
                 "pinjamanlain" => $this->request->getVar('pinjaman_lain'),
                 "berkaspinjamanlain" => $newfilenameberkaspinjaman_lain,
                 "statusvalidator" => 0,
@@ -573,7 +573,7 @@ class Developer extends BaseController
                  
                     <a href="'.base_url('download/pinjaman_kpl/'.$data['berkaspinjamankpl']).'" class="form-control" style="text-decoration: none; background-color: #e9ecef; margin-top: 10px;">Pinjaman KPL : '.number_format($data['pinjamankpl'],0,',','.') .'</a>
                  
-                    <a href="'.base_url('download/pinjaman_kpg/'.$data['berkaspinjamankpg']).'" class="form-control" style="text-decoration: none; background-color: #e9ecef; margin-top: 10px;">Pinjaman KPG : '.number_format($data['pinjamankpg'],0,',','.') .'</a>
+                    <a href="'.base_url('download/pinjaman_kyg/'.$data['berkaspinjamankyg']).'" class="form-control" style="text-decoration: none; background-color: #e9ecef; margin-top: 10px;">Pinjaman KYG : '.number_format($data['pinjamankyg'],0,',','.') .'</a>
                   
                     <a href="'.base_url('download/pinjaman_lain/'.$data['berkaspinjamanlain']).'" class="form-control" style="text-decoration: none; background-color: #e9ecef; margin-top: 10px;">Pinjaman Lain : '.number_format($data['pinjamanlain'],0,',','.') .'</a>
                   </div>

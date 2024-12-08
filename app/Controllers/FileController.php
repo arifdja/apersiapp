@@ -21,7 +21,7 @@ class FileController extends Controller
      * - ktp_penanggung_jawab: KTP Penanggung Jawab dari PTModel
      * - npwp_penanggung_jawab: NPWP Penanggung Jawab dari PTModel
      * - pinjaman_kpl: Berkas Pinjaman KPL dari PTModel
-     * - pinjaman_kpg: Berkas Pinjaman KPG dari PTModel
+     * - pinjaman_kyg: Berkas Pinjaman KYG dari PTModel
      * - pinjaman_lain: Berkas Pinjaman Lain dari PTModel
      *
      * @param string $type Tipe file yang akan didownload
@@ -124,10 +124,10 @@ class FileController extends Controller
             }
             return $this->response->download($filePath, null)->setFileName($file['berkaspinjamankpl']);
 
-        }elseif($type == 'pinjaman_kpg'){
+        }elseif($type == 'pinjaman_kyg'){
             $model = new PTModel();
-            $file = $model->where('berkaspinjamankpg',$berkas)->first();
-            $filePath = WRITEPATH . 'uploads/' . $type . '/' . $file['berkaspinjamankpg'];
+            $file = $model->where('berkaspinjamankyg',$berkas)->first();
+            $filePath = WRITEPATH . 'uploads/' . $type . '/' . $file['berkaspinjamankyg'];
             if (!$file) {
                 return redirect()->back()->with('error', 'File not found.');
             }
@@ -135,7 +135,7 @@ class FileController extends Controller
             if (!file_exists($filePath)) {
                 return redirect()->back()->with('error', 'File not found on the server.');
             }
-            return $this->response->download($filePath, null)->setFileName($file['berkaspinjamankpg']);
+            return $this->response->download($filePath, null)->setFileName($file['berkaspinjamankyg']);
 
         }elseif($type == 'pinjaman_lain'){
             $model = new PTModel();

@@ -150,11 +150,11 @@
                       if(xhr.responseJSON.message.berkaspinjaman_kpl){
                         $('#berkaspinjaman_kpl').addClass('is-invalid');
                       }
-                      if(xhr.responseJSON.message.pinjaman_kpg){
-                        $('#pinjaman_kpg').addClass('is-invalid');
+                      if(xhr.responseJSON.message.pinjaman_kyg){
+                        $('#pinjaman_kyg').addClass('is-invalid');
                       }
-                      if(xhr.responseJSON.message.berkaspinjaman_kpg){
-                        $('#berkaspinjaman_kpg').addClass('is-invalid');
+                      if(xhr.responseJSON.message.berkaspinjaman_kyg){
+                        $('#berkaspinjaman_kyg').addClass('is-invalid');
                       }
                       if(xhr.responseJSON.message.pinjaman_lain){
                         $('#pinjaman_lain').addClass('is-invalid');

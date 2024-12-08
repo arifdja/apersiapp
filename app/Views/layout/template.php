@@ -94,11 +94,11 @@
  <aside class="main-sidebar sidebar-light-primary elevation-4">
     <!-- Brand Logo -->
     <a href="#" class="brand-link">
-      <!-- <img src="<?= base_url() ?>/adminlte/dist/img/logomonev.png"
+      <img src="<?= base_url() ?>/assets/images/logo.png"
            alt="AdminLTE Logo"
            class="brand-image img-rounded"
-           > --><?= SITE_NAME ?> 
-      <span class="brand-text font-weight-light"> </span>
+           >
+      <span class="brand-text text-bold"><?= SITE_NAME ?>  </span>
     </a>
 
  <!-- Sidebar -->

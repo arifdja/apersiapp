@@ -166,12 +166,12 @@
               <span id="spanberkaspinjaman_kpl" style="color: red;"></span>
             </div>
             <div class="form-group">
-              <label for="pinjaman_kpg">Pinjaman KPG</label>
-              <input type="number" name="pinjaman_kpg" required class="form-control" id="pinjaman_kpg" placeholder="Isi Pinjaman KPG" value="<?= old('pinjaman_kpg') ?>" required>
-              <span id="spanpinjaman_kpg" style="color: red;"></span>
+              <label for="pinjaman_kyg">Pinjaman KYG</label>
+              <input type="number" name="pinjaman_kyg" required class="form-control" id="pinjaman_kyg" placeholder="Isi Pinjaman KYG" value="<?= old('pinjaman_kyg') ?>" required>
+              <span id="spanpinjaman_kyg" style="color: red;"></span>
               <div class="input-group" style="margin-top: 10px;">
                   <div class="custom-file">
-                        <input type="file" class="custom-file-input" name="berkaspinjaman_kpg" id="berkaspinjaman_kpg" accept=".pdf" required>
+                        <input type="file" class="custom-file-input" name="berkaspinjaman_kyg" id="berkaspinjaman_kyg" accept=".pdf" required>
                         <label class="custom-file-label" for="exampleInputFile">Choose file</label>
                   </div>
               </div>
@@ -179,7 +179,7 @@
                     <small>Format file yang diizinkan: PDF</small>,
                     <small>Maksimal ukuran file: 10 MB</small>
               </div>
-              <span id="spanberkaspinjaman_kpg" style="color: red;"></span>
+              <span id="spanberkaspinjaman_kyg" style="color: red;"></span>
             </div>
             <div class="form-group">
               <label for="pinjaman_lain">Pinjaman Lain</label>
@@ -303,11 +303,11 @@
                       if(xhr.responseJSON.message.berkaspinjaman_kpl){
                         $('#berkaspinjaman_kpl').addClass('is-invalid');
                       }
-                      if(xhr.responseJSON.message.pinjaman_kpg){
-                        $('#pinjaman_kpg').addClass('is-invalid');
+                      if(xhr.responseJSON.message.pinjaman_kyg){
+                        $('#pinjaman_kyg').addClass('is-invalid');
                       }
-                      if(xhr.responseJSON.message.berkaspinjaman_kpg){
-                        $('#berkaspinjaman_kpg').addClass('is-invalid');
+                      if(xhr.responseJSON.message.berkaspinjaman_kyg){
+                        $('#berkaspinjaman_kyg').addClass('is-invalid');
                       }
                       if(xhr.responseJSON.message.pinjaman_lain){
                         $('#pinjaman_lain').addClass('is-invalid');
