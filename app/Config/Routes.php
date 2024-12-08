@@ -34,7 +34,9 @@ $routes->get('/developer/form_tambah_unit', 'Developer::form_tambah_unit',['filt
 $routes->post('/developer/tambah_unit_ajax', 'Developer::tambah_unit_ajax',['filter' => 'auth']);
 $routes->get('/developer/monitoring_detail_pengajuan_dana', 'Developer::monitoring_detail_pengajuan_dana',['filter' => 'auth']);
 $routes->get('/developer/monitoring_pengajuan_pt', 'Developer::monitoring_pengajuan_pt',['filter' => 'auth']);
-
+$routes->get('/developer/form_edit_unit', 'Developer::form_edit_unit',['filter' => 'auth']);
+$routes->post('/developer/edit_unit_ajax', 'Developer::edit_unit_ajax',['filter' => 'auth']);
+$routes->post('/developer/delete_unit_ajax', 'Developer::delete_unit_ajax',['filter' => 'auth']);
 
 $routes->get('/operator', 'Operator::index',['filter' => 'auth']);
 $routes->get('/operator/approval_developer', 'Operator::approvalDeveloper',['filter' => 'auth']);

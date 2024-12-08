@@ -915,7 +915,251 @@ class Developer extends BaseController
         return view('developer/v_pengajuan_pt',$data);
     }
 
+    public function form_edit_unit()
+    {
+        $menu = getMenu();
+        $uuid = $this->request->getGet('uuid');
+        $uuidheader = $this->request->getGet('uuidheader');
 
+        $model = new PengajuanDetailModel();
+        $unit = $model->join('ref_bank', 'ref_bank.kodebank = trx_pengajuan_detail.bank')
+                      ->where('trx_pengajuan_detail.uuid', $uuid)
+                      ->first();
 
+        if (!$unit) {
+            throw new \CodeIgniter\Exceptions\PageNotFoundException('Data unit tidak ditemukan');
+        }
+
+        $model = new BankModel();
+        $bank = $model->findAll();
+
+        $dropdownbank['bank'] = ['' => 'Pilih Bank'];
+        foreach ($bank as $b) {
+            $dropdownbank['bank'][$b['kodebank']] = $b['kodebank'].' - '.$b['namabank'];
+        }
+
+        $data = [
+            'title' => 'Form Edit Unit',
+            'breadcrumb' => ['Developer','Edit Unit'],
+            'stringmenu' => $menu,
+            'dropdownbank' => $dropdownbank,
+            'uuidheader' => $uuidheader,
+            'unit' => $unit,
+            'validation' => \Config\Services::validation()
+        ];
+        return view('developer/form_edit_unit', $data);
+    }
+
+    public function edit_unit_ajax()
+    {
+        if (!$this->request->isAJAX()) {
+            return $this->response->setJSON(['message' => 'Invalid request'])->setStatusCode(400);
+        }    
+
+        $validationRules = [
+            'uuid' => [
+                'label' => 'UUID',
+                'rules' => 'trim|required',
+                'errors' => [
+                    'required' => '{field} harus diisi'
+                ]
+            ],
+            'sertifikat' => [
+                'label' => 'Sertifikat',
+                'rules' => 'trim|required',
+                'errors' => [
+                    'required' => '{field} harus diisi'
+                ]
+            ],
+            'pbb' => [
+                'label' => 'PBB',
+                'rules' => 'trim|required',
+                'errors' => [
+                    'required' => '{field} harus diisi'
+                ]
+            ],
+            'harga' => [
+                'label' => 'Harga',
+                'rules' => 'trim|required|numeric',
+                'errors' => [
+                    'required' => '{field} harus diisi',
+                    'numeric' => '{field} harus berupa angka'
+                ]
+            ],
+            'nilaikredit' => [
+                'label' => 'Nilai Kredit',
+                'rules' => 'trim|required|numeric',
+                'errors' => [
+                    'required' => '{field} harus diisi',
+                    'numeric' => '{field} harus berupa angka'
+                ]
+            ],
+            'sp3k' => [
+                'label' => 'Dokumen SP3K',
+                'rules' => 'trim|required',
+                'errors' => [
+                    'required' => '{field} harus diisi'
+                ]
+            ],
+            'tanggalsp3k' => [
+                'label' => 'Tanggal SP3K',
+                'rules' => 'trim|required|date',
+                'errors' => [
+                    'required' => '{field} harus diisi',
+                    'date' => '{field} harus berformat tanggal'
+                ]
+            ],
+            'debitur' => [
+                'label' => 'Nama Debitur',
+                'rules' => 'trim|required',
+                'errors' => [
+                    'required' => '{field} harus diisi'
+                ]
+            ],
+            'bank' => [
+                'label' => 'Bank',
+                'rules' => 'trim|required',
+                'errors' => [
+                    'required' => '{field} harus diisi'
+                ]
+            ],
+            'rekening' => [
+                'label' => 'Rekening Debitur',
+                'rules' => 'trim|required',
+                'errors' => [
+                    'required' => '{field} harus diisi'
+                ]
+            ]
+        ];
+
+        if (!$this->validate($validationRules)) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => $this->validator->getErrors()
+            ])->setStatusCode(400);
+        }
+
+        $uuid = $this->request->getVar('uuid');
+        $data = [
+            "sertifikat" => $this->request->getVar('sertifikat'),
+            "pbb" => $this->request->getVar('pbb'),
+            "harga" => $this->request->getVar('harga'),
+            "nilaikredit" => $this->request->getVar('nilaikredit'),
+            "nomordokumensp3k" => $this->request->getVar('sp3k'),
+            "tanggalsp3k" => $this->request->getVar('tanggalsp3k'),
+            "namadebitur" => $this->request->getVar('debitur'),
+            "bank" => $this->request->getVar('bank'),
+            "rekening" => $this->request->getVar('rekening'),
+            "statusvalidator" => 0,
+        ];
+
+        // Handle optional file uploads
+        $files = ['berkassertifikat', 'berkaspbb', 'berkassp3k', 'berkasktpdebitur', 'berkasrekening'];
+        $uploadPaths = [
+            'berkassertifikat' => 'sertifikat',
+            'berkaspbb' => 'pbb', 
+            'berkassp3k' => 'sp3k',
+            'berkasktpdebitur' => 'ktp_debitur',
+            'berkasrekening' => 'rekening_debitur'
+        ];
+
+        foreach ($files as $file) {
+            $uploadedFile = $this->request->getFile($file);
+            if ($uploadedFile && $uploadedFile->isValid() && !$uploadedFile->hasMoved()) {
+                $newName = $file."_".$uuid."_".$uploadedFile->getRandomName();
+                $uploadedFile->move(WRITEPATH . 'uploads/'.$uploadPaths[$file], $newName);
+                $data[$file] = $newName;
+            }
+        }
+
+        try {
+            $pdm = new PengajuanDetailModel();
+            $save = $pdm->where('uuid', $uuid)->set($data)->update();
+
+            return $this->response->setJSON([
+                'status' => 'success',
+                'message' => 'Data berhasil diperbarui!',
+                'csrfName' => csrf_token(),
+                'csrfHash' => csrf_hash(),
+            ]);
+
+        } catch (\Exception $e) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => [
+                    'update' => $e->getMessage()
+                ],
+                'csrfName' => csrf_token(),
+                'csrfHash' => csrf_hash(),
+            ])->setStatusCode(400);
+        }
+    }
+
+    public function delete_unit_ajax()
+    {
+        if (!$this->request->isAJAX()) {
+            return $this->response->setJSON(['message' => 'Invalid request'])->setStatusCode(400);
+        }    
+
+        $uuid = $this->request->getPost('uuid');
+
+        if (empty($uuid)) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => 'UUID tidak ditemukan',
+                'csrfName' => csrf_token(),
+                'csrfHash' => csrf_hash()
+            ])->setStatusCode(400);
+        }
+
+        try {
+            $model = new PengajuanDetailModel();
+            
+            // Ambil data unit sebelum dihapus untuk menghapus file-filenya
+            $unit = $model->where('uuid', $uuid)->first();
+            
+            if (!$unit) {
+                throw new \Exception('Data unit tidak ditemukan');
+            }
+
+            // Array file yang akan dihapus
+            $files = [
+                'berkassertifikat' => WRITEPATH . 'uploads/sertifikat/',
+                'berkaspbb' => WRITEPATH . 'uploads/pbb/',
+                'berkassp3k' => WRITEPATH . 'uploads/sp3k/',
+                'berkasktpdebitur' => WRITEPATH . 'uploads/ktp_debitur/',
+                'berkasrekening' => WRITEPATH . 'uploads/rekening_debitur/'
+            ];
+
+            // Hapus file-file terkait
+            foreach ($files as $field => $path) {
+                if (!empty($unit[$field]) && file_exists($path . $unit[$field])) {
+                    unlink($path . $unit[$field]);
+                }
+            }
+
+            // Hapus data dari database
+            $delete = $model->where('uuid', $uuid)->delete();
+
+            if (!$delete) {
+                throw new \Exception('Gagal menghapus data');
+            }
+
+            return $this->response->setJSON([
+                'status' => 'success',
+                'message' => 'Data unit berhasil dihapus',
+                'csrfName' => csrf_token(),
+                'csrfHash' => csrf_hash()
+            ]);
+
+        } catch (\Exception $e) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => $e->getMessage(),
+                'csrfName' => csrf_token(),
+                'csrfHash' => csrf_hash()
+            ])->setStatusCode(400);
+        }
+    }
 
 }

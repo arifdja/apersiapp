@@ -39,8 +39,10 @@
                     <tr>
                       <td><?= $no++ ?></td>
                       <td>
-                        <a href="<?= site_url('developer/form_tambah_unit?uuidheader='.$p['uuidheader'].'&uuid='.$p['uuid']) ?>" class="btn btn-primary btn-xs"><i class="fas fa-edit"></i></a>
-                        <a href="<?= site_url('developer/delete_unit?uuidheader='.$p['uuidheader'].'&uuid='.$p['uuid']) ?>" class="btn btn-danger btn-xs"><i class="fas fa-trash"></i></a>
+                        <a href="<?= site_url('developer/form_edit_unit?uuidheader='.$p['uuidheader'].'&uuid='.$p['uuid']) ?>" class="btn btn-primary btn-xs"><i class="fas fa-edit"></i></a>
+                        <button onclick="deleteUnit('<?= $p['uuid'] ?>')" class="btn btn-danger btn-xs">
+                          <i class="fas fa-trash"></i>
+                        </button>
                       </td>
                       <td><a href="<?= base_url() ?>/download/sertifikat/<?= $p['berkassertifikat'] ?>" target="_blank"><?= $p['sertifikat'] ?></a></td>
                       <td><a href="<?= base_url() ?>/download/pbb/<?= $p['berkaspbb'] ?>" target="_blank"><?= $p['pbb'] ?></a></td>
@@ -332,5 +334,59 @@ $(document).ready(function () {
     }
     });
   });
+</script>
+
+<script>
+  window.deleteUnit = function(uuid) {
+    let csrfName = '<?= csrf_token() ?>';
+    let csrfHash = '<?= csrf_hash() ?>';
+    
+    Swal.fire({
+        title: 'Apakah Anda yakin?',
+        text: "Data unit akan dihapus permanen!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ya, hapus!',
+        cancelButtonText: 'Batal'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '<?= site_url('developer/delete_unit_ajax') ?>',
+                type: 'POST',
+                data: {
+                    uuid: uuid,
+                    [csrfName]: csrfHash
+                },
+                success: function(response) {
+                    if(response.status === 'success') {
+                        Swal.fire(
+                            'Terhapus!',
+                            response.message,
+                            'success'
+                        ).then(() => {
+                            // Refresh halaman atau update tampilan
+                            location.reload();
+                        });
+                    }
+                    // Update CSRF hash
+                    csrfName = response.csrfName;
+                    csrfHash = response.csrfHash;
+                },
+                error: function(xhr) {
+                    Swal.fire(
+                        'Error!',
+                        xhr.responseJSON.message,
+                        'error'
+                    );
+                    // Update CSRF hash
+                    csrfName = xhr.responseJSON.csrfName;
+                    csrfHash = xhr.responseJSON.csrfHash;
+                }
+            });
+        }
+    });
+}
 </script>
 <?= $this->endSection(); ?>

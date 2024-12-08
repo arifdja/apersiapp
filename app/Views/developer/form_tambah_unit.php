@@ -20,7 +20,7 @@
                         <input type="hidden" name="uuidheader" value="<?= $uuidheader ?>">
 
                         <div class="form-group">
-                            <label for="sertifikat">Sertifikat</label>
+                            <label for="sertifikat">Nomor Sertifikat</label>
                             <input type="text" name="sertifikat" required class="form-control" id="sertifikat" placeholder="Nomor Sertifikat" required>
                             <span id="spansertifikat" style="color: red;"></span>
                             <div class="input-group" style="margin-top: 10px;">
@@ -37,7 +37,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="pbb">PBB</label>
+                            <label for="pbb">Nomor PBB</label>
                             <input type="text" name="pbb" required class="form-control" id="pbb" placeholder="Nomor PBB" required>
                             <span id="spanpbb" style="color: red;"></span>
                             <div class="input-group" style="margin-top: 10px;">
