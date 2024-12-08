@@ -42,7 +42,7 @@
                 <div class="col-md-12">
                       <div class="card">
                           <div class="card-header">
-                                <h3 class="card-title">Pendaftaran Developer</h3>
+                                <p style="font-size:18px; font-weight:bold; padding:0px; margin:0px">Pendaftaran Developer</p> 
                           </div>
                           <div class="card-body">
                                 <?= form_open('register_ajax',['id' => 'formregister', 'class' => 'form-horizontal']); ?>
@@ -207,6 +207,20 @@
         $('#formregister').on('submit', function (e) {
             e.preventDefault(); // Prevent the default form submission
 
+            // Show loading indicator
+            Swal.fire({
+                title: 'Loading...',
+                text: 'Sedang memproses pendaftaran',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                allowEnterKey: false,
+                showConfirmButton: false,
+                backdrop: true,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
             // Create FormData object
             var formData = new FormData(this);
 
@@ -218,20 +232,29 @@
                 contentType: false,
                 processData: false,
                 success: function (response) {
+                    // Close loading indicator
+                    Swal.close();
+
                     // Handle success response
                     if(response.status == 'success'){
                       Swal.fire({
-                          icon: 'success',
-                          title: 'Berhasil!',
+                          icon: 'success', 
+                          title: 'Konfirmasi',
                           text: 'Pendaftaran berhasil, mohon tunggu validasi dari admin dan akan diinformasikan melalui email',
-                          showConfirmButton: false,
-                          timer: 3000
-                      }).then(() => {
-                          window.location.href = '<?= site_url('login') ?>';
+                          showConfirmButton: true,
+                          confirmButtonText: 'OK',
+                          allowOutsideClick: false
+                      }).then((result) => {
+                          if (result.isConfirmed) {
+                              window.location.href = '<?= site_url('login') ?>';
+                          }
                       });
                     }
                 },
                 error: function (xhr, status, error) {
+                    // Close loading indicator
+                    Swal.close();
+                    
                     // Handle error response
                     if(xhr.responseJSON.status == 'error'){
                       if(xhr.responseJSON.message.pbru){

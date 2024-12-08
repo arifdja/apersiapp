@@ -55,7 +55,7 @@
                         <td><?= $value['email']; ?></td>
                         <td><?= $value['notelp']; ?></td>
                         <td><?= $value['alamatinput']; ?>, <?= $value['kecamatan']; ?>, <?= $value['kota']; ?>, <?= $value['kabupaten']; ?>, <?= $value['provinsi']; ?>, kodepos <?= $value['kodepos']; ?></td>
-                        <td><a href="<?= base_url() ?>/downloadkta/<?= $value['berkaskta']; ?>"><?= $value['kta']; ?></a></td>
+                        <td><a href="<?= base_url() ?>/download/kta/<?= $value['berkaskta']; ?>" target="_blank"><?= $value['kta']; ?></a></td>
                         <td><span class="badge bg-warning statusvalidator<?= $value['uuid']; ?>">
                             <?php if ($value['statusvalidator']==0 || $value['statusvalidator']==null) : ?>
                                 Pending

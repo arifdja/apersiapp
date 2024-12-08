@@ -1,6 +1,8 @@
 <?php
 
 use Ramsey\Uuid\Guid\Guid;
+use Config\Services;
+
 
 //--------------------------------------------------------------------
 
@@ -176,22 +178,28 @@ if (! function_exists('getNamaKRO'))
 }
 
 
-if (! function_exists('diEncript'))
+if (! function_exists('diencrypt'))
 {
 	
-	function diEncript($param = "")
+	function diencrypt($param = "")
 	{
-        return base64_encode($param);
+        $encrypter = Services::encrypter();
+        return base64_encode($encrypter->encrypt($param));
     }
 }
 
 
-if (! function_exists('diDecript'))
+if (! function_exists('didecrypt'))
 {
 	
-	function diDecript($param = "")
+	function didecrypt($param = "")
 	{
-        return base64_decode($param);
+        $encrypter = Services::encrypter();
+        try {
+            return $encrypter->decrypt(base64_decode($param));
+        } catch (\Exception $e) {
+            return null;
+        }
     }
 }
 

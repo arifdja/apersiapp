@@ -5,6 +5,8 @@ namespace App\Controllers;
 use CodeIgniter\Controller;
 use App\Models\UserModel;
 use App\Models\PTModel;
+use App\Models\PengajuanModel;
+use App\Models\PengajuanDetailModel;
 
 class FileController extends Controller
 {
@@ -148,7 +150,98 @@ class FileController extends Controller
             }
             return $this->response->download($filePath, null)->setFileName($file['berkaspinjamanlain']);
 
-        }else{
+        }elseif($type == 'surat_permohonan'){
+            $model = new PengajuanModel();
+            $file = $model->where('berkassuratpermohonan',$berkas)->first();
+            $filePath = WRITEPATH . 'uploads/' . $type . '/' . $file['berkassuratpermohonan'];
+            if (!$file) {
+                return redirect()->back()->with('error', 'File not found.');
+            }
+    
+            if (!file_exists($filePath)) {
+                return redirect()->back()->with('error', 'File not found on the server.');
+            }
+            return $this->response->download($filePath, null)->setFileName($file['berkassuratpermohonan']);
+
+        } elseif($type == 'site_plan'){
+            $model = new PengajuanModel();
+            $file = $model->where('berkassiteplan',$berkas)->first();
+            $filePath = WRITEPATH . 'uploads/' . $type . '/' . $file['berkassiteplan'];
+            if (!$file) {
+                return redirect()->back()->with('error', 'File not found.');
+            }
+    
+            if (!file_exists($filePath)) {
+                return redirect()->back()->with('error', 'File not found on the server.');
+            }
+            return $this->response->download($filePath, null)->setFileName($file['berkassiteplan']);
+
+        } elseif($type == 'sertifikat'){
+            $model = new PengajuanDetailModel();
+            $file = $model->where('berkassertifikat',$berkas)->first();
+            $filePath = WRITEPATH . 'uploads/' . $type . '/' . $file['berkassertifikat'];
+            if (!$file) {
+                return redirect()->back()->with('error', 'File not found.');
+            }
+    
+            if (!file_exists($filePath)) {
+                return redirect()->back()->with('error', 'File not found on the server.');
+            }
+            return $this->response->download($filePath, null)->setFileName($file['berkassertifikat']);
+
+        } elseif($type == 'pbb'){
+            $model = new PengajuanDetailModel();
+            $file = $model->where('berkaspbb',$berkas)->first();
+            $filePath = WRITEPATH . 'uploads/' . $type . '/' . $file['berkaspbb'];
+            if (!$file) {
+                return redirect()->back()->with('error', 'File not found.');
+            }
+    
+            if (!file_exists($filePath)) {
+                return redirect()->back()->with('error', 'File not found on the server.');
+            }
+            return $this->response->download($filePath, null)->setFileName($file['berkaspbb']);
+
+        } elseif($type == 'ktp_debitur'){
+            $model = new PengajuanDetailModel();
+            $file = $model->where('berkasktpdebitur',$berkas)->first();
+            $filePath = WRITEPATH . 'uploads/' . $type . '/' . $file['berkasktpdebitur'];
+            if (!$file) {
+                return redirect()->back()->with('error', 'File not found.');
+            }
+    
+            if (!file_exists($filePath)) {
+                return redirect()->back()->with('error', 'File not found on the server.');
+            }
+            return $this->response->download($filePath, null)->setFileName($file['berkasktpdebitur']);
+
+        } elseif($type == 'rekening_debitur'){
+            $model = new PengajuanDetailModel();
+            $file = $model->where('berkasrekening',$berkas)->first();
+            $filePath = WRITEPATH . 'uploads/' . $type . '/' . $file['berkasrekening'];
+            if (!$file) {
+                return redirect()->back()->with('error', 'File not found.');
+            }
+    
+            if (!file_exists($filePath)) {
+                return redirect()->back()->with('error', 'File not found on the server.');
+            }
+            return $this->response->download($filePath, null)->setFileName($file['berkasrekening']);
+
+        } elseif($type == 'sp3k'){
+            $model = new PengajuanDetailModel();
+            $file = $model->where('berkassp3k',$berkas)->first();
+            $filePath = WRITEPATH . 'uploads/' . $type . '/' . $file['berkassp3k'];
+            if (!$file) {
+                return redirect()->back()->with('error', 'File not found.');
+            }
+    
+            if (!file_exists($filePath)) {
+                return redirect()->back()->with('error', 'File not found on the server.');
+            }
+            return $this->response->download($filePath, null)->setFileName($file['berkassp3k']);
+
+        }   else{
             return redirect()->back()->with('error', 'File not found.');
         }
 

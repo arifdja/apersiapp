@@ -6,7 +6,7 @@
   <title><?= SITE_NAME ?></title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="shortcut icon" href="<?php echo base_url() ?>/assets/images/favicon.gif" type="image/x-icon" />
+  <link rel="shortcut icon" href="<?php echo base_url() ?>/assets/favicon/favicon.ico" type="image/x-icon" />
   <!-- Font Awesome -->
   <link rel="stylesheet" href="<?= base_url() ?>/adminlte/plugins/fontawesome-free/css/all.min.css">
   <?= $this->renderSection('north'); ?>
@@ -20,8 +20,8 @@
   <link rel="stylesheet" href="<?= base_url() ?>/adminlte/plugins/select2/css/select2.min.css">
   <link rel="stylesheet" href="<?= base_url() ?>/adminlte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
   
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.5/dist/sweetalert2.min.css">
   <link rel="stylesheet" href="<?= base_url() ?>/adminlte/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
-  
   <style>
   /*  .main-sidebar {
       width: 300px;
@@ -139,11 +139,13 @@
         <div class="container-fluid">
           <div class="row mb-2">
             <div class="col-sm-6">
-              <h1></h1>
+              <h1><?= $title; ?></h1>
             </div>
             <div class="col-sm-6">
               <ol class="breadcrumb float-sm-right">
-              
+                <?php foreach ($breadcrumb as $b): ?>
+                  <li class="breadcrumb-item active"><?= $b; ?></li>
+                <?php endforeach; ?>
               </ol>
             </div>
           </div>
@@ -175,7 +177,8 @@
 <script src="<?= base_url() ?>/adminlte/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
 <script src="<?= base_url() ?>/adminlte/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
 
-<script src="<?= base_url() ?>/adminlte/plugins/sweetalert2/sweetalert2.min.js"></script>
+<!-- <script src="<?= base_url() ?>/adminlte/plugins/sweetalert2/sweetalert2.min.js"></script> -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.5/dist/sweetalert2.all.min.js"></script>
 <!-- Toastr -->
 <script src="<?= base_url() ?>/adminlte/plugins/toastr/toastr.min.js"></script>
 <!-- AdminLTE App -->

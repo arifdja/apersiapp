@@ -7,7 +7,7 @@
   <title><?= SITE_NAME ?></title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="shortcut icon" href="<?php echo base_url() ?>/assets/images/favicon.gif" type="image/x-icon" />
+  <link rel="shortcut icon" href="<?php echo base_url() ?>/assets/favicon/favicon.ico" type="image/x-icon" />
 
   <!-- Font Awesome -->
   <link rel="stylesheet" href="<?= base_url() ?>/adminlte/plugins/fontawesome-free/css/all.min.css">
@@ -46,15 +46,17 @@
  
   <div class="card">
   <div class="ribbon-wrapper">
-                        <!-- <div class="ribbon bg-primary" style="background-color: #35B5FE important; ">
-                          OMNIBUS
-                        </div> -->
+                        <div class="ribbon bg-primary" style="background-color: #35B5FE important; ">
+                        ⭐⭐⭐⭐⭐
+                        </div>
                       </div>
     
     <div class="card-body login-card-body text-center" style="border-radius:15px">
       <div class="register-logo">
-        <a href="#"><b><?= SITE_NAME ?></b></a>
+        <img src="<?= base_url('assets/images/logo.png') ?>" alt="Logo" style="height:150px; margin-right:10px; border-radius:50%">
+        
       </div>
+      <p style="font-size:18px; font-weight:bold">Sistem Informasi Bridging <br>Modal Pengembang</p>
       <?= form_open('validateuser','autocomplete="off"'); ?>
       <?= csrf_field() ?>
         <div class="input-group mb-3"> 

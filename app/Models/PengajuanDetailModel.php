@@ -11,6 +11,7 @@ class PengajuanDetailModel extends Model
     protected $useSoftDeletes = true; 
     protected $allowedFields = [
         'uuidheader',
+        'uuid',
         'sertifikat',
         'berkassertifikat',
         'pbb',
@@ -23,6 +24,8 @@ class PengajuanDetailModel extends Model
         'namadebitur',
         'berkasktpdebitur',
         'bank',
+        'rekening',
+        'berkasrekening',
         'statusvalidator',
         'statussikumbang',
         'statuseflpp',

@@ -20,6 +20,8 @@ class Operator extends BaseController
         $menu = getMenu();
         
         $data = [
+            'title' => '',
+			'breadcrumb' => ['Welcome'],
 			'stringmenu' => $menu, 
         ];
         return view('v_welcome',$data);
@@ -33,7 +35,7 @@ class Operator extends BaseController
 
         $data = [
 			'title' => 'Approval Developer',
-			'breadcrumb' => ['Approval','Developer'],
+			'breadcrumb' => ['Approval','Pendaftaran Developer'],
 			'stringmenu' => $menu, 
             'result' => $developer,
         ];

@@ -11,9 +11,6 @@
         <div class="row">
         <div class="col-md-6">
         <div class="card card-info">
-              <div class="card-header">
-                <h3 class="card-title">Pengajuan</h3>
-              </div>
                 <div class="card-body">
                 <?= form_open_multipart('developer/pengajuan_dana_ajax',['id' => 'formpengajuandana', 'class' => 'form-horizontal']); ?>
                 <input type="hidden" id="<?= csrf_token() ?>" name="<?= csrf_token() ?>" value="<?= csrf_hash() ?>"/>
@@ -52,9 +49,6 @@
           </div>
         <div class="col-md-6">
         <div class="card card-info">
-              <div class="card-header">
-                <h3 class="card-title">Pengajuan</h3>
-              </div>
               <form>
                 <div class="card-body">
                 <div class="form-group">
