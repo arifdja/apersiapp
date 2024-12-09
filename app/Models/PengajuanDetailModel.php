@@ -49,11 +49,13 @@ class PengajuanDetailModel extends Model
     ];
 
     
-    function getPengajuanUnit()
+    function getPengajuanUnit($uuid)
     {
         $builder = $this->db->table($this->table);
         $builder->select('trx_pengajuan_detail.*,ref_bank.namabank');
         $builder->join('ref_bank','ref_bank.kodebank = trx_pengajuan_detail.bank');
+        $builder->where('uuidheader',$uuid);
+        $builder->where('trx_pengajuan_detail.deleted_at',null);
         return $builder->get()->getResultArray();
     }
     

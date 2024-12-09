@@ -52,7 +52,11 @@
                       <td align="right"><a href="<?= base_url() ?>/download/pinjaman_kpl/<?= $p['berkaspinjamankpl'] ?>" target="_blank"><?= number_format($p['pinjamankpl'],0,',','.') ?></a></td>
                       <td align="right"><a href="<?= base_url() ?>/download/pinjaman_kyg/<?= $p['berkaspinjamankyg'] ?>" target="_blank"><?= number_format($p['pinjamankyg'],0,',','.') ?></a></td>
                       <td align="right"><a href="<?= base_url() ?>/download/pinjaman_lain/<?= $p['berkaspinjamanlain'] ?>" target="_blank"><?= number_format($p['pinjamanlain'],0,',','.') ?></a></td>
-                      <td><?= ($p['statusvalidator'] == '1') ? '<span class="badge bg-success">Diterima</span>' : '<span class="badge bg-danger">Ditolak</span>' ?></td>
+                      <td>
+                        <?= ($p['statusvalidator'] == '0' || $p['statusvalidator'] == '') ? '<span class="badge bg-warning">Menunggu Validasi</span>' : '' ?>
+                        <?= ($p['statusvalidator'] == '1') ? '<span class="badge bg-success">Diterima</span>' : '' ?>
+                        <?= ($p['statusvalidator'] == '2') ? '<span class="badge bg-danger">Ditolak</span>' : '' ?>
+                      </td>
                     </tr>
                     <?php } ?>
                   </tbody>

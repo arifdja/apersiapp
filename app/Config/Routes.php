@@ -54,7 +54,7 @@ $routes->post('/operator/dont_approve_dana', 'Operator::dont_approve_dana',['fil
 $routes->post('/operator/do_approve_unit/(:any)/(:any)', 'Operator::do_approve_unit/$1/$2',['filter' => 'auth']);
 $routes->post('/operator/do_reject_unit/(:any)/(:any)', 'Operator::do_reject_unit/$1/$2',['filter' => 'auth']);
 
-
+$routes->get('/operator/dashboard', 'Operator::dashboard',['filter' => 'auth']);
 
 
 

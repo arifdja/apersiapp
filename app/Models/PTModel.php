@@ -49,6 +49,7 @@ class PTModel extends Model
         $builder->join('ref_kota','ref_kota.id = substr(ref_pt.alamatref,1,6)');
         $builder->join('ref_kecamatan','ref_kecamatan.id = substr(ref_pt.alamatref,1,10)');
         $builder->join('ref_bank','ref_bank.kodebank = ref_pt.kodebank');
+        $builder->orderBy('ref_pt.updated_at','DESC');
         return $builder->get()->getResultArray();
     }
     

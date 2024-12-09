@@ -97,7 +97,7 @@
                 </div>
                 <div class="card-footer">
               <div class="col-sm-6">
-                    <button type="submit" class="btn btn-primary" style="background-color: #35B5FE !important; border:none">Simpan Header Pengajuan</button>
+                    <button type="submit" class="btn btn-primary" style="background-color: #35B5FE !important; border:none">Simpan Pengajuan</button>
               </div>
                 </div>
               </form>
@@ -135,7 +135,7 @@
                             showConfirmButton: false,
                             timer: 2000
                         }).then(() => {
-                            window.location.href = '<?= site_url('developer/form_pengajuan_dana') ?>';
+                            window.location.href = '<?= site_url('developer/monitoring_pengajuan_dana') ?>';
                         });
                     }
                 },

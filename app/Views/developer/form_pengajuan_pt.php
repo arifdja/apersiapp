@@ -248,7 +248,7 @@
                           showConfirmButton: false,
                           timer: 2000
                       }).then(() => {
-                          window.location.href = '<?= site_url('developer/form_pengajuan_pt') ?>';
+                          window.location.href = '<?= site_url('developer/monitoring_pengajuan_pt') ?>';
                       });
                     }
                 },
@@ -339,7 +339,7 @@
         $('#provinsi').change(function () {
 
             let csrfName = '<?= csrf_token() ?>';
-            let csrfHash = '<?= csrf_hash() ?>';
+            let csrfHash = $('#<?= csrf_token() ?>').val();
             let provinsiId = $(this).val();
 
             // Clear kabupaten_kota dropdown

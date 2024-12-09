@@ -16,7 +16,7 @@
           <div class="col-md-12">
             <div class="card">
               <div class="card-header">
-                <button class="btn btn-primary btn-sm" onclick="window.location.href='<?= site_url('developer/form_tambah_unit?uuidheader='.$uuidheader) ?>'">Tambah Unit yang digunakan</button>
+                <button class="btn btn-info btn-xs" onclick="window.location.href='<?= site_url('developer/form_tambah_unit?uuidheader='.$uuidheader) ?>'">Tambah Unit yang diagunkan</button>
               </div>
               <!-- /.card-header -->
               <div class="card-body table-responsive p-2">
@@ -39,10 +39,14 @@
                     <tr>
                       <td><?= $no++ ?></td>
                       <td>
-                        <a href="<?= site_url('developer/form_edit_unit?uuidheader='.$p['uuidheader'].'&uuid='.$p['uuid']) ?>" class="btn btn-primary btn-xs"><i class="fas fa-edit"></i></a>
-                        <button onclick="deleteUnit('<?= $p['uuid'] ?>')" class="btn btn-danger btn-xs">
-                          <i class="fas fa-trash"></i>
-                        </button>
+                        <?php if(($p['statusvalidator'] == 1 && $p['statussikumbang'] == 1 && $p['statuseflpp'] == 1 && $p['statussp3k'] == 1 && $p['statusapprover'] == 1)){ ?>
+                        Sudah disetujui
+                        <?php } else { ?>
+                          <a href="<?= site_url('developer/form_edit_unit?uuidheader='.$p['uuidheader'].'&uuid='.$p['uuid']) ?>" class="btn btn-primary btn-xs"><i class="fas fa-edit"></i></a>
+                          <button onclick="deleteUnit('<?= $p['uuid'] ?>')" class="btn btn-danger btn-xs">
+                            <i class="fas fa-trash"></i>
+                          </button>
+                        <?php } ?>
                       </td>
                       <td><a href="<?= base_url() ?>/download/sertifikat/<?= $p['berkassertifikat'] ?>" target="_blank"><?= $p['sertifikat'] ?></a></td>
                       <td><a href="<?= base_url() ?>/download/pbb/<?= $p['berkaspbb'] ?>" target="_blank"><?= $p['pbb'] ?></a></td>

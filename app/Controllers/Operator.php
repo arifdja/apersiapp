@@ -5,6 +5,7 @@ use App\Models\UserModel;
 use App\Models\PTModel;
 use App\Models\PengajuanModel;
 use App\Models\PengajuanDetailModel;
+use App\Models\DashboardModel;
 
 class Operator extends BaseController
 {
@@ -28,6 +29,25 @@ class Operator extends BaseController
 			'stringmenu' => $menu, 
         ];
         return view('v_welcome',$data);
+    }
+
+    public function dashboard()
+    {
+        $model = new DashboardModel();
+        $reportunit = $model->getReportUnit();
+        $reportuser = $model->getReportUser();
+        $reportpt = $model->getReportPT();
+
+        $menu = getMenu();
+        $data = [
+            'title' => '',
+            'breadcrumb' => ['Dashboard'],
+            'stringmenu' => $menu, 
+            'reportunit' => $reportunit,
+            'reportuser' => $reportuser,
+            'reportpt' => $reportpt
+        ];
+        return view('operator/v_dashboard',$data);
     }
 
     public function approval_developer()
@@ -322,15 +342,17 @@ class Operator extends BaseController
 
     public function approval_unit()
 	{
+        $uuid = $this->request->getGet('uuid');
+
 		$menu = getMenu();
         $model = new PengajuanDetailModel();
-        $unit = $model->getPengajuanUnit();
+        $unit = $model->getPengajuanUnit($uuid);
 
         $data = [
 			'title' => 'Persetujuan Pengajuan Unit',
 			'breadcrumb' => ['Persetujuan','Pengajuan Unit'],
 			'stringmenu' => $menu, 
-            'result' => $unit,
+            'result' => $unit
         ];
         return view('operator/p_pengajuan_unit',$data);
 	}

@@ -17,8 +17,8 @@
         <!-- small box -->
         <div class="small-box bg-info">
           <div class="inner">
-            <h3>158.000</h3>
-            <p>Jumlah Total User Tahun 2019 sd. 2024</p>
+            <h3 class="text-center"><?= number_format($reportunit->totalkredit,0,',','.'); ?></h3>
+            <p>Total Nilai Kredit</p>
           </div>
           <div class="icon">
             <i class="ion ion-bag"></i>
@@ -31,8 +31,8 @@
         <!-- small box -->
         <div class="small-box bg-success">
           <div class="inner">
-            <h3>1003</h3>
-            <p>Jumlah User Terdaftar Tahun 2024</p>
+            <h3 class="text-center"><?= $reportunit->totalunit; ?></h3>
+            <p>Total Unit</p>
           </div>
           <div class="icon">
             <i class="ion ion-stats-bars"></i>
@@ -45,8 +45,8 @@
         <!-- small box -->
         <div class="small-box bg-warning">
           <div class="inner">
-            <h3>300</h3>
-            <p>Jumlah User Terdaftar Bulan November</p>
+            <h3 class="text-center"><?= $reportuser->totaluser; ?></h3>
+            <p>Jumlah Developer</p>
           </div>
           <div class="icon">
             <i class="ion ion-person-add"></i>
@@ -59,8 +59,8 @@
         <!-- small box -->
         <div class="small-box bg-danger">
           <div class="inner">
-            <h3>30</h3>
-            <p>Jumlah User Terdaftar 2 Desember 2024</p>
+            <h3 class="text-center"><?= $reportpt->totalpt; ?></h3>
+            <p>Jumlah PT</p>
           </div>
           <div class="icon">
             <i class="ion ion-pie-graph"></i>
@@ -74,8 +74,8 @@
         <!-- small box -->
         <div class="small-box bg-info">
           <div class="inner">
-            <h3>3.158</h3>
-            <p>Total Pengajuan</p>
+            <h3 class="text-center"><?= $reportunit->validoperator; ?></h3>
+            <p>Unit Tervalidasi DPP/DPD/Korwil</p>
           </div>
           <div class="icon">
             <i class="ion ion-bag"></i>
@@ -88,8 +88,8 @@
         <!-- small box -->
         <div class="small-box bg-success">
           <div class="inner">
-            <h3>2004</h3>
-            <p>Konfirmasi DPD</p>
+            <h3 class="text-center"><?= $reportunit->validsikumbang; ?></h3>
+            <p>Unit Tervalidasi Sikumbang</p>
           </div>
           <div class="icon">
             <i class="ion ion-stats-bars"></i>
@@ -102,8 +102,8 @@
         <!-- small box -->
         <div class="small-box bg-warning">
           <div class="inner">
-            <h3>1989</h3>
-            <p>Konfirmasi Bank</p>
+            <h3 class="text-center"><?= $reportunit->valideflpp; ?></h3>
+            <p>Unit Tervalidasi EFLPP</p>
           </div>
           <div class="icon">
             <i class="ion ion-person-add"></i>
@@ -116,8 +116,8 @@
         <!-- small box -->
         <div class="small-box bg-danger">
           <div class="inner">
-            <h3>1568</h3>
-            <p>Perjanjian Akad</p>
+            <h3 class="text-center"><?= $reportunit->validsp3k; ?></h3>
+            <p>Unit Tervalidasi SP3K</p>
           </div>
           <div class="icon">
             <i class="ion ion-pie-graph"></i>
@@ -133,19 +133,6 @@
 <?= $this->endSection(); ?>
 
 <?= $this->section('south'); ?>
-<script>
-  $(document).ready(function () {
-    $("#excel").click(function(){
-      $(".table").table2excel({
-        // exclude CSS class
-        exclude: ".noExl",
-        name: "Monitoring RVRO",
-        filename: "<?= session('kddept'); ?>_<?= session('kdunit'); ?>_<?= session('kdsatker'); ?>_DataRO", //do not include extension
-        fileext: ".xls" // file extension
-      }); 
-    });
-  });
-</script>
 
 <script>
   $(function () {
@@ -160,14 +147,6 @@
       "language": {
         "url": "<?= base_url() ?>/adminlte/plugins/datatables/Indonesian.json"
     }
-    });
-
-    //Initialize Select2 Elements
-    $('.select2').select2();
-
-    //Initialize Select2 Elements
-    $('.select2bs4').select2({
-      theme: 'bootstrap4'
     });
 
   });

@@ -33,14 +33,21 @@ class Developer extends BaseController
 
     public function dashboard()
 	{
-		$menu = getMenu();
+        $model = new DashboardModel();
+        $reportunit = $model->getReportUnit();
+        $reportuser = $model->getReportUser();
+        $reportpt = $model->getReportPT();
 
+        $menu = getMenu();
         $data = [
-			'title' => 'Dashboard',
-			'breadcrumb' => ['Developer','Dashboard'],
-			'stringmenu' => $menu, 
+            'title' => '',
+            'breadcrumb' => ['Dashboard'],
+            'stringmenu' => $menu, 
+            'reportunit' => $reportunit,
+            'reportuser' => $reportuser,
+            'reportpt' => $reportpt
         ];
-        return view('developer/v_dashboard',$data);
+        return view('operator/v_dashboard',$data);
 	}
 
     public function form_pengajuan_pt()
@@ -371,7 +378,10 @@ class Developer extends BaseController
         $menu = getMenu(); 
 
         $model = new PTModel();
-        $pt = $model->findAll();
+        $pt = $model->where([
+            'uuiddeveloper' => session('uuid'),
+            'statusvalidator' => 1
+            ])->findAll();
 
         $dropdownpt['pt'] = ['' => 'Pilih PT'];
         foreach ($pt as $pt) {
@@ -503,7 +513,18 @@ class Developer extends BaseController
             
             $fileberkassuratpermohonan->move(WRITEPATH . 'uploads/surat_permohonan', $newfilenameberkassuratpermohonan);
             $fileberkassiteplan->move(WRITEPATH . 'uploads/site_plan', $newfilenameberkassiteplan);
-           
+            $pt = new PTModel();
+            $datapt = $pt->where('uuid',$this->request->getVar('pt'))->first();
+
+            if(count($datapt) == 0){
+                return $this->response->setJSON([
+                    'status' => 'error',
+                    'message' => [
+                        'simpan' => 'PT tidak ditemukan'
+                    ]
+                ])->setStatusCode(400);
+            }
+
             $data = [
                 "uuid" => $uuid,
                 "uuidpt" => $this->request->getVar('pt'),
@@ -514,7 +535,20 @@ class Developer extends BaseController
                 "dpd" => $this->request->getVar('dpd'),
                 "berkassiteplan" => $newfilenameberkassiteplan,
                 "jumlahunit" => $this->request->getVar('jumlahunit'),
-                "statusvalidator" => 0 
+                "statusvalidator" => 0 ,
+                //daript
+                "namapj" => $datapt['namapj'],
+                "ktppj" => $datapt['ktppj'],
+                "berkasktppj" => $datapt['berkasktppj'],
+                "npwppj" => $datapt['npwppj'],
+                "berkasnpwppj" => $datapt['berkasnpwppj'],
+                "pinjamankpl" => $datapt['pinjamankpl'],
+                "pinjamankyg" => $datapt['pinjamankyg'],
+                "pinjamanlain" => $datapt['pinjamanlain'],
+                "berkaspinjamankpl" => $datapt['berkaspinjamankpl'],
+                "berkaspinjamankyg" => $datapt['berkaspinjamankyg'],
+                "berkaspinjamanlain" => $datapt['berkaspinjamanlain'],
+                
             ];
 
             $headerpengajuan = new PengajuanModel();
@@ -596,8 +630,8 @@ class Developer extends BaseController
         $pengajuan = $model->getPengajuanDana();
 
         $data = [
-            'title' => 'Monitoring Pengajuan Dana',
-            'breadcrumb' => ['Monitoring','Pengajuan Dana'],
+            'title' => 'Pengajuan Dana',
+            'breadcrumb' => ['Pengajuan','Dana'],
             'stringmenu' => $menu, 
             'pengajuan' => $pengajuan,
         ];
@@ -611,11 +645,11 @@ class Developer extends BaseController
         $uuid = $this->request->getGet('uuid');
 
         $model = new PengajuanDetailModel();
-        $pengajuandetail = $model->where('uuidheader',$uuid)->findAll();
+        $pengajuandetail = $model->where('uuidheader',$uuid)->join('ref_bank','ref_bank.kodebank = trx_pengajuan_detail.bank')->findAll();
 
         $data = [
-            'title' => 'Monitoring Detail Pengajuan Dana',
-            'breadcrumb' => ['Monitoring','Detail','Pengajuan Dana'],
+            'title' => 'Data Unit',
+            'breadcrumb' => ['Pengajuan','Dana','Unit'],
             'stringmenu' => $menu, 
             'uuidheader' => $uuid,
             'pengajuandetail' => $pengajuandetail,
@@ -907,8 +941,8 @@ class Developer extends BaseController
         $pengajuan = $model->getPengajuanPT();
 
         $data = [
-            'title' => 'Monitoring Pengajuan PT',
-            'breadcrumb' => ['Monitoring','Pengajuan PT'],
+            'title' => 'Pengajuan PT',
+            'breadcrumb' => ['Pengajuan','PT'],
             'stringmenu' => $menu, 
             'pengajuan' => $pengajuan,
         ];
