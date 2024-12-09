@@ -30,7 +30,11 @@ class PengajuanModel extends Model
         'alamatperumahanref',
         'alamatperumahaninput',
         'berkassiteplan',
-        'jumlahunit'
+        'jumlahunit',
+        'statusvalidator',
+        'validated_at',
+        'validated_by',
+        'keteranganpenolakan'
     ];
 
     function getPengajuanDana()

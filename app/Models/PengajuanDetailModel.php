@@ -27,11 +27,35 @@ class PengajuanDetailModel extends Model
         'rekening',
         'berkasrekening',
         'statusvalidator',
+        'validated_at',
+        'validated_by',
         'statussikumbang',
+        'validated_sikumbang_at',
+        'validated_sikumbang_by',  
+        'kettolaksikumbang',
         'statuseflpp',
+        'validated_eflpp_at',
+        'validated_eflpp_by',
+        'kettolakeflpp',
         'statussp3k',
-        'statusapprover'
+        'validated_sp3k_at',
+        'validated_sp3k_by',
+        'kettolaksp3k',
+        'statusapprover',
+        'approved_at',
+        'approved_by',
+        'kettolakapprover',
+        'keteranganpenolakan',
     ];
+
+    
+    function getPengajuanUnit()
+    {
+        $builder = $this->db->table($this->table);
+        $builder->select('trx_pengajuan_detail.*,ref_bank.namabank');
+        $builder->join('ref_bank','ref_bank.kodebank = trx_pengajuan_detail.bank');
+        return $builder->get()->getResultArray();
+    }
     
 
 }

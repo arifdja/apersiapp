@@ -50,7 +50,7 @@
                       <td align="right"><?= number_format($p['harga'],0,',','.') ?></td>
                       <td align="right"><?= number_format($p['nilaikredit'],0,',','.') ?></td>
                       <td><a href="<?= base_url() ?>/download/ktp_debitur/<?= $p['berkasktpdebitur'] ?>" target="_blank"><?= $p['namadebitur'] ?></a></td>
-                      <td><a href="<?= base_url() ?>/download/rekening_debitur/<?= $p['berkasrekening'] ?>" target="_blank"><?= $p['rekening'] ?></a></td>
+                      <td><a href="<?= base_url() ?>/download/rekening_debitur/<?= $p['berkasrekening'] ?>" target="_blank"><?= $p['rekening'] ?> - <?= $p['namabank'] ?></a></td>
                     </tr>
                     <?php } ?>
                   </tbody>

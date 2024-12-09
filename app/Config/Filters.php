@@ -74,7 +74,7 @@ class Filters extends BaseFilters
             'csrf' => [
                 'except' => ['register_ajax']
             ],
-            'invalidchars',
+            'invalidchars'
         ],
         'after' => [
             'honeypot',
