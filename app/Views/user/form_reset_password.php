@@ -56,49 +56,46 @@
         <img src="<?= base_url('assets/images/logo.png') ?>" alt="Logo" style="height:150px; margin-right:10px; border-radius:50%">
         
       </div>
-      <p style="font-size:18px; font-weight:bold">Sistem Informasi Bridging <br>Modal Pengembang</p>
-      <?= form_open('validateuser','autocomplete="off"'); ?>
-      <?= csrf_field() ?>
+      <p style="font-size:16px;">Masukkan password baru</p>
+      
+      <?php if(session()->getFlashdata('validation')): ?>
+        <div class="alert alert-danger"><?= session()->getFlashdata('validation')->getError('password') ?>  <?= session()->getFlashdata('validation')->getError('password_confirm') ?></div>
+      <?php endif; ?>
+
       <?php if(session()->getFlashdata('success')): ?>
         <div class="alert alert-success"><?= session()->getFlashdata('success') ?></div>
       <?php endif; ?>
-        <div class="input-group mb-3"> 
-        <input autofocus autocomplete="off" type="email" name="username" value="<?= set_value('username')?>" class="form-control <?= $validation->hasError('username') ? 'is-invalid' : ''; ?>" placeholder="Username">
+      
+      <?= form_open('proses_reset_password','autocomplete="off"'); ?>
+      <input type="hidden" name="token" value="<?= $token ?>">
+
+        <div class="input-group mb-3">
+        <input autofocus autocomplete="off" required type="password" name="password" class="form-control" placeholder="Password">
+        
+      
           <div class="input-group-append input-group-sm">
             <div class="input-group-text input-group-sm">
-              <span class="fas fa-user"></span>
-            </div>
-          </div>
-          <div class="invalid-feedback">
-            <?= $validation->getError('username'); ?>
-          </div>
-        </div>
-        <div class="input-group mb-3">
-          <input  autocomplete="off" id="password" name="password" value="<?= set_value('password')?>" type="password" class="form-control <?= $validation->hasError('password') ? 'is-invalid' : ''; ?>" placeholder="Password">
-          <div class="input-group-append">
-            <div class="input-group-text">
               <span class="fas fa-lock"></span>
             </div>
           </div>
-          <div class="invalid-feedback">
-            <?= $validation->getError('password'); ?>
+        </div>
+
+        <div class="input-group mb-3">
+        <input autofocus autocomplete="off" required type="password" name="password_confirm" class="form-control" placeholder="Konfirmasi Password">
+        
+        <div class="input-group-append input-group-sm">
+            <div class="input-group-text input-group-sm">
+            <span class="fas fa-lock"></span>
+            </div>
           </div>
+          
+      
         </div>
-        <div class="form-check" style="margin-bottom:1rem">
-          <input type="checkbox" class="form-check-input" id="check">
-          <label class="form-check-label" for="exampleCheck2">Tampilkan Password</label>
-        </div>
-        <p>
-            <!-- Google reCAPTCHA Widget -->
-            <div class="g-recaptcha" data-sitekey="6LdGWZAqAAAAAF-815CNbkjzW2g3R3I6L6H_cWg4"></div>
-        </p>
+
         <div class="row">
           <div class="col-12">
-            <button type="submit" class="btn btn-primary btn-block" style="background-color: #35B5FE !important; border:none">Masuk</button>
-            <a href="<?= base_url('form_register') ?>" class="btn btn-primary btn-block" style="background-color: #35B5FE !important; border:none">Pendaftaran</a>
-            <hr>
-            <a href="<?= base_url('form_lupa_password') ?>" class="btn btn-warning btn-sm btn-block">Lupa Password</a>
-          
+            <button type="submit" class="btn btn-warning btn-block">Reset Password</button>
+           
           </div>
           <!-- /.col -->
           
@@ -122,43 +119,5 @@
 <!-- AdminLTE App -->
 <script src="<?= base_url() ?>/adminlte/dist/js/adminlte.min.js"></script>
 
-<script>
-  $(document).ready(function () {
-    // $('#modal-lg').modal('hide');
-    // $('#password').autocomplete("disable");
-    $('#check').click(function(){
-        $(this).is(':checked') ? $('#password').attr('type', 'text') : $('#password').attr('type', 'password');
-    });
-  });
-</script>
-
-<?php if(session()->getFlashdata('msg')):?>
-  <script>
-  $(document).ready(function () {
-    toastr.options = {
-      "closeButton": false,
-      "debug": false,
-      "newestOnTop": false,
-      "progressBar": false,
-      "positionClass": "toast-top-right",
-      "preventDuplicates": false,
-      "onclick": null,
-      "showDuration": "300",
-      "hideDuration": "1000",
-      "timeOut": "3000",
-      "extendedTimeOut": "1000",
-      "showEasing": "swing",
-      "hideEasing": "linear",
-      "showMethod": "fadeIn",
-      "hideMethod": "fadeOut"
-    }
-    <?php if(session()->getFlashdata('type') == "Success" ):?>
-      toastr.success('<?= session()->getFlashdata('msg') ?>');
-    <?php elseif(session()->getFlashdata('type') == "Warning" ):?>
-      toastr.warning('<?= session()->getFlashdata('msg') ?>');
-    <?php endif;?>
-  });
-</script>
-<?php endif;?>
 </body>
 </html>

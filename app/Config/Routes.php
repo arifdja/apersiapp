@@ -63,3 +63,8 @@ $routes->get('/rumput', 'Rumput::index',['filter' => 'auth']);
 $routes->get('/unauthorized', 'Unauthorized::index');
 
 $routes->get('/download/(:any)/(:any)', 'FileController::download/$1/$2',['filter' => 'auth']);
+
+$routes->get('/form_lupa_password', 'User::form_lupa_password');
+$routes->post('/get_token_reset_password', 'User::get_token_reset_password');
+$routes->get('/form_reset_password/(:any)', 'User::form_reset_password/$1');
+$routes->post('/proses_reset_password', 'User::proses_reset_password');

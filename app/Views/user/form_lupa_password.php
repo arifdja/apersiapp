@@ -56,37 +56,25 @@
         <img src="<?= base_url('assets/images/logo.png') ?>" alt="Logo" style="height:150px; margin-right:10px; border-radius:50%">
         
       </div>
-      <p style="font-size:18px; font-weight:bold">Sistem Informasi Bridging <br>Modal Pengembang</p>
-      <?= form_open('validateuser','autocomplete="off"'); ?>
-      <?= csrf_field() ?>
+      <p style="font-size:16px;">Masukkan Email untuk reset password</p>
+      
+      <?php if(session()->getFlashdata('error')): ?>
+        <div class="alert alert-danger"><?= session()->getFlashdata('error') ?></div>
+      <?php endif; ?>
+
       <?php if(session()->getFlashdata('success')): ?>
         <div class="alert alert-success"><?= session()->getFlashdata('success') ?></div>
       <?php endif; ?>
-        <div class="input-group mb-3"> 
-        <input autofocus autocomplete="off" type="email" name="username" value="<?= set_value('username')?>" class="form-control <?= $validation->hasError('username') ? 'is-invalid' : ''; ?>" placeholder="Username">
+      
+      <?= form_open('get_token_reset_password','autocomplete="off"'); ?>
+      <?= csrf_field() ?>
+      <div class="input-group mb-3">
+        <input autofocus autocomplete="off" type="email" name="email" class="form-control <?= $validation->hasError('email') ? 'is-invalid' : ''; ?>" placeholder="Email">
           <div class="input-group-append input-group-sm">
             <div class="input-group-text input-group-sm">
-              <span class="fas fa-user"></span>
+              <span class="fas fa-envelope"></span>
             </div>
           </div>
-          <div class="invalid-feedback">
-            <?= $validation->getError('username'); ?>
-          </div>
-        </div>
-        <div class="input-group mb-3">
-          <input  autocomplete="off" id="password" name="password" value="<?= set_value('password')?>" type="password" class="form-control <?= $validation->hasError('password') ? 'is-invalid' : ''; ?>" placeholder="Password">
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-lock"></span>
-            </div>
-          </div>
-          <div class="invalid-feedback">
-            <?= $validation->getError('password'); ?>
-          </div>
-        </div>
-        <div class="form-check" style="margin-bottom:1rem">
-          <input type="checkbox" class="form-check-input" id="check">
-          <label class="form-check-label" for="exampleCheck2">Tampilkan Password</label>
         </div>
         <p>
             <!-- Google reCAPTCHA Widget -->
@@ -94,11 +82,9 @@
         </p>
         <div class="row">
           <div class="col-12">
-            <button type="submit" class="btn btn-primary btn-block" style="background-color: #35B5FE !important; border:none">Masuk</button>
-            <a href="<?= base_url('form_register') ?>" class="btn btn-primary btn-block" style="background-color: #35B5FE !important; border:none">Pendaftaran</a>
-            <hr>
-            <a href="<?= base_url('form_lupa_password') ?>" class="btn btn-warning btn-sm btn-block">Lupa Password</a>
-          
+            <button type="submit" class="btn btn-warning btn-block">Reset Password</button>
+            <a href="<?= base_url('login') ?>" class="btn btn-info btn-block">Kembali ke Halaman Login</a>
+           
           </div>
           <!-- /.col -->
           

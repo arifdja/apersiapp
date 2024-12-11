@@ -361,4 +361,144 @@ class User extends BaseController
         ];
         return view('user/v_profil',$data);
     }
+
+    
+    public function form_lupa_password()
+	{
+        
+        $data = [
+			'title' => 'Lupa Password',
+			'validation' => \Config\Services::validation(), 
+        ];
+		return view('user/form_lupa_password',$data);
+    }
+
+    public function get_token_reset_password()
+    {
+
+        $recaptchaResponse = $this->request->getPost('g-recaptcha-response');
+        $secretKey = env('secretKey'); // Masukkan Secret Key Anda
+
+        // Verifikasi reCAPTCHA
+        $url = "https://www.google.com/recaptcha/api/siteverify";
+        $response = file_get_contents($url . "?secret={$secretKey}&response={$recaptchaResponse}");
+        $responseKeys = json_decode($response, true);
+
+        if (!$responseKeys['success']) {
+            return redirect()->back()->with('error', 'CAPTCHA salah. Silahkan coba lagi.');
+        }
+        
+        $email = $this->request->getPost('email');
+        $userModel = new UserModel();
+        
+        $user = $userModel->where('email', $email)->first();
+        
+        if (!$user) {
+            return redirect()->back()->with('error', 'Email tidak ditemukan');
+        }
+
+        // dd($user);
+    
+        // Generate token reset password
+        $token = bin2hex(random_bytes(32));
+        $expired = date('Y-m-d H:i:s', strtotime('+1 hour'));
+        
+
+        // Simpan token ke database
+        $data = [
+            'reset_token' => $token,    
+            'reset_expired' => $expired
+        ];
+        
+        $update = $userModel->where('uuid',$user['uuid'])->set($data)->update();
+
+        $message = "Klik link berikut untuk reset password Anda:\n\n";
+        $message .= base_url("form_reset_password/$token");
+        $message .= "\n\nLink ini akan kadaluarsa dalam 1 jam.";
+
+        $kirim = sendMail($user['email'],'Reset Password',$message);
+        $kirim = true;
+    
+        if ($kirim) {
+            return redirect()->back()->with('success', 'Link reset password telah dikirim ke email Anda');
+        } else {
+            return redirect()->back()->with('error', 'Gagal mengirim email reset password');
+        }
+    }
+
+    public function form_reset_password($token)
+    {
+        $userModel = new UserModel();
+        $user = $userModel->where('reset_token', $token)
+                         ->where('reset_expired >', date('Y-m-d H:i:s'))
+                         ->first();
+                         
+        if (!$user) {
+            return redirect('form_lupa_password')->with('error', 'Token tidak valid atau sudah kadaluarsa');
+        }
+
+        $data = [
+            'validation' => \Config\Services::validation(),
+            'token' => $token
+        ];
+    
+        return view('user/form_reset_password', $data);
+    }
+
+    public function proses_reset_password()
+    {
+        // Validasi input
+        $rules = [
+            'token' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Token tidak boleh kosong'
+                ]
+            ],
+            'password' => [
+                'rules' => 'required|regex_match[^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$]',
+                'errors' => [
+                    'required' => 'Password tidak boleh kosong',
+                    'regex_match' => 'Password minimal 8 karakter, Minimal satu huruf besar, Minimal satu huruf kecil, Minimal satu angka, dan Minimal satu simbol'
+                ]
+            ],
+            'password_confirm' => [
+                'rules' => 'required|matches[password]',
+                'errors' => [
+                    'required' => 'Konfirmasi password tidak boleh kosong',
+                    'matches' => 'Konfirmasi password tidak sama dengan password'
+                ]
+            ]
+        ];
+
+        
+
+        if (!$this->validate($rules)) {
+            // dd($this->validator);
+            // dd($this->validator->getError('password'));
+            return redirect()->back()->withInput()->with('validation', $this->validator);
+        }
+
+        $token = $this->request->getPost('token');
+        $password = $this->request->getPost('password');
+        $password_confirm = $this->request->getPost('password_confirm');
+
+        $userModel = new UserModel();
+        $user = $userModel->where('reset_token', $token)
+                        ->where('reset_expired >', date('Y-m-d H:i:s'))
+                        ->first();
+
+        if (!$user) {
+            return redirect('form_lupa_password')->with('error', 'Token tidak valid atau sudah kadaluarsa');
+        }
+
+        // Update password baru
+        $userModel->where('uuid',$user['uuid'])->set([
+            'password' => password_hash($password, PASSWORD_DEFAULT),
+            'reset_token' => null,
+            'reset_expired' => null
+        ])->update();
+
+        return redirect('login')->with('success', 'Password berhasil direset. Silakan login dengan password baru.');
+    }
 }

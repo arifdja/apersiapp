@@ -9,7 +9,7 @@ class UserModel extends Model
 	protected $primariKey = 'uuid';
 	protected $returnType = 'array';
 	protected $useTimestamps = true;
-	protected $allowedFields = ['uuid','email','password','kdgrpuser','kodepos','notelp','nama','alamatref','alamatinput','kta','berkaskta','statusvalidator','validated_at','validated_by'];
+	protected $allowedFields = ['uuid','email','password','kdgrpuser','kodepos','notelp','nama','alamatref','alamatinput','kta','berkaskta','statusvalidator','validated_at','validated_by','reset_token','reset_expired','keteranganpenolakan'];
    
 	function getDeveloper()
 	{
