@@ -54,16 +54,20 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="harga">Harga</label>
-                            <input type="number" name="harga" required class="form-control" id="harga" placeholder="Contoh: 150.000.000">
+                            <label for="harga">Harga Sesuai Persetujuan Kredit (SP3K)</label>
+                            <input type="number" name="harga" required class="form-control" id="harga" placeholder="Contoh: 1.000.000.000">
                             <span id="spanharga" style="color: red;"></span>
                         </div>
 
                         <div class="form-group">
-                            <label for="nilaikredit">Nilai Kredit</label>
-                            <input type="number" name="nilaikredit" required class="form-control" id="nilaikredit" placeholder="Contoh: 170.000.000">
+                            <label for="nilaikredit">Nilai Dana Talangan</label>
+                            <input type="number" name="nilaikredit" required class="form-control" id="nilaikredit" placeholder="Contoh: 700.000.000">
                             <span id="spannilaikredit" style="color: red;"></span>
+                            <div class="text-muted">
+                                <small>Maksimal 70% dari harga sesuai persetujuan kredit (SP3K)</small>
+                            </div>
                         </div>
+                       
 
                         <div class="form-group">
                             <label for="sp3k">Dokumen SP3K</label>
@@ -85,6 +89,25 @@
                             <span id="spanberkassp3k" style="color: red;"></span>
                         </div>
 
+                        
+
+                        <div class="form-group">
+                            <label for="debitur">Nama Debitur</label>
+                            <input type="text" name="debitur" required class="form-control" id="debitur" placeholder="Nama Debitur" required>
+                            <span id="spandebitur" style="color: red;"></span>
+                            <div class="input-group" style="margin-top: 10px;">
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" name="berkasktpdebitur" id="berkasktpdebitur" accept=".pdf" required>
+                                    <label class="custom-file-label labelberkasktpdebitur" for="exampleInputFile">Unggah KTP Debitur</label>
+                                </div>
+                            </div>
+                            <div class="text-muted">
+                                <small>Format file yang diizinkan: PDF</small>,
+                                <small>Maksimal ukuran file: 10 MB</small>
+                            </div>
+                            <span id="spanberkasktpdebitur" style="color: red;"></span>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -92,23 +115,6 @@
             <div class="col-md-6">
                 <div class="card card-info">
                     <div class="card-body">
-
-                      <div class="form-group">
-                          <label for="debitur">Nama Debitur</label>
-                          <input type="text" name="debitur" required class="form-control" id="debitur" placeholder="Nama Debitur" required>
-                          <span id="spandebitur" style="color: red;"></span>
-                          <div class="input-group" style="margin-top: 10px;">
-                              <div class="custom-file">
-                                  <input type="file" class="custom-file-input" name="berkasktpdebitur" id="berkasktpdebitur" accept=".pdf" required>
-                                  <label class="custom-file-label labelberkasktpdebitur" for="exampleInputFile">Unggah KTP Debitur</label>
-                              </div>
-                          </div>
-                          <div class="text-muted">
-                              <small>Format file yang diizinkan: PDF</small>,
-                              <small>Maksimal ukuran file: 10 MB</small>
-                          </div>
-                          <span id="spanberkasktpdebitur" style="color: red;"></span>
-                      </div>
 
                       <div class="form-group">
                           <label for="bank">Bank</label>  
@@ -131,6 +137,56 @@
                               <small>Maksimal ukuran file: 10 MB</small>
                           </div>
                           <span id="spanberkasrekening" style="color: red;"></span>
+                      </div>
+
+                      
+                      <div class="form-group">
+                        <label for="pinjaman_kpl">Pinjaman KPL</label>
+                        <input type="number" name="pinjaman_kpl" class="form-control" id="pinjaman_kpl" placeholder="Isi Pinjaman KPL">
+                        <span id="spanpinjaman_kpl" style="color: red;"></span>
+                        <div class="input-group" style="margin-top: 10px;">
+                            <div class="custom-file">
+                                  <input type="file" class="custom-file-input" name="berkaspinjaman_kpl" id="berkaspinjaman_kpl" accept=".pdf">
+                                  <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                            </div>
+                        </div>
+                        <div class="text-muted">
+                              <small>Format file yang diizinkan: PDF</small>,
+                              <small>Maksimal ukuran file: 10 MB</small>
+                        </div>
+                        <span id="spanberkaspinjaman_kpl" style="color: red;"></span>
+                      </div>
+                      <div class="form-group">
+                        <label for="pinjaman_kyg">Pinjaman KYG</label>
+                        <input type="number" name="pinjaman_kyg" class="form-control" id="pinjaman_kyg" placeholder="Isi Pinjaman KYG" >
+                        <span id="spanpinjaman_kyg" style="color: red;"></span>
+                        <div class="input-group" style="margin-top: 10px;">
+                            <div class="custom-file">
+                                  <input type="file" class="custom-file-input" name="berkaspinjaman_kyg" id="berkaspinjaman_kyg" accept=".pdf">
+                                  <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                            </div>
+                        </div>
+                        <div class="text-muted">
+                              <small>Format file yang diizinkan: PDF</small>,
+                              <small>Maksimal ukuran file: 10 MB</small>
+                        </div>
+                        <span id="spanberkaspinjaman_kyg" style="color: red;"></span>
+                      </div>
+                      <div class="form-group">
+                        <label for="pinjaman_lain">Pinjaman Lain</label>
+                        <input type="number" name="pinjaman_lain" class="form-control" id="pinjaman_lain" placeholder="Isi Pinjaman Lain" >
+                        <span id="spanpinjaman_lain" style="color: red;"></span>
+                        <div class="input-group" style="margin-top: 10px;">
+                            <div class="custom-file">
+                                  <input type="file" class="custom-file-input" name="berkaspinjaman_lain" id="berkaspinjaman_lain" accept=".pdf">
+                                  <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                            </div>
+                        </div>
+                        <div class="text-muted">
+                              <small>Format file yang diizinkan: PDF</small>,
+                              <small>Maksimal ukuran file: 10 MB</small>
+                        </div>
+                        <span id="spanberkaspinjaman_lain" style="color: red;"></span>
                       </div>
 
                     </div>
@@ -163,6 +219,41 @@
 
             // Create FormData object
             var formData = new FormData(this);
+
+            if(($('#pinjaman_kpl').val() == '' && $('#berkaspinjaman_kpl').val() != '') || ($('#pinjaman_kyg').val() == '' && $('#berkaspinjaman_kyg').val() != '') || ($('#pinjaman_lain').val() == '' && $('#berkaspinjaman_lain').val() != '')){
+              Swal.fire({
+                  title: 'Perhatian!',
+                  text: 'Jika mengisi berkas pinjaman KPL/KYG/Lain, nominal pinjaman KPL/KYG/Lain harus diisi!',
+                  icon: 'warning',
+                  confirmButtonText: 'Ok'
+              });
+              return false;
+            }
+
+            if(($('#pinjaman_kpl').val() != '' && $('#berkaspinjaman_kpl').val() == '') || ($('#pinjaman_kyg').val() != '' && $('#berkaspinjaman_kyg').val() == '') || ($('#pinjaman_lain').val() != '' && $('#berkaspinjaman_lain').val() == '')){
+              Swal.fire({
+                  title: 'Perhatian!',
+                  text: 'Jika mengisi nominal pinjaman KPL/KYG/Lain, berkas pinjaman KPL/KYG/Lain harus diisi!',
+                  icon: 'warning',
+                  confirmButtonText: 'Ok'
+              });
+              return false;
+            }
+
+            console.log($('#nilaikredit').val());
+            console.log($('#harga').val());
+            console.log($('#harga').val()*0.7);
+
+
+            if($('#nilaikredit').val() > $('#harga').val()*0.7){
+              Swal.fire({
+                  title: 'Perhatian!',
+                  text: 'Nilai dana talangan tidak boleh lebih besar dari 70% dari harga sesuai persetujuan kredit (SP3K)!',
+                  icon: 'warning',
+                  confirmButtonText: 'Ok'
+              });
+              return false;
+            }
 
             // console.log(formData);
 
@@ -200,6 +291,12 @@
                               $('#bank').val('');
                               $('#rekening').val('');
                               $('#berkasrekening').val(''); 
+                              $('#pinjaman_kpl').val('');
+                              $('#berkaspinjaman_kpl').val('');
+                              $('#pinjaman_kyg').val('');
+                              $('#berkaspinjaman_kyg').val('');
+                              $('#pinjaman_lain').val('');
+                              $('#berkaspinjaman_lain').val('');
                               $('.labelberkassertifikat').html('Unggah Sertifikat');
                               $('.labelberkaspbb').html('Unggah PBB');
                               $('.labelberkassp3k').html('Unggah Dokumen SP3K');
@@ -264,6 +361,30 @@
                       if(xhr.responseJSON.message.berkasrekening){
                         $('#berkasrekening').addClass('is-invalid');
                         $('#spanberkasrekening').html(xhr.responseJSON.message.berkasrekening);
+                      }
+                      if(xhr.responseJSON.message.pinjaman_kpl){
+                        $('#pinjaman_kpl').addClass('is-invalid');
+                        $('#spanpinjaman_kpl').html(xhr.responseJSON.message.pinjaman_kpl);
+                      }
+                      if(xhr.responseJSON.message.berkaspinjaman_kpl){
+                        $('#berkaspinjaman_kpl').addClass('is-invalid');
+                        $('#spanberkaspinjaman_kpl').html(xhr.responseJSON.message.berkaspinjaman_kpl);
+                      } 
+                      if(xhr.responseJSON.message.pinjaman_kyg){
+                        $('#pinjaman_kyg').addClass('is-invalid');
+                        $('#spanpinjaman_kyg').html(xhr.responseJSON.message.pinjaman_kyg);
+                      }
+                      if(xhr.responseJSON.message.berkaspinjaman_kyg){
+                        $('#berkaspinjaman_kyg').addClass('is-invalid');
+                        $('#spanberkaspinjaman_kyg').html(xhr.responseJSON.message.berkaspinjaman_kyg);
+                      } 
+                      if(xhr.responseJSON.message.pinjaman_lain){
+                        $('#pinjaman_lain').addClass('is-invalid');
+                        $('#spanpinjaman_lain').html(xhr.responseJSON.message.pinjaman_lain);
+                      }
+                      if(xhr.responseJSON.message.berkaspinjaman_lain){
+                        $('#berkaspinjaman_lain').addClass('is-invalid');
+                        $('#spanberkaspinjaman_lain').html(xhr.responseJSON.message.berkaspinjaman_lain);
                       }
                     }
                     if(xhr.responseJSON.message.simpan){

@@ -751,7 +751,7 @@ class Developer extends BaseController
                 ]
             ],
             'harga' => [
-                'label' => 'Harga',
+                'label' => 'Harga Sesuai Persetujuan Kredit (SP3K)',
                 'rules' => 'trim|required|numeric',
                 'errors' => [
                     'required' => '{field} harus diisi',
@@ -759,11 +759,12 @@ class Developer extends BaseController
                 ]
             ],
             'nilaikredit' => [
-                'label' => 'Nilai Kredit',
-                'rules' => 'trim|required|numeric',
+                'label' => 'Nilai Dana Talangan',
+                'rules' => 'trim|required|numeric|checkDanaTalangan[harga]',
                 'errors' => [
                     'required' => '{field} harus diisi',
-                    'numeric' => '{field} harus berupa angka'
+                    'numeric' => '{field} harus berupa angka',
+                    'checkDanaTalangan' => '{field} tidak boleh lebih besar dari 70% dari harga sesuai persetujuan kredit (SP3K)'
                 ]
             ],
             'sp3k' => [
@@ -821,10 +822,64 @@ class Developer extends BaseController
                 'errors' => [
                     'required' => '{field} harus diisi'
                 ]
-                ],
+            ],
             'berkasrekening' => [
                 'label' => 'Berkas Rekening Debitur',
                 'rules' => 'uploaded[berkasrekening]|max_size[berkasrekening,10240]|ext_in[berkasrekening,pdf]|mime_in[berkasrekening,application/pdf]',
+                'errors' => [
+                    'uploaded' => '{field} harus diisi',
+                    'max_size' => '{field} maksimal 10 MB',
+                    'ext_in' => '{field} harus berformat PDF',
+                    'mime_in' => '{field} harus berformat PDF'
+                ]
+            ],
+            'pinjaman_kpl' => [
+                'label' => 'Pinjaman KPL',
+                'rules' => 'trim|numeric|permit_empty|required_with[berkaspinjaman_kpl]',
+                'errors' => [
+                    'numeric' => '{field} harus berupa angka',
+                    'required_with' => '{field} harus diisi'
+                ]
+            ],
+            'berkaspinjaman_kpl' => [
+                'label' => 'Berkas Pinjaman KPL',
+                'rules' => 'permit_empty|uploaded[berkaspinjaman_kpl]|max_size[berkaspinjaman_kpl,10240]|ext_in[berkaspinjaman_kpl,pdf]|mime_in[berkaspinjaman_kpl,application/pdf]',
+                'errors' => [
+                    'uploaded' => '{field} harus diisi',
+                    'max_size' => '{field} maksimal 10 MB',
+                    'ext_in' => '{field} harus berformat PDF',
+                    'mime_in' => '{field} harus berformat PDF'
+                ]
+            ],
+            'pinjaman_kyg' => [
+                'label' => 'Pinjaman KYG',
+                'rules' => 'trim|numeric|permit_empty|required_with[berkaspinjaman_kyg]',
+                'errors' => [
+                    'numeric' => '{field} harus berupa angka',
+                    'required_with' => '{field} harus diisi'
+                ]
+            ],
+            'berkaspinjaman_kyg' => [
+                'label' => 'Berkas Pinjaman KYG',
+                'rules' => 'permit_empty|uploaded[berkaspinjaman_kyg]|max_size[berkaspinjaman_kyg,10240]|ext_in[berkaspinjaman_kyg,pdf]|mime_in[berkaspinjaman_kyg,application/pdf]',
+                'errors' => [
+                    'uploaded' => '{field} harus diisi',
+                    'max_size' => '{field} maksimal 10 MB',
+                    'ext_in' => '{field} harus berformat PDF',
+                    'mime_in' => '{field} harus berformat PDF'
+                ]
+            ],
+            'pinjaman_lain' => [
+                'label' => 'Pinjaman Lain',
+                'rules' => 'trim|numeric|permit_empty|required_with[berkaspinjaman_lain]',
+                'errors' => [
+                    'numeric' => '{field} harus berupa angka',
+                    'required_with' => 'Berkas Pinjaman lain harus diisi'
+                ]
+            ],
+            'berkaspinjaman_lain' => [
+                'label' => 'Berkas Pinjaman Lain',
+                'rules' => 'permit_empty|uploaded[berkaspinjaman_lain]|max_size[berkaspinjaman_lain,10240]|ext_in[berkaspinjaman_lain,pdf]|mime_in[berkaspinjaman_lain,application/pdf]',
                 'errors' => [
                     'uploaded' => '{field} harus diisi',
                     'max_size' => '{field} maksimal 10 MB',
@@ -837,7 +892,9 @@ class Developer extends BaseController
         if (!$this->validate($validationRules)) {
             return $this->response->setJSON([
                 'status' => 'error',
-                'message' => $this->validator->getErrors()
+                'message' => $this->validator->getErrors(),
+                'csrfName' => csrf_token(), 
+                'csrfHash' => csrf_hash(),
             ])->setStatusCode(400);
 
         } 
@@ -847,9 +904,14 @@ class Developer extends BaseController
         $fileberkassp3k = $this->request->getFile('berkassp3k');
         $fileberkasktpdebitur = $this->request->getFile('berkasktpdebitur');
         $fileberkasrekening = $this->request->getFile('berkasrekening');
+        $fileberkaspinjaman_kpl = $this->request->getFile('berkaspinjaman_kpl');
+        $fileberkaspinjaman_kyg = $this->request->getFile('berkaspinjaman_kyg');
+        $fileberkaspinjaman_lain = $this->request->getFile('berkaspinjaman_lain');
         $uuidheader = $this->request->getVar('uuidheader');
 
-        // var_dump($uuidheader);
+        // dd($fileberkaspinjaman_kpl);
+        // var_dump($fileberkaspinjaman_kyg);
+        // var_dump($fileberkaspinjaman_lain);
         // die();
 
         
@@ -867,37 +929,55 @@ class Developer extends BaseController
             $newfilenameberkassp3k = "sp3k_".$uuid."_".$fileberkassp3k->getRandomName();
             $newfilenameberkasktpdebitur = "ktpdebitur_".$uuid."_".$fileberkasktpdebitur->getRandomName();
             $newfilenameberkasrekening = "rekeningdebitur_".$uuid."_".$fileberkasrekening->getRandomName();
-            
+
             $fileberkassertifikat->move(WRITEPATH . 'uploads/sertifikat', $newfilenameberkassertifikat);
             $fileberkaspbb->move(WRITEPATH . 'uploads/pbb', $newfilenameberkaspbb);
             $fileberkassp3k->move(WRITEPATH . 'uploads/sp3k', $newfilenameberkassp3k);
             $fileberkasktpdebitur->move(WRITEPATH . 'uploads/ktp_debitur', $newfilenameberkasktpdebitur);
             $fileberkasrekening->move(WRITEPATH . 'uploads/rekening_debitur', $newfilenameberkasrekening);
+            
+            $data = [
+                "uuid" => $uuid,
+                "uuidheader" => $uuidheader,
+                "sertifikat" => $this->request->getVar('sertifikat'),
+                "berkassertifikat" => $newfilenameberkassertifikat,
+                "pbb" => $this->request->getVar('pbb'),
+                "berkaspbb" => $newfilenameberkaspbb,
+                "harga" => $this->request->getVar('harga'),
+                "nilaikredit" => $this->request->getVar('nilaikredit'),
+                "nomordokumensp3k" => $this->request->getVar('sp3k'),
+                "tanggalsp3k" => $this->request->getVar('tanggalsp3k'),
+                "berkassp3k" => $newfilenameberkassp3k,
+                "namadebitur" => $this->request->getVar('debitur'),
+                "berkasktpdebitur" => $newfilenameberkasktpdebitur,
+                "bank" => $this->request->getVar('bank'),
+                "rekening" => $this->request->getVar('rekening'),
+                "berkasrekening" => $newfilenameberkasrekening,
+                "statusvalidator" => 0,
+            ];
+
+            if($fileberkaspinjaman_kpl->isValid() && !$fileberkaspinjaman_kpl->hasMoved()){
+                $newfilenameberkaspinjaman_kpl = "pinjaman_kpl_".$uuid."_".$fileberkaspinjaman_kpl->getRandomName();
+                $fileberkaspinjaman_kpl->move(WRITEPATH . 'uploads/pinjaman_kpl', $newfilenameberkaspinjaman_kpl);
+                $data['pinjamankpl'] = $this->request->getVar('pinjaman_kpl');
+                $data['berkaspinjamankpl'] = $newfilenameberkaspinjaman_kpl;
+            }
+            if($fileberkaspinjaman_kyg->isValid() && !$fileberkaspinjaman_kyg->hasMoved()){
+                $newfilenameberkaspinjaman_kyg = "pinjaman_kyg_".$uuid."_".$fileberkaspinjaman_kyg->getRandomName();
+                $fileberkaspinjaman_kyg->move(WRITEPATH . 'uploads/pinjaman_kyg', $newfilenameberkaspinjaman_kyg);
+                $data['pinjamankyg'] = $this->request->getVar('pinjaman_kyg');
+                $data['berkaspinjamankyg'] = $newfilenameberkaspinjaman_kyg;
+            }
+            if($fileberkaspinjaman_lain->isValid() && !$fileberkaspinjaman_lain->hasMoved()){
+                $newfilenameberkaspinjaman_lain = "pinjaman_lain_".$uuid."_".$fileberkaspinjaman_lain->getRandomName();
+                $fileberkaspinjaman_lain->move(WRITEPATH . 'uploads/pinjaman_lain', $newfilenameberkaspinjaman_lain);
+                $data['pinjamanlain'] = $this->request->getVar('pinjaman_lain');
+                $data['berkaspinjamanlain'] = $newfilenameberkaspinjaman_lain;
+            }
            
             
 
             try {
-                $data = [
-                    "uuid" => $uuid,
-                    "uuidheader" => $uuidheader,
-                    "sertifikat" => $this->request->getVar('sertifikat'),
-                    "berkassertifikat" => $newfilenameberkassertifikat,
-                    "pbb" => $this->request->getVar('pbb'),
-                    "berkaspbb" => $newfilenameberkaspbb,
-                    "harga" => $this->request->getVar('harga'),
-                    "nilaikredit" => $this->request->getVar('nilaikredit'),
-                    "nomordokumensp3k" => $this->request->getVar('sp3k'),
-                    "tanggalsp3k" => $this->request->getVar('tanggalsp3k'),
-                    "berkassp3k" => $newfilenameberkassp3k,
-                    "namadebitur" => $this->request->getVar('debitur'),
-                    "berkasktpdebitur" => $newfilenameberkasktpdebitur,
-                    "bank" => $this->request->getVar('bank'),
-                    "rekening" => $this->request->getVar('rekening'),
-                    "berkasrekening" => $newfilenameberkasrekening,
-                    "statusvalidator" => 0,
-                ];
-
-                // dd($data);
 
                 $pdm = new PengajuanDetailModel();
                 $save = $pdm->save($data);

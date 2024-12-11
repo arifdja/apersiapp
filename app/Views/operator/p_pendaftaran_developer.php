@@ -147,6 +147,17 @@
         e.preventDefault();
         var uuid = $(this).attr('kunci');
         var csrfHash = $(this).closest('tr').find('.csrf').val();
+
+        Swal.fire({
+            title: 'Mohon tunggu...',
+            text: 'Sedang memproses data',
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            showConfirmButton: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
         
         $.ajax({
           type: "post",

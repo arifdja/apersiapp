@@ -81,9 +81,13 @@ class Operator extends BaseController
         ];
 
         $user = new UserModel();
+        $userData = $user->where('uuid',$uuid)->first();
         $update = $user->where('uuid',$uuid)->set($data)->update();
 
         if ($update) { 
+            
+            $sendMail = sendMail($userData['email'],'Pengajuan Akun Developer Disetujui','Pengajuan developer dengan userid '.$userData['email'].' telah disetujui oleh admin. Silahkan login dengan password yang diisi pada saat pendaftaran. Anda juga bisa merubah password melalui fitur lupa password.');
+
             return $this->response->setJSON([
                 'status' => 'success',
                 'message' => 'Data berhasil disetujui!',
@@ -114,7 +118,7 @@ class Operator extends BaseController
         $user = new UserModel();
         $userData = $user->where('uuid',$uuid)->first();
 
-        $sendMail = sendMail($userData['email'],'Pengajuan Akun Developer Ditolak','Pengajuan developer dengan nama '.$userData['nama'].' ditolak oleh admin dengan keterangan penolakan '.$this->request->getPost('keteranganpenolakan'));
+        $sendMail = sendMail($userData['email'],'Pengajuan Akun Developer Ditolak','Pengajuan developer dengan nama '.$userData['nama'].' ditolak oleh admin dengan keterangan penolakan "'.$this->request->getPost('keteranganpenolakan').'". Silahkan ajukan ulang pendaftaran developer.');
 
         $filePath = WRITEPATH . 'uploads/kta/'.$userData['berkaskta'];
         delete_file($filePath);

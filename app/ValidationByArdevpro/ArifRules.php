@@ -17,6 +17,20 @@ class ArifRules
     //     }
     //     return true;
     // } 
+    
+
+    public function checkDanaTalangan(string $str, string $field = null, array $data = null): bool
+    {
+        //$data adalah data yang diinputkan
+        //$field adalah field yang diinputkan
+        //$str adalah value dari field yang diinputkan
+
+        if($data['harga']*0.7 < $data['nilaikredit']){
+            $error = "Nilai Dana Talangan tidak boleh lebih besar dari 70% dari harga sesuai persetujuan kredit (SP3K)";
+            return false;
+        }
+        return true;
+    } 
 
     public function checkUUIDHeader(string $str, string &$error = null): bool
     {

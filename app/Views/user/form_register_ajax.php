@@ -117,7 +117,7 @@
                                           </div>
                                           <div class="col-md-6">
                                               <div class="form-group">
-                                                    <label for="detail_alamat">Detail Alamat</label>
+                                                    <label for="detail_alamat">Detail Alamat Developer</label>
                                                     <textarea id="detail_alamat"  name="detail_alamat" class="form-control" rows="3" placeholder="Masukkan detail alamat seperti nama jalan, nomor rumah, RT/RW" required><?= old('detail_alamat') ?></textarea>
                                                     <span id="spanalamat" style="color: red;"></span>
                                               </div>
