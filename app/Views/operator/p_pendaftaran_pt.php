@@ -69,8 +69,8 @@
                         <td align="right"><a href="<?= base_url() ?>/download/pinjaman_lain/<?= $p['berkaspinjamanlain'] ?>" target="_blank"><?= number_format($p['pinjamanlain'],0,',','.') ?></a></td>
                         <td class="aksi<?= $p['uuid']; ?>">
                           <?php if($p['statusvalidator']==0 || $p['statusvalidator']==null) : ?>
-                          <a href="#" kunci="<?= $p['uuid']; ?>" class="btn btn-xs btn-success approve"><i class="fas fa-check"></i></a>
-                          <a href="#" kunci="<?= $p['uuid']; ?>" class="btn btn-xs btn-danger reject"><i class="fas fa-times"></i></a>
+                          <a href="#" kunci="<?= $p['uuid']; ?>" kuncideveloper="<?= $p['uuiddeveloper']; ?>" class="btn btn-xs btn-success approve"><i class="fas fa-check"></i></a>
+                          <a href="#" kunci="<?= $p['uuid']; ?>" kuncideveloper="<?= $p['uuiddeveloper']; ?>" class="btn btn-xs btn-danger reject"><i class="fas fa-times"></i></a>
                           <?php else : ?>
                             -
                           <?php endif; ?>
@@ -148,6 +148,7 @@
     $(".approve").click(function(e){
         e.preventDefault();
         var uuid = $(this).attr('kunci');
+        var uuiddeveloper = $(this).attr('kuncideveloper');
         var csrfHash = $(this).closest('tr').find('.csrf').val();
         
         $.ajax({
@@ -156,7 +157,8 @@
           url: "<?= base_url(); ?>/operator/do_approve_pt",
           data: {
             csrf_test_name:csrfHash,
-            uuid:uuid
+            uuid:uuid,
+            uuiddeveloper:uuiddeveloper
           },
           dataType: "json",
           success: function (response) {
@@ -195,6 +197,7 @@
     }).then((result) => {
         if (result.value) {
             var uuid = $(this).attr('kunci');
+            var uuiddeveloper = $(this).attr('kuncideveloper');
             var csrfHash = $(this).closest('tr').find('.csrf').val();
             var keteranganpenolakan = result.value;
 
@@ -216,6 +219,7 @@
                 data: {
                 csrf_test_name:csrfHash,
                 uuid:uuid,
+                uuiddeveloper:uuiddeveloper,
                 keteranganpenolakan:keteranganpenolakan
                 },  
                 dataType: "json",

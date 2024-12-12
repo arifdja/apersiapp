@@ -89,7 +89,16 @@
               </div>
               <span id="spanberasktp_penanggung_jawab" style="color: red;"></span>
             </div>
-            <div class="form-group">
+          </div>
+      </div>
+    </div>
+  <div class="col-md-6">
+  <div class="card card-info">
+       
+          <div class="card-body">
+
+          
+          <div class="form-group">
               <label for="npwp_penanggung_jawab">NPWP Penanggung Jawab</label>
               <input type="text" name="npwp_penanggung_jawab" required class="form-control" id="npwp_penanggung_jawab" placeholder="Isi NPWP Penanggung Jawab" value="<?= old('npwp_penanggung_jawab') ?>" required>
               <span id="spannpwp_penanggung_jawab" style="color: red;"></span>
@@ -105,13 +114,7 @@
               </div>
               <span id="spanberkasnpwp_penanggung_jawab" style="color: red;"></span>
             </div>
-          </div>
-      </div>
-    </div>
-  <div class="col-md-6">
-  <div class="card card-info">
-       
-          <div class="card-body">
+            
             <div class="form-group">
               <label for="akta_pendirian">Akta Pendirian</label>
               <input type="text" name="akta_pendirian" required class="form-control" id="akta_pendirian" placeholder="Isi Akta Pendirian" value="<?= old('akta_pendirian') ?>" required>
@@ -148,54 +151,6 @@
                     <small>Maksimal ukuran file: 10 MB</small>
               </div>
               <span id="spanberkasrekening" style="color: red;"></span>
-            </div>
-            <div class="form-group">
-              <label for="pinjaman_kpl">Pinjaman KPL</label>
-              <input type="number" name="pinjaman_kpl" required class="form-control" id="pinjaman_kpl" placeholder="Isi Pinjaman KPL" value="<?= old('pinjaman_kpl') ?>" required>
-              <span id="spanpinjaman_kpl" style="color: red;"></span>
-              <div class="input-group" style="margin-top: 10px;">
-                  <div class="custom-file">
-                        <input type="file" class="custom-file-input" name="berkaspinjaman_kpl" id="berkaspinjaman_kpl" accept=".pdf" required>
-                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-                  </div>
-              </div>
-              <div class="text-muted">
-                    <small>Format file yang diizinkan: PDF</small>,
-                    <small>Maksimal ukuran file: 10 MB</small>
-              </div>
-              <span id="spanberkaspinjaman_kpl" style="color: red;"></span>
-            </div>
-            <div class="form-group">
-              <label for="pinjaman_kyg">Pinjaman KYG</label>
-              <input type="number" name="pinjaman_kyg" required class="form-control" id="pinjaman_kyg" placeholder="Isi Pinjaman KYG" value="<?= old('pinjaman_kyg') ?>" required>
-              <span id="spanpinjaman_kyg" style="color: red;"></span>
-              <div class="input-group" style="margin-top: 10px;">
-                  <div class="custom-file">
-                        <input type="file" class="custom-file-input" name="berkaspinjaman_kyg" id="berkaspinjaman_kyg" accept=".pdf" required>
-                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-                  </div>
-              </div>
-              <div class="text-muted">
-                    <small>Format file yang diizinkan: PDF</small>,
-                    <small>Maksimal ukuran file: 10 MB</small>
-              </div>
-              <span id="spanberkaspinjaman_kyg" style="color: red;"></span>
-            </div>
-            <div class="form-group">
-              <label for="pinjaman_lain">Pinjaman Lain</label>
-              <input type="number" name="pinjaman_lain" required class="form-control" id="pinjaman_lain" placeholder="Isi Pinjaman Lain" value="<?= old('pinjaman_lain') ?>" required>
-              <span id="spanpinjaman_lain" style="color: red;"></span>
-              <div class="input-group" style="margin-top: 10px;">
-                  <div class="custom-file">
-                        <input type="file" class="custom-file-input" name="berkaspinjaman_lain" id="berkaspinjaman_lain" accept=".pdf" required>
-                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-                  </div>
-              </div>
-              <div class="text-muted">
-                    <small>Format file yang diizinkan: PDF</small>,
-                    <small>Maksimal ukuran file: 10 MB</small>
-              </div>
-              <span id="spanberkaspinjaman_lain" style="color: red;"></span>
             </div>
           </div>
           <div class="card-footer">

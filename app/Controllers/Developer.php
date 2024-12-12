@@ -7,6 +7,7 @@ use App\Models\BankModel;
 use App\Models\PTModel;
 use App\Models\PengajuanModel;
 use App\Models\PengajuanDetailModel;
+use App\Models\DashboardModel;
 
 class Developer extends BaseController
 {
@@ -215,57 +216,6 @@ class Developer extends BaseController
                     'ext_in' => '{field} harus berformat PDF',
                     'mime_in' => '{field} harus berformat PDF'
                 ]
-            ],
-            'pinjaman_kpl' => [
-                'label' => 'Pinjaman KPL',
-                'rules' => 'trim|required',
-                'errors' => [
-                    'required' => '{field} harus diisi'
-                ]
-            ],
-            'berkaspinjaman_kpl' => [
-                'label' => 'Pinjaman KPL',
-                'rules' => 'uploaded[berkaspinjaman_kpl]|max_size[berkaspinjaman_kpl,10240]|ext_in[berkaspinjaman_kpl,pdf]|mime_in[berkaspinjaman_kpl,application/pdf]',
-                'errors' => [
-                    'uploaded' => '{field} harus diisi',
-                    'max_size' => '{field} maksimal 10 MB',
-                    'ext_in' => '{field} harus berformat PDF',
-                    'mime_in' => '{field} harus berformat PDF'
-                ]
-            ],
-            'pinjaman_kyg' => [
-                'label' => 'Pinjaman KYG',
-                'rules' => 'trim|required',
-                'errors' => [
-                    'required' => '{field} harus diisi'
-                ]
-            ],
-            'berkaspinjaman_kyg' => [
-                'label' => 'Pinjaman KYG',
-                'rules' => 'uploaded[berkaspinjaman_kyg]|max_size[berkaspinjaman_kyg,10240]|ext_in[berkaspinjaman_kyg,pdf]|mime_in[berkaspinjaman_kyg,application/pdf]',
-                'errors' => [
-                    'uploaded' => '{field} harus diisi',
-                    'max_size' => '{field} maksimal 10 MB',
-                    'ext_in' => '{field} harus berformat PDF',
-                    'mime_in' => '{field} harus berformat PDF'
-                ]
-            ],
-            'pinjaman_lain' => [
-                'label' => 'Pinjaman Lain',
-                'rules' => 'trim|required',
-                'errors' => [
-                    'required' => '{field} harus diisi'
-                ]
-            ],
-            'berkaspinjaman_lain' => [
-                'label' => 'Pinjaman Lain',
-                'rules' => 'uploaded[berkaspinjaman_lain]|max_size[berkaspinjaman_lain,10240]|ext_in[berkaspinjaman_lain,pdf]|mime_in[berkaspinjaman_lain,application/pdf]',
-                'errors' => [
-                    'uploaded' => '{field} harus diisi',
-                    'max_size' => '{field} maksimal 10 MB',
-                    'ext_in' => '{field} harus berformat PDF',
-                    'mime_in' => '{field} harus berformat PDF'
-                ]
             ]
         ];
 
@@ -284,9 +234,6 @@ class Developer extends BaseController
         $fileberkasnpwp_penanggung_jawab = $this->request->getFile('berkasnpwp_penanggung_jawab');
         $fileberkasakta_pendirian = $this->request->getFile('berkasakta_pendirian');
         $fileberkasrekening = $this->request->getFile('berkasrekening');
-        $fileberkaspinjaman_kpl = $this->request->getFile('berkaspinjaman_kpl');
-        $fileberkaspinjaman_kyg = $this->request->getFile('berkaspinjaman_kyg');
-        $fileberkaspinjaman_lain = $this->request->getFile('berkaspinjaman_lain');
 
         
         if (
@@ -294,10 +241,7 @@ class Developer extends BaseController
             $fileberkasktp_penanggung_jawab->isValid() && !$fileberkasktp_penanggung_jawab->hasMoved() &&
             $fileberkasnpwp_penanggung_jawab->isValid() && !$fileberkasnpwp_penanggung_jawab->hasMoved() &&
             $fileberkasakta_pendirian->isValid() && !$fileberkasakta_pendirian->hasMoved() &&
-            $fileberkasrekening->isValid() && !$fileberkasrekening->hasMoved() &&
-            $fileberkaspinjaman_kpl->isValid() && !$fileberkaspinjaman_kpl->hasMoved() &&
-            $fileberkaspinjaman_kyg->isValid() && !$fileberkaspinjaman_kyg->hasMoved() &&
-            $fileberkaspinjaman_lain->isValid() && !$fileberkaspinjaman_lain->hasMoved()
+            $fileberkasrekening->isValid() && !$fileberkasrekening->hasMoved() 
         ) {
             $uuid = generate_uuid();
             // Move the file to a permanent location
@@ -306,18 +250,12 @@ class Developer extends BaseController
             $newfilenameberkasnpwp_penanggung_jawab = "npwp_penanggungjawab_".$uuid."_".$fileberkasnpwp_penanggung_jawab->getRandomName();
             $newfilenameberkasakta_pendirian = "akta_pendirian_".$uuid."_".$fileberkasakta_pendirian->getRandomName();
             $newfilenameberkasrekening = "rekening_".$uuid."_".$fileberkasrekening->getRandomName();
-            $newfilenameberkaspinjaman_kpl = "pinjaman_kpl_".$uuid."_".$fileberkaspinjaman_kpl->getRandomName();
-            $newfilenameberkaspinjaman_kyg = "pinjaman_kyg_".$uuid."_".$fileberkaspinjaman_kyg->getRandomName();
-            $newfilenameberkaspinjaman_lain = "pinjaman_lain_".$uuid."_".$fileberkaspinjaman_lain->getRandomName();
             
             $fileberkasnpwppt->move(WRITEPATH . 'uploads/npwp_pt', $newfilenameberkasnpwppt);
             $fileberkasktp_penanggung_jawab->move(WRITEPATH . 'uploads/ktp_penanggungjawab', $newfilenameberkasktp_penanggung_jawab);
             $fileberkasnpwp_penanggung_jawab->move(WRITEPATH . 'uploads/npwp_penanggungjawab', $newfilenameberkasnpwp_penanggung_jawab);
             $fileberkasakta_pendirian->move(WRITEPATH . 'uploads/akta_pendirian', $newfilenameberkasakta_pendirian);
             $fileberkasrekening->move(WRITEPATH . 'uploads/rekening', $newfilenameberkasrekening);
-            $fileberkaspinjaman_kpl->move(WRITEPATH . 'uploads/pinjaman_kpl', $newfilenameberkaspinjaman_kpl);
-            $fileberkaspinjaman_kyg->move(WRITEPATH . 'uploads/pinjaman_kyg', $newfilenameberkaspinjaman_kyg);
-            $fileberkaspinjaman_lain->move(WRITEPATH . 'uploads/pinjaman_lain', $newfilenameberkaspinjaman_lain);
            
             $data = [
                 "uuid" => $uuid,
@@ -337,12 +275,6 @@ class Developer extends BaseController
                 "rekening" => $this->request->getVar('rekening'),
                 "kodebank" => $this->request->getVar('bank'),
                 "berkasrekening" => $newfilenameberkasrekening,
-                "pinjamankpl" => $this->request->getVar('pinjaman_kpl'),
-                "berkaspinjamankpl" => $newfilenameberkaspinjaman_kpl,
-                "pinjamankyg" => $this->request->getVar('pinjaman_kyg'),
-                "berkaspinjamankyg" => $newfilenameberkaspinjaman_kyg,
-                "pinjamanlain" => $this->request->getVar('pinjaman_lain'),
-                "berkaspinjamanlain" => $newfilenameberkaspinjaman_lain,
                 "statusvalidator" => 0,
             ];
 
@@ -477,14 +409,6 @@ class Developer extends BaseController
                     'ext_in' => '{field} harus berformat PDF',
                     'mime_in' => '{field} harus berformat PDF'
                 ]
-            ],
-            'jumlahunit' => [
-                'label' => 'Jumlah Unit',
-                'rules' => 'trim|required|numeric',
-                'errors' => [
-                    'required' => '{field} harus diisi',
-                    'numeric' => '{field} harus berupa angka'
-                ]
             ]
         ];
 
@@ -534,7 +458,6 @@ class Developer extends BaseController
                 "alamatperumahaninput" => $this->request->getVar('alamatperumahaninput'),
                 "dpd" => $this->request->getVar('dpd'),
                 "berkassiteplan" => $newfilenameberkassiteplan,
-                "jumlahunit" => $this->request->getVar('jumlahunit'),
                 "statusvalidator" => 0 ,
                 //daript
                 "namapj" => $datapt['namapj'],
@@ -542,12 +465,6 @@ class Developer extends BaseController
                 "berkasktppj" => $datapt['berkasktppj'],
                 "npwppj" => $datapt['npwppj'],
                 "berkasnpwppj" => $datapt['berkasnpwppj'],
-                "pinjamankpl" => $datapt['pinjamankpl'],
-                "pinjamankyg" => $datapt['pinjamankyg'],
-                "pinjamanlain" => $datapt['pinjamanlain'],
-                "berkaspinjamankpl" => $datapt['berkaspinjamankpl'],
-                "berkaspinjamankyg" => $datapt['berkaspinjamankyg'],
-                "berkaspinjamanlain" => $datapt['berkaspinjamanlain'],
                 
             ];
 
@@ -645,7 +562,9 @@ class Developer extends BaseController
         $uuid = $this->request->getGet('uuid');
 
         $model = new PengajuanDetailModel();
-        $pengajuandetail = $model->where('uuidheader',$uuid)->join('ref_bank','ref_bank.kodebank = trx_pengajuan_detail.bank')->findAll();
+        $pengajuandetail = $model->getPengajuanUnit($uuid);
+
+        // dd($pengajuandetail);
 
         $data = [
             'title' => 'Data Unit',
@@ -765,6 +684,20 @@ class Developer extends BaseController
                     'required' => '{field} harus diisi',
                     'numeric' => '{field} harus berupa angka',
                     'checkDanaTalangan' => '{field} tidak boleh lebih besar dari 70% dari harga sesuai persetujuan kredit (SP3K)'
+                ]
+            ],
+            'lokasiref' => [
+                'label' => 'Lokasi',
+                'rules' => 'trim|required',
+                'errors' => [
+                    'required' => '{field} harus diisi'
+                ]
+            ],
+            'detail_alamat' => [
+                'label' => 'Detail Alamat',
+                'rules' => 'trim|required',
+                'errors' => [
+                    'required' => '{field} harus diisi'
                 ]
             ],
             'sp3k' => [
@@ -945,6 +878,8 @@ class Developer extends BaseController
                 "berkaspbb" => $newfilenameberkaspbb,
                 "harga" => $this->request->getVar('harga'),
                 "nilaikredit" => $this->request->getVar('nilaikredit'),
+                "alamatref" => $this->request->getVar('lokasiref'),
+                "alamatinput" => $this->request->getVar('detail_alamat'),
                 "nomordokumensp3k" => $this->request->getVar('sp3k'),
                 "tanggalsp3k" => $this->request->getVar('tanggalsp3k'),
                 "berkassp3k" => $newfilenameberkassp3k,

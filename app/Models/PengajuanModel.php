@@ -42,7 +42,12 @@ class PengajuanModel extends Model
         $sql = "SELECT trx_pengajuan.*, ref_pt.namapt, ref_dpd.namadpd, 
                 ref_provinsi.namaprovinsi, ref_kabupaten.namakabupaten, 
                 ref_kota.namakota, ref_kecamatan.namakecamatan, COUNT(trx_pengajuan_detail.uuid) AS jumlahunitinput,
-		        SUM(trx_pengajuan_detail.nilaikredit) AS totalnilaikredit
+		        SUM(trx_pengajuan_detail.nilaikredit) AS totalnilaikredit,
+                SUM(trx_pengajuan_detail.pinjamankpl) AS totalpinjamankpl,
+                SUM(trx_pengajuan_detail.pinjamankyg) AS totalpinjamankyg,
+                SUM(trx_pengajuan_detail.pinjamanlain) AS totalpinjamanlain,
+                SUM(trx_pengajuan_detail.nilaikredit) AS totaldanatalangan,
+                SUM(trx_pengajuan_detail.harga) AS totalhargasp3k
                 FROM trx_pengajuan
                 JOIN ref_pt ON ref_pt.uuid = trx_pengajuan.uuidpt
                 JOIN ref_dpd ON ref_dpd.id = trx_pengajuan.dpd

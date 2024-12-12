@@ -67,6 +67,38 @@
                                 <small>Maksimal 70% dari harga sesuai persetujuan kredit (SP3K)</small>
                             </div>
                         </div>
+
+                        
+                        <div class="form-group">
+                          <label for="provinsi">Provinsi</label>  
+                          <?= create_dropdown('provinsi', $dropdownprovinsi['provinsi'], old('provinsi'), ['class' => 'form-control', 'id' => 'provinsi','required' => 'required']); ?>
+                          <span id="spanprovinsi" style="color: red;"></span>
+                        </div>
+                        <div class="form-group">
+                          <label for="kabupaten">Kabupaten</label>
+                          <select id="kabupaten" name="kabupaten" class="form-control" required>
+                              <option value="" selected disabled>Pilih Kabupaten</option>
+                          </select>
+                          <span id="spankabupaten" style="color: red;"></span>
+                        </div>
+                        <div class="form-group">
+                          <label for="kota">Kota</label>
+                          <select id="kota" name="kota" class="form-control" required>
+                              <option value="" selected disabled>Pilih Kota</option>
+                          </select>
+                          <span id="spankota" style="color: red;"></span>
+                        </div>
+                        <div class="form-group">
+                          <label for="kecamatan">Kecamatan</label>
+                          <select id="kecamatan" name="lokasiref" class="form-control" required>
+                              <option value="" selected disabled>Pilih Kecamatan</option>
+                          </select>
+                        </div>
+                        <div class="form-group">
+                          <label for="detail_alamat">Detail Alamat</label>
+                          <textarea id="detail_alamat" name="detail_alamat" class="form-control" rows="3" placeholder="Masukkan detail alamat seperti nama jalan, nomor rumah, RT/RW" required><?= old('detail_alamat') ?></textarea>
+                          <span id="spanalamat" style="color: red;"></span>
+                        </div>
                        
 
                         <div class="form-group">
@@ -91,22 +123,7 @@
 
                         
 
-                        <div class="form-group">
-                            <label for="debitur">Nama Debitur</label>
-                            <input type="text" name="debitur" required class="form-control" id="debitur" placeholder="Nama Debitur" required>
-                            <span id="spandebitur" style="color: red;"></span>
-                            <div class="input-group" style="margin-top: 10px;">
-                                <div class="custom-file">
-                                    <input type="file" class="custom-file-input" name="berkasktpdebitur" id="berkasktpdebitur" accept=".pdf" required>
-                                    <label class="custom-file-label labelberkasktpdebitur" for="exampleInputFile">Unggah KTP Debitur</label>
-                                </div>
-                            </div>
-                            <div class="text-muted">
-                                <small>Format file yang diizinkan: PDF</small>,
-                                <small>Maksimal ukuran file: 10 MB</small>
-                            </div>
-                            <span id="spanberkasktpdebitur" style="color: red;"></span>
-                        </div>
+                     
 
                     </div>
                 </div>
@@ -115,6 +132,23 @@
             <div class="col-md-6">
                 <div class="card card-info">
                     <div class="card-body">
+
+                      <div class="form-group">
+                              <label for="debitur">Nama Debitur</label>
+                              <input type="text" name="debitur" required class="form-control" id="debitur" placeholder="Nama Debitur" required>
+                              <span id="spandebitur" style="color: red;"></span>
+                              <div class="input-group" style="margin-top: 10px;">
+                                  <div class="custom-file">
+                                      <input type="file" class="custom-file-input" name="berkasktpdebitur" id="berkasktpdebitur" accept=".pdf" required>
+                                      <label class="custom-file-label labelberkasktpdebitur" for="exampleInputFile">Unggah KTP Debitur</label>
+                                  </div>
+                              </div>
+                              <div class="text-muted">
+                                  <small>Format file yang diizinkan: PDF</small>,
+                                  <small>Maksimal ukuran file: 10 MB</small>
+                              </div>
+                              <span id="spanberkasktpdebitur" style="color: red;"></span>
+                          </div>
 
                       <div class="form-group">
                           <label for="bank">Bank</label>  
@@ -142,7 +176,7 @@
                       
                       <div class="form-group">
                         <label for="pinjaman_kpl">Pinjaman KPL</label>
-                        <input type="number" name="pinjaman_kpl" class="form-control" id="pinjaman_kpl" placeholder="Isi Pinjaman KPL">
+                        <input type="number" name="pinjaman_kpl" class="form-control" id="pinjaman_kpl" placeholder="Total Pinjaman KPL">
                         <span id="spanpinjaman_kpl" style="color: red;"></span>
                         <div class="input-group" style="margin-top: 10px;">
                             <div class="custom-file">
@@ -158,7 +192,7 @@
                       </div>
                       <div class="form-group">
                         <label for="pinjaman_kyg">Pinjaman KYG</label>
-                        <input type="number" name="pinjaman_kyg" class="form-control" id="pinjaman_kyg" placeholder="Isi Pinjaman KYG" >
+                        <input type="number" name="pinjaman_kyg" class="form-control" id="pinjaman_kyg" placeholder="Total Pinjaman KYG" >
                         <span id="spanpinjaman_kyg" style="color: red;"></span>
                         <div class="input-group" style="margin-top: 10px;">
                             <div class="custom-file">
@@ -174,7 +208,7 @@
                       </div>
                       <div class="form-group">
                         <label for="pinjaman_lain">Pinjaman Lain</label>
-                        <input type="number" name="pinjaman_lain" class="form-control" id="pinjaman_lain" placeholder="Isi Pinjaman Lain" >
+                        <input type="number" name="pinjaman_lain" class="form-control" id="pinjaman_lain" placeholder="Total Pinjaman Lain" >
                         <span id="spanpinjaman_lain" style="color: red;"></span>
                         <div class="input-group" style="margin-top: 10px;">
                             <div class="custom-file">
@@ -286,6 +320,12 @@
                               $('#sp3k').val('');
                               $('#tanggalsp3k').val('');
                               $('#berkassp3k').val('');
+                              $('#lokasiref').val('');
+                              $('#provinsi').val('');
+                              $('#kabupaten').val('');
+                              $('#kota').val('');
+                              $('#kecamatan').val('');
+                              $('#detail_alamat').val('');
                               $('#debitur').val('');
                               $('#berkasktpdebitur').val('');
                               $('#bank').val('');
@@ -302,6 +342,9 @@
                               $('.labelberkassp3k').html('Unggah Dokumen SP3K');
                               $('.labelberkasktpdebitur').html('Unggah KTP Debitur');
                               $('.labelberkasrekening').html('Unggah Rekening Debitur');
+                              $('.labelberkaspinjaman_kpl').html('Unggah Pinjaman KPL');
+                              $('.labelberkaspinjaman_kyg').html('Unggah Pinjaman KYG');
+                              $('.labelberkaspinjaman_lain').html('Unggah Pinjaman Lain');
                               $('input').removeClass('is-invalid');
                               $('span').html('');
                           } else {
@@ -337,6 +380,14 @@
                       if(xhr.responseJSON.message.nilaikredit){
                         $('#nilaikredit').addClass('is-invalid');
                         $('#spannilaikredit').html(xhr.responseJSON.message.nilaikredit);
+                      }
+                      if(xhr.responseJSON.message.lokasiref){
+                        $('#lokasiref').addClass('is-invalid');
+                        $('#spanlokasiref').html(xhr.responseJSON.message.lokasiref);
+                      }
+                      if(xhr.responseJSON.message.detail_alamat){
+                        $('#detail_alamat').addClass('is-invalid');
+                        $('#spanalamat').html(xhr.responseJSON.message.detail_alamat);
                       }
                       if(xhr.responseJSON.message.sp3k){
                         $('#sp3k').addClass('is-invalid');

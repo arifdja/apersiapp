@@ -169,7 +169,7 @@ class Operator extends BaseController
         }
 
         $uuid = $this->request->getPost('uuid');
-        
+        $uuiddeveloper = $this->request->getPost('uuiddeveloper');
 
         $data = [
             'statusvalidator' => 1,
@@ -177,15 +177,23 @@ class Operator extends BaseController
             'validated_by' => session()->get('uuid')
         ];
 
+        $user = new UserModel();
+        $userData = $user->where('uuid',$uuiddeveloper)->first();
+
         $pt = new PTModel();
+        $ptData = $pt->where('uuid',$uuid)->first();
         $update = $pt->where('uuid',$uuid)->set($data)->update();
 
-        if ($update) { 
+        if ($update) {
+            
+            $sendMail = sendMail($userData['email'],'Pengajuan PT Disetujui','Pengajuan PT '.$ptData['namapt'].' telah disetujui oleh admin.');
+ 
             return $this->response->setJSON([
                 'status' => 'success',
                 'message' => 'Data berhasil disetujui!',
                 'csrf' => csrf_hash(),
-                'uuid' => $uuid
+                'uuid' => $uuid,
+                'uuiddeveloper' => $uuiddeveloper
             ]);
         } else {
             return $this->response->setJSON([
@@ -207,11 +215,15 @@ class Operator extends BaseController
         }
 
         $uuid = $this->request->getPost('uuid');
+        $uuiddeveloper = $this->request->getPost('uuiddeveloper');
 
+        $user = new UserModel();
+        $userData = $user->where('uuid',$uuiddeveloper)->first();
+        
         $pt = new PTModel();
         $ptData = $pt->where('uuid',$uuid)->first();
 
-        // $sendMail = sendMail($userData['email'],'Pengajuan Akun Developer Ditolak','Pengajuan developer dengan nama '.$userData['nama'].' ditolak oleh admin dengan keterangan penolakan '.$this->request->getPost('keteranganpenolakan'));
+        $sendMail = sendMail($userData['email'],'Pengajuan PT Ditolak','Pengajuan PT '.$ptData['namapt'].' ditolak oleh admin dengan keterangan penolakan '.$this->request->getPost('keteranganpenolakan'));
 
         // $filePath = WRITEPATH . 'uploads/kta/'.$userData['berkaskta'];
         // delete_file($filePath);

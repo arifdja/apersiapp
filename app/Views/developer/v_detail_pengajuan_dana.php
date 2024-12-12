@@ -25,13 +25,18 @@
                     <tr>
                       <th>ID</th>
                       <th>Aksi</th>
+                      <th>Status</th>
                       <th>Sertifikat</th>
                       <th>PBB</th>
                       <th>SP3K</th>
-                      <th>Harga<br>(Rp)</th>
-                      <th>Nilai Kredit<br>(Rp)</th>
+                      <th>Harga sesuai persetujuan<br>kredit (SP3K) (Rp)</th>
+                      <th>Nilai Dana<br> Talangan (Rp)</th>
                       <th>Nama <br>Debitur</th>
+                      <th>Alamat</th>
                       <th>Rekening</th>
+                      <th>Pinjaman KPL</th>
+                      <th>Pinjaman KYG</th>
+                      <th>Pinjaman Lain</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -42,11 +47,15 @@
                         <?php if(($p['statusvalidator'] == 1 && $p['statussikumbang'] == 1 && $p['statuseflpp'] == 1 && $p['statussp3k'] == 1 && $p['statusapprover'] == 1)){ ?>
                         Sudah disetujui
                         <?php } else { ?>
-                          <a href="<?= site_url('developer/form_edit_unit?uuidheader='.$p['uuidheader'].'&uuid='.$p['uuid']) ?>" class="btn btn-primary btn-xs"><i class="fas fa-edit"></i></a>
+                          <a href="<?= site_url('developer/form_edit_unit?uuidheader='.$p['uuidheader'].'&uuid='.$p['uuid']) ?>" class="btn btn-info btn-xs"><i class="fas fa-edit"></i></a>
                           <button onclick="deleteUnit('<?= $p['uuid'] ?>')" class="btn btn-danger btn-xs">
                             <i class="fas fa-trash"></i>
                           </button>
                         <?php } ?>
+                      </td> <td>
+                        <?= ($p['statusvalidator'] == '0' || $p['statusvalidator'] == '') ? '<span class="badge bg-warning">Menunggu Validasi</span>' : '' ?>
+                        <?= ($p['statusvalidator'] == '1') ? '<span class="badge bg-success">Diterima</span>' : '' ?>
+                        <?= ($p['statusvalidator'] == '2') ? '<span class="badge bg-danger">Ditolak</span>' : '' ?>
                       </td>
                       <td><a href="<?= base_url() ?>/download/sertifikat/<?= $p['berkassertifikat'] ?>" target="_blank"><?= $p['sertifikat'] ?></a></td>
                       <td><a href="<?= base_url() ?>/download/pbb/<?= $p['berkaspbb'] ?>" target="_blank"><?= $p['pbb'] ?></a></td>
@@ -54,7 +63,29 @@
                       <td align="right"><?= number_format($p['harga'],0,',','.') ?></td>
                       <td align="right"><?= number_format($p['nilaikredit'],0,',','.') ?></td>
                       <td><a href="<?= base_url() ?>/download/ktp_debitur/<?= $p['berkasktpdebitur'] ?>" target="_blank"><?= $p['namadebitur'] ?></a></td>
+                      <td><?= $p['namaprovinsi'] ?> - <?= $p['namakabupaten'] ?> - <?= $p['namakecamatan'] ?> - <?= $p['namakota'] ?> - <?= $p['alamatinput'] ?></td>
                       <td><a href="<?= base_url() ?>/download/rekening_debitur/<?= $p['berkasrekening'] ?>" target="_blank"><?= $p['rekening'] ?> - <?= $p['namabank'] ?></a></td>
+                      <td align="right">
+                        <?php if($p['berkaspinjamankpl'] != '') : ?>
+                        <a href="<?= base_url() ?>/download/pinjaman_kpl/<?= $p['berkaspinjamankpl'] ?>" target="_blank"><?= number_format($p['pinjamankpl'],0,',','.') ?></a>
+                        <?php else : ?>
+                        0
+                        <?php endif; ?>
+                      </td>
+                      <td align="right">
+                        <?php if($p['berkaspinjamankyg'] != '') : ?>
+                        <a href="<?= base_url() ?>/download/pinjaman_kyg/<?= $p['berkaspinjamankyg'] ?>" target="_blank"><?= number_format($p['pinjamankyg'],0,',','.') ?></a>
+                        <?php else : ?>
+                        0
+                        <?php endif; ?>
+                      </td>
+                      <td align="right">
+                        <?php if($p['berkaspinjamanlain'] != '') : ?>
+                        <a href="<?= base_url() ?>/download/pinjaman_lain/<?= $p['berkaspinjamanlain'] ?>" target="_blank"><?= number_format($p['pinjamanlain'],0,',','.') ?></a>
+                        <?php else : ?>
+                        0
+                        <?php endif; ?>
+                      </td>
                     </tr>
                     <?php } ?>
                   </tbody>

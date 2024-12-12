@@ -112,7 +112,7 @@ class FileController extends Controller
             return $this->response->download($filePath, null)->setFileName($file['berkasnpwppj']);
 
         }elseif($type == 'pinjaman_kpl'){
-            $model = new PTModel();
+            $model = new PengajuanDetailModel();
             $file = $model->where('berkaspinjamankpl',$berkas)->first();
             $filePath = WRITEPATH . 'uploads/' . $type . '/' . $file['berkaspinjamankpl'];
             if (!$file) {
@@ -125,7 +125,7 @@ class FileController extends Controller
             return $this->response->download($filePath, null)->setFileName($file['berkaspinjamankpl']);
 
         }elseif($type == 'pinjaman_kyg'){
-            $model = new PTModel();
+            $model = new PengajuanDetailModel();
             $file = $model->where('berkaspinjamankyg',$berkas)->first();
             $filePath = WRITEPATH . 'uploads/' . $type . '/' . $file['berkaspinjamankyg'];
             if (!$file) {
@@ -138,7 +138,7 @@ class FileController extends Controller
             return $this->response->download($filePath, null)->setFileName($file['berkaspinjamankyg']);
 
         }elseif($type == 'pinjaman_lain'){
-            $model = new PTModel();
+            $model = new PengajuanDetailModel();
             $file = $model->where('berkaspinjamanlain',$berkas)->first();
             $filePath = WRITEPATH . 'uploads/' . $type . '/' . $file['berkaspinjamanlain'];
             if (!$file) {

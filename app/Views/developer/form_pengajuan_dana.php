@@ -37,6 +37,7 @@
                   </div>
               </div>
               <div class="text-muted">
+                    <small>Dokumen ditandatangani dan bermaterai</small><br>
                     <small>Format file yang diizinkan: PDF</small>,
                     <small>Maksimal ukuran file: 10 MB</small>
               </div>
@@ -89,11 +90,8 @@
                   </div>
               
               <span id="spanberkassiteplan" style="color: red;"></span>
-                  <div class="form-group">
-                    <label for="jumlahunit">Jumlah Unit yang diagunkan</label>
-                    <input type="number" name="jumlahunit" class="form-control" id="jumlahunit" placeholder="Isi jumlah unit yang diagunkan" required>
-                    <span id="spanjumlahunit" style="color: red;"></span>
-                  </div>
+
+                  
                 </div>
                 <div class="card-footer">
               <div class="col-sm-6">

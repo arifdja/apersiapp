@@ -46,6 +46,7 @@ class PTModel extends Model
         $builder->orderBy('ref_pt.updated_at','DESC');
         return $builder->get()->getResultArray();
     }
+
     
 
 }
