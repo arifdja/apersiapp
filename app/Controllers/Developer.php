@@ -1342,6 +1342,17 @@ class Developer extends BaseController
             return $this->response->setJSON(['message' => 'Invalid request'])->setStatusCode(400);
         }    
 
+        $jumlahunit = $this->request->getPost('jumlahunit');
+
+        if($jumlahunit == 0){
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => 'Jumlah unit tidak boleh 0',
+                'csrfName' => csrf_token(),
+                'csrfHash' => csrf_hash()
+            ])->setStatusCode(400);
+        }
+
         $uuid = $this->request->getPost('uuid');
 
         if (empty($uuid)) {
@@ -1354,41 +1365,40 @@ class Developer extends BaseController
         }
 
         try {
-            $model = new PengajuanDetailModel();
-            
-            // Ambil data unit sebelum dihapus untuk menghapus file-filenya
-            $unit = $model->where('uuid', $uuid)->first();
-            
-            if (!$unit) {
-                throw new \Exception('Data unit tidak ditemukan');
-            }
 
-            // Array file yang akan dihapus
-            $files = [
-                'berkassertifikat' => WRITEPATH . 'uploads/sertifikat/',
-                'berkaspbb' => WRITEPATH . 'uploads/pbb/',
-                'berkassp3k' => WRITEPATH . 'uploads/sp3k/',
-                'berkasktpdebitur' => WRITEPATH . 'uploads/ktp_debitur/',
-                'berkasrekening' => WRITEPATH . 'uploads/rekening_debitur/'
+            $data = [
+                'submited_status' => 1,
+                'submited_time' => date('Y-m-d H:i:s'),
+                'submited_by' => session()->get('uuid')
             ];
+            
+            $model = new PengajuanModel();
+            $update = $model->where('uuid', $uuid)->set($data)->update();
 
-            // Hapus file-file terkait
-            foreach ($files as $field => $path) {
-                if (!empty($unit[$field]) && file_exists($path . $unit[$field])) {
-                    unlink($path . $unit[$field]);
-                }
+            if (!$update) {
+                return $this->response->setJSON([
+                    'status' => 'error',
+                    'message' => 'Gagal mengubah status header',
+                    'csrfName' => csrf_token(),
+                    'csrfHash' => csrf_hash()
+                ])->setStatusCode(400);
             }
 
-            // Hapus data dari database
-            $delete = $model->where('uuid', $uuid)->delete();
-
-            if (!$delete) {
-                throw new \Exception('Gagal menghapus data');
+            $modelDetail = new PengajuanDetailModel();
+            $update = $modelDetail->where('uuidheader', $uuid)->set($data)->update();
+            if (!$update) {
+                return $this->response->setJSON([
+                    'status' => 'error',
+                    'message' => 'Gagal mengubah status detail',
+                    'csrfName' => csrf_token(),
+                    'csrfHash' => csrf_hash()
+                ])->setStatusCode(400);
             }
+            
 
             return $this->response->setJSON([
                 'status' => 'success',
-                'message' => 'Data unit berhasil dihapus',
+                'message' => 'Dana berhasil di ajukan. Mohon tunggu konfirmasi admin',
                 'csrfName' => csrf_token(),
                 'csrfHash' => csrf_hash()
             ]);

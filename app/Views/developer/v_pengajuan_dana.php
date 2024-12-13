@@ -40,8 +40,8 @@
                       <th>Pinjaman<br> Lain</th>
                       <th>Aksi</th>
                     </tr>
-                    <input type="hidden" name="csrf_token" value="<?= csrf_token() ?>">
-                    <input type="hidden" name="csrf_hash" value="<?= csrf_hash() ?>">
+                    <input type="hidden" class="csrf_hash" name="<?= csrf_hash() ?>" value="<?= csrf_hash() ?>" />
+                    <input type="hidden" class="csrf_token" name="<?= csrf_token() ?>" value="<?= csrf_token() ?>" />
                   </thead>
                   <tbody>
                     <?php $no=1; foreach ($pengajuan as $p) { ?>
@@ -57,7 +57,7 @@
                       <td><?= $p['namaprovinsi'] ?> - <?= $p['namakabupaten'] ?> - <?= $p['namakecamatan'] ?></td>
                       <td><?= $p['alamatperumahaninput'] ?></td>
                       <td><a href="<?= base_url() ?>/download/site_plan/<?= $p['berkassiteplan'] ?>" target="_blank">Lihat</a></td>
-                      <td><?= $p['jumlahunitinput'] ?></td>
+                      <td id="jumlahunitinput<?= $p['uuid'] ?>"><?= $p['jumlahunitinput'] ?></td>
                       <td align="right"><?= number_format($p['totalhargasp3k'],0,',','.') ?></td>
                       <td align="right"><?= number_format($p['totaldanatalangan'],0,',','.') ?></td>
                       <td align="right"><?= number_format($p['totalpinjamankpl']+$p['totalpinjamankyg']+$p['totalpinjamanlain'],0,',','.') ?></td>
@@ -65,7 +65,17 @@
                       <td align="right"><?= number_format($p['totalpinjamankyg'],0,',','.') ?></td>
                       <td align="right"><?= number_format($p['totalpinjamanlain'],0,',','.') ?></td>
                       <td>
-                        <button class="btn btn-xs btn-info ajukan_dana">Ajukan</button>
+                        <?php if($p['submited_status'] == 0 || $p['submited_status'] == ''): ?>
+                        <button id="ajukan_dana<?= $p['uuid'] ?>" class="btn btn-xs btn-info ajukan_dana">Ajukan</button>
+                        <?php elseif($p['submited_status'] == 1): ?>
+                        <span class="badge bg-success">Proses</span>
+                        <?php elseif($p['submited_status'] == 2): ?>
+                        <span class="badge bg-danger">Ditolak</span>
+                        <?php elseif($p['submited_status'] == 3): ?>
+                        <span class="badge bg-success">Disetujui</span>
+                        <?php else: ?>
+                          -
+                        <?php endif; ?>
                       </td>
                     </tr>
                     <?php } ?>
@@ -85,6 +95,57 @@
 <?= $this->endSection(); ?>
 
 <?= $this->section('south'); ?>
+<script>
+  $(document).ready(function() {
+    $('.ajukan_dana').click(function(e) {
+      e.preventDefault();
+      var uuid = $(this).closest('tr').find('input[name="uuid"]').val();
+      var csrfToken = $(".csrf_token").val();
+      var csrfHash = $(".csrf_hash").val();
+      var jumlahunit = parseInt($("#jumlahunitinput"+uuid).text().trim());
+
+      if(jumlahunit == 0){
+        Swal.fire({
+          icon: 'error',
+          title: 'Peringatan',
+          text: 'Jumlah unit tidak boleh 0',
+        });
+        return false;
+      }
+
+      $.ajax({
+        type: 'POST',
+        headers: {'X-Requested-With': 'XMLHttpRequest'},
+        url: '<?= site_url('developer/ajukan_dana_ajax') ?>',
+        data: {uuid: uuid, jumlahunit: jumlahunit, [csrfToken]: csrfHash},
+        dataType: 'json',
+        success: function(response) {
+          if(response.status == 'success') {
+            $(".csrf_hash").val(response.csrfHash);
+            $(".csrf_token").val(response.csrfToken);
+            $("#ajukan_dana"+uuid).html('<span class="text-success text-bold">Disetujui</span>');
+            Swal.fire({
+              icon: 'success',
+              title: 'Berhasil',
+              text: response.message,
+            });
+          }
+        },
+        error: function(xhr, status, error) {
+          if(xhr.responseJSON) {
+            $(".csrf_hash").val(xhr.responseJSON.csrfHash);
+            $(".csrf_token").val(xhr.responseJSON.csrfToken);
+          }
+          Swal.fire({
+            icon: 'error', 
+            title: 'Oops...',
+            text: 'Dana gagal di ajukan. Mohon coba lagi',
+          });
+        }
+      });
+    });
+  });
+</script>
 <script>
   $(function () {
     $('.table').DataTable({

@@ -37,6 +37,9 @@ $routes->get('/developer/monitoring_pengajuan_pt', 'Developer::monitoring_pengaj
 $routes->get('/developer/form_edit_unit', 'Developer::form_edit_unit',['filter' => 'auth']);
 $routes->post('/developer/edit_unit_ajax', 'Developer::edit_unit_ajax',['filter' => 'auth']);
 $routes->post('/developer/delete_unit_ajax', 'Developer::delete_unit_ajax',['filter' => 'auth']);
+$routes->post('/developer/ajukan_dana_ajax', 'Developer::ajukan_dana_ajax',['filter' => 'auth']);
+
+
 
 $routes->get('/operator', 'Operator::index',['filter' => 'auth']);
 $routes->get('/operator/approval_developer', 'Operator::approval_developer',['filter' => 'auth']);
