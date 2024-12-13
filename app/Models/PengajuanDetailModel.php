@@ -62,10 +62,10 @@ class PengajuanDetailModel extends Model
         $builder = $this->db->table($this->table);
         $builder->select('trx_pengajuan_detail.*,ref_bank.namabank,ref_provinsi.namaprovinsi,ref_kabupaten.namakabupaten,ref_kota.namakota,ref_kecamatan.namakecamatan');
         $builder->join('ref_bank','ref_bank.kodebank = trx_pengajuan_detail.bank','left');
-        $builder->join('ref_provinsi','ref_provinsi.id = SUBSTR(trx_pengajuan_detail.alamatinput,1,2)','left');
-        $builder->join('ref_kabupaten','ref_kabupaten.id = SUBSTR(trx_pengajuan_detail.alamatinput,1,4)','left');
-        $builder->join('ref_kota','ref_kota.id = SUBSTR(trx_pengajuan_detail.alamatinput,1,6)','left');
-        $builder->join('ref_kecamatan','ref_kecamatan.id = SUBSTR(trx_pengajuan_detail.alamatinput,1,10)','left');
+        $builder->join('ref_provinsi','ref_provinsi.id = SUBSTR(trx_pengajuan_detail.alamatref,1,2)','left');
+        $builder->join('ref_kabupaten','ref_kabupaten.id = SUBSTR(trx_pengajuan_detail.alamatref,1,4)','left');
+        $builder->join('ref_kota','ref_kota.id = SUBSTR(trx_pengajuan_detail.alamatref,1,6)','left');
+        $builder->join('ref_kecamatan','ref_kecamatan.id = SUBSTR(trx_pengajuan_detail.alamatref,1,10)','left');
         $builder->where('uuidheader',$uuid);
         $builder->where('trx_pengajuan_detail.deleted_at',null);
         return $builder->get()->getResultArray();

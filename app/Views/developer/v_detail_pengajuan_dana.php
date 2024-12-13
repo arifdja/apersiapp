@@ -29,11 +29,11 @@
                       <th>Sertifikat</th>
                       <th>PBB</th>
                       <th>SP3K</th>
-                      <th>Harga sesuai persetujuan<br>kredit (SP3K) (Rp)</th>
-                      <th>Nilai Dana<br> Talangan (Rp)</th>
                       <th>Nama <br>Debitur</th>
                       <th>Alamat</th>
                       <th>Rekening</th>
+                      <th>Harga sesuai persetujuan<br>kredit (SP3K) (Rp)</th>
+                      <th>Nilai Dana<br> Talangan (Rp)</th>
                       <th>Pinjaman KPL</th>
                       <th>Pinjaman KYG</th>
                       <th>Pinjaman Lain</th>
@@ -52,7 +52,8 @@
                             <i class="fas fa-trash"></i>
                           </button>
                         <?php } ?>
-                      </td> <td>
+                      </td>
+                      <td>
                         <?= ($p['statusvalidator'] == '0' || $p['statusvalidator'] == '') ? '<span class="badge bg-warning">Menunggu Validasi</span>' : '' ?>
                         <?= ($p['statusvalidator'] == '1') ? '<span class="badge bg-success">Diterima</span>' : '' ?>
                         <?= ($p['statusvalidator'] == '2') ? '<span class="badge bg-danger">Ditolak</span>' : '' ?>
@@ -60,11 +61,12 @@
                       <td><a href="<?= base_url() ?>/download/sertifikat/<?= $p['berkassertifikat'] ?>" target="_blank"><?= $p['sertifikat'] ?></a></td>
                       <td><a href="<?= base_url() ?>/download/pbb/<?= $p['berkaspbb'] ?>" target="_blank"><?= $p['pbb'] ?></a></td>
                       <td><a href="<?= base_url() ?>/download/sp3k/<?= $p['berkassp3k'] ?>" target="_blank"><?= $p['nomordokumensp3k'] ?></a></td>
-                      <td align="right"><?= number_format($p['harga'],0,',','.') ?></td>
-                      <td align="right"><?= number_format($p['nilaikredit'],0,',','.') ?></td>
                       <td><a href="<?= base_url() ?>/download/ktp_debitur/<?= $p['berkasktpdebitur'] ?>" target="_blank"><?= $p['namadebitur'] ?></a></td>
                       <td><?= $p['namaprovinsi'] ?> - <?= $p['namakabupaten'] ?> - <?= $p['namakecamatan'] ?> - <?= $p['namakota'] ?> - <?= $p['alamatinput'] ?></td>
+                      
                       <td><a href="<?= base_url() ?>/download/rekening_debitur/<?= $p['berkasrekening'] ?>" target="_blank"><?= $p['rekening'] ?> - <?= $p['namabank'] ?></a></td>
+                      <td align="right"><?= number_format($p['harga'],0,',','.') ?></td>
+                      <td align="right"><?= number_format($p['nilaikredit'],0,',','.') ?></td>
                       <td align="right">
                         <?php if($p['berkaspinjamankpl'] != '') : ?>
                         <a href="<?= base_url() ?>/download/pinjaman_kpl/<?= $p['berkaspinjamankpl'] ?>" target="_blank"><?= number_format($p['pinjamankpl'],0,',','.') ?></a>

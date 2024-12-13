@@ -36,10 +36,14 @@
                         <th align="center">Sertifikat</th>
                         <th align="center">PBB</th>
                         <th align="center">SP3K</th>
-                        <th align="center">Harga<br>(Rp)</th>
-                        <th align="center">Nilai Kredit<br>(Rp)</th>
                         <th align="center">Nama <br>Debitur</th>
+                        <th align="center">Alamat</th>
                         <th align="center">Rekening</th>
+                        <th align="right">Harga sesuai persetujuan<br>kredit (SP3K) (Rp)</th>
+                        <th align="right">Nilai Dana<br> Talangan (Rp)</th>
+                        <th align="right">Pinjaman KPL</th>
+                        <th align="right">Pinjaman KYG</th>
+                        <th align="right">Pinjaman Lain</th>
                         <th align="center" width="50px">Validasi DPP/DPD/Korwil</th>
                         <th align="center" width="50px">Validasi Sikumbang</th>
                         <th align="center" width="50px">Validasi EFLPP</th>
@@ -56,10 +60,32 @@
                       <td><a href="<?= base_url() ?>/download/sertifikat/<?= $p['berkassertifikat'] ?>" target="_blank"><?= $p['sertifikat'] ?></a></td>
                       <td><a href="<?= base_url() ?>/download/pbb/<?= $p['berkaspbb'] ?>" target="_blank"><?= $p['pbb'] ?></a></td>
                       <td><a href="<?= base_url() ?>/download/sp3k/<?= $p['berkassp3k'] ?>" target="_blank"><?= $p['nomordokumensp3k'] ?></a></td>
+                      <td><a href="<?= base_url() ?>/download/ktp_debitur/<?= $p['berkasktpdebitur'] ?>" target="_blank"><?= $p['namadebitur'] ?></a></td>
+                      <td><?= $p['namaprovinsi'] ?> - <?= $p['namakabupaten'] ?> - <?= $p['namakecamatan'] ?> - <?= $p['namakota'] ?> - <?= $p['alamatinput'] ?></td>
+                      <td><a href="<?= base_url() ?>/download/rekening_debitur/<?= $p['berkasrekening'] ?>" target="_blank"><?= $p['rekening'] ?> - <?= $p['namabank'] ?></a></td>
                       <td align="right"><?= number_format($p['harga'],0,',','.') ?></td>
                       <td align="right"><?= number_format($p['nilaikredit'],0,',','.') ?></td>
-                      <td><a href="<?= base_url() ?>/download/ktp_debitur/<?= $p['berkasktpdebitur'] ?>" target="_blank"><?= $p['namadebitur'] ?></a></td>
-                      <td><a href="<?= base_url() ?>/download/rekening_debitur/<?= $p['berkasrekening'] ?>" target="_blank"><?= $p['rekening'] ?> - <?= $p['namabank'] ?></a></td>
+                     <td align="right">
+                        <?php if($p['berkaspinjamankpl'] != '') : ?>
+                        <a href="<?= base_url() ?>/download/pinjaman_kpl/<?= $p['berkaspinjamankpl'] ?>" target="_blank"><?= number_format($p['pinjamankpl'],0,',','.') ?></a>
+                        <?php else : ?>
+                        0
+                        <?php endif; ?>
+                      </td>
+                      <td align="right">
+                        <?php if($p['berkaspinjamankyg'] != '') : ?>
+                        <a href="<?= base_url() ?>/download/pinjaman_kyg/<?= $p['berkaspinjamankyg'] ?>" target="_blank"><?= number_format($p['pinjamankyg'],0,',','.') ?></a>
+                        <?php else : ?>
+                        0
+                        <?php endif; ?>
+                      </td>
+                      <td align="right">
+                        <?php if($p['berkaspinjamanlain'] != '') : ?>
+                        <a href="<?= base_url() ?>/download/pinjaman_lain/<?= $p['berkaspinjamanlain'] ?>" target="_blank"><?= number_format($p['pinjamanlain'],0,',','.') ?></a>
+                        <?php else : ?>
+                        0
+                        <?php endif; ?>
+                      </td>
                       <td class="aksivalidator<?= $p['uuid']; ?>">
                         <?php if($p['statusvalidator']==0 || $p['statusvalidator']==null) : ?>
                         <a href="#" kunci="<?= $p['uuid']; ?>" class="btn btn-xs btn-success approve"><i class="fas fa-check"></i></a>

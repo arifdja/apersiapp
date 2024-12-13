@@ -44,7 +44,8 @@
                       <th>Detail Alamat</th>
                       <th>Site Plan</th>
                       <th>Jumlah Unit</th>
-                      <th>Total Nilai<br> Kredit</th>
+                      <th>Harga<br> SP3K</th>
+                      <th>Dana<br> Talangan</th>
                       <th>Pinjaman KPL</th>
                       <th>Pinjaman KYG</th>
                       <th>Pinjaman Lain</th>
@@ -67,10 +68,11 @@
                       <td><?= $p['alamatperumahaninput'] ?></td>
                       <td><a href="<?= base_url() ?>/download/site_plan/<?= $p['berkassiteplan'] ?>" target="_blank">Lihat</a></td>
                       <td><?= $p['jumlahunitinput'] ?></td>
-                      <td align="right"><?= number_format($p['totalnilaikredit'],0,',','.') ?></td>
-                      <td align="right"><a href="<?= base_url() ?>/download/pinjaman_kpl/<?= $p['berkaspinjamankpl'] ?>" target="_blank"><?= number_format($p['pinjamankpl'],0,',','.') ?></a></td>
-                      <td align="right"><a href="<?= base_url() ?>/download/pinjaman_kyg/<?= $p['berkaspinjamankyg'] ?>" target="_blank"><?= number_format($p['pinjamankyg'],0,',','.') ?></a></td>
-                      <td align="right"><a href="<?= base_url() ?>/download/pinjaman_lain/<?= $p['berkaspinjamanlain'] ?>" target="_blank"><?= number_format($p['pinjamanlain'],0,',','.') ?></a></td>
+                      <td align="right"><?= number_format($p['totalhargasp3k'],0,',','.') ?></td>
+                      <td align="right"><?= number_format($p['totaldanatalangan'],0,',','.') ?></td>
+                      <td align="right"><?= number_format($p['totalpinjamankpl'],0,',','.') ?></td>
+                      <td align="right"><?= number_format($p['totalpinjamankyg'],0,',','.') ?></td>
+                      <td align="right"><?= number_format($p['totalpinjamanlain'],0,',','.') ?></td>
                         <td class="aksi<?= $p['uuid']; ?>">
                           <?php if($p['statusvalidator']==0 || $p['statusvalidator']==null) : ?>
                           <a href="#" kunci="<?= $p['uuid']; ?>" class="btn btn-xs btn-success approve"><i class="fas fa-check"></i></a>

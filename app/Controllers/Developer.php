@@ -440,6 +440,9 @@ class Developer extends BaseController
             $pt = new PTModel();
             $datapt = $pt->where('uuid',$this->request->getVar('pt'))->first();
 
+            // var_dump($datapt);
+            // die;
+
             if(count($datapt) == 0){
                 return $this->response->setJSON([
                     'status' => 'error',
@@ -467,9 +470,15 @@ class Developer extends BaseController
                 "berkasnpwppj" => $datapt['berkasnpwppj'],
                 
             ];
+            
+            // var_dump($data);
+            // die;
 
             $headerpengajuan = new PengajuanModel();
             $save = $headerpengajuan->save($data);
+
+            // var_dump($save);
+            // die;
             if ($save) { 
                 return $this->response->setJSON([
                     'status' => 'success',
@@ -953,7 +962,7 @@ class Developer extends BaseController
     {
         $menu = getMenu();
         $model = new PTModel();
-        $pengajuan = $model->getPengajuanPT();
+        $pengajuan = $model->getPengajuanPT(session()->get('uuid'));
 
         $data = [
             'title' => 'Pengajuan PT',

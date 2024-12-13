@@ -44,9 +44,6 @@
                         <th>Bank</th>
                         <th>Rekening</th>
                         <th>Alamat</th>
-                        <th>Pinjaman KPL</th>
-                        <th>Pinjaman KYG</th>
-                        <th>Pinjaman Lain</th>
                         <th>Aksi</th>
                       </tr>
                     </thead>
@@ -64,9 +61,6 @@
                         <td><?= $p['kodebank'] ?> - <?= $p['namabank'] ?></td>
                         <td><a href="<?= base_url() ?>/download/rekening/<?= $p['berkasrekening'] ?>" target="_blank"><?= $p['rekening'] ?></a></td>
                         <td><?= $p['namaprovinsi'] ?> - <?= $p['namakabupaten'] ?> - <?= $p['namakecamatan'] ?> - <?= $p['alamatinput'] ?></td>
-                        <td align="right"><a href="<?= base_url() ?>/download/pinjaman_kpl/<?= $p['berkaspinjamankpl'] ?>" target="_blank"><?= number_format($p['pinjamankpl'],0,',','.') ?></a></td>
-                        <td align="right"><a href="<?= base_url() ?>/download/pinjaman_kyg/<?= $p['berkaspinjamankyg'] ?>" target="_blank"><?= number_format($p['pinjamankyg'],0,',','.') ?></a></td>
-                        <td align="right"><a href="<?= base_url() ?>/download/pinjaman_lain/<?= $p['berkaspinjamanlain'] ?>" target="_blank"><?= number_format($p['pinjamanlain'],0,',','.') ?></a></td>
                         <td class="aksi<?= $p['uuid']; ?>">
                           <?php if($p['statusvalidator']==0 || $p['statusvalidator']==null) : ?>
                           <a href="#" kunci="<?= $p['uuid']; ?>" kuncideveloper="<?= $p['uuiddeveloper']; ?>" class="btn btn-xs btn-success approve"><i class="fas fa-check"></i></a>
@@ -150,6 +144,17 @@
         var uuid = $(this).attr('kunci');
         var uuiddeveloper = $(this).attr('kuncideveloper');
         var csrfHash = $(this).closest('tr').find('.csrf').val();
+
+        Swal.fire({
+            title: 'Mohon tunggu...',
+            text: 'Sedang memproses data',
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            showConfirmButton: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
         
         $.ajax({
           type: "post",
