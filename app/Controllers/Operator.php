@@ -259,14 +259,15 @@ class Operator extends BaseController
     }
 
     
-
-
-    
-    public function approval_dana()
+    public function approval_dana($uuid)
 	{
+        // dd($uuid);
+
 		$menu = getMenu();
         $model = new PengajuanModel();
-        $dana = $model->getPengajuanDana();
+        $dana = $model->getPengajuanDana($uuid);
+
+        // dd($dana);
 
         $data = [
 			'title' => 'Persetujuan Pengajuan Dana',
@@ -486,9 +487,20 @@ class Operator extends BaseController
         return $this->template_approval($type,$action);
     }
 
+    public function list_developer()
+    {
+		$menu = getMenu();
+        $userModel = new UserModel();
+        $developer = $userModel->getDeveloper();
+        
+        $data = [
+			'title' => 'Daftar Developer',
+			'breadcrumb' => ['Persetujuan','Pengajuan Dana'],
+			'stringmenu' => $menu, 
+            'result' => $developer
+        ];
 
-
-
-
+        return view('operator/list_developer', $data);
+    }
 
 }

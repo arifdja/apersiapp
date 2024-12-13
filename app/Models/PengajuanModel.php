@@ -58,7 +58,7 @@ class PengajuanModel extends Model
         $uuidpt = array_column($uuidpt, 'uuid');
 
         $builder = $this->db->table($this->table);
-        $builder->select('trx_pengajuan.*, ref_pt.namapt, ref_dpd.namadpd, ref_provinsi.namaprovinsi, ref_kabupaten.namakabupaten, ref_kota.namakota, ref_kecamatan.namakecamatan, COUNT(trx_pengajuan_detail.uuid) AS jumlahunitinput, SUM(trx_pengajuan_detail.nilaikredit) AS totalnilaikredit, SUM(trx_pengajuan_detail.pinjamankpl) AS totalpinjamankpl, SUM(trx_pengajuan_detail.pinjamankyg) AS totalpinjamankyg, SUM(trx_pengajuan_detail.pinjamanlain) AS totalpinjamanlain, SUM(trx_pengajuan_detail.nilaikredit) AS totaldanatalangan, SUM(trx_pengajuan_detail.harga) AS totalhargasp3k');
+        $builder->select('trx_pengajuan.*, ref_pt.namapt, ref_dpd.namadpd, ref_provinsi.namaprovinsi, ref_kabupaten.namakabupaten, ref_kota.namakota, ref_kecamatan.namakecamatan, COUNT(trx_pengajuan_detail.uuid) AS jumlahunitinput, SUM(trx_pengajuan_detail.nilaikredit) AS totalnilaikredit, SUM(trx_pengajuan_detail.pinjamankpl) AS totalpinjamankpl, SUM(trx_pengajuan_detail.pinjamankyg) AS totalpinjamankyg, SUM(trx_pengajuan_detail.pinjamanlain) AS totalpinjamanlain, SUM(trx_pengajuan_detail.nilaikredit) AS totaldanatalangan, SUM(trx_pengajuan_detail.harga) AS totalhargasp3k,COUNT(CASE WHEN trx_pengajuan_detail.statusapprover = 1 THEN 1 END) AS totaldisetujui');
         $builder->join('ref_pt','ref_pt.uuid = trx_pengajuan.uuidpt','left');
         $builder->join('ref_dpd','ref_dpd.id = trx_pengajuan.dpd','left');
         $builder->join('ref_provinsi','ref_provinsi.id = SUBSTR(trx_pengajuan.alamatperumahanref,1,2)','left');

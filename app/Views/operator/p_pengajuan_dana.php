@@ -49,6 +49,7 @@
                       <th>Pinjaman KPL</th>
                       <th>Pinjaman KYG</th>
                       <th>Pinjaman Lain</th>
+                      <th>Total Disetujui</th>
                       <th>Aksi</th>
                       </tr>
                     </thead>
@@ -73,6 +74,7 @@
                       <td align="right"><?= number_format($p['totalpinjamankpl'],0,',','.') ?></td>
                       <td align="right"><?= number_format($p['totalpinjamankyg'],0,',','.') ?></td>
                       <td align="right"><?= number_format($p['totalpinjamanlain'],0,',','.') ?></td>
+                      <td align="right"><?= number_format($p['totaldisetujui'],0,',','.') ?></td>
                         <td class="aksi<?= $p['uuid']; ?>">
                           <?php if($p['statusvalidator']==0 || $p['statusvalidator']==null) : ?>
                           <a href="#" kunci="<?= $p['uuid']; ?>" class="btn btn-xs btn-success approve"><i class="fas fa-check"></i></a>
@@ -86,17 +88,6 @@
                     </tbody>
                   </table>
                 </div>
-
-              <!-- /.card-body -->
-              <!-- <div class="card-footer clearfix">
-                <ul class="pagination pagination-sm m-0 float-right">
-                  <li class="page-item"><a class="page-link" href="#">«</a></li>
-                  <li class="page-item"><a class="page-link" href="#">1</a></li>
-                  <li class="page-item"><a class="page-link" href="#">2</a></li>
-                  <li class="page-item"><a class="page-link" href="#">3</a></li>
-                  <li class="page-item"><a class="page-link" href="#">»</a></li>
-                </ul>
-              </div> -->
             </div>
             <!-- /.card -->
 

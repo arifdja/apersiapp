@@ -65,8 +65,10 @@
                           <?php if($p['statusvalidator']==0 || $p['statusvalidator']==null) : ?>
                           <a href="#" kunci="<?= $p['uuid']; ?>" kuncideveloper="<?= $p['uuiddeveloper']; ?>" class="btn btn-xs btn-success approve"><i class="fas fa-check"></i></a>
                           <a href="#" kunci="<?= $p['uuid']; ?>" kuncideveloper="<?= $p['uuiddeveloper']; ?>" class="btn btn-xs btn-danger reject"><i class="fas fa-times"></i></a>
-                          <?php else : ?>
-                            -
+                          <?php elseif($p['statusvalidator']==1) : ?>
+                            <span class="badge bg-success">Disetujui</span>
+                          <?php elseif($p['statusvalidator']==2) : ?>
+                            <span class="badge bg-danger">Ditolak</span>  
                           <?php endif; ?>
                         </td>
                       </tr>

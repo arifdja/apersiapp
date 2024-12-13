@@ -64,9 +64,9 @@
                       <td align="right"><?= number_format($p['totalpinjamankpl'],0,',','.') ?></td>
                       <td align="right"><?= number_format($p['totalpinjamankyg'],0,',','.') ?></td>
                       <td align="right"><?= number_format($p['totalpinjamanlain'],0,',','.') ?></td>
-                      <td>
+                      <td id="ajukan_dana<?= $p['uuid'] ?>">
                         <?php if($p['submited_status'] == 0 || $p['submited_status'] == ''): ?>
-                        <button id="ajukan_dana<?= $p['uuid'] ?>" class="btn btn-xs btn-info ajukan_dana">Ajukan</button>
+                        <button class="btn btn-xs btn-info ajukan_dana">Ajukan</button>
                         <?php elseif($p['submited_status'] == 1): ?>
                         <span class="badge bg-success">Proses</span>
                         <?php elseif($p['submited_status'] == 2): ?>
@@ -123,7 +123,7 @@
           if(response.status == 'success') {
             $(".csrf_hash").val(response.csrfHash);
             $(".csrf_token").val(response.csrfToken);
-            $("#ajukan_dana"+uuid).html('<span class="text-success text-bold">Disetujui</span>');
+            $("#ajukan_dana"+uuid).html('<span class="badge bg-success">Proses</span>');
             Swal.fire({
               icon: 'success',
               title: 'Berhasil',
