@@ -34,7 +34,10 @@ class PengajuanModel extends Model
         'statusvalidator',
         'validated_at',
         'validated_by',
-        'keteranganpenolakan'
+        'keteranganpenolakan',
+        'submited_status',
+        'submited_time',
+        'submited_by',
     ];
 
     function getPengajuanDana($uuiddeveloper = null)

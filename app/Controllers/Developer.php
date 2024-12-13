@@ -431,7 +431,6 @@ class Developer extends BaseController
             $fileberkassiteplan->isValid() && !$fileberkassiteplan->hasMoved()
         ) {
             $uuid = generate_uuid();
-            // Move the file to a permanent location
             $newfilenameberkassuratpermohonan = "suratpermohonan_".$uuid."_".$fileberkassuratpermohonan->getRandomName();
             $newfilenameberkassiteplan = "siteplan_".$uuid."_".$fileberkassiteplan->getRandomName();
             
@@ -439,9 +438,6 @@ class Developer extends BaseController
             $fileberkassiteplan->move(WRITEPATH . 'uploads/site_plan', $newfilenameberkassiteplan);
             $pt = new PTModel();
             $datapt = $pt->where('uuid',$this->request->getVar('pt'))->first();
-
-            // var_dump($datapt);
-            // die;
 
             if(count($datapt) == 0){
                 return $this->response->setJSON([
@@ -468,17 +464,14 @@ class Developer extends BaseController
                 "berkasktppj" => $datapt['berkasktppj'],
                 "npwppj" => $datapt['npwppj'],
                 "berkasnpwppj" => $datapt['berkasnpwppj'],
-                
+                "submited_status" => 1,
+                "submited_time" => date('Y-m-d H:i:s'),
+                "submited_by" => session()->get('uuid'),
             ];
-            
-            // var_dump($data);
-            // die;
 
             $headerpengajuan = new PengajuanModel();
             $save = $headerpengajuan->save($data);
 
-            // var_dump($save);
-            // die;
             if ($save) { 
                 return $this->response->setJSON([
                     'status' => 'success',
@@ -897,6 +890,9 @@ class Developer extends BaseController
                 "bank" => $this->request->getVar('bank'),
                 "rekening" => $this->request->getVar('rekening'),
                 "berkasrekening" => $newfilenameberkasrekening,
+                "submited_status" => 0,
+                "submited_time" => date('Y-m-d H:i:s'),
+                "submited_by" => session()->get('uuid'),
                 "statusvalidator" => 0,
             ];
 
@@ -996,6 +992,51 @@ class Developer extends BaseController
             $dropdownbank['bank'][$b['kodebank']] = $b['kodebank'].' - '.$b['namabank'];
         }
 
+        
+        $model = new ProvinsiModel();
+        $provinsi = $model->findAll();
+
+
+
+        $dropdownprovinsi['provinsi'] = ['' => 'Pilih Provinsi'];
+        foreach ($provinsi as $prov) {
+            $dropdownprovinsi['provinsi'][$prov['id']] = $prov['namaprovinsi'];
+        }
+
+
+
+        // Ambil ID provinsi, kabupaten, kota dari alamatref
+        $unit['provinsi'] = substr($unit['alamatref'], 0, 2);
+        $unit['kabupaten'] = substr($unit['alamatref'], 0, 4); 
+        $unit['kota'] = substr($unit['alamatref'], 0, 6);
+        $unit['kecamatan'] = $unit['alamatref'];
+
+        // Load model yang diperlukan
+        $kabupatenModel = new \App\Models\KabupatenModel();
+        $kotaModel = new \App\Models\KotaModel();
+        $kecamatanModel = new \App\Models\KecamatanModel();
+
+        // Get data kabupaten, kota, kecamatan yang sudah dipilih sebelumnya
+        $kabupaten = $kabupatenModel->where('id LIKE', $unit['provinsi'].'%')->findAll();
+        $kota = $kotaModel->where('idkabupaten', $unit['kabupaten'])->findAll();
+        $kecamatan = $kecamatanModel->where('idkota', $unit['kota'])->findAll();
+
+        // Buat dropdown untuk kabupaten, kota, kecamatan
+        $dropdownkabupaten['kabupaten'] = ['' => 'Pilih Kabupaten'];
+        foreach ($kabupaten as $kab) {
+            $dropdownkabupaten['kabupaten'][$kab['id']] = $kab['namakabupaten'];
+        }
+
+        $dropdownkota['kota'] = ['' => 'Pilih Kota'];
+        foreach ($kota as $k) {
+            $dropdownkota['kota'][$k['id']] = $k['namakota'];
+        }
+
+        $dropdownkecamatan['kecamatan'] = ['' => 'Pilih Kecamatan'];
+        foreach ($kecamatan as $kec) {
+            $dropdownkecamatan['kecamatan'][$kec['id']] = $kec['namakecamatan'];
+        }
+
         $data = [
             'title' => 'Form Edit Unit',
             'breadcrumb' => ['Developer','Edit Unit'],
@@ -1003,7 +1044,11 @@ class Developer extends BaseController
             'dropdownbank' => $dropdownbank,
             'uuidheader' => $uuidheader,
             'unit' => $unit,
-            'validation' => \Config\Services::validation()
+            'dropdownprovinsi' => $dropdownprovinsi,
+            'validation' => \Config\Services::validation(),
+            'dropdownkabupaten' => $dropdownkabupaten,
+            'dropdownkota' => $dropdownkota, 
+            'dropdownkecamatan' => $dropdownkecamatan,
         ];
         return view('developer/form_edit_unit', $data);
     }
@@ -1052,6 +1097,20 @@ class Developer extends BaseController
                     'numeric' => '{field} harus berupa angka'
                 ]
             ],
+            'lokasiref' => [
+                'label' => 'Lokasi',
+                'rules' => 'trim|required',
+                'errors' => [
+                    'required' => '{field} harus diisi'
+                ]
+            ],
+            'detail_alamat' => [
+                'label' => 'Detail Alamat',
+                'rules' => 'trim|required',
+                'errors' => [
+                    'required' => '{field} harus diisi'
+                ]
+            ],
             'sp3k' => [
                 'label' => 'Dokumen SP3K',
                 'rules' => 'trim|required',
@@ -1087,7 +1146,31 @@ class Developer extends BaseController
                 'errors' => [
                     'required' => '{field} harus diisi'
                 ]
-            ]
+            ],
+            'pinjaman_kpl' => [
+                'label' => 'Pinjaman KPL',
+                'rules' => 'trim|numeric|permit_empty|required_with[berkaspinjaman_kpl]',
+                'errors' => [
+                    'numeric' => '{field} harus berupa angka',
+                    'required_with' => '{field} harus diisi'
+                ]
+            ],
+            'pinjaman_kyg' => [
+                'label' => 'Pinjaman KYG',
+                'rules' => 'trim|numeric|permit_empty|required_with[berkaspinjaman_kyg]',
+                'errors' => [
+                    'numeric' => '{field} harus berupa angka',
+                    'required_with' => '{field} harus diisi'
+                ]
+            ],
+            'pinjaman_lain' => [
+                'label' => 'Pinjaman Lain',
+                'rules' => 'trim|numeric|permit_empty|required_with[berkaspinjaman_lain]',
+                'errors' => [
+                    'numeric' => '{field} harus berupa angka',
+                    'required_with' => 'Berkas Pinjaman lain harus diisi'
+                ]
+            ],
         ];
 
         if (!$this->validate($validationRules)) {
@@ -1108,25 +1191,57 @@ class Developer extends BaseController
             "namadebitur" => $this->request->getVar('debitur'),
             "bank" => $this->request->getVar('bank'),
             "rekening" => $this->request->getVar('rekening'),
+            "alamatref" => $this->request->getVar('lokasiref'),
+            "alamatinput" => $this->request->getVar('detail_alamat'),
+            "pinjamankpl" => $this->request->getVar('pinjaman_kpl'),
+            "pinjamankyg" => $this->request->getVar('pinjaman_kyg'),
+            "pinjamanlain" => $this->request->getVar('pinjaman_lain'),
             "statusvalidator" => 0,
         ];
 
-        // Handle optional file uploads
-        $files = ['berkassertifikat', 'berkaspbb', 'berkassp3k', 'berkasktpdebitur', 'berkasrekening'];
-        $uploadPaths = [
-            'berkassertifikat' => 'sertifikat',
-            'berkaspbb' => 'pbb', 
-            'berkassp3k' => 'sp3k',
-            'berkasktpdebitur' => 'ktp_debitur',
-            'berkasrekening' => 'rekening_debitur'
+        // Perbaiki mapping nama file ke field database
+        $fileMapping = [
+            'berkassertifikat' => [
+                'path' => 'sertifikat',
+                'field' => 'berkassertifikat'
+            ],
+            'berkaspbb' => [
+                'path' => 'pbb',
+                'field' => 'berkaspbb'
+            ],
+            'berkassp3k' => [
+                'path' => 'sp3k', 
+                'field' => 'berkassp3k'
+            ],
+            'berkasktpdebitur' => [
+                'path' => 'ktp_debitur',
+                'field' => 'berkasktpdebitur'
+            ],
+            'berkasrekening' => [
+                'path' => 'rekening_debitur',
+                'field' => 'berkasrekening'
+            ],
+            'berkaspinjaman_kpl' => [
+                'path' => 'pinjaman_kpl',
+                'field' => 'berkaspinjamankpl'  // sesuaikan dengan nama field di database
+            ],
+            'berkaspinjaman_kyg' => [
+                'path' => 'pinjaman_kyg',
+                'field' => 'berkaspinjamankyg'  // sesuaikan dengan nama field di database
+            ],
+            'berkaspinjaman_lain' => [
+                'path' => 'pinjaman_lain',
+                'field' => 'berkaspinjamanlain' // sesuaikan dengan nama field di database
+            ]
         ];
 
-        foreach ($files as $file) {
-            $uploadedFile = $this->request->getFile($file);
+        // Handle file uploads
+        foreach ($fileMapping as $inputName => $config) {
+            $uploadedFile = $this->request->getFile($inputName);
             if ($uploadedFile && $uploadedFile->isValid() && !$uploadedFile->hasMoved()) {
-                $newName = $file."_".$uuid."_".$uploadedFile->getRandomName();
-                $uploadedFile->move(WRITEPATH . 'uploads/'.$uploadPaths[$file], $newName);
-                $data[$file] = $newName;
+                $newName = $inputName."_".$uuid."_".$uploadedFile->getRandomName();
+                $uploadedFile->move(WRITEPATH . 'uploads/'.$config['path'], $newName);
+                $data[$config['field']] = $newName; // Gunakan nama field yang benar
             }
         }
 
@@ -1154,6 +1269,74 @@ class Developer extends BaseController
     }
 
     public function delete_unit_ajax()
+    {
+        if (!$this->request->isAJAX()) {
+            return $this->response->setJSON(['message' => 'Invalid request'])->setStatusCode(400);
+        }    
+
+        $uuid = $this->request->getPost('uuid');
+
+        if (empty($uuid)) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => 'UUID tidak ditemukan',
+                'csrfName' => csrf_token(),
+                'csrfHash' => csrf_hash()
+            ])->setStatusCode(400);
+        }
+
+        try {
+            $model = new PengajuanDetailModel();
+            
+            // Ambil data unit sebelum dihapus untuk menghapus file-filenya
+            $unit = $model->where('uuid', $uuid)->first();
+            
+            if (!$unit) {
+                throw new \Exception('Data unit tidak ditemukan');
+            }
+
+            // Array file yang akan dihapus
+            $files = [
+                'berkassertifikat' => WRITEPATH . 'uploads/sertifikat/',
+                'berkaspbb' => WRITEPATH . 'uploads/pbb/',
+                'berkassp3k' => WRITEPATH . 'uploads/sp3k/',
+                'berkasktpdebitur' => WRITEPATH . 'uploads/ktp_debitur/',
+                'berkasrekening' => WRITEPATH . 'uploads/rekening_debitur/'
+            ];
+
+            // Hapus file-file terkait
+            foreach ($files as $field => $path) {
+                if (!empty($unit[$field]) && file_exists($path . $unit[$field])) {
+                    unlink($path . $unit[$field]);
+                }
+            }
+
+            // Hapus data dari database
+            $delete = $model->where('uuid', $uuid)->delete();
+
+            if (!$delete) {
+                throw new \Exception('Gagal menghapus data');
+            }
+
+            return $this->response->setJSON([
+                'status' => 'success',
+                'message' => 'Data unit berhasil dihapus',
+                'csrfName' => csrf_token(),
+                'csrfHash' => csrf_hash()
+            ]);
+
+        } catch (\Exception $e) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => $e->getMessage(),
+                'csrfName' => csrf_token(),
+                'csrfHash' => csrf_hash()
+            ])->setStatusCode(400);
+        }
+    }
+
+    
+    public function ajukan_dana_ajax()
     {
         if (!$this->request->isAJAX()) {
             return $this->response->setJSON(['message' => 'Invalid request'])->setStatusCode(400);

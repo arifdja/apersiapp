@@ -23,7 +23,7 @@
                 <table class="table table-head-fixed text-nowrap">
                   <thead>
                     <tr>
-                      <th>ID</th>
+                      <th>No.</th>
                       <th>Aksi</th>
                       <th>Status</th>
                       <th>Sertifikat</th>
@@ -44,8 +44,8 @@
                     <tr>
                       <td><?= $no++ ?></td>
                       <td>
-                        <?php if(($p['statusvalidator'] == 1 && $p['statussikumbang'] == 1 && $p['statuseflpp'] == 1 && $p['statussp3k'] == 1 && $p['statusapprover'] == 1)){ ?>
-                        Sudah disetujui
+                        <?php if(($p['submited_status'] == '1')) { ?>
+                          -
                         <?php } else { ?>
                           <a href="<?= site_url('developer/form_edit_unit?uuidheader='.$p['uuidheader'].'&uuid='.$p['uuid']) ?>" class="btn btn-info btn-xs"><i class="fas fa-edit"></i></a>
                           <button onclick="deleteUnit('<?= $p['uuid'] ?>')" class="btn btn-danger btn-xs">
@@ -54,9 +54,10 @@
                         <?php } ?>
                       </td>
                       <td>
-                        <?= ($p['statusvalidator'] == '0' || $p['statusvalidator'] == '') ? '<span class="badge bg-warning">Menunggu Validasi</span>' : '' ?>
-                        <?= ($p['statusvalidator'] == '1') ? '<span class="badge bg-success">Diterima</span>' : '' ?>
-                        <?= ($p['statusvalidator'] == '2') ? '<span class="badge bg-danger">Ditolak</span>' : '' ?>
+                        <?= ($p['submited_status'] == '0' || $p['submited_status'] == '') ? '<span class="badge bg-warning">Simpan</span>' : '' ?>
+                        <?= ($p['submited_status'] == '1') ? '<span class="badge bg-success">Proses</span>' : 'Proses' ?>
+                        <?= ($p['submited_status'] == '2') ? '<span class="badge bg-danger">Ditolak</span>' : 'Ditolak' ?>
+                        <?= ($p['submited_status'] == '3') ? '<span class="badge bg-success">Disetujui</span>' : 'Disetujui' ?>
                       </td>
                       <td><a href="<?= base_url() ?>/download/sertifikat/<?= $p['berkassertifikat'] ?>" target="_blank"><?= $p['sertifikat'] ?></a></td>
                       <td><a href="<?= base_url() ?>/download/pbb/<?= $p['berkaspbb'] ?>" target="_blank"><?= $p['pbb'] ?></a></td>
