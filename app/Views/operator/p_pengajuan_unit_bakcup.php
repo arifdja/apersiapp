@@ -48,14 +48,15 @@
                         <th align="center" width="50px">Validasi Sikumbang</th>
                         <th align="center" width="50px">Validasi EFLPP</th>
                         <th align="center" width="50px">Validasi SP3K</th>
+                        <th align="center" width="50px">Validasi Approver</th>
                       </tr>
                     </thead>
                     <tbody>
                     <?php foreach ($result as $key => $p) : ?>
                       <tr class="baris<?= $p['uuid']; ?>">
                         
-                      <input type="hidden" class="csrf" name="<?= csrf_token() ?>" value="<?= csrf_hash() ?>" />
-                      <td><?= $key+1; ?>.</td>
+                    <input type="hidden" class="csrf" name="<?= csrf_token() ?>" value="<?= csrf_hash() ?>" />
+                        <td><?= $key+1; ?>.</td>
                       <td><a href="<?= base_url() ?>/download/sertifikat/<?= $p['berkassertifikat'] ?>" target="_blank"><?= $p['sertifikat'] ?></a></td>
                       <td><a href="<?= base_url() ?>/download/pbb/<?= $p['berkaspbb'] ?>" target="_blank"><?= $p['pbb'] ?></a></td>
                       <td><a href="<?= base_url() ?>/download/sp3k/<?= $p['berkassp3k'] ?>" target="_blank"><?= $p['nomordokumensp3k'] ?></a></td>
@@ -86,105 +87,61 @@
                         <?php endif; ?>
                       </td>
                       <td class="aksivalidator<?= $p['uuid']; ?>">
-                        <?php if($p['submited_status']==1) : ?>
-                          <?php if($p['statusvalidator']==0 || $p['statusvalidator']==null) : ?>
-                          <a href="#" kunci="<?= $p['uuid']; ?>" class="btn btn-xs btn-success approve"><i class="fas fa-check"></i></a>
-                          <a href="#" kunci="<?= $p['uuid']; ?>" class="btn btn-xs btn-danger reject"><i class="fas fa-times"></i></a>
-                          <?php elseif($p['statusvalidator']==1) : ?>
-                            <span class="text-success text-bold">Disetujui</span>
-                          <?php elseif($p['statusvalidator']==2) : ?>
-                            <span class="text-danger text-bold" data-toggle="tooltip" title="<?= $p['keteranganpenolakan'] ?>">Ditolak</span>
-                          <?php else : ?>
-                            -
-                          <?php endif; ?>
-                        <?php elseif($p['submited_status']==2 || $p['submited_status']==3 || $p['submited_status']==4) : ?>
-                          <?php if($p['statusvalidator']==0 || $p['statusvalidator']==null) : ?>
-                            -
-                          <?php elseif($p['statusvalidator']==1) : ?>
-                            <span class="text-success text-bold">Disetujui</span>
-                          <?php elseif($p['statusvalidator']==2) : ?>
-                            <span class="text-danger text-bold" data-toggle="tooltip" title="<?= $p['keteranganpenolakan'] ?>">Ditolak</span>
-                          <?php else : ?>
-                            -
-                          <?php endif; ?>
+                        <?php if($p['statusvalidator']==0 || $p['statusvalidator']==null) : ?>
+                        <a href="#" kunci="<?= $p['uuid']; ?>" class="btn btn-xs btn-success approve"><i class="fas fa-check"></i></a>
+                        <a href="#" kunci="<?= $p['uuid']; ?>" class="btn btn-xs btn-danger reject"><i class="fas fa-times"></i></a>
+                        <?php elseif($p['statusvalidator']==1) : ?>
+                          <span class="text-success text-bold">Disetujui</span>
+                        <?php elseif($p['statusvalidator']==2) : ?>
+                          <span class="text-danger text-bold" data-toggle="tooltip" title="<?= $p['keteranganpenolakan'] ?>">Ditolak</span>
                         <?php else : ?>
                           -
                         <?php endif; ?>
                       </td>
                       <td class="aksisikumbang<?= $p['uuid']; ?>">
-                        <?php if($p['submited_status']==1) : ?>
-                          <?php if($p['statussikumbang']==0 || $p['statussikumbang']==null) : ?>
-                          <a href="#" kunci="<?= $p['uuid']; ?>" class="btn btn-xs btn-success approvesikumbang"><i class="fas fa-check"></i></a>
-                          <a href="#" kunci="<?= $p['uuid']; ?>" class="btn btn-xs btn-danger rejectsikumbang"><i class="fas fa-times"></i></a>
-                          <?php elseif($p['statussikumbang']==1) : ?>
-                            <span class="text-success text-bold">Disetujui</span>
-                          <?php elseif($p['statussikumbang']==2) : ?>
-                            <span class="text-danger text-bold" data-toggle="tooltip" title="<?= $p['kettolaksikumbang'] ?>">Ditolak</span>
-                          <?php else : ?>
-                            -
-                          <?php endif; ?>
-                        <?php elseif($p['submited_status']==2 || $p['submited_status']==3 || $p['submited_status']==4) : ?>
-                          <?php if($p['statussikumbang']==0 || $p['statussikumbang']==null) : ?>
-                            -
-                          <?php elseif($p['statussikumbang']==1) : ?>
-                            <span class="text-success text-bold">Disetujui</span>
-                          <?php elseif($p['statussikumbang']==2) : ?>
-                            <span class="text-danger text-bold" data-toggle="tooltip" title="<?= $p['kettolaksikumbang'] ?>">Ditolak</span>
-                          <?php else : ?>
-                            -
-                          <?php endif; ?>
+                        <?php if($p['statussikumbang']==0 || $p['statussikumbang']==null) : ?>
+                        <a href="#" kunci="<?= $p['uuid']; ?>" class="btn btn-xs btn-success approvesikumbang"><i class="fas fa-check"></i></a>
+                        <a href="#" kunci="<?= $p['uuid']; ?>" class="btn btn-xs btn-danger rejectsikumbang"><i class="fas fa-times"></i></a>
+                        <?php elseif($p['statussikumbang']==1) : ?>
+                          <span class="text-success text-bold">Disetujui</span>
+                        <?php elseif($p['statussikumbang']==2) : ?>
+                          <span class="text-danger text-bold" data-toggle="tooltip" title="<?= $p['kettolaksikumbang'] ?>">Ditolak</span>
                         <?php else : ?>
                           -
                         <?php endif; ?>
                       </td>
                       <td class="aksieflpp<?= $p['uuid']; ?>">
-                        <?php if($p['submited_status']==1) : ?>
-                          <?php if($p['statuseflpp']==0 || $p['statuseflpp']==null) : ?>
-                          <a href="#" kunci="<?= $p['uuid']; ?>" class="btn btn-xs btn-success approveeflpp"><i class="fas fa-check"></i></a>
-                          <a href="#" kunci="<?= $p['uuid']; ?>" class="btn btn-xs btn-danger rejecteflpp"><i class="fas fa-times"></i></a>
-                          <?php elseif($p['statuseflpp']==1) : ?>
-                            <span class="text-success text-bold">Disetujui</span>
-                          <?php elseif($p['statuseflpp']==2) : ?>
-                            <span class="text-danger text-bold" data-toggle="tooltip" title="<?= $p['kettolakeflpp'] ?>">Ditolak</span>
-                          <?php else : ?>
-                            -
-                          <?php endif; ?>
-                        <?php elseif($p['submited_status']==2 || $p['submited_status']==3 || $p['submited_status']==4) : ?>
-                          <?php if($p['statuseflpp']==0 || $p['statuseflpp']==null) : ?>
-                            -
-                          <?php elseif($p['statuseflpp']==1) : ?>
-                            <span class="text-success text-bold">Disetujui</span>
-                          <?php elseif($p['statuseflpp']==2) : ?>
-                            <span class="text-danger text-bold" data-toggle="tooltip" title="<?= $p['kettolakeflpp'] ?>">Ditolak</span>
-                          <?php else : ?>
-                            -
-                          <?php endif; ?>
+                        <?php if($p['statuseflpp']==0 || $p['statuseflpp']==null) : ?>
+                        <a href="#" kunci="<?= $p['uuid']; ?>" class="btn btn-xs btn-success approveeflpp"><i class="fas fa-check"></i></a>
+                        <a href="#" kunci="<?= $p['uuid']; ?>" class="btn btn-xs btn-danger rejecteflpp"><i class="fas fa-times"></i></a>
+                        <?php elseif($p['statuseflpp']==1) : ?>
+                          <span class="text-success text-bold">Disetujui</span>
+                        <?php elseif($p['statuseflpp']==2) : ?>
+                          <span class="text-danger text-bold">Ditolak</span>
                         <?php else : ?>
                           -
                         <?php endif; ?>
                       </td>
                       <td class="aksisp3k<?= $p['uuid']; ?>">
-                        <?php if($p['submited_status']==1) : ?>
-                          <?php if($p['statussp3k']==0 || $p['statussp3k']==null) : ?>
-                            <a href="#" kunci="<?= $p['uuid']; ?>" class="btn btn-xs btn-success approvesp3k"><i class="fas fa-check"></i></a>
-                            <a href="#" kunci="<?= $p['uuid']; ?>" class="btn btn-xs btn-danger rejectsp3k"><i class="fas fa-times"></i></a>
-                          <?php elseif($p['statussp3k']==1) : ?>
-                            <span class="text-success text-bold">Disetujui</span>
-                          <?php elseif($p['statussp3k']==2) : ?>
-                            <span class="text-danger text-bold" data-toggle="tooltip" title="<?= $p['kettolaksp3k'] ?>">Ditolak</span>
-                          <?php else : ?>
-                            -
-                          <?php endif; ?>
-                        <?php elseif($p['submited_status']==2 || $p['submited_status']==3 || $p['submited_status']==4) : ?>
-                          <?php if($p['statussp3k']==0 || $p['statussp3k']==null) : ?>
-                            -
-                          <?php elseif($p['statussp3k']==1) : ?>
-                            <span class="text-success text-bold">Disetujui</span>
-                          <?php elseif($p['statussp3k']==2) : ?>
-                            <span class="text-danger text-bold" data-toggle="tooltip" title="<?= $p['kettolaksp3k'] ?>">Ditolak</span>
-                          <?php else : ?>
-                            -
-                          <?php endif; ?>
+                        <?php if($p['statussp3k']==0 || $p['statussp3k']==null) : ?>
+                        <a href="#" kunci="<?= $p['uuid']; ?>" class="btn btn-xs btn-success approvesp3k"><i class="fas fa-check"></i></a>
+                        <a href="#" kunci="<?= $p['uuid']; ?>" class="btn btn-xs btn-danger rejectsp3k"><i class="fas fa-times"></i></a>
+                        <?php elseif($p['statussp3k']==1) : ?>
+                          <span class="text-success text-bold">Disetujui</span>
+                        <?php elseif($p['statussp3k']==2) : ?>
+                          <span class="text-danger text-bold">Ditolak</span>
+                        <?php else : ?>
+                          -
+                        <?php endif; ?>
+                      </td>
+                      <td class="aksiapprover<?= $p['uuid']; ?>">
+                        <?php if($p['statusapprover']==0 || $p['statusapprover']==null) : ?>
+                        <a href="#" kunci="<?= $p['uuid']; ?>" class="btn btn-xs btn-success approveapprover"><i class="fas fa-check"></i></a>
+                        <a href="#" kunci="<?= $p['uuid']; ?>" class="btn btn-xs btn-danger rejectapprover"><i class="fas fa-times"></i></a>
+                        <?php elseif($p['statusapprover']==1) : ?>
+                          <span class="text-success text-bold">Disetujui</span>
+                        <?php elseif($p['statusapprover']==2) : ?>
+                          <span class="text-danger text-bold">Ditolak</span>
                         <?php else : ?>
                           -
                         <?php endif; ?>
@@ -305,6 +262,19 @@
             var uuid = $(this).attr('kunci');
             var csrfHash = $(this).closest('tr').find('.csrf').val();
             reject(uuid, csrfHash, 'sp3k', 'reject');
+        });
+
+        $(".approveapprover").click(function(e) {
+            e.preventDefault();
+            var uuid = $(this).attr('kunci');
+            var csrfHash = $(this).closest('tr').find('.csrf').val();
+            approve(uuid, csrfHash, 'approver', 'approve');
+        });
+        $(".rejectapprover").click(function(e) {
+            e.preventDefault();
+            var uuid = $(this).attr('kunci');
+            var csrfHash = $(this).closest('tr').find('.csrf').val();
+            reject(uuid, csrfHash, 'approver', 'reject');
         });
 
         function approve(uuid, csrfHash, type, action) {

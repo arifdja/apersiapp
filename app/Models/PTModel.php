@@ -8,7 +8,6 @@ class PTModel extends Model
 	protected $primariKey = 'id';
 	protected $returnType = 'array';
 	protected $useTimestamps = true;
-    protected $useSoftDeletes = true; 
     protected $allowedFields = 
     [
         'uuid',
@@ -45,6 +44,9 @@ class PTModel extends Model
         $builder->join('ref_bank','ref_bank.kodebank = ref_pt.kodebank','left');
         if($uuiddeveloper != null){
             $builder->where('uuiddeveloper',$uuiddeveloper);
+        }
+        if(session()->get('kdgrpuser') == "approver"){
+            $builder->where('statusvalidator', 1);
         }
         $builder->orderBy('ref_pt.updated_at','DESC');
         return $builder->get()->getResultArray();

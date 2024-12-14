@@ -464,9 +464,6 @@ class Developer extends BaseController
                 "berkasktppj" => $datapt['berkasktppj'],
                 "npwppj" => $datapt['npwppj'],
                 "berkasnpwppj" => $datapt['berkasnpwppj'],
-                "submited_status" => 1,
-                "submited_time" => date('Y-m-d H:i:s'),
-                "submited_by" => session()->get('uuid'),
             ];
 
             $headerpengajuan = new PengajuanModel();
@@ -562,11 +559,20 @@ class Developer extends BaseController
         $menu = getMenu();
 
         $uuid = $this->request->getGet('uuid');
+        $model = new PengajuanModel();
+        $pengajuan = $model->where('uuid',$uuid)->first();
+
+        if(empty($pengajuan)){
+            return redirect()->to(site_url('developer/monitoring_pengajuan_dana'))->with('error','Data tidak ditemukan');
+        }
+        $tampilkan = false;
+        if($pengajuan['submited_status'] == 0 || $pengajuan['submited_status'] == 2){
+            $tampilkan = true;
+        }
 
         $model = new PengajuanDetailModel();
         $pengajuandetail = $model->getPengajuanUnit($uuid);
 
-        // dd($pengajuandetail);
 
         $data = [
             'title' => 'Data Unit',
@@ -574,6 +580,7 @@ class Developer extends BaseController
             'stringmenu' => $menu, 
             'uuidheader' => $uuid,
             'pengajuandetail' => $pengajuandetail,
+            'tampilkan' => $tampilkan,
         ];
         return view('developer/v_detail_pengajuan_dana',$data);
     }
@@ -1348,7 +1355,7 @@ class Developer extends BaseController
             return $this->response->setJSON([
                 'status' => 'error',
                 'message' => 'Jumlah unit tidak boleh 0',
-                'csrfName' => csrf_token(),
+                'csrfToken' => csrf_token(),
                 'csrfHash' => csrf_hash()
             ])->setStatusCode(400);
         }
@@ -1359,7 +1366,7 @@ class Developer extends BaseController
             return $this->response->setJSON([
                 'status' => 'error',
                 'message' => 'UUID tidak ditemukan',
-                'csrfName' => csrf_token(),
+                'csrfToken' => csrf_token(),
                 'csrfHash' => csrf_hash()
             ])->setStatusCode(400);
         }
@@ -1367,6 +1374,10 @@ class Developer extends BaseController
         try {
 
             $data = [
+                'statusvalidator' => null,
+                'validate_at' => null,
+                'validate_by' => null,
+                'keteranganpenolakan' => null,
                 'submited_status' => 1,
                 'submited_time' => date('Y-m-d H:i:s'),
                 'submited_by' => session()->get('uuid')
@@ -1379,18 +1390,52 @@ class Developer extends BaseController
                 return $this->response->setJSON([
                     'status' => 'error',
                     'message' => 'Gagal mengubah status header',
-                    'csrfName' => csrf_token(),
+                    'csrfToken' => csrf_token(),
                     'csrfHash' => csrf_hash()
                 ])->setStatusCode(400);
             }
 
+            $datadetail = [
+                'statusvalidator' => 0,
+                'validated_at' => null,
+                'validated_by' => null,
+                'keteranganpenolakan' => null,
+                'statussikumbang' => 0,
+                'validated_sikumbang_at' => null,
+                'validated_sikumbang_by' => null,
+                'kettolaksikumbang' => null,
+                'statuseflpp' => 0,
+                'validated_eflpp_at' => null,
+                'validated_eflpp_by' => null,
+                'kettolakeflpp' => null,
+                'statussp3k' => 0,
+                'validated_sp3k_at' => null,
+                'validated_sp3k_by' => null,
+                'kettolaksp3k' => null,
+                'submited_status' => 1,
+                'submited_time' => date('Y-m-d H:i:s'),
+                'submited_by' => session()->get('uuid')
+            ];
+
             $modelDetail = new PengajuanDetailModel();
-            $update = $modelDetail->where('uuidheader', $uuid)->set($data)->update();
+            $setClause = [];
+            foreach ($datadetail as $key => $value) {
+                $setClause[] = "$key = " . (is_string($value) ? ($value === null ? "NULL" : "'$value'") : ($value === null ? "NULL" : $value));
+            }
+            $setString = implode(", ", $setClause);
+            
+            $sql = "UPDATE trx_pengajuan_detail 
+                    SET $setString
+                    WHERE uuidheader = '$uuid'
+                    AND (CONCAT(statusvalidator,statussikumbang,statuseflpp,statussp3k) != '1111')";
+                    
+            $update = $modelDetail->query($sql);
+
             if (!$update) {
                 return $this->response->setJSON([
                     'status' => 'error',
                     'message' => 'Gagal mengubah status detail',
-                    'csrfName' => csrf_token(),
+                    'csrfToken' => csrf_token(),
                     'csrfHash' => csrf_hash()
                 ])->setStatusCode(400);
             }
@@ -1399,7 +1444,7 @@ class Developer extends BaseController
             return $this->response->setJSON([
                 'status' => 'success',
                 'message' => 'Dana berhasil di ajukan. Mohon tunggu konfirmasi admin',
-                'csrfName' => csrf_token(),
+                'csrfToken' => csrf_token(),
                 'csrfHash' => csrf_hash()
             ]);
 
@@ -1407,7 +1452,7 @@ class Developer extends BaseController
             return $this->response->setJSON([
                 'status' => 'error',
                 'message' => $e->getMessage(),
-                'csrfName' => csrf_token(),
+                'csrfToken' => csrf_token(),
                 'csrfHash' => csrf_hash()
             ])->setStatusCode(400);
         }

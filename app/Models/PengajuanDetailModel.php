@@ -8,7 +8,6 @@ class PengajuanDetailModel extends Model
 	protected $primariKey = 'uuid';
 	protected $returnType = 'array';
 	protected $useTimestamps = true;
-    protected $useSoftDeletes = true; 
     protected $allowedFields = [
         'uuidheader',
         'uuid',
@@ -70,7 +69,6 @@ class PengajuanDetailModel extends Model
         $builder->join('ref_kota','ref_kota.id = SUBSTR(trx_pengajuan_detail.alamatref,1,6)','left');
         $builder->join('ref_kecamatan','ref_kecamatan.id = SUBSTR(trx_pengajuan_detail.alamatref,1,10)','left');
         $builder->where('uuidheader',$uuid);
-        $builder->where('trx_pengajuan_detail.deleted_at',null);
         return $builder->get()->getResultArray();
     }
     

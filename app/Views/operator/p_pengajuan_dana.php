@@ -49,7 +49,8 @@
                       <th>Pinjaman KPL</th>
                       <th>Pinjaman KYG</th>
                       <th>Pinjaman Lain</th>
-                      <th>Total Disetujui</th>
+                      <th>Disetujui Operator</th>
+                      <th>Disetujui Approver</th>
                       <th>Aksi</th>
                       </tr>
                     </thead>
@@ -60,27 +61,51 @@
                     <input type="hidden" class="csrf" name="<?= csrf_token() ?>" value="<?= csrf_hash() ?>" />
                         <td><?= $key+1; ?>.</td>
                         <td>
-                        <a href="<?= site_url('operator/approval_unit?uuid='.$p['uuid']) ?>" class="btn btn-xs btn-info"><i class="fa fa-eye"></i></a>
-                      </td>
-                      <td><?= $p['namapt'] ?></td>
-                      <td><a href="<?= base_url() ?>/download/surat_permohonan/<?= $p['berkassuratpermohonan'] ?>" target="_blank"><?= $p['suratpermohonan'] ?></a></td>
-                      <td><?= $p['namadpd'] ?></td>
-                      <td><?= $p['namaprovinsi'] ?> - <?= $p['namakabupaten'] ?> - <?= $p['namakecamatan'] ?></td>
-                      <td><?= $p['alamatperumahaninput'] ?></td>
-                      <td><a href="<?= base_url() ?>/download/site_plan/<?= $p['berkassiteplan'] ?>" target="_blank">Lihat</a></td>
-                      <td><?= $p['jumlahunitinput'] ?></td>
-                      <td align="right"><?= number_format($p['totalhargasp3k'],0,',','.') ?></td>
-                      <td align="right"><?= number_format($p['totaldanatalangan'],0,',','.') ?></td>
-                      <td align="right"><?= number_format($p['totalpinjamankpl'],0,',','.') ?></td>
-                      <td align="right"><?= number_format($p['totalpinjamankyg'],0,',','.') ?></td>
-                      <td align="right"><?= number_format($p['totalpinjamanlain'],0,',','.') ?></td>
-                      <td align="right"><?= number_format($p['totaldisetujui'],0,',','.') ?></td>
+                        <?php if(session()->get('kdgrpuser')=='approver') : ?>
+                          <a href="<?= site_url('approver/approval_unit?uuid='.$p['uuid']) ?>" class="btn btn-xs btn-info"><i class="fa fa-eye"></i></a>
+                        <?php elseif(session()->get('kdgrpuser')=='operator') : ?>
+                          <a href="<?= site_url('operator/approval_unit?uuid='.$p['uuid']) ?>" class="btn btn-xs btn-info"><i class="fa fa-eye"></i></a>
+                        <?php endif; ?>
+                        </td>
+                        <td><?= $p['namapt'] ?></td>
+                        <td><a href="<?= base_url() ?>/download/surat_permohonan/<?= $p['berkassuratpermohonan'] ?>" target="_blank"><?= $p['suratpermohonan'] ?></a></td>
+                        <td><?= $p['namadpd'] ?></td>
+                        <td><?= $p['namaprovinsi'] ?> - <?= $p['namakabupaten'] ?> - <?= $p['namakecamatan'] ?></td>
+                        <td><?= $p['alamatperumahaninput'] ?></td>
+                        <td><a href="<?= base_url() ?>/download/site_plan/<?= $p['berkassiteplan'] ?>" target="_blank">Lihat</a></td>
+                        <td><?= $p['jumlahunitinput'] ?></td>
+                        <td align="right"><?= number_format($p['totalhargasp3k'],0,',','.') ?></td>
+                        <td align="right"><?= number_format($p['totaldanatalangan'],0,',','.') ?></td>
+                        <td align="right"><?= number_format($p['totalpinjamankpl'],0,',','.') ?></td>
+                        <td align="right"><?= number_format($p['totalpinjamankyg'],0,',','.') ?></td>
+                        <td align="right"><?= number_format($p['totalpinjamanlain'],0,',','.') ?></td>
+                        <td align="right"><?= number_format($p['totaldisetujuioperator'],0,',','.') ?></td>
+                        <td align="right"><?= number_format($p['totaldisetujuiapprover'],0,',','.') ?></td>
                         <td class="aksi<?= $p['uuid']; ?>">
-                          <?php if($p['statusvalidator']==0 || $p['statusvalidator']==null) : ?>
-                          <a href="#" kunci="<?= $p['uuid']; ?>" class="btn btn-xs btn-success approve"><i class="fas fa-check"></i></a>
-                          <a href="#" kunci="<?= $p['uuid']; ?>" class="btn btn-xs btn-danger reject"><i class="fas fa-times"></i></a>
-                          <?php else : ?>
-                            -
+                          <?php if(session()->get('kdgrpuser')=='operator') : ?>
+                                    <?php if($p['submited_status']==1) : ?>
+                                      <?php if($p['jumlahunitinput']==$p['totaldisetujuioperator'] && $p['totaldisetujuioperator']>0) : ?>
+                                      <a href="#" kunci="<?= $p['uuid']; ?>" class="badge badge-success teruskan">Teruskan</a>
+                                      <?php elseif($p['jumlahunitinput']!=$p['totaldisetujuioperator']) : ?>
+                                        <a href="#" kunci="<?= $p['uuid']; ?>" class="badge badge-danger kembalikan">Kembalikan</a>
+                                      <?php else : ?>
+                                        -
+                                      <?php endif; ?>
+                                    <?php elseif($p['submited_status']==3) : ?>
+                                      <span class="badge badge-success">Proses Persetujuan</span>
+                                    <?php elseif($p['submited_status']==4) : ?>
+                                      <span class="badge badge-success">Disetujui</span>
+                                    <?php else: ?>
+                                      -
+                                    <?php endif; ?>
+                          <?php elseif(session()->get('kdgrpuser')=='approver') : ?>
+                                    <?php if($p['submited_status']==3) : ?>
+                                      <a href="#" kunci="<?= $p['uuid']; ?>" class="badge badge-success setujui">Proses Persetujuan</a>
+                                    <?php elseif($p['submited_status']==4) : ?>
+                                      <span class="badge badge-success">Disetujui</span>
+                                    <?php else: ?>
+                                      -
+                                    <?php endif; ?>
                           <?php endif; ?>
                         </td>
                       </tr>
@@ -140,105 +165,130 @@
   });
 </script>
 <script>
-  $(document).ready(function(){
+  $(document).ready(function() {
 
-    $(".approve").click(function(e){
-        e.preventDefault();
-        var uuid = $(this).attr('kunci');
-        var csrfHash = $(this).closest('tr').find('.csrf').val();
-        
-        $.ajax({
-          type: "post",
-          headers: {'X-Requested-With': 'XMLHttpRequest'},
-          url: "<?= base_url(); ?>/operator/do_approve_pt",
-          data: {
-            csrf_test_name:csrfHash,
-            uuid:uuid
-          },
-          dataType: "json",
-          success: function (response) {
-            if(response.status == 'success'){
-              $(".csrf").val(response.csrf);
-              $(".statusvalidator"+response.uuid).html('Approved');
-              $(".aksi"+response.uuid).html('-');
-              Swal.fire({
-                icon: 'success',
-                title: 'Pendaftaran PT berhasil disetujui!',
-                text: response.message,
-              });
-            }
-          },
-          error: function (xhr, status, error) {
-            $(".csrf").val(xhr.responseJSON.csrf);
+    // Handle teruskan button click
+    $(".kembalikan").click(function(e) {
+      e.preventDefault();
+      var uuid = $(this).attr('kunci');
+      var csrfHash = $(".csrf").val();
+      var csrfToken = $(".csrf").attr('name');
+      
+      $.ajax({
+        type: "post",
+        headers: {'X-Requested-With': 'XMLHttpRequest'},
+        url: "<?= base_url(); ?>/operator/kembalikan_pengajuan_dana",
+        data: {
+          [csrfToken]: csrfHash,
+          uuid: uuid,
+        },
+        dataType: "json",
+        success: function(response) {
+          if(response.status == 'success') {
+            $(".csrf").val(response.csrfHash);
+            $(".csrf").attr('name',response.csrfToken);
+            $(".aksi"+response.uuid).html('-');
             Swal.fire({
-              icon: 'error',
-              title: 'Oops...',
-              text: 'Pendaftaran PT gagal disetujui!',
+              icon: 'success',
+              title: 'Sukses',
+              text: response.message
             });
           }
-        });
-
-    });
-
-    $(".reject").click(function(e){
-      e.preventDefault();
-      
-    Swal.fire({
-        text: "Keterangan penolakan",
-        input: 'textarea',
-        showCancelButton: true,
-        confirmButtonColor: "#DC3545",  
-        confirmButtonText: "Tolak"      
-    }).then((result) => {
-        if (result.value) {
-            var uuid = $(this).attr('kunci');
-            var csrfHash = $(this).closest('tr').find('.csrf').val();
-            var keteranganpenolakan = result.value;
-
-            Swal.fire({
-                title: 'Mohon tunggu...',
-                text: 'Sedang memproses data',
-                allowOutsideClick: false,
-                allowEscapeKey: false,
-                showConfirmButton: false,
-                didOpen: () => {
-                    Swal.showLoading();
-                }
-            });
-
-            $.ajax({
-                type: "post", 
-                headers: {'X-Requested-With': 'XMLHttpRequest'},
-                url: "<?= base_url(); ?>/operator/dont_approve_pt",
-                data: {
-                csrf_test_name:csrfHash,
-                uuid:uuid,
-                keteranganpenolakan:keteranganpenolakan
-                },  
-                dataType: "json",
-                success: function (response) {
-                if(response.status == 'success'){
-                    $(".csrf").val(response.csrf);
-                    $(".aksi"+response.uuid).html('-');
-                    Swal.fire({
-                    icon: 'success',
-                    title: 'Pendaftaran PT berhasil ditolak!',
-                    text: response.message,
-                    });
-                }
-                },
-                error: function (xhr, status, error) {
-                $(".csrf").val(xhr.responseJSON.csrf);
-                Swal.fire({   
-                    icon: 'error',
-                    title: 'Oops...',   
-                    text: 'Pendaftaran PT gagal ditolak!',
-                });
-                }
-            }); 
+        },
+        error: function(xhr, status, error) {
+          $(".csrf").val(xhr.responseJSON.csrfHash);
+          $(".csrf").attr('name',xhr.responseJSON.csrfToken);
+          Swal.fire({
+            icon: 'error',
+            title: 'Gagal',
+            text: response.message
+          });
         }
+      });
     });
+
+    // Handle kembalikan button click  
+    $(".teruskan").click(function(e) {
+      e.preventDefault();
+      var uuid = $(this).attr('kunci');
+      var csrfHash = $(".csrf").val();
+      var csrfToken = $(".csrf").attr('name');
+      
+      $.ajax({
+        type: "post", 
+        headers: {'X-Requested-With': 'XMLHttpRequest'},
+        url: "<?= base_url(); ?>/operator/teruskan_pengajuan_dana",
+        data: {
+          [csrfToken]: csrfHash,
+          uuid: uuid,
+        },
+        dataType: "json",
+        success: function(response) {
+          if(response.status == 'success') {
+            $(".csrf").val(response.csrfHash);
+            $(".csrf").attr('name',response.csrfToken);
+            $(".aksi"+response.uuid).html('-');
+            Swal.fire({
+              icon: 'success',
+              title: 'Sukses',
+              text: response.message
+            });
+          }
+        },
+        error: function(xhr, status, error) {
+          $(".csrf").val(xhr.responseJSON.csrfHash);
+          $(".csrf").attr('name',xhr.responseJSON.csrfToken);
+          Swal.fire({
+            icon: 'error',
+            title: 'Gagal',
+            text: response.message
+          });
+        }
+      });
+    });
+
+
+    
+    // Handle teruskan button click
+    $(".setujui").click(function(e) {
+      e.preventDefault();
+      var uuid = $(this).attr('kunci');
+      var csrfHash = $(".csrf").val();
+      var csrfToken = $(".csrf").attr('name');
+      
+      $.ajax({
+        type: "post",
+        headers: {'X-Requested-With': 'XMLHttpRequest'},
+        url: "<?= base_url(); ?>/approver/setujui_pengajuan_dana",
+        data: {
+          [csrfToken]: csrfHash,
+          uuid: uuid,
+        },
+        dataType: "json",
+        success: function(response) {
+          if(response.status == 'success') {
+            $(".csrf").val(response.csrfHash);
+            $(".csrf").attr('name',response.csrfToken);
+            $(".aksi"+response.uuid).html('<span class="badge badge-success">Disetujui</span>');
+            Swal.fire({
+              icon: 'success',
+              title: 'Sukses',
+              text: response.message
+            });
+          }
+        },
+        error: function(xhr, status, error) {
+          $(".csrf").val(xhr.responseJSON.csrfHash);
+          $(".csrf").attr('name',xhr.responseJSON.csrfToken);
+          Swal.fire({
+            icon: 'error',
+            title: 'Gagal',
+            text: response.message
+          });
+        }
+      });
+    });
+
   });
-}); 
 </script>
 <?= $this->endSection(); ?>

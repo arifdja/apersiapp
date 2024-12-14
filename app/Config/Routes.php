@@ -59,7 +59,9 @@ $routes->post('/operator/do_approve_unit/(:any)/(:any)', 'Operator::do_approve_u
 $routes->post('/operator/do_reject_unit/(:any)/(:any)', 'Operator::do_reject_unit/$1/$2',['filter' => 'auth']);
 $routes->get('/operator/approval_dana/(:any)', 'Operator::approval_dana/$1',['filter' => 'auth']);
 $routes->get('/operator/dashboard', 'Operator::dashboard',['filter' => 'auth']);
-
+$routes->post('/operator/proses_pengajuan_dana', 'Operator::proses_pengajuan_dana',['filter' => 'auth']);   
+$routes->post('/operator/kembalikan_pengajuan_dana', 'Operator::kembalikan_pengajuan_dana',['filter' => 'auth']);   
+$routes->post('/operator/teruskan_pengajuan_dana', 'Operator::teruskan_pengajuan_dana',['filter' => 'auth']);   
 
 
 
@@ -78,3 +80,7 @@ $routes->get('/approver', 'Approver::index',['filter' => 'auth']);
 $routes->get('/approver/list_developer', 'Approver::list_developer',['filter' => 'auth']);
 $routes->get('/approver/developer', 'Approver::developer',['filter' => 'auth']);
 $routes->get('/approver/pt', 'Approver::pt',['filter' => 'auth']);
+$routes->get('/approver/approval_dana/(:any)', 'Approver::approval_dana/$1',['filter' => 'auth']);
+$routes->get('/approver/dashboard', 'Approver::dashboard',['filter' => 'auth']);
+$routes->post('/approver/setujui_pengajuan_dana', 'Approver::setujui_pengajuan_dana',['filter' => 'auth']);
+$routes->get('/approver/approval_unit', 'Approver::approval_unit',['filter' => 'auth']);

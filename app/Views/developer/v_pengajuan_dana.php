@@ -38,6 +38,7 @@
                       <th>Pinjaman<br> KPL</th>
                       <th>Pinjaman<br> KYG</th>
                       <th>Pinjaman<br> Lain</th>
+                      <th>Status</th>
                       <th>Aksi</th>
                     </tr>
                     <input type="hidden" class="csrf_hash" name="<?= csrf_hash() ?>" value="<?= csrf_hash() ?>" />
@@ -65,14 +66,31 @@
                       <td align="right"><?= number_format($p['totalpinjamankyg'],0,',','.') ?></td>
                       <td align="right"><?= number_format($p['totalpinjamanlain'],0,',','.') ?></td>
                       <td id="ajukan_dana<?= $p['uuid'] ?>">
+                      <?php if($p['submited_status'] == 0 || $p['submited_status'] == ''): ?>
+                        <span class="badge bg-success">Simpan</span>
+                        <?php elseif($p['submited_status'] == 1): ?>
+                        <span class="badge bg-success">Proses Pengecekan</span>
+                        <?php elseif($p['submited_status'] == 2): ?>
+                        <span class="badge bg-danger">Dikembalikan</span>
+                        <?php elseif($p['submited_status'] == 3): ?>
+                        <span class="badge bg-success">Proses Persetujuan</span>
+                        <?php elseif($p['submited_status'] == 4): ?>
+                        <span class="badge bg-success">Disetujui</span>
+                        <?php else: ?>
+                          -
+                        <?php endif; ?>
+                      </td>
+                      <td id="aksi_ajukan_dana<?= $p['uuid'] ?>">
                         <?php if($p['submited_status'] == 0 || $p['submited_status'] == ''): ?>
                         <button class="btn btn-xs btn-info ajukan_dana">Ajukan</button>
                         <?php elseif($p['submited_status'] == 1): ?>
-                        <span class="badge bg-success">Proses</span>
+                        -
                         <?php elseif($p['submited_status'] == 2): ?>
-                        <span class="badge bg-danger">Ditolak</span>
+                          <button class="btn btn-xs btn-info ajukan_dana">Ajukan</button>
                         <?php elseif($p['submited_status'] == 3): ?>
-                        <span class="badge bg-success">Disetujui</span>
+                        -
+                        <?php elseif($p['submited_status'] == 4): ?>
+                        -
                         <?php else: ?>
                           -
                         <?php endif; ?>
@@ -124,7 +142,8 @@
             $(".csrf_hash").val(response.csrfHash);
             $(".csrf_token").val(response.csrfToken);
             $("#ajukan_dana"+uuid).html('<span class="badge bg-success">Proses</span>');
-            Swal.fire({
+            $("#aksi_ajukan_dana"+uuid).html('-');
+            Swal.fire({ 
               icon: 'success',
               title: 'Berhasil',
               text: response.message,
@@ -138,7 +157,7 @@
           }
           Swal.fire({
             icon: 'error', 
-            title: 'Oops...',
+            title: 'Gagal',
             text: 'Dana gagal di ajukan. Mohon coba lagi',
           });
         }

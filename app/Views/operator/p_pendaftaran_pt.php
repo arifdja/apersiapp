@@ -44,7 +44,9 @@
                         <th>Bank</th>
                         <th>Rekening</th>
                         <th>Alamat</th>
-                        <th>Aksi</th>
+                        <?php if(session()->get('kdgrpuser') == "operator") : ?>
+                            <th>Aksi</th>
+                        <?php endif; ?>
                       </tr>
                     </thead>
                     <tbody>
@@ -61,6 +63,7 @@
                         <td><?= $p['kodebank'] ?> - <?= $p['namabank'] ?></td>
                         <td><a href="<?= base_url() ?>/download/rekening/<?= $p['berkasrekening'] ?>" target="_blank"><?= $p['rekening'] ?></a></td>
                         <td><?= $p['namaprovinsi'] ?> - <?= $p['namakabupaten'] ?> - <?= $p['namakecamatan'] ?> - <?= $p['alamatinput'] ?></td>
+                        <?php if(session()->get('kdgrpuser') == "operator") : ?>
                         <td class="aksi<?= $p['uuid']; ?>">
                           <?php if($p['statusvalidator']==0 || $p['statusvalidator']==null) : ?>
                           <a href="#" kunci="<?= $p['uuid']; ?>" kuncideveloper="<?= $p['uuiddeveloper']; ?>" class="btn btn-xs btn-success approve"><i class="fas fa-check"></i></a>
@@ -71,6 +74,7 @@
                             <span class="badge bg-danger">Ditolak</span>  
                           <?php endif; ?>
                         </td>
+                        <?php endif; ?>
                       </tr>
                     <?php endforeach; ?>
                     </tbody>

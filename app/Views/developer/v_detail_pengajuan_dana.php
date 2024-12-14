@@ -16,7 +16,12 @@
           <div class="col-md-12">
             <div class="card">
               <div class="card-header">
-                <button class="btn btn-info btn-xs" onclick="window.location.href='<?= site_url('developer/form_tambah_unit?uuidheader='.$uuidheader) ?>'">Tambah Unit yang diagunkan</button>
+              <div class="card-tools" style="margin: 0px;"><button class="btn btn-xs btn-success" id="excel"><i class="fas fa-excel"></i>Download Excel</button></div>
+                <?php if($tampilkan) : ?>
+                  <div class="card-title">
+                    <button class="btn btn-info btn-xs" onclick="window.location.href='<?= site_url('developer/form_tambah_unit?uuidheader='.$uuidheader) ?>'">Tambah Unit yang diagunkan</button>
+                  </div>
+                <?php endif; ?>
               </div>
               <!-- /.card-header -->
               <div class="card-body table-responsive p-2">
@@ -46,18 +51,46 @@
                       <td>
                         <?php if(($p['submited_status'] == '1')) { ?>
                           -
-                        <?php } else { ?>
+                        <?php } elseif($p['submited_status'] == '2' && ($p['statusvalidator'] != 1 || $p['statussikumbang'] != 1 || $p['statuseflpp'] != 1 || $p['statussp3k'] != 1)) { ?>
                           <a href="<?= site_url('developer/form_edit_unit?uuidheader='.$p['uuidheader'].'&uuid='.$p['uuid']) ?>" class="btn btn-info btn-xs"><i class="fas fa-edit"></i></a>
                           <button onclick="deleteUnit('<?= $p['uuid'] ?>')" class="btn btn-danger btn-xs">
                             <i class="fas fa-trash"></i>
                           </button>
+                        <?php } elseif($p['submited_status'] == '3') { ?>
+                          -
+                        <?php } elseif($p['submited_status'] == '4') { ?>
+                          -
+                        <?php } else { ?>
+                          -
                         <?php } ?>
                       </td>
                       <td>
-                        <?= ($p['submited_status'] == '0' || $p['submited_status'] == '') ? '<span class="badge bg-warning">Simpan</span>' : '' ?>
-                        <?= ($p['submited_status'] == '1') ? '<span class="badge bg-success">Proses</span>' : 'Proses' ?>
-                        <?= ($p['submited_status'] == '2') ? '<span class="badge bg-danger">Ditolak</span>' : 'Ditolak' ?>
-                        <?= ($p['submited_status'] == '3') ? '<span class="badge bg-success">Disetujui</span>' : 'Disetujui' ?>
+                        <?php if($p['submited_status'] == '0' || $p['submited_status'] == '') { ?>
+                          <span class="badge bg-success">Simpan</span>
+                        <?php } elseif($p['submited_status'] == '1') { ?>
+                          <span class="badge bg-success">Proses Pengecekan</span>
+                        <?php } elseif($p['submited_status'] == '2' && ($p['statusvalidator'] != 1 || $p['statussikumbang'] != 1 || $p['statuseflpp'] != 1 || $p['statussp3k'] != 1)) { ?>
+                            <?php if (!empty($p['keteranganpenolakan'])) : ?>
+                              <strong>Ditolak DPD/DPP/Korwil:</strong><?= $p['keteranganpenolakan'].".<br>" ?>
+                            <?php endif; ?>
+                            <?php if (!empty($p['kettolaksikumbang'])) : ?>
+                              <strong>Sikumbang:</strong> <?= $p['kettolaksikumbang'].".<br>" ?>
+                            <?php endif; ?>
+                            <?php if (!empty($p['kettolakeflpp'])) : ?>
+                              <strong>EFLPP:</strong> <?= $p['kettolakeflpp'].".<br>" ?>
+                            <?php endif; ?>
+                            <?php if (!empty($p['kettolaksp3k'])) : ?>
+                              <strong>SP3K:</strong> <?= $p['kettolaksp3k'].".<br>" ?>
+                            <?php endif; ?>
+                        <?php } elseif($p['submited_status'] == '2' && $p['statusvalidator'] == 1 && $p['statussikumbang'] == 1 && $p['statuseflpp'] == 1 && $p['statussp3k'] == 1) { ?>
+                          <span class="badge bg-success">Disetujui</span>
+                        <?php } elseif($p['submited_status'] == '3') { ?>
+                          <span class="badge bg-success">Proses Persetujuan</span>
+                        <?php } elseif($p['submited_status'] == '4') { ?>
+                          <span class="badge bg-success">Disetujui</span>
+                        <?php } else { ?>
+                          -
+                        <?php } ?>
                       </td>
                       <td><a href="<?= base_url() ?>/download/sertifikat/<?= $p['berkassertifikat'] ?>" target="_blank"><?= $p['sertifikat'] ?></a></td>
                       <td><a href="<?= base_url() ?>/download/pbb/<?= $p['berkaspbb'] ?>" target="_blank"><?= $p['pbb'] ?></a></td>

@@ -13,11 +13,16 @@ class UserModel extends Model
    
 	function getDeveloper()
 	{
-		return $this->select('users.uuid,users.email,users.notelp,users.nama,users.alamatinput,users.kta,users.berkaskta,users.kodepos,users.statusvalidator,ref_provinsi.namaprovinsi as provinsi,ref_kabupaten.namakabupaten as kabupaten,ref_kota.namakota as kota,ref_kecamatan.namakecamatan as kecamatan')
-		->join('ref_provinsi','ref_provinsi.id = substr(users.alamatref,1,2)')
-		->join('ref_kabupaten','ref_kabupaten.id = substr(users.alamatref,1,4)')
-		->join('ref_kota','ref_kota.id = substr(users.alamatref,1,6)')
-		->join('ref_kecamatan','ref_kecamatan.id = substr(users.alamatref,1,10)')
-		->where('users.kdgrpuser','developer')->findAll();
+		$builder = $this->db->table('users');
+		$builder->select('users.uuid,users.email,users.notelp,users.nama,users.alamatinput,users.kta,users.berkaskta,users.kodepos,users.statusvalidator,ref_provinsi.namaprovinsi as provinsi,ref_kabupaten.namakabupaten as kabupaten,ref_kota.namakota as kota,ref_kecamatan.namakecamatan as kecamatan');
+		$builder->join('ref_provinsi','ref_provinsi.id = substr(users.alamatref,1,2)');
+		$builder->join('ref_kabupaten','ref_kabupaten.id = substr(users.alamatref,1,4)');
+		$builder->join('ref_kota','ref_kota.id = substr(users.alamatref,1,6)');
+		$builder->join('ref_kecamatan','ref_kecamatan.id = substr(users.alamatref,1,10)');
+		$builder->where('users.kdgrpuser', 'developer');
+		if(session()->get('kdgrpuser') == "approver"){
+			$builder->where('users.statusvalidator', 1);
+		}
+		return $builder->get()->getResultArray();
 	}
 }

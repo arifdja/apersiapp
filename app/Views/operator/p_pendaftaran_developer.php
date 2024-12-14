@@ -41,7 +41,9 @@
                         <th>No Telp</th>
                         <th>Alamat</th>
                         <th>KTA</th>
-                        <th class="noExl">Aksi</th>
+                        <?php if(session()->get('kdgrpuser') == "operator") : ?>
+                            <th class="noExl">Aksi</th>
+                        <?php endif; ?>
                       </tr>
                     </thead>
                     <tbody>
@@ -55,6 +57,7 @@
                         <td><?= $value['notelp']; ?></td>
                         <td><?= $value['alamatinput']; ?>, <?= $value['kecamatan']; ?>, <?= $value['kota']; ?>, <?= $value['kabupaten']; ?>, <?= $value['provinsi']; ?>, kodepos <?= $value['kodepos']; ?></td>
                         <td><a href="<?= base_url() ?>/download/kta/<?= $value['berkaskta']; ?>" target="_blank"><?= $value['kta']; ?></a></td>
+                        <?php if(session()->get('kdgrpuser') == "operator") : ?>
                         <td statusvalidator<?= $value['uuid']; ?>>
                             <?php if ($value['statusvalidator']==0 || $value['statusvalidator']==null) : ?>
                               <a href="#" kunci="<?= $value['uuid']; ?>" class="btn btn-xs btn-success approve"><i class="fas fa-check"></i></a>
@@ -65,6 +68,7 @@
                                 <span class="badge bg-danger">Ditolak</span>  
                             <?php endif; ?>
                         </td>
+                        <?php endif; ?>
                       </tr>
                     <?php endforeach; ?>
                     </tbody>

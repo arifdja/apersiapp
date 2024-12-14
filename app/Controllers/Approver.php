@@ -46,17 +46,16 @@ class Approver extends BaseController
     public function developer()
     {
 		$menu = getMenu();
-        $userModel = new UserModel();
-        $developer = $userModel->getDeveloper();
-        
-        $data = [
-			'title' => 'Daftar Developer',
-			'breadcrumb' => ['Persetujuan','Pengajuan Dana'],
-			'stringmenu' => $menu, 
-            'result' => $developer
-        ];
+        $model = new UserModel();
+        $developer = $model->getDeveloper();
 
-        return view('approver/list_developer', $data);
+        $data = [
+			'title' => 'Developer',
+			'breadcrumb' => ['Data','Developer'],
+			'stringmenu' => $menu, 
+            'result' => $developer,
+        ];
+        return view('operator/p_pendaftaran_developer',$data);
     }
 
     public function pt()
@@ -66,12 +65,143 @@ class Approver extends BaseController
         $pt = $model->getPengajuanPT();
 
         $data = [
-			'title' => 'Persetujuan Pendaftaran PT',
-			'breadcrumb' => ['Persetujuan','Pendaftaran PT'],
+			'title' => 'PT',
+			'breadcrumb' => ['Data','PT'],
 			'stringmenu' => $menu, 
             'result' => $pt,
         ];
         return view('operator/p_pendaftaran_pt',$data);
+	}
+
+    public function list_developer()
+    {
+		$menu = getMenu();
+        $userModel = new UserModel();
+        $developer = $userModel->getDeveloper();
+        
+        $data = [
+			'title' => 'Persetujuan Pengajuan Dana',
+			'breadcrumb' => ['Persetujuan','Pengajuan Dana'],
+			'stringmenu' => $menu, 
+            'result' => $developer
+        ];
+
+        return view('operator/list_developer', $data);
+    }
+
+    public function approval_dana($uuid)
+	{
+
+		$menu = getMenu();
+        $model = new PengajuanModel();
+        $dana = $model->getPengajuanDana($uuid);
+
+
+        $data = [
+			'title' => 'Persetujuan Pengajuan Dana',
+			'breadcrumb' => ['Persetujuan','Pengajuan Dana'],
+			'stringmenu' => $menu, 
+            'result' => $dana,
+        ];
+        return view('operator/p_pengajuan_dana',$data);
+	}
+
+    
+    public function setujui_pengajuan_dana()
+    {
+        
+        if(!$this->request->isAJAX()){
+            return $this->response->setJSON(['message' => 'Invalid request'])->setStatusCode(400);
+        }
+
+        $uuid = $this->request->getPost('uuid');
+     
+        $data = [
+            'submited_status' => 4,
+            'submited_time' => date('Y-m-d H:i:s'),
+            'submited_by' => session()->get('uuid'),
+        ];
+        
+        $pengajuan = new PengajuanModel();
+        $update = $pengajuan->where('uuid',$uuid)->set($data)->update();
+        
+        if (!$update) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => [
+                    'simpan' => 'Gagal '.$type.' data!'
+                ],
+                'csrfHash' => csrf_hash(),
+                'csrfToken' => csrf_token(),
+                'uuid' => $uuid
+            ])->setStatusCode(400);
+                
+        }
+
+        $datadetail = [
+            'submited_status' => 4,
+            'submited_time' => date('Y-m-d H:i:s'),
+            'submited_by' => session()->get('uuid'),
+        ];
+
+        $pengajuanDetail = new PengajuanDetailModel();
+        $uuidpengajuan = $pengajuanDetail->select('uuid')->where('uuidheader',$uuid)->findAll();
+       
+        $uuidpengajuan = array_column($uuidpengajuan,'uuid');
+
+        $uuidList = "'" . implode("','", $uuidpengajuan) . "'";
+        $setClause = [];
+        foreach ($datadetail as $key => $value) {
+            $setClause[] = "$key = " . (is_string($value) ? "'$value'" : $value);
+        }
+        $setString = implode(", ", $setClause);
+        
+        $sql = "UPDATE trx_pengajuan_detail 
+                SET $setString
+                WHERE uuid IN ($uuidList)
+                AND (concat(statusvalidator,statussikumbang,statuseflpp,statussp3k) = '1111')";
+                
+        $updatedetail = $pengajuanDetail->query($sql);
+
+        if ($updatedetail) { 
+            return $this->response->setJSON([
+                'status' => 'success',
+                'message' => 'Data berhasil disetujui!',
+                'csrfHash' => csrf_hash(),
+                'csrfToken' => csrf_token(),
+                'uuid' => $uuid
+            ])->setStatusCode(200);
+        } else {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => [
+                    'simpan' => 'Data gagal disetujui!'
+                ],
+                'csrfHash' => csrf_hash(),
+                'csrfToken' => csrf_token(),
+                'uuid' => $uuid
+            ])->setStatusCode(400);
+                
+        }
+
+    }
+
+    
+    public function approval_unit()
+	{
+        $uuid = $this->request->getGet('uuid');
+
+		$menu = getMenu();
+        $model = new PengajuanDetailModel();
+        $unit = $model->getPengajuanUnit($uuid);
+
+        $data = [
+			'title' => 'Persetujuan Pengajuan Unit',
+			'breadcrumb' => ['Persetujuan','Pengajuan Unit'],
+			'stringmenu' => $menu, 
+            'result' => $unit
+        ];
+        return view('operator/p_pengajuan_unit',$data);
 	}
 
 
