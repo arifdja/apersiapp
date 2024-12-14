@@ -139,6 +139,9 @@ class Approver extends BaseController
         }
 
         $datadetail = [
+            'statusapprover' => 1,
+            'approved_at' => date('Y-m-d H:i:s'),
+            'approved_by' => session()->get('uuid'),
             'submited_status' => 4,
             'submited_time' => date('Y-m-d H:i:s'),
             'submited_by' => session()->get('uuid'),

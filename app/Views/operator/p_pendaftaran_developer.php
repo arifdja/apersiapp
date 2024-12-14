@@ -34,7 +34,7 @@
                 <div class="table-responsive">
                   <table class="table table-bordered table-condensed">
                     <thead>
-                      <tr>
+                      <tr class="table-info">
                         <th style="width: 10px">No.</th>
                         <th>Nama Developer</th>
                         <th>Email</th>

@@ -17,19 +17,23 @@
             <div class="card">
               <div class="card-header">
                 <button class="btn btn-info btn-xs" onclick="window.location.href='<?= site_url('developer/form_pengajuan_dana') ?>'">Tambah Pengajuan Dana</button>
+              
+                <button class="btn btn-xs btn-info toggle-alamat">
+                          <i class="fas fa-eye"></i> Alamat
+                        </button>
               </div>
               <!-- /.card-header -->
               <div class="card-body table-responsive p-2">
                 <table class="table table-head-fixed text-nowrap">
                   <thead>
-                    <tr>
+                    <tr class="table-info">
                       <th>No.</th>
                       <th>List<br> Unit</th>
                       <th>Nama<br> PT</th>
                       <th>Surat <br>Permohonan</th>
                       <th>DPP/DPD/Korwil</th>
-                      <th>Alamat<br> Perumahan</th>
-                      <th>Detail<br>Alamat</th>
+                      <th class="alamat-column" style="display:none">Alamat<br> Perumahan</th> 
+                      <th class="alamat-column" style="display:none">Detail<br>Alamat</th>
                       <th>Site<br>Plan</th>
                       <th>Jumlah<br>Unit</th>
                       <th>Harga<br> SP3K</th>
@@ -55,8 +59,8 @@
                       <td><?= $p['namapt'] ?></td>
                       <td><a href="<?= base_url() ?>/download/surat_permohonan/<?= $p['berkassuratpermohonan'] ?>" target="_blank"><?= $p['suratpermohonan'] ?></a></td>
                       <td><?= $p['namadpd'] ?></td>
-                      <td><?= $p['namaprovinsi'] ?> - <?= $p['namakabupaten'] ?> - <?= $p['namakecamatan'] ?></td>
-                      <td><?= $p['alamatperumahaninput'] ?></td>
+                      <td class="alamat-column" style="display:none"><?= $p['namaprovinsi'] ?> - <?= $p['namakabupaten'] ?> - <?= $p['namakecamatan'] ?></td>
+                      <td class="alamat-column" style="display:none"><?= $p['alamatperumahaninput'] ?></td>
                       <td><a href="<?= base_url() ?>/download/site_plan/<?= $p['berkassiteplan'] ?>" target="_blank">Lihat</a></td>
                       <td id="jumlahunitinput<?= $p['uuid'] ?>"><?= $p['jumlahunitinput'] ?></td>
                       <td align="right"><?= number_format($p['totalhargasp3k'],0,',','.') ?></td>
@@ -179,5 +183,24 @@
     }
     });
   });
+</script>
+<script>
+$(document).ready(function() {
+  // Status awal kolom tersembunyi
+  let alamatVisible = false;
+  
+  // Handler untuk toggle button
+  $('.toggle-alamat').click(function() {
+    alamatVisible = !alamatVisible;
+    
+    if(alamatVisible) {
+      $('.alamat-column').show();
+      $(this).html('<i class="fas fa-eye-slash"></i> Alamat');
+    } else {
+      $('.alamat-column').hide(); 
+      $(this).html('<i class="fas fa-eye"></i> Alamat');
+    }
+  });
+});
 </script>
 <?= $this->endSection(); ?>

@@ -34,7 +34,7 @@
                 <div class="table-responsive">
                   <table class="table table-bordered table-condensed">
                     <thead>
-                      <tr>
+                      <tr class="table-info">
                         <th>ID</th>
                         <th>Nama<br>PT</th>
                         <th>NPWP<br>PT</th>

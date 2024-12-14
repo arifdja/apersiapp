@@ -22,12 +22,16 @@
                     <button class="btn btn-info btn-xs" onclick="window.location.href='<?= site_url('developer/form_tambah_unit?uuidheader='.$uuidheader) ?>'">Tambah Unit yang diagunkan</button>
                   </div>
                 <?php endif; ?>
+                
+                <button class="btn btn-xs btn-info toggle-alamat">
+                          <i class="fas fa-eye"></i> Alamat
+                        </button>
               </div>
               <!-- /.card-header -->
               <div class="card-body table-responsive p-2">
                 <table class="table table-head-fixed text-nowrap">
                   <thead>
-                    <tr>
+                    <tr class="table-info">
                       <th>No.</th>
                       <th>Aksi</th>
                       <th>Status</th>
@@ -35,7 +39,7 @@
                       <th>PBB</th>
                       <th>SP3K</th>
                       <th>Nama <br>Debitur</th>
-                      <th>Alamat</th>
+                      <th class="alamat-column" style="display:none">Alamat</th>
                       <th>Rekening</th>
                       <th>Harga sesuai persetujuan<br>kredit (SP3K) (Rp)</th>
                       <th>Nilai Dana<br> Talangan (Rp)</th>
@@ -96,7 +100,7 @@
                       <td><a href="<?= base_url() ?>/download/pbb/<?= $p['berkaspbb'] ?>" target="_blank"><?= $p['pbb'] ?></a></td>
                       <td><a href="<?= base_url() ?>/download/sp3k/<?= $p['berkassp3k'] ?>" target="_blank"><?= $p['nomordokumensp3k'] ?></a></td>
                       <td><a href="<?= base_url() ?>/download/ktp_debitur/<?= $p['berkasktpdebitur'] ?>" target="_blank"><?= $p['namadebitur'] ?></a></td>
-                      <td><?= $p['namaprovinsi'] ?> - <?= $p['namakabupaten'] ?> - <?= $p['namakecamatan'] ?> - <?= $p['namakota'] ?> - <?= $p['alamatinput'] ?></td>
+                      <td class="alamat-column" style="display:none"><?= $p['namaprovinsi'] ?> - <?= $p['namakabupaten'] ?> - <?= $p['namakecamatan'] ?> - <?= $p['namakota'] ?> - <?= $p['alamatinput'] ?></td>
                       
                       <td><a href="<?= base_url() ?>/download/rekening_debitur/<?= $p['berkasrekening'] ?>" target="_blank"><?= $p['rekening'] ?> - <?= $p['namabank'] ?></a></td>
                       <td align="right"><?= number_format($p['harga'],0,',','.') ?></td>
@@ -459,5 +463,24 @@ $(document).ready(function () {
         }
     });
 }
+</script>
+<script>
+$(document).ready(function() {
+  // Status awal kolom tersembunyi
+  let alamatVisible = false;
+  
+  // Handler untuk toggle button
+  $('.toggle-alamat').click(function() {
+    alamatVisible = !alamatVisible;
+    
+    if(alamatVisible) {
+      $('.alamat-column').show();
+      $(this).html('<i class="fas fa-eye-slash"></i> Alamat');
+    } else {
+      $('.alamat-column').hide(); 
+      $(this).html('<i class="fas fa-eye"></i> Alamat');
+    }
+  });
+});
 </script>
 <?= $this->endSection(); ?>

@@ -19,10 +19,9 @@
               <div class="card-header">
                 <div class="card-tools" style="margin: 0px;"><button class="btn btn-xs btn-success" id="excel"><i class="fas fa-excel"></i>Download Excel</button></div>
                 <div class="card-title">
-                    <label><input type="checkbox" class="toggle-column" data-column="2" checked> Email</label>
-                    <label><input type="checkbox" class="toggle-column" data-column="3" checked> No Telp</label>
-                    <label><input type="checkbox" class="toggle-column" data-column="4" checked> Alamat</label>
-                    <label><input type="checkbox" class="toggle-column" data-column="5" checked> KTA</label>
+                  <button class="btn btn-xs btn-info toggle-alamat">
+                          <i class="fas fa-eye"></i> Detail
+                        </button>
                 </div>
               </div> 
               
@@ -34,14 +33,14 @@
                 <div class="table-responsive">
                   <table class="table table-bordered table-condensed">
                     <thead>
-                      <tr>
+                      <tr class="table-info">
                       <th>ID</th>
                       <th>Detail</th>
                       <th>Nama PT</th>
                       <th>Surat <br>Permohonan</th>
-                      <th>DPP/DPD/Korwil</th>
-                      <th>Alamat<br> Perumahan</th>
-                      <th>Detail Alamat</th>
+                      <th class="detail-column" style="display:none">DPP/DPD/Korwil</th>
+                      <th class="detail-column" style="display:none">Alamat<br> Perumahan</th>
+                      <th class="detail-column" style="display:none">Detail Alamat</th>
                       <th>Site Plan</th>
                       <th>Jumlah Unit</th>
                       <th>Harga<br> SP3K</th>
@@ -69,9 +68,9 @@
                         </td>
                         <td><?= $p['namapt'] ?></td>
                         <td><a href="<?= base_url() ?>/download/surat_permohonan/<?= $p['berkassuratpermohonan'] ?>" target="_blank"><?= $p['suratpermohonan'] ?></a></td>
-                        <td><?= $p['namadpd'] ?></td>
-                        <td><?= $p['namaprovinsi'] ?> - <?= $p['namakabupaten'] ?> - <?= $p['namakecamatan'] ?></td>
-                        <td><?= $p['alamatperumahaninput'] ?></td>
+                        <td class="detail-column" style="display:none"><?= $p['namadpd'] ?></td>
+                        <td class="detail-column" style="display:none"><?= $p['namaprovinsi'] ?> - <?= $p['namakabupaten'] ?> - <?= $p['namakecamatan'] ?></td>
+                        <td class="detail-column" style="display:none"><?= $p['alamatperumahaninput'] ?></td>
                         <td><a href="<?= base_url() ?>/download/site_plan/<?= $p['berkassiteplan'] ?>" target="_blank">Lihat</a></td>
                         <td><?= $p['jumlahunitinput'] ?></td>
                         <td align="right"><?= number_format($p['totalhargasp3k'],0,',','.') ?></td>
@@ -156,11 +155,6 @@
         "url": "<?= base_url() ?>/adminlte/plugins/datatables/Indonesian.json"
     }
     });
-     // Toggle column visibility
-     $('.toggle-column').on('change', function () {
-                var column = table.column($(this).attr('data-column'));
-                column.visible(!column.visible());
-            });
 
   });
 </script>
@@ -290,5 +284,24 @@
     });
 
   });
+</script>
+<script>
+$(document).ready(function() {
+  // Status awal kolom tersembunyi
+  let alamatVisible = false;
+  
+  // Handler untuk toggle button
+  $('.toggle-alamat').click(function() {
+    alamatVisible = !alamatVisible;
+    
+    if(alamatVisible) {
+      $('.detail-column').show();
+      $(this).html('<i class="fas fa-eye-slash"></i> Alamat');
+    } else {
+      $('.detail-column').hide(); 
+      $(this).html('<i class="fas fa-eye"></i> Alamat');
+    }
+  });
+});
 </script>
 <?= $this->endSection(); ?>

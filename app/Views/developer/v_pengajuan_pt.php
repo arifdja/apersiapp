@@ -21,15 +21,15 @@
               <div class="card-body table-responsive p-2">
                 <table class="table table-head-fixed text-nowrap">
                   <thead>
-                    <tr>
+                    <tr class="table-info">
                       <th>ID</th>
                       <th>Nama<br>PT</th>
                       <th>NPWP<br>PT</th>
                       <th>Penanggung<br>Jawab PT</th>
                       <th>NPWP <br>Penanggung Jawab</th>
                       <th>Akta Pendirian</th>
-                      <th>Bank</th>
                       <th>Rekening</th>
+                      <th>Bank</th>
                       <th>Alamat</th>
                       <th>Status Validator</th>
                     </tr>
@@ -43,8 +43,8 @@
                       <td><a href="<?= base_url() ?>/download/ktp_penanggungjawab/<?= $p['berkasktppj'] ?>" target="_blank"><?= $p['namapj'] ?></a></td>
                       <td><a href="<?= base_url() ?>/download/npwp_penanggungjawab/<?= $p['berkasnpwppj'] ?>" target="_blank"><?= $p['npwppj'] ?></a></td>
                       <td><a href="<?= base_url() ?>/download/akta_pendirian/<?= $p['berkasaktapendirian'] ?>" target="_blank"><?= $p['aktapendirian'] ?></a></td>
-                      <td><?= $p['kodebank'] ?> - <?= $p['namabank'] ?></td>
                       <td><a href="<?= base_url() ?>/download/rekening/<?= $p['berkasrekening'] ?>" target="_blank"><?= $p['rekening'] ?></a></td>
+                      <td><?= $p['kodebank'] ?> - <?= $p['namabank'] ?></td>
                       <td><?= $p['namaprovinsi'] ?> - <?= $p['namakabupaten'] ?> - <?= $p['namakecamatan'] ?> - <?= $p['alamatinput'] ?></td>
                       <td>
                         <?= ($p['statusvalidator'] == '0' || $p['statusvalidator'] == '') ? '<span class="badge bg-warning">Menunggu Validasi</span>' : '' ?>
@@ -329,6 +329,8 @@ $(document).ready(function () {
       "ordering": true,
       "info": true,
       "autoWidth": false,
+      "pageLength": 100,
+      "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Semua"]],
       "language": {
         "url": "<?= base_url() ?>/adminlte/plugins/datatables/Indonesian.json"
     }

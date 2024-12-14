@@ -31,7 +31,7 @@
                 <div class="table-responsive">
                   <table class="table table-bordered table-condensed">
                     <thead>
-                      <tr>
+                      <tr class="table-info">
                         <th align="center">ID</th>
                         <th align="center">Sertifikat</th>
                         <th align="center">PBB</th>
