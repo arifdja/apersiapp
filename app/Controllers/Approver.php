@@ -43,7 +43,7 @@ class Approver extends BaseController
 	}
 
     
-    public function list_developer()
+    public function developer()
     {
 		$menu = getMenu();
         $userModel = new UserModel();
@@ -58,6 +58,21 @@ class Approver extends BaseController
 
         return view('approver/list_developer', $data);
     }
+
+    public function pt()
+	{
+		$menu = getMenu();
+        $model = new PTModel();
+        $pt = $model->getPengajuanPT();
+
+        $data = [
+			'title' => 'Persetujuan Pendaftaran PT',
+			'breadcrumb' => ['Persetujuan','Pendaftaran PT'],
+			'stringmenu' => $menu, 
+            'result' => $pt,
+        ];
+        return view('operator/p_pendaftaran_pt',$data);
+	}
 
 
 

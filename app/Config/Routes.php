@@ -76,3 +76,5 @@ $routes->post('/proses_reset_password', 'User::proses_reset_password');
 
 $routes->get('/approver', 'Approver::index',['filter' => 'auth']);
 $routes->get('/approver/list_developer', 'Approver::list_developer',['filter' => 'auth']);
+$routes->get('/approver/developer', 'Approver::developer',['filter' => 'auth']);
+$routes->get('/approver/pt', 'Approver::pt',['filter' => 'auth']);
