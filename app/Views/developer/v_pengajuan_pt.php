@@ -27,6 +27,9 @@
                       <th>NPWP<br>PT</th>
                       <th>Penanggung<br>Jawab PT</th>
                       <th>NPWP <br>Penanggung Jawab</th>
+                      <th>Pengurus PT</th>
+                      <th>Jabatan Pengurus PT</th>
+                      <th>NPWP Pengurus PT</th>
                       <th>Akta Pendirian</th>
                       <th>Rekening</th>
                       <th>Bank</th>
@@ -42,6 +45,9 @@
                       <td><a href="<?= base_url() ?>/download/npwp_pt/<?= $p['berkasnpwp'] ?>" target="_blank"><?= $p['npwppt'] ?></a></td>
                       <td><a href="<?= base_url() ?>/download/ktp_penanggungjawab/<?= $p['berkasktppj'] ?>" target="_blank"><?= $p['namapj'] ?></a></td>
                       <td><a href="<?= base_url() ?>/download/npwp_penanggungjawab/<?= $p['berkasnpwppj'] ?>" target="_blank"><?= $p['npwppj'] ?></a></td>
+                      <td><a href="<?= base_url() ?>/download/ktp_pengurus/<?= $p['berkaspengurusptktp'] ?>" target="_blank"><?= $p['penguruspt'] ?></a></td>
+                      <td><?= $p['jabatanpenguruspt'] ?></td>
+                      <td><a href="<?= base_url() ?>/download/npwp_pengurus/<?= $p['berkaspengurusptnpwp'] ?>" target="_blank"><?= $p['npwppenguruspt'] ?></a></td>
                       <td><a href="<?= base_url() ?>/download/akta_pendirian/<?= $p['berkasaktapendirian'] ?>" target="_blank"><?= $p['aktapendirian'] ?></a></td>
                       <td><a href="<?= base_url() ?>/download/rekening/<?= $p['berkasrekening'] ?>" target="_blank"><?= $p['rekening'] ?></a></td>
                       <td><?= $p['kodebank'] ?> - <?= $p['namabank'] ?></td>

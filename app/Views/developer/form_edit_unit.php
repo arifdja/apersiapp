@@ -18,12 +18,12 @@
                         <div class="card-body">
                             <div class="form-group">
                                 <label>Nomor Sertifikat</label>
-                                <input type="text" class="form-control" name="sertifikat" value="<?= $unit['sertifikat'] ?>" id="sertifikat" required>
+                                <input type="text" class="form-control" name="sertifikat" value="<?= $unit['sertifikat'] ?>" id="sertifikat" disabled>
                                 <div class="invalid-feedback"></div>
                                 <span id="spansertifikat" style="color: red;"></span>
                                 <div class="input-group" style="margin-top: 10px;">
                                 <div class="custom-file">
-                                    <input type="file" class="custom-file-input" name="berkassertifikat" id="berkassertifikat" accept=".pdf">
+                                    <input type="file" class="custom-file-input" name="berkassertifikat" id="berkassertifikat" accept=".pdf" disabled>
                                     <label class="custom-file-label labelberkassertifikat" for="exampleInputFile">Unggah Sertifikat</label>
                                 </div>
                             </div>
@@ -106,16 +106,16 @@
                             
                             <div class="form-group">
                                 <label for="sp3k">Dokumen SP3K</label>
-                                <input type="text" name="sp3k" required class="form-control" id="sp3k" placeholder="Nomor Dokumen SP3K" value="<?= $unit['nomordokumensp3k'] ?>" required>
+                                <input type="text" name="sp3k" class="form-control" id="sp3k" placeholder="Nomor Dokumen SP3K" value="<?= $unit['nomordokumensp3k'] ?>" disabled>
                                 <div class="invalid-feedback"></div>
                                 <span id="spansp3k" style="color: red;"></span>
                                 <div class="input-group" style="margin-top: 10px;">
-                                    <input type="date" name="tanggalsp3k" required class="form-control" id="tanggalsp3k" value="<?= $unit['tanggalsp3k'] ?>">
+                                    <input type="date" disabled name="tanggalsp3k" class="form-control" id="tanggalsp3k" value="<?= $unit['tanggalsp3k'] ?>">
                                     <div class="invalid-feedback"></div>
                                 </div>
                                 <div class="input-group" style="margin-top: 10px;">
                                     <div class="custom-file">
-                                        <input type="file" class="custom-file-input" name="berkassp3k" id="berkassp3k" accept=".pdf">
+                                        <input type="file"disabled class="custom-file-input" name="berkassp3k" id="berkassp3k" accept=".pdf">
                                         <label class="custom-file-label labelberkassp3k" for="exampleInputFile">Unggah Dokumen SP3K</label>
                                     </div>
                                 </div>

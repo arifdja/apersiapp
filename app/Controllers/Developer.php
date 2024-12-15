@@ -120,9 +120,10 @@ class Developer extends BaseController
             ],
             'npwp_pt' => [
                 'label' => 'NPWP PT',
-                'rules' => 'trim|required',
+                'rules' => 'trim|required|checkNPWPPT',
                 'errors' => [
-                    'required' => '{field} harus diisi'
+                    'required' => '{field} harus diisi',
+                    'checkNPWPPT' => 'Melihat data NPWP PT, PT sudah terdaftar pada sistem'
                 ]
             ],
             'berkasnpwppt' => [
@@ -176,6 +177,54 @@ class Developer extends BaseController
                     'mime_in' => '{field} harus berformat PDF'
                 ]
             ],
+            'pengurus_pt' => [
+                'label' => 'Pengurus PT',
+                'rules' => 'trim|required',
+                'errors' => [
+                    'required' => '{field} harus diisi'
+                ]
+            ],
+            'jabatan_pengurus_pt' => [
+                'label' => 'Jabatan Pengurus PT',
+                'rules' => 'trim|required',
+                'errors' => [
+                    'required' => '{field} harus diisi'
+                ]
+            ],
+            'npwp_pengurus_pt' => [
+                'label' => 'NPWP Pengurus PT',
+                'rules' => 'trim|required',
+                'errors' => [
+                    'required' => '{field} harus diisi'
+                ]
+            ],
+            'berkasnpwp_pengurus_pt' => [
+                'label' => 'NPWP Pengurus PT',
+                'rules' => 'uploaded[berkasnpwp_pengurus_pt]|max_size[berkasnpwp_pengurus_pt,10240]|ext_in[berkasnpwp_pengurus_pt,pdf]|mime_in[berkasnpwp_pengurus_pt,application/pdf]',
+                'errors' => [
+                    'uploaded' => '{field} harus diisi',
+                    'max_size' => '{field} maksimal 10 MB',
+                    'ext_in' => '{field} harus berformat PDF',
+                    'mime_in' => '{field} harus berformat PDF'
+                ]
+            ],
+            'ktp_pengurus_pt' => [
+                'label' => 'KTP Pengurus PT',
+                'rules' => 'trim|required',
+                'errors' => [
+                    'required' => '{field} harus diisi'
+                ]
+            ],
+            'berkasktp_pengurus_pt' => [
+                'label' => 'KTP Pengurus PT',
+                'rules' => 'uploaded[berkasktp_pengurus_pt]|max_size[berkasktp_pengurus_pt,10240]|ext_in[berkasktp_pengurus_pt,pdf]|mime_in[berkasktp_pengurus_pt,application/pdf]',
+                'errors' => [
+                    'uploaded' => '{field} harus diisi',
+                    'max_size' => '{field} maksimal 10 MB',
+                    'ext_in' => '{field} harus berformat PDF',
+                    'mime_in' => '{field} harus berformat PDF'
+                ]
+            ],
             'akta_pendirian' => [
                 'label' => 'Akta Pendirian',
                 'rules' => 'trim|required',
@@ -222,7 +271,8 @@ class Developer extends BaseController
         if (!$this->validate($validationRules)) {
             return $this->response->setJSON([
                 'status' => 'error',
-                'message' => $this->validator->getErrors()
+                'message' => $this->validator->getErrors(),
+                'csrfHash' => csrf_hash()
             ])->setStatusCode(400);
 
         } 
@@ -232,6 +282,8 @@ class Developer extends BaseController
         $fileberkasnpwppt = $this->request->getFile('berkasnpwppt');
         $fileberkasktp_penanggung_jawab = $this->request->getFile('berkasktp_penanggung_jawab');
         $fileberkasnpwp_penanggung_jawab = $this->request->getFile('berkasnpwp_penanggung_jawab');
+        $fileberkasktp_pengurus_pt = $this->request->getFile('berkasktp_pengurus_pt');
+        $fileberkasnpwp_pengurus_pt = $this->request->getFile('berkasnpwp_pengurus_pt');
         $fileberkasakta_pendirian = $this->request->getFile('berkasakta_pendirian');
         $fileberkasrekening = $this->request->getFile('berkasrekening');
 
@@ -241,7 +293,9 @@ class Developer extends BaseController
             $fileberkasktp_penanggung_jawab->isValid() && !$fileberkasktp_penanggung_jawab->hasMoved() &&
             $fileberkasnpwp_penanggung_jawab->isValid() && !$fileberkasnpwp_penanggung_jawab->hasMoved() &&
             $fileberkasakta_pendirian->isValid() && !$fileberkasakta_pendirian->hasMoved() &&
-            $fileberkasrekening->isValid() && !$fileberkasrekening->hasMoved() 
+            $fileberkasrekening->isValid() && !$fileberkasrekening->hasMoved() &&
+            $fileberkasktp_pengurus_pt->isValid() && !$fileberkasktp_pengurus_pt->hasMoved() &&
+            $fileberkasnpwp_pengurus_pt->isValid() && !$fileberkasnpwp_pengurus_pt->hasMoved()
         ) {
             $uuid = generate_uuid();
             // Move the file to a permanent location
@@ -250,13 +304,19 @@ class Developer extends BaseController
             $newfilenameberkasnpwp_penanggung_jawab = "npwp_penanggungjawab_".$uuid."_".$fileberkasnpwp_penanggung_jawab->getRandomName();
             $newfilenameberkasakta_pendirian = "akta_pendirian_".$uuid."_".$fileberkasakta_pendirian->getRandomName();
             $newfilenameberkasrekening = "rekening_".$uuid."_".$fileberkasrekening->getRandomName();
+            $newfilenameberkasktp_pengurus_pt = "ktp_pengurus_".$uuid."_".$fileberkasktp_pengurus_pt->getRandomName();
+            $newfilenameberkasnpwp_pengurus_pt = "npwp_pengurus_".$uuid."_".$fileberkasnpwp_pengurus_pt->getRandomName();
             
+
             $fileberkasnpwppt->move(WRITEPATH . 'uploads/npwp_pt', $newfilenameberkasnpwppt);
             $fileberkasktp_penanggung_jawab->move(WRITEPATH . 'uploads/ktp_penanggungjawab', $newfilenameberkasktp_penanggung_jawab);
             $fileberkasnpwp_penanggung_jawab->move(WRITEPATH . 'uploads/npwp_penanggungjawab', $newfilenameberkasnpwp_penanggung_jawab);
             $fileberkasakta_pendirian->move(WRITEPATH . 'uploads/akta_pendirian', $newfilenameberkasakta_pendirian);
             $fileberkasrekening->move(WRITEPATH . 'uploads/rekening', $newfilenameberkasrekening);
+            $fileberkasktp_pengurus_pt->move(WRITEPATH . 'uploads/ktp_pengurus', $newfilenameberkasktp_pengurus_pt);
+            $fileberkasnpwp_pengurus_pt->move(WRITEPATH . 'uploads/npwp_pengurus', $newfilenameberkasnpwp_pengurus_pt);
            
+
             $data = [
                 "uuid" => $uuid,
                 "uuiddeveloper" => session('uuid'),
@@ -270,6 +330,12 @@ class Developer extends BaseController
                 "berkasktppj" => $newfilenameberkasktp_penanggung_jawab,
                 "npwppj" => $this->request->getVar('npwp_penanggung_jawab'),
                 "berkasnpwppj" => $newfilenameberkasnpwp_penanggung_jawab,
+                "penguruspt" => $this->request->getVar('pengurus_pt'),
+                "jabatanpenguruspt" => $this->request->getVar('jabatan_pengurus_pt'),
+                "npwppenguruspt" => $this->request->getVar('npwp_pengurus_pt'),
+                "berkaspengurusptnpwp" => $newfilenameberkasnpwp_pengurus_pt,
+                "ktppenguruspt" => $newfilenameberkasktp_pengurus_pt,
+                "berkaspengurusptktp" => $newfilenameberkasktp_pengurus_pt,
                 "aktapendirian" => $this->request->getVar('akta_pendirian'),
                 "berkasaktapendirian" => $newfilenameberkasakta_pendirian,
                 "rekening" => $this->request->getVar('rekening'),
@@ -634,7 +700,28 @@ class Developer extends BaseController
 	{
         if (!$this->request->isAJAX()) {
             return $this->response->setJSON(['message' => 'Invalid request'])->setStatusCode(400);
-        }    
+        }   
+        
+        $pengajuanmodel = new PengajuanModel();
+        $pengajuan = $pengajuanmodel->where('uuid',$this->request->getVar('uuidheader'))->first();
+
+        if(empty($pengajuan)){
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => 'Data pengajuan tidak ditemukan',
+                'csrfName' => csrf_token(),
+                'csrfHash' => csrf_hash(),
+            ])->setStatusCode(400);
+        }
+        //check status pengajuan harus 0 atau 2
+        if($pengajuan['submited_status'] == 1 || $pengajuan['submited_status'] == 3 || $pengajuan['submited_status'] == 4){
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => 'Pengajuan sudah dikirim ke validator atau sudah disetujui',
+                'csrfName' => csrf_token(),
+                'csrfHash' => csrf_hash(),
+            ])->setStatusCode(400);
+        }
 
         $validationRules = [
             'uuidheader' => [
@@ -646,9 +733,10 @@ class Developer extends BaseController
             ],
             'sertifikat' => [
                 'label' => 'Sertifikat',
-                'rules' => 'trim|required',
+                'rules' => 'trim|required|checkUniqueUnit[sertifikat,nomordokumensp3k]',
                 'errors' => [
-                    'required' => '{field} harus diisi'
+                    'required' => '{field} harus diisi',
+                    'checkUniqueUnit' => 'Dilihat dari sertifikat dan nomor dokumen SP3K, unit sudah terdaftar pada sistem'
                 ]
             ],
             'berkassertifikat' => [
@@ -1065,17 +1153,43 @@ class Developer extends BaseController
         if (!$this->request->isAJAX()) {
             return $this->response->setJSON(['message' => 'Invalid request'])->setStatusCode(400);
         }    
+        //check status unit harus 1,3 dan 4
+        $unit = new PengajuanDetailModel();
+        $unit = $unit->where('uuid', $this->request->getVar('uuid'))->first();
+        if($unit['submited_status'] == 1 || $unit['submited_status'] == 3 || $unit['submited_status'] == 4){
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => 'Unit sudah dikirim ke validator atau sudah disetujui',
+                'csrfName' => csrf_token(),
+                'csrfHash' => csrf_hash(),
+            ])->setStatusCode(400);
+        }
+
+        //check session uuid berhak untuk mengedit
+        $pt = new PTModel();
+        $daftarpt = $pt->where('uuiddeveloper', session()->get('uuid'))->findAll();   
+        $uuidpt = array_column($daftarpt, 'uuid');
+  
+        $pengajuan = new PengajuanModel();
+        $daftarpengajuan = $pengajuan->whereIn('uuidpt', $uuidpt)->findAll();
+        $uuidheader = array_column($daftarpengajuan, 'uuid');
+
+        $pengajuandetail = new PengajuanDetailModel();
+        $daftarpengajuandetail = $pengajuandetail->whereIn('uuidheader', $uuidheader)->findAll();
+        $uuidunit = array_column($daftarpengajuandetail, 'uuid');
+
+        if(!in_array($this->request->getVar('uuidheader'), $uuidheader)){
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => 'Anda tidak memiliki izin untuk mengedit',
+                'csrfName' => csrf_token(),
+                'csrfHash' => csrf_hash(),
+            ])->setStatusCode(400);
+        }
 
         $validationRules = [
             'uuid' => [
                 'label' => 'UUID',
-                'rules' => 'trim|required',
-                'errors' => [
-                    'required' => '{field} harus diisi'
-                ]
-            ],
-            'sertifikat' => [
-                'label' => 'Sertifikat',
                 'rules' => 'trim|required',
                 'errors' => [
                     'required' => '{field} harus diisi'
@@ -1118,21 +1232,14 @@ class Developer extends BaseController
                     'required' => '{field} harus diisi'
                 ]
             ],
-            'sp3k' => [
-                'label' => 'Dokumen SP3K',
-                'rules' => 'trim|required',
-                'errors' => [
-                    'required' => '{field} harus diisi'
-                ]
-            ],
-            'tanggalsp3k' => [
-                'label' => 'Tanggal SP3K',
-                'rules' => 'trim|required|date',
-                'errors' => [
-                    'required' => '{field} harus diisi',
-                    'date' => '{field} harus berformat tanggal'
-                ]
-            ],
+            // 'tanggalsp3k' => [
+            //     'label' => 'Tanggal SP3K',
+            //     'rules' => 'trim|required|date',
+            //     'errors' => [
+            //         'required' => '{field} harus diisi',
+            //         'date' => '{field} harus berformat tanggal'
+            //     ]
+            // ],
             'debitur' => [
                 'label' => 'Nama Debitur',
                 'rules' => 'trim|required',
@@ -1189,12 +1296,10 @@ class Developer extends BaseController
 
         $uuid = $this->request->getVar('uuid');
         $data = [
-            "sertifikat" => $this->request->getVar('sertifikat'),
             "pbb" => $this->request->getVar('pbb'),
             "harga" => $this->request->getVar('harga'),
             "nilaikredit" => $this->request->getVar('nilaikredit'),
-            "nomordokumensp3k" => $this->request->getVar('sp3k'),
-            "tanggalsp3k" => $this->request->getVar('tanggalsp3k'),
+            // "tanggalsp3k" => $this->request->getVar('tanggalsp3k'),
             "namadebitur" => $this->request->getVar('debitur'),
             "bank" => $this->request->getVar('bank'),
             "rekening" => $this->request->getVar('rekening'),
@@ -1208,17 +1313,9 @@ class Developer extends BaseController
 
         // Perbaiki mapping nama file ke field database
         $fileMapping = [
-            'berkassertifikat' => [
-                'path' => 'sertifikat',
-                'field' => 'berkassertifikat'
-            ],
             'berkaspbb' => [
                 'path' => 'pbb',
                 'field' => 'berkaspbb'
-            ],
-            'berkassp3k' => [
-                'path' => 'sp3k', 
-                'field' => 'berkassp3k'
             ],
             'berkasktpdebitur' => [
                 'path' => 'ktp_debitur',
@@ -1283,12 +1380,47 @@ class Developer extends BaseController
 
         $uuid = $this->request->getPost('uuid');
 
+        
+        //check status unit harus 1,3 dan 4
+        $unit = new PengajuanDetailModel();
+        $unit = $unit->where('uuid', $uuid)->first();
+        if($unit['submited_status'] == 1 || $unit['submited_status'] == 3 || $unit['submited_status'] == 4){
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => 'Unit sudah dikirim ke validator atau sudah disetujui',
+                'csrfName' => csrf_token(),
+                'csrfHash' => csrf_hash(),
+            ])->setStatusCode(400);
+        }
+
         if (empty($uuid)) {
             return $this->response->setJSON([
                 'status' => 'error',
                 'message' => 'UUID tidak ditemukan',
                 'csrfName' => csrf_token(),
                 'csrfHash' => csrf_hash()
+            ])->setStatusCode(400);
+        }
+
+        //check session uuid berhak untuk mengedit
+        $pt = new PTModel();
+        $daftarpt = $pt->where('uuiddeveloper', session()->get('uuid'))->findAll();   
+        $uuidpt = array_column($daftarpt, 'uuid');
+  
+        $pengajuan = new PengajuanModel();
+        $daftarpengajuan = $pengajuan->whereIn('uuidpt', $uuidpt)->findAll();
+        $uuidheader = array_column($daftarpengajuan, 'uuid');
+
+        $pengajuandetail = new PengajuanDetailModel();
+        $daftarpengajuandetail = $pengajuandetail->whereIn('uuidheader', $uuidheader)->findAll();
+        $uuidunit = array_column($daftarpengajuandetail, 'uuid');
+
+        if(!in_array($uuid, $uuidunit)){
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => 'Anda tidak memiliki izin untuk menghapus',
+                'csrfName' => csrf_token(),
+                'csrfHash' => csrf_hash(),
             ])->setStatusCode(400);
         }
 

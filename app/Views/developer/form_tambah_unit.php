@@ -21,7 +21,7 @@
 
                         <div class="form-group">
                             <label for="sertifikat">Nomor Sertifikat</label>
-                            <input type="text" name="sertifikat" required class="form-control" id="sertifikat" placeholder="Nomor Sertifikat" required>
+                            <input type="text" name="sertifikat" class="form-control" id="sertifikat" placeholder="Nomor Sertifikat" required>
                             <span id="spansertifikat" style="color: red;"></span>
                             <div class="input-group" style="margin-top: 10px;">
                                 <div class="custom-file">
@@ -38,7 +38,7 @@
 
                         <div class="form-group">
                             <label for="pbb">Nomor PBB</label>
-                            <input type="text" name="pbb" required class="form-control" id="pbb" placeholder="Nomor PBB" required>
+                            <input type="text" name="pbb" class="form-control" id="pbb" placeholder="Nomor PBB" required>
                             <span id="spanpbb" style="color: red;"></span>
                             <div class="input-group" style="margin-top: 10px;">
                                 <div class="custom-file">
@@ -55,13 +55,13 @@
 
                         <div class="form-group">
                             <label for="harga">Harga Sesuai Persetujuan Kredit (SP3K)</label>
-                            <input type="number" name="harga" required class="form-control" id="harga" placeholder="Contoh: 1.000.000.000">
+                            <input type="number" name="harga" class="form-control" id="harga" placeholder="Contoh: 1.000.000.000" required>
                             <span id="spanharga" style="color: red;"></span>
                         </div>
 
                         <div class="form-group">
                             <label for="nilaikredit">Nilai Dana Talangan</label>
-                            <input type="number" name="nilaikredit" required class="form-control" id="nilaikredit" placeholder="Contoh: 700.000.000">
+                            <input type="number" name="nilaikredit" class="form-control" id="nilaikredit" placeholder="Contoh: 700.000.000" required>
                             <span id="spannilaikredit" style="color: red;"></span>
                             <div class="text-muted">
                                 <small>Maksimal 70% dari harga sesuai persetujuan kredit (SP3K)</small>
@@ -103,10 +103,10 @@
 
                         <div class="form-group">
                             <label for="sp3k">Dokumen SP3K</label>
-                            <input type="text" name="sp3k" required class="form-control" id="sp3k" placeholder="Nomor Dokumen SP3K" required>
+                            <input type="text" name="sp3k" class="form-control" id="sp3k" placeholder="Nomor Dokumen SP3K" required>
                             <span id="spansp3k" style="color: red;"></span>
                             <div class="input-group" style="margin-top: 10px;">
-                                <input type="date" name="tanggalsp3k" required class="form-control" id="tanggalsp3k">
+                                <input type="date" name="tanggalsp3k" class="form-control" id="tanggalsp3k" required>
                             </div>
                             <div class="input-group" style="margin-top: 10px;">
                                 <div class="custom-file">
@@ -135,7 +135,7 @@
 
                       <div class="form-group">
                               <label for="debitur">Nama Debitur</label>
-                              <input type="text" name="debitur" required class="form-control" id="debitur" placeholder="Nama Debitur" required>
+                              <input type="text" name="debitur" class="form-control" id="debitur" placeholder="Nama Debitur" required>
                               <span id="spandebitur" style="color: red;"></span>
                               <div class="input-group" style="margin-top: 10px;">
                                   <div class="custom-file">
@@ -158,7 +158,7 @@
 
                       <div class="form-group">
                           <label for="rekening">Rekening Debitur</label>
-                          <input type="text" name="rekening" required class="form-control" id="rekening" placeholder="Rekening Debitur">
+                          <input type="text" name="rekening" class="form-control" id="rekening" placeholder="Rekening Debitur" required>
                           <span id="spanrekening" style="color: red;"></span>
                           <div class="input-group" style="margin-top: 10px;">
                               <div class="custom-file">
@@ -181,7 +181,7 @@
                         <div class="input-group" style="margin-top: 10px;">
                             <div class="custom-file">
                                   <input type="file" class="custom-file-input" name="berkaspinjaman_kpl" id="berkaspinjaman_kpl" accept=".pdf">
-                                  <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                                  <label class="custom-file-label labelberkaspinjaman_kpl" for="exampleInputFile">Unggah Pinjaman KPL</label>
                             </div>
                         </div>
                         <div class="text-muted">
@@ -197,7 +197,7 @@
                         <div class="input-group" style="margin-top: 10px;">
                             <div class="custom-file">
                                   <input type="file" class="custom-file-input" name="berkaspinjaman_kyg" id="berkaspinjaman_kyg" accept=".pdf">
-                                  <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                                  <label class="custom-file-label labelberkaspinjaman_kyg" for="exampleInputFile">Unggah Pinjaman KYG</label>
                             </div>
                         </div>
                         <div class="text-muted">
@@ -213,7 +213,7 @@
                         <div class="input-group" style="margin-top: 10px;">
                             <div class="custom-file">
                                   <input type="file" class="custom-file-input" name="berkaspinjaman_lain" id="berkaspinjaman_lain" accept=".pdf">
-                                  <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                                  <label class="custom-file-label labelberkaspinjaman_lain" for="exampleInputFile">Unggah Pinjaman Lain</label>
                             </div>
                         </div>
                         <div class="text-muted">
@@ -274,11 +274,6 @@
               return false;
             }
 
-            console.log($('#nilaikredit').val());
-            console.log($('#harga').val());
-            console.log($('#harga').val()*0.7);
-
-
             if($('#nilaikredit').val() > $('#harga').val()*0.7){
               Swal.fire({
                   title: 'Perhatian!',
@@ -289,7 +284,17 @@
               return false;
             }
 
-            // console.log(formData);
+            // Tampilkan loading alert
+            Swal.fire({
+                title: 'Sedang memproses...',
+                text: 'Mohon tunggu sebentar',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                showConfirmButton: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
 
             // Send AJAX request
             $.ajax({
@@ -542,9 +547,6 @@
                   $('#<?= csrf_token() ?>').val(response.csrfHash);
                 },
                 error: function () {
-                  $('#kabupaten').val(oldKabupatenSelection);
-                  $('#kota').val(oldKotaSelection);
-                  $('#kecamatan').val(oldKecamatanSelection);
                   Swal.fire({
                     icon: 'error',
                     title: 'Error!',

@@ -43,9 +43,10 @@
             </div>
             <div class="form-group">
               <label for="kecamatan">Kecamatan</label>
-              <select id="kecamatan" name="lokasiref" class="form-control" required>
+              <select id="lokasiref" name="lokasiref" class="form-control" required>
                   <option value="" selected disabled>Pilih Kecamatan</option>
               </select>
+              <span id="spanlokasiref" style="color: red;"></span>
             </div>
             <div class="form-group">
               <label for="detail_alamat">Detail Alamat</label>
@@ -54,7 +55,7 @@
             </div>
             <div class="form-group">
               <label for="npwp_pt">NPWP PT</label>
-              <input type="text" name="npwp_pt" required class="form-control" id="npwp_pt" placeholder="Isi NPWP PT" value="<?= old('npwp_pt') ?>" required>
+              <input type="text" name="npwp_pt" required class="form-control" id="npwp_pt" placeholder="Isi NPWP PT" value="<?= old('npwp_pt') ?>">
               <span id="spannpwp_pt" style="color: red;"></span>
               <div class="input-group" style="margin-top: 10px;">
                   <div class="custom-file">
@@ -75,7 +76,7 @@
             </div>
           <div class="form-group">
               <label for="ktp_penanggung_jawab">KTP Penanggung Jawab</label>
-              <input type="text" name="ktp_penanggung_jawab" required class="form-control" id="ktp_penanggung_jawab" placeholder="Isi KTP Penanggung Jawab" value="<?= old('ktp_penanggung_jawab') ?>" required>
+              <input type="text" name="ktp_penanggung_jawab" required class="form-control" id="ktp_penanggung_jawab" placeholder="Isi KTP Penanggung Jawab" value="<?= old('ktp_penanggung_jawab') ?>">
               <span id="spanktp_penanggung_jawab" style="color: red;"></span>
               <div class="input-group" style="margin-top: 10px;">
                   <div class="custom-file">
@@ -100,7 +101,7 @@
           
           <div class="form-group">
               <label for="npwp_penanggung_jawab">NPWP Penanggung Jawab</label>
-              <input type="text" name="npwp_penanggung_jawab" required class="form-control" id="npwp_penanggung_jawab" placeholder="Isi NPWP Penanggung Jawab" value="<?= old('npwp_penanggung_jawab') ?>" required>
+              <input type="text" name="npwp_penanggung_jawab" required class="form-control" id="npwp_penanggung_jawab" placeholder="Isi NPWP Penanggung Jawab" value="<?= old('npwp_penanggung_jawab') ?>">
               <span id="spannpwp_penanggung_jawab" style="color: red;"></span>
               <div class="input-group" style="margin-top: 10px;">
                   <div class="custom-file">
@@ -114,10 +115,60 @@
               </div>
               <span id="spanberkasnpwp_penanggung_jawab" style="color: red;"></span>
             </div>
+
+            
+            <div class="form-group">
+              <label for="pengurus_pt">Pengurus PT</label>
+              <input type="text" name="pengurus_pt" required class="form-control" id="pengurus_pt" placeholder="Nama Pengurus PT">
+              <span id="spanpengurus_pt" style="color: red;"></span>
+            </div>
+
+            
+            <div class="form-group">
+              <label for="jabatan_pengurus_pt">Jabatan Pengurus PT</label>
+              <input type="text" name="jabatan_pengurus_pt" required class="form-control" id="jabatan_pengurus_pt" placeholder="Jabatan Pengurus PT">
+              <span id="spanjabatan_pengurus_pt" style="color: red;"></span>
+            </div>
+
+            
+          <div class="form-group">
+              <label for="npwp_pengurus_pt">NPWP Pengurus PT</label>
+              <input type="text" name="npwp_pengurus_pt" required class="form-control" id="npwp_pengurus_pt" placeholder="Isi NPWP Pengurus" value="<?= old('npwp_pengurus_pt') ?>">
+              <span id="spannpwp_pengurus_pt" style="color: red;"></span>
+              <div class="input-group" style="margin-top: 10px;">
+                  <div class="custom-file">
+                        <input type="file" class="custom-file-input" name="berkasnpwp_pengurus_pt" id="berkasnpwp_pengurus_pt" accept=".pdf" required>
+                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                  </div>
+              </div>
+              <div class="text-muted">
+                    <small>Format file yang diizinkan: PDF</small>,
+                    <small>Maksimal ukuran file: 10 MB</small>
+              </div>
+              <span id="spanberkasnpwp_pengurus_pt" style="color: red;"></span>
+            </div>
+
+            
+          <div class="form-group">
+              <label for="ktp_pengurus_pt">KTP Pengurus PT</label>
+              <input type="text" name="ktp_pengurus_pt" required class="form-control" id="ktp_pengurus_pt" placeholder="Isi KTP Pengurus" value="<?= old('ktp_pengurus_pt') ?>">
+              <span id="spanktp_pengurus_pt" style="color: red;"></span>
+              <div class="input-group" style="margin-top: 10px;">
+                  <div class="custom-file">
+                        <input type="file" class="custom-file-input" name="berkasktp_pengurus_pt" id="berkasktp_pengurus_pt" accept=".pdf" required>
+                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                  </div>
+              </div>
+              <div class="text-muted">
+                    <small>Format file yang diizinkan: PDF</small>,
+                    <small>Maksimal ukuran file: 10 MB</small>
+              </div>
+              <span id="spanberkasktp_pengurus_pt" style="color: red;"></span>
+            </div>
             
             <div class="form-group">
               <label for="akta_pendirian">Akta Pendirian</label>
-              <input type="text" name="akta_pendirian" required class="form-control" id="akta_pendirian" placeholder="Isi Akta Pendirian" value="<?= old('akta_pendirian') ?>" required>
+              <input type="text" name="akta_pendirian" required class="form-control" id="akta_pendirian" placeholder="Isi Akta Pendirian" value="<?= old('akta_pendirian') ?>">
               <span id="spanakta_pendirian" style="color: red;"></span>
               <div class="input-group" style="margin-top: 10px;">
                   <div class="custom-file">
@@ -138,7 +189,7 @@
             </div>
             <div class="form-group">
               <label for="rekening">Rekening</label>
-              <input type="text" name="rekening" required class="form-control" id="rekening" placeholder="Isi Rekening" value="<?= old('rekening') ?>" required>
+              <input type="text" name="rekening" required class="form-control" id="rekening" placeholder="Isi Rekening" value="<?= old('rekening') ?>">
               <span id="spanrekening" style="color: red;"></span>
               <div class="input-group" style="margin-top: 10px;">
                   <div class="custom-file">
@@ -209,66 +260,92 @@
                 },
                 error: function (xhr, status, error) {
                     // Handle error response
+                    
+                    $('#<?= csrf_token() ?>').val(xhr.responseJSON.csrfHash);
                     if(xhr.responseJSON.status == 'error'){
                       if(xhr.responseJSON.message.nama_pt){
                         $('#nama_pt').addClass('is-invalid');
+                        $('#spannama_pt').html(xhr.responseJSON.message.nama_pt);
+                      }
+                      if(xhr.responseJSON.message.lokasiref){
+                        $('#lokasiref').addClass('is-invalid');
+                        $('#spanlokasiref').html(xhr.responseJSON.message.lokasiref);
                       }
                       if(xhr.responseJSON.message.detail_alamat){
                         $('#detail_alamat').addClass('is-invalid');
+                        $('#spanalamat').html(xhr.responseJSON.message.detail_alamat);
                       }
                       if(xhr.responseJSON.message.npwp_pt){
                         $('#npwp_pt').addClass('is-invalid');
+                        $('#spannpwp_pt').html(xhr.responseJSON.message.npwp_pt);
                       }
                       if(xhr.responseJSON.message.berkasnpwppt){
                         $('#berkasnpwppt').addClass('is-invalid');
+                        $('#spanberkasnpwppt').html(xhr.responseJSON.message.berkasnpwppt);
                       }
                       if(xhr.responseJSON.message.penanggung_jawab_pt){
                         $('#penanggung_jawab_pt').addClass('is-invalid');
+                        $('#spanpenanggung_jawab_pt').html(xhr.responseJSON.message.penanggung_jawab_pt);
                       }
                       if(xhr.responseJSON.message.ktp_penanggung_jawab){
                         $('#ktp_penanggung_jawab').addClass('is-invalid');
+                        $('#spanktp_penanggung_jawab').html(xhr.responseJSON.message.ktp_penanggung_jawab);
                       }
                       if(xhr.responseJSON.message.berkasktp_penanggung_jawab){
                         $('#berkasktp_penanggung_jawab').addClass('is-invalid');
+                        $('#spanberkasktp_penanggung_jawab').html(xhr.responseJSON.message.berkasktp_penanggung_jawab);
                       }
                       if(xhr.responseJSON.message.npwp_penanggung_jawab){
                         $('#npwp_penanggung_jawab').addClass('is-invalid');
+                        $('#spannpwp_penanggung_jawab').html(xhr.responseJSON.message.npwp_penanggung_jawab);
                       }
                       if(xhr.responseJSON.message.berkasnpwp_penanggung_jawab){
                         $('#berkasnpwp_penanggung_jawab').addClass('is-invalid');
+                        $('#spanberkasnpwp_penanggung_jawab').html(xhr.responseJSON.message.berkasnpwp_penanggung_jawab);
+                      }
+                      if(xhr.responseJSON.message.pengurus_pt){
+                        $('#pengurus_pt').addClass('is-invalid');
+                        $('#spanpengurus_pt').html(xhr.responseJSON.message.pengurus_pt);
+                      }
+                      if(xhr.responseJSON.message.jabatan_pengurus_pt){
+                        $('#jabatan_pengurus_pt').addClass('is-invalid');
+                        $('#spanjabatan_pengurus_pt').html(xhr.responseJSON.message.jabatan_pengurus_pt);
+                      }
+                      if(xhr.responseJSON.message.ktp_pengurus_pt){
+                        $('#ktp_pengurus_pt').addClass('is-invalid');
+                        $('#spanktp_pengurus_pt').html(xhr.responseJSON.message.ktp_pengurus_pt);
+                      }
+                      if(xhr.responseJSON.message.berkasktp_pengurus_pt){
+                        $('#berkasktp_pengurus_pt').addClass('is-invalid');
+                        $('#spanberkasktp_pengurus_pt').html(xhr.responseJSON.message.berkasktp_pengurus_pt);
+                      }
+                      if(xhr.responseJSON.message.npwp_pengurus_pt){
+                        $('#npwp_pengurus_pt').addClass('is-invalid');
+                        $('#spannpwp_pengurus_pt').html(xhr.responseJSON.message.npwp_pengurus_pt);
+                      }
+                      if(xhr.responseJSON.message.berkasnpwp_pengurus_pt){
+                        $('#berkasnpwp_pengurus_pt').addClass('is-invalid');
+                        $('#spanberkasnpwp_pengurus_pt').html(xhr.responseJSON.message.berkasnpwp_pengurus_pt);
                       }
                       if(xhr.responseJSON.message.akta_pendirian){
                         $('#akta_pendirian').addClass('is-invalid');
+                        $('#spanakta_pendirian').html(xhr.responseJSON.message.akta_pendirian);
                       }
                       if(xhr.responseJSON.message.berkasakta_pendirian){
                         $('#berkasakta_pendirian').addClass('is-invalid');
+                        $('#spanberkasakta_pendirian').html(xhr.responseJSON.message.berkasakta_pendirian);
                       }
                       if(xhr.responseJSON.message.bank){
                         $('#bank').addClass('is-invalid');
+                        $('#spanbank').html(xhr.responseJSON.message.bank);
                       }
                       if(xhr.responseJSON.message.rekening){
                         $('#rekening').addClass('is-invalid');
+                        $('#spanrekening').html(xhr.responseJSON.message.rekening);
                       }
                       if(xhr.responseJSON.message.berkasrekening){
                         $('#berkasrekening').addClass('is-invalid');
-                      }
-                      if(xhr.responseJSON.message.pinjaman_kpl){
-                        $('#pinjaman_kpl').addClass('is-invalid');
-                      }
-                      if(xhr.responseJSON.message.berkaspinjaman_kpl){
-                        $('#berkaspinjaman_kpl').addClass('is-invalid');
-                      }
-                      if(xhr.responseJSON.message.pinjaman_kyg){
-                        $('#pinjaman_kyg').addClass('is-invalid');
-                      }
-                      if(xhr.responseJSON.message.berkaspinjaman_kyg){
-                        $('#berkaspinjaman_kyg').addClass('is-invalid');
-                      }
-                      if(xhr.responseJSON.message.pinjaman_lain){
-                        $('#pinjaman_lain').addClass('is-invalid');
-                      }
-                      if(xhr.responseJSON.message.berkaspinjaman_lain){
-                        $('#berkaspinjaman_lain').addClass('is-invalid');
+                        $('#spanberkasrekening').html(xhr.responseJSON.message.berkasrekening);
                       }
                     }
                     if(xhr.responseJSON.message.simpan){

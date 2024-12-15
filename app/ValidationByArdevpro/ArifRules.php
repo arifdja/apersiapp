@@ -3,6 +3,9 @@
 namespace App\ValidationByArdevpro;
 use App\Models\UserModel;
 use App\Models\PengajuanModel;
+use App\Models\PTModel;
+use App\Models\PengajuanDetailModel;
+
 class ArifRules
 {
     // public function checkOldPassword(string $str, string &$error = null): bool
@@ -17,6 +20,33 @@ class ArifRules
     //     }
     //     return true;
     // } 
+
+    
+    public function checkUniqueUnit(string $str, string $field = null, array $data = null): bool
+    {
+        session();
+        $model = new PengajuanDetailModel();
+        $db = \Config\Database::connect();
+        $result = $db->query("SELECT * FROM trx_pengajuan_detail WHERE CONCAT(sertifikat,nomordokumensp3k) = ?", [$data['sertifikat'].$data['sp3k']])->getRow();
+        if ($result) {
+            $error = "Dilihat dari Nomor Sertifikat dan Nomor Dokumen SP3K, unit sudah terdaftar pada sistem";
+            return false;
+        }
+        return true;
+    } 
+    
+
+    public function checkNPWPPT(string $str, string &$error = null): bool
+    {
+        session();
+        $model = new PTModel();
+        $data = $model->where('npwppt', $str)->first();
+        if ($data) {
+            $error = "Melihat data NPWP PT, PT sudah terdaftar pada sistem";
+            return false;
+        }
+        return true;
+    } 
     
 
     public function checkDanaTalangan(string $str, string $field = null, array $data = null): bool

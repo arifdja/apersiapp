@@ -111,7 +111,33 @@ class FileController extends Controller
             }
             return $this->response->download($filePath, null)->setFileName($file['berkasnpwppj']);
 
-        }elseif($type == 'pinjaman_kpl'){
+        }elseif($type == 'ktp_pengurus'){
+            $model = new PTModel();
+            $file = $model->where('berkaspengurusptktp',$berkas)->first();
+            $filePath = WRITEPATH . 'uploads/' . $type . '/' . $file['berkaspengurusptktp'];
+            if (!$file) {
+                return redirect()->back()->with('error', 'File not found.');
+            }
+    
+            if (!file_exists($filePath)) {
+                return redirect()->back()->with('error', 'File not found on the server.');
+            }
+            return $this->response->download($filePath, null)->setFileName($file['berkaspengurusptktp']);
+
+        }elseif($type == 'npwp_pengurus'){
+            $model = new PTModel();
+            $file = $model->where('berkaspengurusptnpwp',$berkas)->first();
+            $filePath = WRITEPATH . 'uploads/' . $type . '/' . $file['berkaspengurusptnpwp'];
+            if (!$file) {
+                return redirect()->back()->with('error', 'File not found.');
+            }
+    
+            if (!file_exists($filePath)) {
+                return redirect()->back()->with('error', 'File not found on the server.');
+            }
+            return $this->response->download($filePath, null)->setFileName($file['berkaspengurusptnpwp']);
+        }   
+        elseif($type == 'pinjaman_kpl'){
             $model = new PengajuanDetailModel();
             $file = $model->where('berkaspinjamankpl',$berkas)->first();
             $filePath = WRITEPATH . 'uploads/' . $type . '/' . $file['berkaspinjamankpl'];
@@ -246,6 +272,16 @@ class FileController extends Controller
         }
 
        
+    }
+
+    public function form_pengajuan_kredit(){
+       
+            $filePath = WRITEPATH . 'uploads/template/form_kredit.docx';
+
+            if (!file_exists($filePath)) {
+                return redirect()->back()->with('error', 'File not found on the server.');
+            }
+            return $this->response->download($filePath, null)->setFileName('form_kredit.docx');
     }
     
 }

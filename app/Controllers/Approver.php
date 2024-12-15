@@ -115,6 +115,34 @@ class Approver extends BaseController
         }
 
         $uuid = $this->request->getPost('uuid');
+        
+        
+        $pengajuanmodel = new PengajuanModel();
+        $pengajuan = $pengajuanmodel->where('uuid',$uuid)->first();
+
+        if(empty($pengajuan)){
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => [
+                    'simpan' => 'Data pengajuan tidak ditemukan!'
+                ],
+                'csrfHash' => csrf_hash(),
+                'csrfToken' => csrf_token(),
+                'uuid' => $uuid
+            ])->setStatusCode(400);
+        }
+        //check status pengajuan harus 1
+        if($pengajuan['submited_status'] != 3 ){
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => [
+                    'simpan' => 'Pengajuan sudah disetujui!'
+                ],
+                'csrfHash' => csrf_hash(),
+                'csrfToken' => csrf_token(),
+                'uuid' => $uuid
+            ])->setStatusCode(400);
+        }
      
         $data = [
             'submited_status' => 4,

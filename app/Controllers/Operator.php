@@ -380,6 +380,33 @@ class Operator extends BaseController
         if(!$this->request->isAJAX()){
             return $this->response->setJSON(['message' => 'Invalid request'])->setStatusCode(400);
         }
+        
+        $uuid = $this->request->getPost('uuid');
+
+        $pengajuanmodel = new PengajuanModel();
+        $pengajuan = $pengajuanmodel->where('uuid',$uuid)->first();
+
+        if(empty($pengajuan)){
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => [
+                    'simpan' => 'Data pengajuan tidak ditemukan!'
+                ],
+                'csrf' => csrf_hash(),
+                'uuid' => $uuid
+            ])->setStatusCode(400);
+        }
+        //check status pengajuan harus 1
+        if($pengajuan['submited_status'] != 1 ){
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => [
+                    'simpan' => 'Pengajuan sudah dikirim ke approver atau sudah disetujui!'
+                ],
+                'csrf' => csrf_hash(),
+                'uuid' => $uuid
+            ])->setStatusCode(400);
+        }
 
         $validation = \Config\Services::validation();
         $validation->setRules([
@@ -395,11 +422,11 @@ class Operator extends BaseController
             return $this->response->setJSON([
                 'status' => 'error',
                 'message' => $validation->getError('keteranganpenolakan'),
-                'csrf' => csrf_hash()
+                'csrf' => csrf_hash(),
+                'uuid' => $uuid
             ])->setStatusCode(400);
         }
 
-        $uuid = $this->request->getPost('uuid');
 
         $pt = new PengajuanDetailModel();
         $ptData = $pt->where('uuid',$uuid)->first();
@@ -526,6 +553,35 @@ class Operator extends BaseController
         //         'message' => $validation->getError('keteranganpenolakan'),
 
         $uuid = $this->request->getPost('uuid');
+
+        
+        $pengajuanmodel = new PengajuanModel();
+        $pengajuan = $pengajuanmodel->where('uuid',$uuid)->first();
+
+        if(empty($pengajuan)){
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => [
+                    'simpan' => 'Data pengajuan tidak ditemukan!'
+                ],
+                'csrfHash' => csrf_hash(),
+                'csrfToken' => csrf_token(),
+                'uuid' => $uuid
+            ])->setStatusCode(400);
+        }
+        //check status pengajuan harus 1
+        if($pengajuan['submited_status'] != 1 ){
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => [
+                    'simpan' => 'Pengajuan sudah dikirim ke approver atau sudah disetujui!'
+                ],
+                'csrfHash' => csrf_hash(),
+                'csrfToken' => csrf_token(),
+                'uuid' => $uuid
+            ])->setStatusCode(400);
+        }
+
         $data = [
             'submited_status' => 2,
             'submited_time' => date('Y-m-d H:i:s'),
@@ -614,6 +670,33 @@ class Operator extends BaseController
         }
 
         $uuid = $this->request->getPost('uuid');
+
+        $pengajuanmodel = new PengajuanModel();
+        $pengajuan = $pengajuanmodel->where('uuid',$uuid)->first();
+
+        if(empty($pengajuan)){
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => [
+                    'simpan' => 'Data pengajuan tidak ditemukan!'
+                ],
+                'csrfHash' => csrf_hash(),
+                'csrfToken' => csrf_token(),
+                'uuid' => $uuid
+            ])->setStatusCode(400);
+        }
+        //check status pengajuan harus 1
+        if($pengajuan['submited_status'] != 1 ){
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => [
+                    'simpan' => 'Pengajuan sudah dikirim ke approver atau sudah disetujui!'
+                ],
+                'csrfHash' => csrf_hash(),
+                'csrfToken' => csrf_token(),
+                'uuid' => $uuid
+            ])->setStatusCode(400);
+        }
      
         $data = [
             'submited_status' => 3,

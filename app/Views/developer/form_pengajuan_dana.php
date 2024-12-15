@@ -36,7 +36,8 @@
                         <label class="custom-file-label" for="exampleInputFile">Choose file</label>
                   </div>
               </div>
-              <div class="text-muted">
+              <div class="text-muted" style="margin-top: 10px;">
+              Download template form kredit <a href="<?= base_url('download/form_kredit') ?>" target="_blank">disini</a><br>
                     <small>Dokumen ditandatangani dan bermaterai</small><br>
                     <small>Format file yang diizinkan: PDF</small>,
                     <small>Maksimal ukuran file: 10 MB</small>
