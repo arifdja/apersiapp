@@ -22,10 +22,11 @@
                     <button class="btn btn-info btn-xs" onclick="window.location.href='<?= site_url('developer/form_tambah_unit?uuidheader='.$uuidheader) ?>'">Tambah Unit yang diagunkan</button>
                   </div>
                 <?php endif; ?>
-                
-                <button class="btn btn-xs btn-info toggle-alamat">
+                <div class="card-title" style="margin-left: 5px;">
+                  <button class="btn btn-xs btn-info toggle-alamat">
                           <i class="fas fa-eye"></i> Alamat
                         </button>
+                </div>
               </div>
               <!-- /.card-header -->
               <div class="card-body table-responsive p-2">

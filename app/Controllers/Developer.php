@@ -128,10 +128,10 @@ class Developer extends BaseController
             ],
             'berkasnpwppt' => [
                 'label' => 'NPWP PT',
-                'rules' => 'uploaded[berkasnpwppt]|max_size[berkasnpwppt,10240]|ext_in[berkasnpwppt,pdf]|mime_in[berkasnpwppt,application/pdf]',
+                'rules' => 'uploaded[berkasnpwppt]|max_size[berkasnpwppt,1024]|ext_in[berkasnpwppt,pdf]|mime_in[berkasnpwppt,application/pdf]',
                 'errors' => [
                     'uploaded' => '{field} harus diisi',
-                    'max_size' => '{field} maksimal 10 MB',
+                    'max_size' => '{field} maksimal 1 MB',
                     'ext_in' => '{field} harus berformat PDF',
                     'mime_in' => '{field} harus berformat PDF'
                 ]
@@ -152,10 +152,10 @@ class Developer extends BaseController
             ],
             'berkasktp_penanggung_jawab' => [
                 'label' => 'KTP Penanggung Jawab',
-                'rules' => 'uploaded[berkasktp_penanggung_jawab]|max_size[berkasktp_penanggung_jawab,10240]|ext_in[berkasktp_penanggung_jawab,pdf]|mime_in[berkasktp_penanggung_jawab,application/pdf]',
+                'rules' => 'uploaded[berkasktp_penanggung_jawab]|max_size[berkasktp_penanggung_jawab,1024]|ext_in[berkasktp_penanggung_jawab,pdf]|mime_in[berkasktp_penanggung_jawab,application/pdf]',
                 'errors' => [
                     'uploaded' => '{field} harus diisi',
-                    'max_size' => '{field} maksimal 10 MB',
+                    'max_size' => '{field} maksimal 1 MB',
                     'ext_in' => '{field} harus berformat PDF',
                     'mime_in' => '{field} harus berformat PDF'
                 ]
@@ -169,58 +169,38 @@ class Developer extends BaseController
             ],
             'berkasnpwp_penanggung_jawab' => [
                 'label' => 'NPWP Penanggung Jawab',
-                'rules' => 'uploaded[berkasnpwp_penanggung_jawab]|max_size[berkasnpwp_penanggung_jawab,10240]|ext_in[berkasnpwp_penanggung_jawab,pdf]|mime_in[berkasnpwp_penanggung_jawab,application/pdf]',
+                'rules' => 'uploaded[berkasnpwp_penanggung_jawab]|max_size[berkasnpwp_penanggung_jawab,1024]|ext_in[berkasnpwp_penanggung_jawab,pdf]|mime_in[berkasnpwp_penanggung_jawab,application/pdf]',
                 'errors' => [
                     'uploaded' => '{field} harus diisi',
-                    'max_size' => '{field} maksimal 10 MB',
+                    'max_size' => '{field} maksimal 1 MB',
                     'ext_in' => '{field} harus berformat PDF',
                     'mime_in' => '{field} harus berformat PDF'
                 ]
             ],
             'pengurus_pt' => [
-                'label' => 'Pengurus PT',
-                'rules' => 'trim|required',
+                'label' => 'Nama dan Jabatan Pengurus PT',
+                'rules' => 'trim|required|max_length[600]',
                 'errors' => [
-                    'required' => '{field} harus diisi'
-                ]
-            ],
-            'jabatan_pengurus_pt' => [
-                'label' => 'Jabatan Pengurus PT',
-                'rules' => 'trim|required',
-                'errors' => [
-                    'required' => '{field} harus diisi'
-                ]
-            ],
-            'npwp_pengurus_pt' => [
-                'label' => 'NPWP Pengurus PT',
-                'rules' => 'trim|required',
-                'errors' => [
-                    'required' => '{field} harus diisi'
+                    'required' => '{field} harus diisi',
+                    'max_length' => '{field} maksimal 600 karakter'
                 ]
             ],
             'berkasnpwp_pengurus_pt' => [
                 'label' => 'NPWP Pengurus PT',
-                'rules' => 'uploaded[berkasnpwp_pengurus_pt]|max_size[berkasnpwp_pengurus_pt,10240]|ext_in[berkasnpwp_pengurus_pt,pdf]|mime_in[berkasnpwp_pengurus_pt,application/pdf]',
+                'rules' => 'uploaded[berkasnpwp_pengurus_pt]|max_size[berkasnpwp_pengurus_pt,5120]|ext_in[berkasnpwp_pengurus_pt,pdf]|mime_in[berkasnpwp_pengurus_pt,application/pdf]',
                 'errors' => [
                     'uploaded' => '{field} harus diisi',
-                    'max_size' => '{field} maksimal 10 MB',
+                    'max_size' => '{field} maksimal 5 MB',
                     'ext_in' => '{field} harus berformat PDF',
                     'mime_in' => '{field} harus berformat PDF'
                 ]
             ],
-            'ktp_pengurus_pt' => [
-                'label' => 'KTP Pengurus PT',
-                'rules' => 'trim|required',
-                'errors' => [
-                    'required' => '{field} harus diisi'
-                ]
-            ],
             'berkasktp_pengurus_pt' => [
                 'label' => 'KTP Pengurus PT',
-                'rules' => 'uploaded[berkasktp_pengurus_pt]|max_size[berkasktp_pengurus_pt,10240]|ext_in[berkasktp_pengurus_pt,pdf]|mime_in[berkasktp_pengurus_pt,application/pdf]',
+                'rules' => 'uploaded[berkasktp_pengurus_pt]|max_size[berkasktp_pengurus_pt,5120]|ext_in[berkasktp_pengurus_pt,pdf]|mime_in[berkasktp_pengurus_pt,application/pdf]',
                 'errors' => [
                     'uploaded' => '{field} harus diisi',
-                    'max_size' => '{field} maksimal 10 MB',
+                    'max_size' => '{field} maksimal 5 MB',
                     'ext_in' => '{field} harus berformat PDF',
                     'mime_in' => '{field} harus berformat PDF'
                 ]
@@ -234,10 +214,10 @@ class Developer extends BaseController
             ],
             'berkasakta_pendirian' => [
                 'label' => 'Akta Pendirian PT',
-                'rules' => 'uploaded[berkasakta_pendirian]|max_size[berkasakta_pendirian,10240]|ext_in[berkasakta_pendirian,pdf]|mime_in[berkasakta_pendirian,application/pdf]',
+                'rules' => 'uploaded[berkasakta_pendirian]|max_size[berkasakta_pendirian,5120]|ext_in[berkasakta_pendirian,pdf]|mime_in[berkasakta_pendirian,application/pdf]',
                 'errors' => [
                     'uploaded' => '{field} harus diisi',
-                    'max_size' => '{field} maksimal 10 MB',
+                    'max_size' => '{field} maksimal 5 MB',
                     'ext_in' => '{field} harus berformat PDF',
                     'mime_in' => '{field} harus berformat PDF'
                 ]
@@ -258,10 +238,10 @@ class Developer extends BaseController
             ],
             'berkasrekening' => [
                 'label' => 'Rekening PT',
-                'rules' => 'uploaded[berkasrekening]|max_size[berkasrekening,10240]|ext_in[berkasrekening,pdf]|mime_in[berkasrekening,application/pdf]',
+                'rules' => 'uploaded[berkasrekening]|max_size[berkasrekening,1024]|ext_in[berkasrekening,pdf]|mime_in[berkasrekening,application/pdf]',
                 'errors' => [
                     'uploaded' => '{field} harus diisi',
-                    'max_size' => '{field} maksimal 10 MB',
+                    'max_size' => '{field} maksimal 1 MB',
                     'ext_in' => '{field} harus berformat PDF',
                     'mime_in' => '{field} harus berformat PDF'
                 ]
@@ -331,10 +311,7 @@ class Developer extends BaseController
                 "npwppj" => $this->request->getVar('npwp_penanggung_jawab'),
                 "berkasnpwppj" => $newfilenameberkasnpwp_penanggung_jawab,
                 "penguruspt" => $this->request->getVar('pengurus_pt'),
-                "jabatanpenguruspt" => $this->request->getVar('jabatan_pengurus_pt'),
-                "npwppenguruspt" => $this->request->getVar('npwp_pengurus_pt'),
                 "berkaspengurusptnpwp" => $newfilenameberkasnpwp_pengurus_pt,
-                "ktppenguruspt" => $newfilenameberkasktp_pengurus_pt,
                 "berkaspengurusptktp" => $newfilenameberkasktp_pengurus_pt,
                 "aktapendirian" => $this->request->getVar('akta_pendirian'),
                 "berkasaktapendirian" => $newfilenameberkasakta_pendirian,
@@ -586,12 +563,7 @@ class Developer extends BaseController
                     <a href="'.base_url('download/ktp_penanggungjawab/'.$data['berkasktppj']).'" class="form-control" style="text-decoration: none; background-color: #e9ecef; margin-top: 10px;">Penanggung Jawab : '.$data['namapj'].'</a>
                  
                     <a href="'.base_url('download/npwp_penanggungjawab/'.$data['berkasnpwppj']).'" class="form-control" style="text-decoration: none; background-color: #e9ecef; margin-top: 10px;">NPWP Penanggung Jawab : '.$data['npwppj'].'</a>
-                 
-                    <a href="'.base_url('download/pinjaman_kpl/'.$data['berkaspinjamankpl']).'" class="form-control" style="text-decoration: none; background-color: #e9ecef; margin-top: 10px;">Pinjaman KPL : '.number_format($data['pinjamankpl'],0,',','.') .'</a>
-                 
-                    <a href="'.base_url('download/pinjaman_kyg/'.$data['berkaspinjamankyg']).'" class="form-control" style="text-decoration: none; background-color: #e9ecef; margin-top: 10px;">Pinjaman KYG : '.number_format($data['pinjamankyg'],0,',','.') .'</a>
-                  
-                    <a href="'.base_url('download/pinjaman_lain/'.$data['berkaspinjamanlain']).'" class="form-control" style="text-decoration: none; background-color: #e9ecef; margin-top: 10px;">Pinjaman Lain : '.number_format($data['pinjamanlain'],0,',','.') .'</a>
+                       
                   </div>
                   
                   ';  

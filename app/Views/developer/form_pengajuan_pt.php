@@ -65,7 +65,7 @@
               </div>
               <div class="text-muted">
                     <small>Format file yang diizinkan: PDF</small>,
-                    <small>Maksimal ukuran file: 10 MB</small>
+                    <small>Maksimal ukuran file: 1 MB</small>
               </div>
               <span id="spanberkasnpwppt" style="color: red;"></span>
             </div>
@@ -86,7 +86,7 @@
               </div>
               <div class="text-muted">
                     <small>Format file yang diizinkan: PDF</small>,
-                    <small>Maksimal ukuran file: 10 MB</small>
+                    <small>Maksimal ukuran file: 1 MB</small>
               </div>
               <span id="spanberasktp_penanggung_jawab" style="color: red;"></span>
             </div>
@@ -111,29 +111,21 @@
               </div>
               <div class="text-muted">
                     <small>Format file yang diizinkan: PDF</small>,
-                    <small>Maksimal ukuran file: 10 MB</small>
+                    <small>Maksimal ukuran file: 1 MB</small>
               </div>
               <span id="spanberkasnpwp_penanggung_jawab" style="color: red;"></span>
             </div>
 
             
             <div class="form-group">
-              <label for="pengurus_pt">Pengurus PT</label>
-              <input type="text" name="pengurus_pt" required class="form-control" id="pengurus_pt" placeholder="Nama Pengurus PT">
+              <label for="pengurus_pt">Nama dan JabatanPengurus PT</label>
+              <textarea name="pengurus_pt" id="pengurus_pt" class="form-control" rows="3" placeholder="Masukkan nama dan jabatan pengurus PT" required></textarea>
               <span id="spanpengurus_pt" style="color: red;"></span>
-            </div>
-
-            
-            <div class="form-group">
-              <label for="jabatan_pengurus_pt">Jabatan Pengurus PT</label>
-              <input type="text" name="jabatan_pengurus_pt" required class="form-control" id="jabatan_pengurus_pt" placeholder="Jabatan Pengurus PT">
-              <span id="spanjabatan_pengurus_pt" style="color: red;"></span>
             </div>
 
             
           <div class="form-group">
               <label for="npwp_pengurus_pt">NPWP Pengurus PT</label>
-              <input type="text" name="npwp_pengurus_pt" required class="form-control" id="npwp_pengurus_pt" placeholder="Isi NPWP Pengurus" value="<?= old('npwp_pengurus_pt') ?>">
               <span id="spannpwp_pengurus_pt" style="color: red;"></span>
               <div class="input-group" style="margin-top: 10px;">
                   <div class="custom-file">
@@ -143,7 +135,7 @@
               </div>
               <div class="text-muted">
                     <small>Format file yang diizinkan: PDF</small>,
-                    <small>Maksimal ukuran file: 10 MB</small>
+                    <small>Maksimal ukuran file: 5 MB</small>
               </div>
               <span id="spanberkasnpwp_pengurus_pt" style="color: red;"></span>
             </div>
@@ -151,7 +143,6 @@
             
           <div class="form-group">
               <label for="ktp_pengurus_pt">KTP Pengurus PT</label>
-              <input type="text" name="ktp_pengurus_pt" required class="form-control" id="ktp_pengurus_pt" placeholder="Isi KTP Pengurus" value="<?= old('ktp_pengurus_pt') ?>">
               <span id="spanktp_pengurus_pt" style="color: red;"></span>
               <div class="input-group" style="margin-top: 10px;">
                   <div class="custom-file">
@@ -161,7 +152,7 @@
               </div>
               <div class="text-muted">
                     <small>Format file yang diizinkan: PDF</small>,
-                    <small>Maksimal ukuran file: 10 MB</small>
+                    <small>Maksimal ukuran file: 5 MB</small>
               </div>
               <span id="spanberkasktp_pengurus_pt" style="color: red;"></span>
             </div>
@@ -178,7 +169,7 @@
               </div>
               <div class="text-muted">
                     <small>Format file yang diizinkan: PDF</small>,
-                    <small>Maksimal ukuran file: 10 MB</small>
+                    <small>Maksimal ukuran file: 5 MB</small>
               </div>
               <span id="spanberkasakta_pendirian" style="color: red;"></span>
             </div>
@@ -199,7 +190,7 @@
               </div>
               <div class="text-muted">
                     <small>Format file yang diizinkan: PDF</small>,
-                    <small>Maksimal ukuran file: 10 MB</small>
+                    <small>Maksimal ukuran file: 1 MB</small>
               </div>
               <span id="spanberkasrekening" style="color: red;"></span>
             </div>
@@ -452,13 +443,13 @@
                   response.kecamatan.forEach(function (item) {
                     options += `<option value="${item.id}">${item.namakecamatan}</option>`;
                   });
-                  $('#kecamatan').html(options);
+                  $('#lokasiref').html(options);
                   $('#<?= csrf_token() ?>').val(response.csrfHash);
                 },
                 error: function () {
                   $('#kabupaten').val(oldKabupatenSelection);
                   $('#kota').val(oldKotaSelection);
-                  $('#kecamatan').val(oldKecamatanSelection);
+                  $('#lokasiref').val(oldKecamatanSelection);
                   Swal.fire({
                     icon: 'error',
                     title: 'Error!',
