@@ -70,7 +70,7 @@
       <input type="hidden" name="token" value="<?= $token ?>">
 
         <div class="input-group mb-3">
-        <input autofocus autocomplete="off" required type="password" name="password" class="form-control" placeholder="Password">
+        <input id="pw" autofocus autocomplete="off" required type="password" name="password" class="form-control" placeholder="Password">
         
       
           <div class="input-group-append input-group-sm">
@@ -81,7 +81,7 @@
         </div>
 
         <div class="input-group mb-3">
-        <input autofocus autocomplete="off" required type="password" name="password_confirm" class="form-control" placeholder="Konfirmasi Password">
+        <input id="pw2" autofocus autocomplete="off" required type="password" name="password_confirm" class="form-control" placeholder="Konfirmasi Password">
         
         <div class="input-group-append input-group-sm">
             <div class="input-group-text input-group-sm">
@@ -90,6 +90,14 @@
           </div>
           
       
+        </div>
+
+        
+        <div class="form-group">
+              <div class="col-sm-12">
+                  <input type="checkbox" class="" id="check">
+                  <label class="form-check-label" for="exampleCheck2">Tampilkan Password</label>
+              </div>
         </div>
 
         <div class="row">
@@ -119,5 +127,13 @@
 <!-- AdminLTE App -->
 <script src="<?= base_url() ?>/adminlte/dist/js/adminlte.min.js"></script>
 
+<script>
+  $(document).ready(function () {
+    $('#check').click(function(){
+        $(this).is(':checked') ? $('#pw').attr('type', 'text') : $('#pw').attr('type', 'password');
+        $(this).is(':checked') ? $('#pw2').attr('type', 'text') : $('#pw2').attr('type', 'password');
+    });
+  });
+</script>
 </body>
 </html>
