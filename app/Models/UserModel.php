@@ -23,6 +23,7 @@ class UserModel extends Model
 		if(session()->get('kdgrpuser') == "approver"){
 			$builder->where('users.statusvalidator', 1);
 		}
+		$builder->where('users.is_email_verified', 1);
 		return $builder->get()->getResultArray();
 	}
 }

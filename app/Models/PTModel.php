@@ -51,7 +51,6 @@ class PTModel extends Model
         if(session()->get('kdgrpuser') == "approver"){
             $builder->where('statusvalidator', 1);
         }
-        $builder->where('is_email_verified', 1);
         $builder->orderBy('ref_pt.updated_at','DESC');
         return $builder->get()->getResultArray();
     }
