@@ -21,6 +21,7 @@ $routes->get('/form_lupa_password', 'User::form_lupa_password');
 $routes->post('/get_token_reset_password', 'User::get_token_reset_password');
 $routes->get('/form_reset_password/(:any)', 'User::form_reset_password/$1');
 $routes->post('/proses_reset_password', 'User::proses_reset_password');
+$routes->get('/verify_email/(:any)', 'User::verify_email/$1');
 
 $routes->get('/developer', 'Developer::index',['filter' => 'auth']);
 $routes->get('/developer/dashboard', 'Developer::dashboard',['filter' => 'auth']);

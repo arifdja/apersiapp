@@ -57,10 +57,14 @@
         
       </div>
       <p style="font-size:18px; font-weight:bold">Sistem Informasi Bridging <br>Modal Pengembang</p>
+      
       <?= form_open('validateuser','autocomplete="off"'); ?>
       <?= csrf_field() ?>
       <?php if(session()->getFlashdata('success')): ?>
         <div class="alert alert-success"><?= session()->getFlashdata('success') ?></div>
+      <?php endif; ?>
+      <?php if(session()->getFlashdata('error')): ?>
+        <div class="alert alert-danger"><?= session()->getFlashdata('error') ?></div>
       <?php endif; ?>
         <div class="input-group mb-3"> 
         <input autofocus autocomplete="off" type="email" name="username" value="<?= set_value('username')?>" class="form-control <?= $validation->hasError('username') ? 'is-invalid' : ''; ?>" placeholder="Username">

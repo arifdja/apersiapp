@@ -292,6 +292,9 @@ class User extends BaseController
                 ]
             ])->setStatusCode(400);
         }
+        
+        $token = bin2hex(random_bytes(32));
+        $expired = date('Y-m-d H:i:s', strtotime('+1 hour'));
 
         $fileberkaskta = $this->request->getFile('berkaskta');
         
@@ -315,8 +318,13 @@ class User extends BaseController
                 "berkaskta" => $newFileName,
                 "statusvalidator" => 0, // pending
                 "validated_at" => date('Y-m-d H:i:s'),
-                "validated_by" => session('uuid')
+                "validated_by" => session('uuid'),
+                "email_token" => $token,
+                "email_token_expired" => $expired
             ];
+
+            $this->sendVerificationEmail($this->request->getVar('email'), $token);
+
 
             $user = new UserModel();
             $save = $user->save($data);
@@ -343,6 +351,43 @@ class User extends BaseController
             ])->setStatusCode(400);
         }
         
+    }
+
+    private function sendVerificationEmail($email, $token)
+    {
+
+        $message = "Click this link to verify your email:\n\n";
+        $message .= base_url("verify_email/$token");
+        $message .= "\n\nLink ini akan kadaluarsa dalam 1 jam.";
+
+        $kirim = sendMail($email,'Email Verification',$message);
+        $kirim = true;
+    
+        if ($kirim) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function verify_email($token)
+    {
+
+        $userModel = new UserModel();
+
+        $user = $userModel->where('email_token', $token)->where('email_token_expired >', date('Y-m-d H:i:s'))->first();
+
+        if ($user) {
+            $data = [
+                'is_email_verified' => true,
+                'email_token' => null,
+                'email_token_expired' => null
+            ];
+            $userModel->where('uuid',$user['uuid'])->set($data)->update();
+            return redirect()->to('/login')->with('success', 'Email berhasil diverifikasi. Menunggu validasi admin.');
+        }
+
+        return redirect()->to('/login')->with('error', 'Invalid or expired email token.');
     }
 
     public function profil()

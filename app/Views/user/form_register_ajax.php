@@ -240,7 +240,7 @@
                       Swal.fire({
                           icon: 'success', 
                           title: 'Konfirmasi',
-                          text: 'Pendaftaran berhasil, mohon tunggu validasi dari admin dan akan diinformasikan melalui email',
+                          text: 'Silahkan cek email anda untuk melakukan verifikasi',
                           showConfirmButton: true,
                           confirmButtonText: 'OK',
                           allowOutsideClick: false
