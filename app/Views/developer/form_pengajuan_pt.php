@@ -28,23 +28,23 @@
               <span id="spanprovinsi" style="color: red;"></span>
             </div>
             <div class="form-group">
-              <label for="kabupaten">Kabupaten</label>
+              <label for="kabupaten">Kabupaten/Kota</label>
               <select id="kabupaten" name="kabupaten" class="form-control" required>
-                  <option value="" selected disabled>Pilih Kabupaten</option>
+                  <option value="" selected disabled>Pilih Kabupaten/Kota</option>
               </select>
               <span id="spankabupaten" style="color: red;"></span>
             </div>
             <div class="form-group">
-              <label for="kota">Kota</label>
+              <label for="kota">Kecamatan</label>
               <select id="kota" name="kota" class="form-control" required>
-                  <option value="" selected disabled>Pilih Kota</option>
+                  <option value="" selected disabled>Pilih Kecamatan</option>
               </select>
               <span id="spankota" style="color: red;"></span>
             </div>
             <div class="form-group">
-              <label for="kecamatan">Kecamatan</label>
+              <label for="kecamatan">Kelurahan</label>
               <select id="lokasiref" name="lokasiref" class="form-control" required>
-                  <option value="" selected disabled>Pilih Kecamatan</option>
+                  <option value="" selected disabled>Pilih Kelurahan</option>
               </select>
               <span id="spanlokasiref" style="color: red;"></span>
             </div>
@@ -55,7 +55,7 @@
             </div>
             <div class="form-group">
               <label for="npwp_pt">NPWP PT</label>
-              <input type="text" name="npwp_pt" required class="form-control" id="npwp_pt" placeholder="Isi NPWP PT" value="<?= old('npwp_pt') ?>">
+              <input type="text" name="npwp_pt" required class="form-control" id="npwp_pt" placeholder="Isi Nomor NPWP PT" value="<?= old('npwp_pt') ?>">
               <span id="spannpwp_pt" style="color: red;"></span>
               <div class="input-group" style="margin-top: 10px;">
                   <div class="custom-file">
@@ -76,7 +76,7 @@
             </div>
           <div class="form-group">
               <label for="ktp_penanggung_jawab">KTP Penanggung Jawab</label>
-              <input type="text" name="ktp_penanggung_jawab" required class="form-control" id="ktp_penanggung_jawab" placeholder="Isi KTP Penanggung Jawab" value="<?= old('ktp_penanggung_jawab') ?>">
+              <input type="text" name="ktp_penanggung_jawab" required class="form-control" id="ktp_penanggung_jawab" placeholder="Isi NIK KTP Penanggung Jawab" value="<?= old('ktp_penanggung_jawab') ?>">
               <span id="spanktp_penanggung_jawab" style="color: red;"></span>
               <div class="input-group" style="margin-top: 10px;">
                   <div class="custom-file">
@@ -101,7 +101,7 @@
           
           <div class="form-group">
               <label for="npwp_penanggung_jawab">NPWP Penanggung Jawab</label>
-              <input type="text" name="npwp_penanggung_jawab" required class="form-control" id="npwp_penanggung_jawab" placeholder="Isi NPWP Penanggung Jawab" value="<?= old('npwp_penanggung_jawab') ?>">
+              <input type="text" name="npwp_penanggung_jawab" required class="form-control" id="npwp_penanggung_jawab" placeholder="Isi Nomor NPWP Penanggung Jawab" value="<?= old('npwp_penanggung_jawab') ?>">
               <span id="spannpwp_penanggung_jawab" style="color: red;"></span>
               <div class="input-group" style="margin-top: 10px;">
                   <div class="custom-file">
@@ -159,7 +159,7 @@
             
             <div class="form-group">
               <label for="akta_pendirian">Akta Pendirian</label>
-              <input type="text" name="akta_pendirian" required class="form-control" id="akta_pendirian" placeholder="Isi Akta Pendirian" value="<?= old('akta_pendirian') ?>">
+              <input type="text" name="akta_pendirian" required class="form-control" id="akta_pendirian" placeholder="Isi Nomor Akta Pendirian" value="<?= old('akta_pendirian') ?>">
               <span id="spanakta_pendirian" style="color: red;"></span>
               <div class="input-group" style="margin-top: 10px;">
                   <div class="custom-file">
@@ -179,8 +179,8 @@
               <span id="spanbank" style="color: red;"></span>
             </div>
             <div class="form-group">
-              <label for="rekening">Rekening</label>
-              <input type="text" name="rekening" required class="form-control" id="rekening" placeholder="Isi Rekening" value="<?= old('rekening') ?>">
+              <label for="rekening">Nomor Rekening</label>
+              <input type="text" name="rekening" required class="form-control" id="rekening" placeholder="Isi Nomor Rekening" value="<?= old('rekening') ?>">
               <span id="spanrekening" style="color: red;"></span>
               <div class="input-group" style="margin-top: 10px;">
                   <div class="custom-file">
@@ -189,6 +189,7 @@
                   </div>
               </div>
               <div class="text-muted">
+                    <small>Upload Buku Tabungan atau Rekening Koran</small><br>
                     <small>Format file yang diizinkan: PDF</small>,
                     <small>Maksimal ukuran file: 1 MB</small>
               </div>
@@ -219,14 +220,22 @@
 
 <script>
     $(document).ready(function () {
-        // Handle form submission
+      
         $('#formpengajuanpt').on('submit', function (e) {
             e.preventDefault(); // Prevent the default form submission
 
             // Create FormData object
             var formData = new FormData(this);
 
-            console.log(formData);
+            Swal.fire({
+                title: 'Mohon Tunggu',
+                html: 'Sedang memproses data...',
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                willOpen: () => {
+                    Swal.showLoading()
+                },
+            });
 
             // Send AJAX request
             $.ajax({
@@ -251,6 +260,11 @@
                 },
                 error: function (xhr, status, error) {
                     // Handle error response
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Gagal menyimpan data'
+                      });
                     
                     $('#<?= csrf_token() ?>').val(xhr.responseJSON.csrfHash);
                     if(xhr.responseJSON.status == 'error'){
@@ -339,13 +353,6 @@
                         $('#spanberkasrekening').html(xhr.responseJSON.message.berkasrekening);
                       }
                     }
-                    if(xhr.responseJSON.message.simpan){
-                      Swal.fire({
-                          icon: 'error',
-                          title: 'Error',
-                          text: 'Gagal menyimpan data'
-                        });
-                    }
                 }
             });
         });
@@ -369,27 +376,44 @@
             $('#kabupaten').html('<option value="" selected disabled>Loading...</option>');
             $('#kota').html('<option value="" selected disabled>Loading...</option>');
             $('#kecamatan').html('<option value="" selected disabled>Loading...</option>');
-            // Fetch kabupaten/kota berdasarkan provinsi
-            $.ajax({
-                url: '<?= site_url('get_kabupaten'); ?>',
-                type: 'POST',
-                data: { provinsi_id: provinsiId, [csrfName]: csrfHash },
-                success: function (response) {
-                    let options = '<option value="" selected disabled>Pilih Kabupaten</option>';
-                    response.kabupaten.forEach(function (item) {
-                        options += `<option value="${item.id}">${item.namakabupaten}</option>`;
+
+            Swal.fire({
+                title: 'Mohon Tunggu',
+                html: 'Sedang memproses data...',
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                didOpen: () => {
+                    // Swal.showLoading()
+                                // Fetch kabupaten/kota berdasarkan provinsi
+                    $.ajax({
+                        url: '<?= site_url('get_kabupaten'); ?>',
+                        type: 'POST',
+                        data: { provinsi_id: provinsiId, [csrfName]: csrfHash },
+                        success: function (response) {
+                            let options = '<option value="" selected disabled>Pilih Kabupaten/Kota</option>';
+                            response.kabupaten.forEach(function (item) {
+                                options += `<option value="${item.id}">${item.namakabupaten}</option>`;
+                            });
+                            $('#kabupaten').html(options);
+                            $('#<?= csrf_token() ?>').val(response.csrfHash);
+                            Swal.fire({
+                              icon: 'success',
+                              title: 'Berhasil!',
+                              text: 'Berhasil memuat data kabupaten/kota. Silakan pilih kabupaten/kota.'
+                            });
+                        },
+                        error: function () {
+                          Swal.fire({
+                            icon: 'error',
+                            title: 'Error!',
+                            text: 'Gagal memuat data kabupaten/kota. Silakan coba lagi.'
+                          });
+                        }
                     });
-                    $('#kabupaten').html(options);
-                    $('#<?= csrf_token() ?>').val(response.csrfHash);
+                    //end willopen
                 },
-                error: function () {
-                  Swal.fire({
-                    icon: 'error',
-                    title: 'Error!',
-                    text: 'Gagal memuat data kabupaten. Silakan coba lagi.'
-                  });
-                }
             });
+
         });
 
         $('#kabupaten').change(function () {
@@ -397,6 +421,16 @@
             let csrfName = '<?= csrf_token() ?>';
             let csrfHash = $('#<?= csrf_token() ?>').val();
             let kabupatenId = $(this).val();
+
+            Swal.fire({
+                title: 'Mohon Tunggu',
+                html: 'Sedang memproses data...',
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                willOpen: () => {
+                    Swal.showLoading()
+                },
+            });
 
             // Clear kabupaten_kota dropdown
             $('#kota').html('<option value="" selected disabled>Loading...</option>');
@@ -407,19 +441,24 @@
                 type: 'POST',
                 data: { kabupaten_id: kabupatenId, [csrfName]: csrfHash },
                 success: function (response) {
-                  let options = '<option value="" selected disabled>Pilih Kota</option>';
+                  let options = '<option value="" selected disabled>Pilih Kecamatan</option>';
                   response.kota.forEach(function (item) {
                     options += `<option value="${item.id}">${item.namakota}</option>`;
                   });
                   $('#kota').html(options);
                   $('#<?= csrf_token() ?>').val(response.csrfHash);
+                  Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil!',
+                    text: 'Berhasil memuat data kecamatan. Silakan pilih kecamatan.'
+                  });
                  
                 },
                 error: function () {
                   Swal.fire({
                     icon: 'error',
                     title: 'Error!',
-                    text: 'Gagal memuat data kecamatan. Silakan coba lagi.'
+                    text: 'Gagal memuat data kelurahan. Silakan coba lagi.'
                   });
                 }
             });
@@ -431,6 +470,16 @@
             let csrfHash = $('#<?= csrf_token() ?>').val();
             let kotaId = $(this).val();
 
+            Swal.fire({
+                title: 'Mohon Tunggu',
+                html: 'Sedang memproses data...',
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                willOpen: () => {
+                    Swal.showLoading()
+                },
+            });
+
             // Clear kabupaten_kota dropdown
             $('#kecamatan').html('<option value="" selected disabled>Loading...</option>');
             // Fetch kota berdasarkan kabupaten
@@ -439,12 +488,19 @@
                 type: 'POST',
                 data: { kota_id: kotaId, [csrfName]: csrfHash },
                 success: function (response) {
-                  let options = '<option value="" selected disabled>Pilih Kecamatan</option>';
+                  let options = '<option value="" selected disabled>Pilih Kelurahan</option>';
                   response.kecamatan.forEach(function (item) {
                     options += `<option value="${item.id}">${item.namakecamatan}</option>`;
                   });
                   $('#lokasiref').html(options);
                   $('#<?= csrf_token() ?>').val(response.csrfHash);
+                  
+                  Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil!',
+                    text: 'Berhasil memuat data kelurahan. Silakan pilih kelurahan.'
+                  });
+
                 },
                 error: function () {
                   $('#kabupaten').val(oldKabupatenSelection);
@@ -453,7 +509,7 @@
                   Swal.fire({
                     icon: 'error',
                     title: 'Error!',
-                    text: 'Gagal memuat data kecamatan. Silakan coba lagi.'
+                    text: 'Gagal memuat data kelurahan. Silakan coba lagi.'
                   });
                 }
             });

@@ -1,13 +1,33 @@
 <?php namespace App\Models;
 
 use CodeIgniter\Model;
+use App\Models\PengajuanModel;
+use App\Models\PengajuanDetailModel;
+
 
 class DashboardModel extends Model
 {
     
     public function getReportUnit()
     {
-       $sql="SELECT
+        if(session()->get('kdgrpuser')=='developer'){
+
+            $uuidpt = $this->getUUIDPT(session()->get('uuid'));
+            $uuidpt = array_column($uuidpt,'uuid');
+
+            $model = new PengajuanModel();
+            $model->whereIn('uuidpt',$uuidpt);
+            $pengajuan = $model->findAll();
+            $uuidheader = array_column($pengajuan,'uuid');
+
+            $model = new PengajuanDetailModel();
+            $model->whereIn('uuidheader',$uuidheader);
+            $pengajuanDetail = $model->findAll();
+            $uuid = array_column($pengajuanDetail,'uuid');
+        }
+
+
+        $sql="SELECT
             SUM(CASE WHEN statusvalidator = 1 THEN 1 ELSE 0 END) AS validoperator,
             SUM(CASE WHEN statussikumbang = 1 THEN 1 ELSE 0 END) AS validsikumbang,
             SUM(CASE WHEN statuseflpp= 1 THEN 1 ELSE 0 END) AS valideflpp,
@@ -17,8 +37,11 @@ class DashboardModel extends Model
             SUM(nilaikredit) AS totalkredit,
             SUM(harga) AS totalharga
             FROM trx_pengajuan_detail";
-       $query = $this->db->query($sql);
-       return $query->getRow();
+        if(session()->get('kdgrpuser')=='developer'){
+            $sql .= " WHERE uuid IN ('".implode("','",$uuid)."')";
+        }
+        $query = $this->db->query($sql);
+        return $query->getRow();
     }
 
     public function getReportUser()
@@ -30,9 +53,28 @@ class DashboardModel extends Model
 
     public function getReportPT()
     {
-        $sql="SELECT count(*) AS totalpt FROM ref_pt";
+        if(session()->get('kdgrpuser')=='developer'){
+            $uuidpt = $this->getUUIDPT(session()->get('uuid'));
+            $uuidpt = array_column($uuidpt,'uuid');
+            $sql="SELECT count(*) AS totalpt FROM ref_pt WHERE uuid IN ('".implode("','",$uuidpt)."')";
+        } else {
+            $sql="SELECT count(*) AS totalpt FROM ref_pt";
+        }
         $query = $this->db->query($sql);
+        
         return $query->getRow();
+    }
+
+    private function getUUIDPT($uuiddeveloper=null)
+    {
+        $sql="SELECT uuid FROM ref_pt WHERE 1";
+        if($uuiddeveloper){
+            $sql .= " AND uuiddeveloper = ?";
+            $query = $this->db->query($sql,[$uuiddeveloper]);
+        } else {
+            $query = $this->db->query($sql);
+        }
+        return $query->getResultArray();
     }
 
 

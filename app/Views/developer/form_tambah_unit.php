@@ -75,23 +75,23 @@
                           <span id="spanprovinsi" style="color: red;"></span>
                         </div>
                         <div class="form-group">
-                          <label for="kabupaten">Kabupaten</label>
+                          <label for="kabupaten">Kabupaten/Kota</label>
                           <select id="kabupaten" name="kabupaten" class="form-control" required>
-                              <option value="" selected disabled>Pilih Kabupaten</option>
+                              <option value="" selected disabled>Pilih Kabupaten/Kota</option>
                           </select>
                           <span id="spankabupaten" style="color: red;"></span>
                         </div>
                         <div class="form-group">
-                          <label for="kota">Kota</label>
+                          <label for="kota">Kecamatan</label>
                           <select id="kota" name="kota" class="form-control" required>
-                              <option value="" selected disabled>Pilih Kota</option>
+                              <option value="" selected disabled>Pilih Kecamatan</option>
                           </select>
                           <span id="spankota" style="color: red;"></span>
                         </div>
                         <div class="form-group">
-                          <label for="kecamatan">Kecamatan</label>
+                          <label for="kecamatan">Kelurahan</label>
                           <select id="kecamatan" name="lokasiref" class="form-control" required>
-                              <option value="" selected disabled>Pilih Kecamatan</option>
+                              <option value="" selected disabled>Pilih Kelurahan</option>
                           </select>
                         </div>
                         <div class="form-group">
@@ -253,6 +253,7 @@
 
             // Create FormData object
             var formData = new FormData(this);
+            
 
             if(($('#pinjaman_kpl').val() == '' && $('#berkaspinjaman_kpl').val() != '') || ($('#pinjaman_kyg').val() == '' && $('#berkaspinjaman_kyg').val() != '') || ($('#pinjaman_lain').val() == '' && $('#berkaspinjaman_lain').val() != '')){
               Swal.fire({
@@ -359,6 +360,11 @@
                     }
                 },
                 error: function (xhr, status, error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Gagal menyimpan data'
+                      });
                     $('#<?= csrf_token() ?>').val(xhr.responseJSON.csrfHash);
                     // Handle error response
                     if(xhr.responseJSON.status == 'error'){
@@ -469,18 +475,34 @@
             $('#kabupaten').html('<option value="" selected disabled>Loading...</option>');
             $('#kota').html('<option value="" selected disabled>Loading...</option>');
             $('#kecamatan').html('<option value="" selected disabled>Loading...</option>');
+
+            // Tampilkan loading spinner
+            Swal.fire({
+              title: 'Mohon Tunggu',
+              html: 'Sedang memproses data...',
+              allowOutsideClick: false,
+              showConfirmButton: false,
+              willOpen: () => {
+                  Swal.showLoading()
+              },
+            });
             // Fetch kabupaten/kota berdasarkan provinsi
             $.ajax({
                 url: '<?= site_url('get_kabupaten'); ?>',
                 type: 'POST',
                 data: { provinsi_id: provinsiId, [csrfName]: csrfHash },
                 success: function (response) {
-                    let options = '<option value="" selected disabled>Pilih Kabupaten</option>';
+                    let options = '<option value="" selected disabled>Pilih Kabupaten/Kota</option>';
                     response.kabupaten.forEach(function (item) {
                         options += `<option value="${item.id}">${item.namakabupaten}</option>`;
                     });
                     $('#kabupaten').html(options);
                     $('#<?= csrf_token() ?>').val(response.csrfHash);
+                    Swal.fire({
+                      icon: 'success',
+                      title: 'Berhasil!',
+                      text: 'Berhasil memuat data kabupaten/kota. Silakan pilih kabupaten/kota.'
+                    });
                 },
                 error: function () {
                   Swal.fire({
@@ -501,18 +523,36 @@
             // Clear kabupaten_kota dropdown
             $('#kota').html('<option value="" selected disabled>Loading...</option>');
             $('#kecamatan').html('<option value="" selected disabled>Loading...</option>');
+
+            
+            // Tampilkan loading spinner
+            Swal.fire({
+              title: 'Mohon Tunggu',
+              html: 'Sedang memproses data...',
+              allowOutsideClick: false,
+              showConfirmButton: false,
+              willOpen: () => {
+                  Swal.showLoading()
+              },
+            });
+
             // Fetch kota berdasarkan kabupaten
             $.ajax({ 
                 url: '<?= site_url('get_kota'); ?>',
                 type: 'POST',
                 data: { kabupaten_id: kabupatenId, [csrfName]: csrfHash },
                 success: function (response) {
-                  let options = '<option value="" selected disabled>Pilih Kota</option>';
+                  let options = '<option value="" selected disabled>Pilih Kecamatan</option>';
                   response.kota.forEach(function (item) {
                     options += `<option value="${item.id}">${item.namakota}</option>`;
                   });
                   $('#kota').html(options);
                   $('#<?= csrf_token() ?>').val(response.csrfHash);
+                    Swal.fire({
+                      icon: 'success',
+                      title: 'Berhasil!',
+                      text: 'Berhasil memuat data kecamatan. Silakan pilih kecamatan.'
+                    });
                  
                 },
                 error: function () {
@@ -533,18 +573,36 @@
 
             // Clear kabupaten_kota dropdown
             $('#kecamatan').html('<option value="" selected disabled>Loading...</option>');
+
+            
+            // Tampilkan loading spinner
+            Swal.fire({
+              title: 'Mohon Tunggu',
+              html: 'Sedang memproses data...',
+              allowOutsideClick: false,
+              showConfirmButton: false,
+              willOpen: () => {
+                  Swal.showLoading()
+              },
+            });
+
             // Fetch kota berdasarkan kabupaten
             $.ajax({ 
                 url: '<?= site_url('get_kecamatan'); ?>',
                 type: 'POST',
                 data: { kota_id: kotaId, [csrfName]: csrfHash },
                 success: function (response) {
-                  let options = '<option value="" selected disabled>Pilih Kecamatan</option>';
+                  let options = '<option value="" selected disabled>Pilih Kelurahan</option>';
                   response.kecamatan.forEach(function (item) {
                     options += `<option value="${item.id}">${item.namakecamatan}</option>`;
                   });
                   $('#kecamatan').html(options);
                   $('#<?= csrf_token() ?>').val(response.csrfHash);
+                    Swal.fire({
+                      icon: 'success',
+                      title: 'Berhasil!',
+                      text: 'Berhasil memuat data kelurahan. Silakan pilih kelurahan.'
+                    });
                 },
                 error: function () {
                   Swal.fire({

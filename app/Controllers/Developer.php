@@ -48,7 +48,7 @@ class Developer extends BaseController
             'reportuser' => $reportuser,
             'reportpt' => $reportpt
         ];
-        return view('operator/v_dashboard',$data);
+        return view('developer/v_dashboard',$data);
 	}
 
     public function form_pengajuan_pt()
@@ -120,10 +120,13 @@ class Developer extends BaseController
             ],
             'npwp_pt' => [
                 'label' => 'NPWP PT',
-                'rules' => 'trim|required|checkNPWPPT',
+                'rules' => 'trim|required|checkNPWPPT|min_length[15]|max_length[16]|numeric',
                 'errors' => [
                     'required' => '{field} harus diisi',
-                    'checkNPWPPT' => 'Melihat data NPWP PT, PT sudah terdaftar pada sistem'
+                    'checkNPWPPT' => 'Melihat data NPWP PT, PT sudah terdaftar pada sistem',
+                    'min_length' => '{field} minimal 15 angka tanpa tanda penghubung atau titik',
+                    'max_length' => '{field} maksimal 16 angka tanpa tanda penghubung atau titik',
+                    'numeric' => '{field} harus berupa angka'
                 ]
             ],
             'berkasnpwppt' => [
@@ -145,9 +148,11 @@ class Developer extends BaseController
             ],
             'ktp_penanggung_jawab' => [
                 'label' => 'KTP Penanggung Jawab',
-                'rules' => 'trim|required',
+                'rules' => 'trim|required|exact_length[16]|numeric',
                 'errors' => [
-                    'required' => '{field} harus diisi'
+                    'required' => '{field} harus diisi',
+                    'exact_length' => '{field} harus 16 angka tanpa tanda penghubung atau titik',
+                    'numeric' => '{field} harus berupa angka'
                 ]
             ],
             'berkasktp_penanggung_jawab' => [
@@ -162,9 +167,12 @@ class Developer extends BaseController
             ],
             'npwp_penanggung_jawab' => [
                 'label' => 'NPWP Penanggung Jawab',
-                'rules' => 'trim|required',
+                'rules' => 'trim|required|min_length[15]|max_length[16]|numeric',
                 'errors' => [
-                    'required' => '{field} harus diisi'
+                    'required' => '{field} harus diisi',
+                    'min_length' => '{field} minimal 15 angka tanpa tanda penghubung atau titik',
+                    'max_length' => '{field} maksimal 16 angka tanpa tanda penghubung atau titik',
+                    'numeric' => '{field} harus berupa angka'
                 ]
             ],
             'berkasnpwp_penanggung_jawab' => [
@@ -230,7 +238,7 @@ class Developer extends BaseController
                 ]
             ],
             'rekening' => [
-                'label' => 'Rekening PT',
+                'label' => 'Nomor Rekening PT',
                 'rules' => 'trim|required',
                 'errors' => [
                     'required' => '{field} harus diisi'

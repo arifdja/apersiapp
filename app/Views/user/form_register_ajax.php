@@ -88,23 +88,23 @@
                                                     <?= create_dropdown('provinsi', $dropdownprovinsi['provinsi'], old('provinsi'), ['class' => 'form-control', 'id' => 'provinsi','required' => 'required']); ?>
                                               </div>
                                               <div class="form-group">
-                                                    <label for="kabupaten">Kabupaten</label>
+                                                    <label for="kabupaten">Kabupaten/Kota</label>
                                                     <select id="kabupaten" name="kabupaten" class="form-control" required>
-                                                        <option value="" selected disabled>Pilih Kabupaten</option>
+                                                        <option value="" selected disabled>Pilih Kabupaten/Kota</option>
                                                     </select>
                                                     <span id="spankabupaten" style="color: red;"></span>
                                               </div>
                                               <div class="form-group">
-                                                    <label for="kota">Kota</label>
+                                                    <label for="kota">Kecamatan</label>
                                                     <select id="kota" name="kota" class="form-control" required>
-                                                        <option value="" selected disabled>Pilih Kota</option>
+                                                        <option value="" selected disabled>Pilih Kecamatan</option>
                                                     </select>
                                                     <span id="spankota" style="color: red;"></span>
                                               </div>
                                               <div class="form-group">
-                                                    <label for="kecamatan">Kecamatan</label>
+                                                    <label for="kecamatan">Kelurahan</label>
                                                     <select id="kecamatan" name="lokasiref" class="form-control" required>
-                                                        <option value="" selected disabled>Pilih Kecamatan</option>
+                                                        <option value="" selected disabled>Pilih Kelurahan</option>
                                                     </select>
                                               </div>
                                               
@@ -127,7 +127,7 @@
                                                           required 
                                                           class="form-control"
                                                           id="kta" 
-                                                          placeholder="Isi KTA"
+                                                          placeholder="Isi Nomor KTA"
                                                           value="<?= old('kta') ?>">
                                                           <span id="spankta" style="color: red;"></span>
                                                     <div class="input-group" style="margin-top: 10px;">
@@ -152,7 +152,12 @@
                                                           placeholder="Isi Password"
                                                           value="<?= old('pbru') ?>">
                                                           <span id="spanpbru" style="color: red;"></span>
+                                                          
+                                                    <div class="text-muted">
+                                                          <small>Password minimal 8 karakter, Minimal satu huruf besar, Minimal satu huruf kecil, Minimal satu angka, dan Minimal satu simbol @$#!%*?&</small>
+                                                    </div>
                                               </div>
+                                              
                                               <div class="form-group">
                                                     <label for="pbru2">Ulangi Password</label>
                                                     <input type="password" 
@@ -223,6 +228,7 @@
 
             // Create FormData object
             var formData = new FormData(this);
+            
 
             // Send AJAX request
             $.ajax({
@@ -370,13 +376,25 @@
             $('#kabupaten').html('<option value="" selected disabled>Loading...</option>');
             $('#kota').html('<option value="" selected disabled>Loading...</option>');
             $('#kecamatan').html('<option value="" selected disabled>Loading...</option>');
+
+            
+            Swal.fire({
+                title: 'Mohon Tunggu',
+                html: 'Sedang memproses data...',
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                willOpen: () => {
+                    Swal.showLoading()
+                },
+            });
+
             // Fetch kabupaten/kota berdasarkan provinsi
             $.ajax({
                 url: '<?= site_url('get_kabupaten'); ?>',
                 type: 'POST',
                 data: { provinsi_id: provinsiId, [csrfName]: csrfHash },
                 success: function (response) {
-                    let options = '<option value="" selected disabled>Pilih Kabupaten</option>';
+                    let options = '<option value="" selected disabled>Pilih Kabupaten/Kota</option>';
                     response.kabupaten.forEach(function (item) {
                         options += `<option value="${item.id}">${item.namakabupaten}</option>`;
                     });
@@ -387,7 +405,7 @@
                   Swal.fire({
                     icon: 'error',
                     title: 'Error!',
-                    text: 'Gagal memuat data kabupaten. Silakan coba lagi.'
+                    text: 'Gagal memuat data kabupaten/kota. Silakan coba lagi.'
                   });
                 }
             });
@@ -402,13 +420,25 @@
             // Clear kabupaten_kota dropdown
             $('#kota').html('<option value="" selected disabled>Loading...</option>');
             $('#kecamatan').html('<option value="" selected disabled>Loading...</option>');
+
+            
+            Swal.fire({
+                title: 'Mohon Tunggu',
+                html: 'Sedang memproses data...',
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                willOpen: () => {
+                    Swal.showLoading()
+                },
+            });
+
             // Fetch kota berdasarkan kabupaten
             $.ajax({ 
                 url: '<?= site_url('get_kota'); ?>',
                 type: 'POST',
                 data: { kabupaten_id: kabupatenId, [csrfName]: csrfHash },
                 success: function (response) {
-                  let options = '<option value="" selected disabled>Pilih Kota</option>';
+                  let options = '<option value="" selected disabled>Pilih Kecamatan</option>';
                   response.kota.forEach(function (item) {
                     options += `<option value="${item.id}">${item.namakota}</option>`;
                   });
@@ -420,7 +450,7 @@
                   Swal.fire({
                     icon: 'error',
                     title: 'Error!',
-                    text: 'Gagal memuat data kecamatan. Silakan coba lagi.'
+                    text: 'Gagal memuat data kelurahan. Silakan coba lagi.'
                   });
                 }
             });
@@ -435,13 +465,25 @@
 
             // Clear kabupaten_kota dropdown
             $('#kecamatan').html('<option value="" selected disabled>Loading...</option>');
+
+            
+            Swal.fire({
+                title: 'Mohon Tunggu',
+                html: 'Sedang memproses data...',
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                willOpen: () => {
+                    Swal.showLoading()
+                },
+            });
+
             // Fetch kota berdasarkan kabupaten
             $.ajax({ 
                 url: '<?= site_url('get_kecamatan'); ?>',
                 type: 'POST',
                 data: { kota_id: kotaId, [csrfName]: csrfHash },
                 success: function (response) {
-                  let options = '<option value="" selected disabled>Pilih Kecamatan</option>';
+                  let options = '<option value="" selected disabled>Pilih Kelurahan</option>';
                   response.kecamatan.forEach(function (item) {
                     options += `<option value="${item.id}">${item.namakecamatan}</option>`;
                   });
@@ -455,7 +497,7 @@
                   Swal.fire({
                     icon: 'error',
                     title: 'Error!',
-                    text: 'Gagal memuat data kecamatan. Silakan coba lagi.'
+                    text: 'Gagal memuat data kelurahan. Silakan coba lagi.'
                   });
                 }
             });
