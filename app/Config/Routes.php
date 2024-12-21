@@ -69,6 +69,16 @@ $routes->post('/approver/setujui_pengajuan_dana', 'Approver::setujui_pengajuan_d
 $routes->get('/approver/approval_unit', 'Approver::approval_unit',['filter' => 'auth']);
 
 $routes->get('/rumput', 'Rumput::index',['filter' => 'auth']);
+$routes->get('/rumput/form_manajemen_akun', 'Rumput::form_manajemen_akun',['filter' => 'auth']);
+$routes->get('/rumput/form_manajemen_pendana', 'Rumput::form_manajemen_pendana',['filter' => 'auth']);
+
 $routes->get('/unauthorized', 'Unauthorized::index');
 $routes->get('/download/(:any)/(:any)', 'FileController::download/$1/$2',['filter' => 'auth']);
 $routes->get('/download/form_kredit', 'FileController::form_pengajuan_kredit');
+
+$routes->post('/rumput/save_pendana', 'Rumput::save_pendana');
+$routes->post('/rumput/update_pendana', 'Rumput::update_pendana');
+$routes->post('/rumput/delete_pendana', 'Rumput::delete_pendana');
+$routes->post('/rumput/get_pendana', 'Rumput::get_pendana');
+
+$routes->get('/rumput/getCSRF', 'Rumput::getCSRF');
