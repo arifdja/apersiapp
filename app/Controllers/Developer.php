@@ -773,6 +773,16 @@ class Developer extends BaseController
                     'mime_in' => '{field} harus berformat PDF'
                 ]
             ],
+            'berkaspbgimb' => [
+                'label' => 'PBG/IMB',
+                'rules' => 'uploaded[berkaspbgimb]|max_size[berkaspbgimb,10240]|ext_in[berkaspbgimb,pdf]|mime_in[berkaspbgimb,application/pdf]',
+                'errors' => [
+                    'uploaded' => '{field} harus diisi',
+                    'max_size' => '{field} maksimal 10 MB',
+                    'ext_in' => '{field} harus berformat PDF',
+                    'mime_in' => '{field} harus berformat PDF'
+                ]
+            ],
             'pbb' => [
                 'label' => 'PBB',
                 'rules' => 'trim|required',
@@ -800,11 +810,12 @@ class Developer extends BaseController
             ],
             'nilaikredit' => [
                 'label' => 'Nilai Dana Talangan',
-                'rules' => 'trim|required|numeric|checkDanaTalangan[harga]',
+                'rules' => 'trim|required|numeric|checkDanaTalangan[harga]|checkMaxDanaTalangan',
                 'errors' => [
                     'required' => '{field} harus diisi',
                     'numeric' => '{field} harus berupa angka',
-                    'checkDanaTalangan' => '{field} tidak boleh lebih besar dari 70% dari harga sesuai persetujuan kredit (SP3K)'
+                    'checkDanaTalangan' => '{field} tidak boleh lebih besar dari 70% dari harga sesuai persetujuan kredit (SP3K)',
+                    'checkMaxDanaTalangan' => '{field} tidak valid'
                 ]
             ],
             'lokasiref' => [
@@ -955,6 +966,7 @@ class Developer extends BaseController
 
         $fileberkassertifikat = $this->request->getFile('berkassertifikat');
         $fileberkaspbb = $this->request->getFile('berkaspbb');
+        $fileberkaspbgimb = $this->request->getFile('berkaspbgimb');
         $fileberkassp3k = $this->request->getFile('berkassp3k');
         $fileberkasktpdebitur = $this->request->getFile('berkasktpdebitur');
         $fileberkasrekening = $this->request->getFile('berkasrekening');
@@ -974,7 +986,8 @@ class Developer extends BaseController
             $fileberkaspbb->isValid() && !$fileberkaspbb->hasMoved() &&
             $fileberkassp3k->isValid() && !$fileberkassp3k->hasMoved() &&
             $fileberkasktpdebitur->isValid() && !$fileberkasktpdebitur->hasMoved() &&
-            $fileberkasrekening->isValid() && !$fileberkasrekening->hasMoved()
+            $fileberkasrekening->isValid() && !$fileberkasrekening->hasMoved() &&
+            $fileberkaspbgimb->isValid() && !$fileberkaspbgimb->hasMoved()
         ) {
             $uuid = generate_uuid();
             // Move the file to a permanent location
@@ -983,13 +996,15 @@ class Developer extends BaseController
             $newfilenameberkassp3k = "sp3k_".$uuid."_".$fileberkassp3k->getRandomName();
             $newfilenameberkasktpdebitur = "ktpdebitur_".$uuid."_".$fileberkasktpdebitur->getRandomName();
             $newfilenameberkasrekening = "rekeningdebitur_".$uuid."_".$fileberkasrekening->getRandomName();
+            $newfilenameberkaspbgimb = "pbgimb_".$uuid."_".$fileberkaspbgimb->getRandomName();
 
             $fileberkassertifikat->move(WRITEPATH . 'uploads/sertifikat', $newfilenameberkassertifikat);
             $fileberkaspbb->move(WRITEPATH . 'uploads/pbb', $newfilenameberkaspbb);
             $fileberkassp3k->move(WRITEPATH . 'uploads/sp3k', $newfilenameberkassp3k);
             $fileberkasktpdebitur->move(WRITEPATH . 'uploads/ktp_debitur', $newfilenameberkasktpdebitur);
             $fileberkasrekening->move(WRITEPATH . 'uploads/rekening_debitur', $newfilenameberkasrekening);
-            
+            $fileberkaspbgimb->move(WRITEPATH . 'uploads/pbgimb', $newfilenameberkaspbgimb);
+
             $data = [
                 "uuid" => $uuid,
                 "uuidheader" => $uuidheader,
@@ -997,6 +1012,7 @@ class Developer extends BaseController
                 "berkassertifikat" => $newfilenameberkassertifikat,
                 "pbb" => $this->request->getVar('pbb'),
                 "berkaspbb" => $newfilenameberkaspbb,
+                "berkaspbgimb" => $newfilenameberkaspbgimb,
                 "harga" => $this->request->getVar('harga'),
                 "nilaikredit" => $this->request->getVar('nilaikredit'),
                 "alamatref" => $this->request->getVar('lokasiref'),
@@ -1236,11 +1252,13 @@ class Developer extends BaseController
                 ]
             ],
             'nilaikredit' => [
-                'label' => 'Nilai Kredit',
-                'rules' => 'trim|required|numeric',
+                'label' => 'Nilai Dana Talangan',
+                'rules' => 'trim|required|numeric|checkDanaTalangan[harga]|checkMaxDanaTalangan',
                 'errors' => [
                     'required' => '{field} harus diisi',
-                    'numeric' => '{field} harus berupa angka'
+                    'numeric' => '{field} harus berupa angka',
+                    'checkDanaTalangan' => '{field} tidak boleh lebih besar dari 70% dari harga sesuai persetujuan kredit (SP3K)',
+                    'checkMaxDanaTalangan' => '{field} tidak valid'
                 ]
             ],
             'lokasiref' => [
@@ -1341,6 +1359,10 @@ class Developer extends BaseController
             'berkaspbb' => [
                 'path' => 'pbb',
                 'field' => 'berkaspbb'
+            ],
+            'berkaspbgimb' => [
+                'path' => 'pbgimb',
+                'field' => 'berkaspbgimb'
             ],
             'berkasktpdebitur' => [
                 'path' => 'ktp_debitur',
@@ -1463,6 +1485,7 @@ class Developer extends BaseController
             $files = [
                 'berkassertifikat' => WRITEPATH . 'uploads/sertifikat/',
                 'berkaspbb' => WRITEPATH . 'uploads/pbb/',
+                'berkaspbgimb' => WRITEPATH . 'uploads/pbgimb/',
                 'berkassp3k' => WRITEPATH . 'uploads/sp3k/',
                 'berkasktpdebitur' => WRITEPATH . 'uploads/ktp_debitur/',
                 'berkasrekening' => WRITEPATH . 'uploads/rekening_debitur/'

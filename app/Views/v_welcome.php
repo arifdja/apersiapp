@@ -10,8 +10,16 @@
           <div class="card-body">
             <h1 class="text-center">Selamat Datang di Aplikasi <?= SITE_NAME ?></h1>
             <hr>
-            <div class="text-center">
-              <img src="<?= base_url() ?>/assets/images/alursimaya.jpg" class="img-fluid" alt="SIMAYA">
+            <div class="row">
+              <div class="col-md-4 text-center">
+                <img src="<?= base_url() ?>/assets/images/rumahsubsidi.jpg" class="img-fluid mx-auto d-block" style="max-width: 100%; height: auto; object-fit: cover;" alt="SIMAYA">
+              </div>
+              <div class="col-md-4 text-center">
+                <img src="<?= base_url() ?>/assets/images/rumahsubsidi2.jpg" class="img-fluid mx-auto d-block" style="max-width: 100%; height: auto; object-fit: cover;" alt="SIMAYA">
+              </div>
+              <div class="col-md-4 text-center">
+                <img src="<?= base_url() ?>/assets/images/rumahsubsidi3.jpg" class="img-fluid mx-auto d-block" style="max-width: 100%; height: auto; object-fit: cover;" alt="SIMAYA">
+              </div>
             </div>
           </div>
         </div>

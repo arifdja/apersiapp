@@ -13,6 +13,7 @@ class PengajuanDetailModel extends Model
         'uuid',
         'sertifikat',
         'berkassertifikat',
+        'berkaspbgimb',
         'pbb',
         'berkaspbb',
         'harga',

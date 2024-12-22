@@ -36,6 +36,22 @@
                             </div>
 
                             <div class="form-group">
+                                <label for="pbgimb">PBG/IMB</label>
+                                <div class="input-group" style="margin-top: 10px;">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" name="berkaspbgimb" id="berkaspbgimb" accept=".pdf">
+                                        <label class="custom-file-label labelberkaspbgimb" for="exampleInputFile">Unggah PBG/IMB</label>
+                                    </div>
+                                </div>
+                                <div class="text-muted">
+                                    <small class="text-muted">Biarkan kosong jika tidak ingin mengubah file</small><br>
+                                    <small>Format file yang diizinkan: PDF</small>,
+                                    <small>Maksimal ukuran file: 10 MB</small>
+                                </div>
+                                <span id="spanberkaspbgimb" style="color: red;"></span>
+                            </div>
+
+                            <div class="form-group">
                                 <label>Nomor PBB</label>
                                 <input type="text" class="form-control" name="pbb" value="<?= $unit['pbb'] ?>" id="pbb" required>
                                 <div class="invalid-feedback"></div>

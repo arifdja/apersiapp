@@ -37,17 +37,32 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="pbgimb">PBG/IMB</label>
+                            <div class="input-group" style="margin-top: 10px;">
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" name="berkaspbgimb" id="berkaspbgimb" accept=".pdf" required>
+                                    <label class="custom-file-label labelberkaspbgimb" for="exampleInputFile">Unggah PBG/IMB</label>
+                                </div>
+                            </div>
+                            <div class="text-muted">
+                                <small>Format file yang diizinkan: PDF</small>,
+                                <small>Maksimal ukuran file: 10 MB</small>
+                            </div>
+                            <span id="spanberkaspbgimb" style="color: red;"></span>
+                        </div>
+
+                        <div class="form-group">
                             <label for="pbb">Nomor PBB</label>
                             <input type="text" name="pbb" class="form-control" id="pbb" placeholder="Nomor PBB" required>
                             <span id="spanpbb" style="color: red;"></span>
                             <div class="input-group" style="margin-top: 10px;">
                                 <div class="custom-file">
                                     <input type="file" class="custom-file-input" name="berkaspbb" id="berkaspbb" accept=".pdf" required>
-                                    <label class="custom-file-label labelberkaspbb" for="exampleInputFile">Unggah PBB</label>
+                                    <label class="custom-file-label labelberkaspbb" for="exampleInputFile">Unggah PBB tahun terakhir</label>
                                 </div>
                             </div>
                             <div class="text-muted">
-                                <small>Format file yang diizinkan: PDF</small>,
+                              <small>Format file yang diizinkan: PDF</small>,
                                 <small>Maksimal ukuran file: 10 MB</small>
                             </div>
                             <span id="spanberkaspbb" style="color: red;"></span>
@@ -55,13 +70,13 @@
 
                         <div class="form-group">
                             <label for="harga">Harga Sesuai Persetujuan Kredit (SP3K)</label>
-                            <input type="number" name="harga" class="form-control" id="harga" placeholder="Contoh: 1.000.000.000" required>
+                            <input type="number" name="harga" class="form-control" id="harga" placeholder="Contoh: 100.000.000" required>
                             <span id="spanharga" style="color: red;"></span>
                         </div>
 
                         <div class="form-group">
                             <label for="nilaikredit">Nilai Dana Talangan</label>
-                            <input type="number" name="nilaikredit" class="form-control" id="nilaikredit" placeholder="Contoh: 700.000.000" required>
+                            <input type="number" name="nilaikredit" class="form-control" id="nilaikredit" placeholder="Contoh: 70.000.000" required>
                             <span id="spannilaikredit" style="color: red;"></span>
                             <div class="text-muted">
                                 <small>Maksimal 70% dari harga sesuai persetujuan kredit (SP3K)</small>
@@ -324,6 +339,7 @@
                           if (result.isConfirmed) {
                               $('#sertifikat').val('');
                               $('#berkassertifikat').val('');
+                              $('#berkaspbgimb').val('');
                               $('#pbb').val('');
                               $('#berkaspbb').val('');
                               $('#harga').val('');
@@ -349,7 +365,7 @@
                               $('#pinjaman_lain').val('');
                               $('#berkaspinjaman_lain').val('');
                               $('.labelberkassertifikat').html('Unggah Sertifikat');
-                              $('.labelberkaspbb').html('Unggah PBB');
+                              $('.labelberkaspbb').html('Unggah PBB tahun terakhir');
                               $('.labelberkassp3k').html('Unggah Dokumen SP3K');
                               $('.labelberkasktpdebitur').html('Unggah KTP Debitur');
                               $('.labelberkasrekening').html('Unggah Rekening Debitur');
@@ -380,6 +396,10 @@
                       if(xhr.responseJSON.message.berkassertifikat){
                         $('#berkassertifikat').addClass('is-invalid');
                         $('#spanberkassertifikat').html(xhr.responseJSON.message.berkassertifikat);
+                      }
+                      if(xhr.responseJSON.message.berkaspbgimb){
+                        $('#berkaspbgimb').addClass('is-invalid');
+                        $('#spanberkaspbgimb').html(xhr.responseJSON.message.berkaspbgimb);
                       }
                       if(xhr.responseJSON.message.pbb){
                         $('#pbb').addClass('is-invalid');

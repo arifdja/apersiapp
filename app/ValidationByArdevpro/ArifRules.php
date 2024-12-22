@@ -55,8 +55,18 @@ class ArifRules
         //$field adalah field yang diinputkan
         //$str adalah value dari field yang diinputkan
 
-        if($data['harga']*0.7 < $data['nilaikredit']){
+        if((int)($data['harga']*0.7) < (int)$data['nilaikredit']){
             $error = "Nilai Dana Talangan tidak boleh lebih besar dari 70% dari harga sesuai persetujuan kredit (SP3K)";
+            return false;
+        }
+        return true;
+    } 
+
+    public function checkMaxDanaTalangan(string $str, string &$error = null): bool
+    {
+        // var_dump($str);exit;
+        if((int)$str > 150000000){
+            $error = "Invalid Nilai Dana Talangan";
             return false;
         }
         return true;

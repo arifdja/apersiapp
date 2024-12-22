@@ -165,10 +165,10 @@ class FileController extends Controller
             }
             return $this->response->download($filePath, null)->setFileName($file['berkaspengurusptnpwp']);
         }   
-        elseif($type == 'pinjaman_kpl'){
+        elseif($type == 'pbgimb'){
             $model = new PengajuanDetailModel();
-            $file = $model->where('berkaspinjamankpl',$berkas)->first();
-            $filePath = WRITEPATH . 'uploads/' . $type . '/' . $file['berkaspinjamankpl'];
+            $file = $model->where('berkaspbgimb',$berkas)->first();
+            $filePath = WRITEPATH . 'uploads/' . $type . '/' . $file['berkaspbgimb'];
             if (!$file) {
                 return redirect()->back()->with('error', 'File not found.');
             }
@@ -176,7 +176,7 @@ class FileController extends Controller
             if (!file_exists($filePath)) {
                 return redirect()->back()->with('error', 'File not found on the server.');
             }
-            return $this->response->download($filePath, null)->setFileName($file['berkaspinjamankpl']);
+            return $this->response->download($filePath, null)->setFileName($file['berkaspbgimb']);
 
         }elseif($type == 'pinjaman_kyg'){
             $model = new PengajuanDetailModel();

@@ -37,6 +37,7 @@
                       <th>Aksi</th>
                       <th>Status</th>
                       <th>Sertifikat</th>
+                      <th>PBG/IMB</th>
                       <th>PBB</th>
                       <th>SP3K</th>
                       <th>Nama <br>Debitur</th>
@@ -103,6 +104,7 @@
                         <?php } ?>
                       </td>
                       <td><a href="<?= base_url() ?>/download/sertifikat/<?= $p['berkassertifikat'] ?>" target="_blank"><?= $p['sertifikat'] ?></a></td>
+                      <td><a href="<?= base_url() ?>/download/pbgimb/<?= $p['berkaspbgimb'] ?>" target="_blank">Lihat</a></td>
                       <td><a href="<?= base_url() ?>/download/pbb/<?= $p['berkaspbb'] ?>" target="_blank"><?= $p['pbb'] ?></a></td>
                       <td><a href="<?= base_url() ?>/download/sp3k/<?= $p['berkassp3k'] ?>" target="_blank"><?= $p['nomordokumensp3k'] ?></a></td>
                       <td><a href="<?= base_url() ?>/download/ktp_debitur/<?= $p['berkasktpdebitur'] ?>" target="_blank"><?= $p['namadebitur'] ?></a></td>
