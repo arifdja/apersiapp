@@ -28,8 +28,6 @@
                 </div>
             <div class="form-group">
               <label for="suratpermohonan">Permohonan Pengajuan Pinjaman</label>
-              <input type="text" name="suratpermohonan" class="form-control" id="suratpermohonan" placeholder="Berkas Permohonan Pengajuan Pinjaman" required>
-              <span id="spansuratpermohonan" style="color: red;"></span>
               <div class="input-group" style="margin-top: 10px;">
                   <div class="custom-file">
                         <input type="file" class="custom-file-input" name="berkassuratpermohonan" id="berkassuratpermohonan" accept=".pdf" required>

@@ -457,13 +457,6 @@ class Developer extends BaseController
                     'required' => '{field} harus diisi'
                 ]
             ],
-            'suratpermohonan' => [
-                'label' => 'Permohonan Pengajuan Pinjaman',
-                'rules' => 'trim|required',
-                'errors' => [
-                    'required' => '{field} harus diisi'
-                ]
-            ],
             'berkassuratpermohonan' => [
                 'label' => 'Berkas Permohonan Pengajuan Pinjaman',
                 'rules' => 'uploaded[berkassuratpermohonan]|max_size[berkassuratpermohonan,10240]|ext_in[berkassuratpermohonan,pdf]|mime_in[berkassuratpermohonan,application/pdf]',
@@ -546,7 +539,6 @@ class Developer extends BaseController
             $data = [
                 "uuid" => $uuid,
                 "uuidpt" => $this->request->getVar('pt'),
-                "suratpermohonan" => $this->request->getVar('suratpermohonan'),
                 "berkassuratpermohonan" => $newfilenameberkassuratpermohonan,
                 "alamatperumahanref" => $this->request->getVar('alamatperumahanref'),
                 "alamatperumahaninput" => $this->request->getVar('alamatperumahaninput'),

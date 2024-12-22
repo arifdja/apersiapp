@@ -34,6 +34,7 @@
                       <tr class="table-info">
                         <th align="center">ID</th>
                         <th align="center">Sertifikat</th>
+                        <th align="center">PBG/IMB</th>
                         <th align="center">PBB</th>
                         <th align="center">SP3K</th>
                         <th align="center">Nama <br>Debitur</th>
@@ -57,6 +58,7 @@
                       <input type="hidden" class="csrf" name="<?= csrf_token() ?>" value="<?= csrf_hash() ?>" />
                       <td><?= $key+1; ?>.</td>
                       <td><a href="<?= base_url() ?>/download/sertifikat/<?= $p['berkassertifikat'] ?>" target="_blank"><?= $p['sertifikat'] ?></a></td>
+                      <td><a href="<?= base_url() ?>/download/pbgimb/<?= $p['berkaspbgimb'] ?>" target="_blank">Lihat</a></td>
                       <td><a href="<?= base_url() ?>/download/pbb/<?= $p['berkaspbb'] ?>" target="_blank"><?= $p['pbb'] ?></a></td>
                       <td><a href="<?= base_url() ?>/download/sp3k/<?= $p['berkassp3k'] ?>" target="_blank"><?= $p['nomordokumensp3k'] ?></a></td>
                       <td><a href="<?= base_url() ?>/download/ktp_debitur/<?= $p['berkasktpdebitur'] ?>" target="_blank"><?= $p['namadebitur'] ?></a></td>
