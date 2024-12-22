@@ -230,8 +230,25 @@ class Developer extends BaseController
                     'mime_in' => '{field} harus berformat PDF'
                 ]
             ],
+            'berkasskkemenkumham' => [
+                'label' => 'SK Kemenkumham',
+                'rules' => 'uploaded[berkasskkemenkumham]|max_size[berkasskkemenkumham,5120]|ext_in[berkasskkemenkumham,pdf]|mime_in[berkasskkemenkumham,application/pdf]',
+                'errors' => [
+                    'uploaded' => '{field} harus diisi',
+                    'max_size' => '{field} maksimal 5 MB',
+                    'ext_in' => '{field} harus berformat PDF',
+                    'mime_in' => '{field} harus berformat PDF'
+                ]
+            ],
             'bank' => [
-                'label' => 'Bank PT',
+                'label' => 'Bank Operasional PT',
+                'rules' => 'trim|required',
+                'errors' => [
+                    'required' => '{field} harus diisi'
+                ]
+            ],
+            'bankescrow' => [
+                'label' => 'Bank Escrow PT',
                 'rules' => 'trim|required',
                 'errors' => [
                     'required' => '{field} harus diisi'
@@ -244,9 +261,26 @@ class Developer extends BaseController
                     'required' => '{field} harus diisi'
                 ]
             ],
+            'rekeningescrow' => [
+                'label' => 'Nomor Rekening Escrow',
+                'rules' => 'trim|required',
+                'errors' => [
+                    'required' => '{field} harus diisi'
+                ]
+            ],
             'berkasrekening' => [
                 'label' => 'Rekening PT',
                 'rules' => 'uploaded[berkasrekening]|max_size[berkasrekening,1024]|ext_in[berkasrekening,pdf]|mime_in[berkasrekening,application/pdf]',
+                'errors' => [
+                    'uploaded' => '{field} harus diisi',
+                    'max_size' => '{field} maksimal 1 MB',
+                    'ext_in' => '{field} harus berformat PDF',
+                    'mime_in' => '{field} harus berformat PDF'
+                ]
+            ],
+            'berkasrekeningescrow' => [
+                'label' => 'Rekening Escrow',
+                'rules' => 'uploaded[berkasrekeningescrow]|max_size[berkasrekeningescrow,1024]|ext_in[berkasrekeningescrow,pdf]|mime_in[berkasrekeningescrow,application/pdf]',
                 'errors' => [
                     'uploaded' => '{field} harus diisi',
                     'max_size' => '{field} maksimal 1 MB',
@@ -262,31 +296,32 @@ class Developer extends BaseController
                 'message' => $this->validator->getErrors(),
                 'csrfHash' => csrf_hash()
             ])->setStatusCode(400);
+        }
 
-        } 
+        try {
+            $fileberkasnpwppt = $this->request->getFile('berkasnpwppt');
+            $fileberkasktp_penanggung_jawab = $this->request->getFile('berkasktp_penanggung_jawab');
+            $fileberkasnpwp_penanggung_jawab = $this->request->getFile('berkasnpwp_penanggung_jawab');
+            $fileberkasktp_pengurus_pt = $this->request->getFile('berkasktp_pengurus_pt');
+            $fileberkasnpwp_pengurus_pt = $this->request->getFile('berkasnpwp_pengurus_pt');
+            $fileberkasakta_pendirian = $this->request->getFile('berkasakta_pendirian');
+            $fileberkasskkemenkumham = $this->request->getFile('berkasskkemenkumham');
+            $fileberkasrekening = $this->request->getFile('berkasrekening');
+            $fileberkasrekeningescrow = $this->request->getFile('berkasrekeningescrow');
 
-        
+            if (
+                !$fileberkasnpwppt->isValid() || !$fileberkasktp_penanggung_jawab->isValid() ||
+                !$fileberkasnpwp_penanggung_jawab->isValid() || !$fileberkasakta_pendirian->isValid() ||
+                !$fileberkasrekening->isValid() || !$fileberkasktp_pengurus_pt->isValid() ||
+                !$fileberkasnpwp_pengurus_pt->isValid() || !$fileberkasskkemenkumham->isValid() ||
+                !$fileberkasrekeningescrow->isValid()
+            ) {
+                throw new \RuntimeException('One or more files are invalid');
+            }
 
-        $fileberkasnpwppt = $this->request->getFile('berkasnpwppt');
-        $fileberkasktp_penanggung_jawab = $this->request->getFile('berkasktp_penanggung_jawab');
-        $fileberkasnpwp_penanggung_jawab = $this->request->getFile('berkasnpwp_penanggung_jawab');
-        $fileberkasktp_pengurus_pt = $this->request->getFile('berkasktp_pengurus_pt');
-        $fileberkasnpwp_pengurus_pt = $this->request->getFile('berkasnpwp_pengurus_pt');
-        $fileberkasakta_pendirian = $this->request->getFile('berkasakta_pendirian');
-        $fileberkasrekening = $this->request->getFile('berkasrekening');
-
-        
-        if (
-            $fileberkasnpwppt->isValid() && !$fileberkasnpwppt->hasMoved() &&
-            $fileberkasktp_penanggung_jawab->isValid() && !$fileberkasktp_penanggung_jawab->hasMoved() &&
-            $fileberkasnpwp_penanggung_jawab->isValid() && !$fileberkasnpwp_penanggung_jawab->hasMoved() &&
-            $fileberkasakta_pendirian->isValid() && !$fileberkasakta_pendirian->hasMoved() &&
-            $fileberkasrekening->isValid() && !$fileberkasrekening->hasMoved() &&
-            $fileberkasktp_pengurus_pt->isValid() && !$fileberkasktp_pengurus_pt->hasMoved() &&
-            $fileberkasnpwp_pengurus_pt->isValid() && !$fileberkasnpwp_pengurus_pt->hasMoved()
-        ) {
             $uuid = generate_uuid();
-            // Move the file to a permanent location
+
+            // Move files with unique names
             $newfilenameberkasnpwppt = "npwppt_".$uuid."_".$fileberkasnpwppt->getRandomName();
             $newfilenameberkasktp_penanggung_jawab = "ktp_penanggungjawab_".$uuid."_".$fileberkasktp_penanggung_jawab->getRandomName();
             $newfilenameberkasnpwp_penanggung_jawab = "npwp_penanggungjawab_".$uuid."_".$fileberkasnpwp_penanggung_jawab->getRandomName();
@@ -294,8 +329,10 @@ class Developer extends BaseController
             $newfilenameberkasrekening = "rekening_".$uuid."_".$fileberkasrekening->getRandomName();
             $newfilenameberkasktp_pengurus_pt = "ktp_pengurus_".$uuid."_".$fileberkasktp_pengurus_pt->getRandomName();
             $newfilenameberkasnpwp_pengurus_pt = "npwp_pengurus_".$uuid."_".$fileberkasnpwp_pengurus_pt->getRandomName();
-            
+            $newfilenameberkasskkemenkumham = "kemenkumham_".$uuid."_".$fileberkasskkemenkumham->getRandomName();
+            $newfilenameberkasrekeningescrow = "rekeningescrow_".$uuid."_".$fileberkasrekeningescrow->getRandomName();
 
+            // Move all files
             $fileberkasnpwppt->move(WRITEPATH . 'uploads/npwp_pt', $newfilenameberkasnpwppt);
             $fileberkasktp_penanggung_jawab->move(WRITEPATH . 'uploads/ktp_penanggungjawab', $newfilenameberkasktp_penanggung_jawab);
             $fileberkasnpwp_penanggung_jawab->move(WRITEPATH . 'uploads/npwp_penanggungjawab', $newfilenameberkasnpwp_penanggung_jawab);
@@ -303,7 +340,8 @@ class Developer extends BaseController
             $fileberkasrekening->move(WRITEPATH . 'uploads/rekening', $newfilenameberkasrekening);
             $fileberkasktp_pengurus_pt->move(WRITEPATH . 'uploads/ktp_pengurus', $newfilenameberkasktp_pengurus_pt);
             $fileberkasnpwp_pengurus_pt->move(WRITEPATH . 'uploads/npwp_pengurus', $newfilenameberkasnpwp_pengurus_pt);
-           
+            $fileberkasskkemenkumham->move(WRITEPATH . 'uploads/sk_kemenkumham', $newfilenameberkasskkemenkumham);
+            $fileberkasrekeningescrow->move(WRITEPATH . 'uploads/rekening_escrow', $newfilenameberkasrekeningescrow);
 
             $data = [
                 "uuid" => $uuid,
@@ -314,7 +352,7 @@ class Developer extends BaseController
                 "npwppt" => $this->request->getVar('npwp_pt'),
                 "berkasnpwp" => $newfilenameberkasnpwppt,
                 "namapj" => $this->request->getVar('penanggung_jawab_pt'),
-                "ktppj" => $newfilenameberkasktp_penanggung_jawab,
+                "ktppj" => $this->request->getVar('ktp_penanggung_jawab'),
                 "berkasktppj" => $newfilenameberkasktp_penanggung_jawab,
                 "npwppj" => $this->request->getVar('npwp_penanggung_jawab'),
                 "berkasnpwppj" => $newfilenameberkasnpwp_penanggung_jawab,
@@ -325,35 +363,35 @@ class Developer extends BaseController
                 "berkasaktapendirian" => $newfilenameberkasakta_pendirian,
                 "rekening" => $this->request->getVar('rekening'),
                 "kodebank" => $this->request->getVar('bank'),
+                "kodebankescrow" => $this->request->getVar('bankescrow'),
+                "rekeningescrow" => $this->request->getVar('rekeningescrow'),
                 "berkasrekening" => $newfilenameberkasrekening,
+                "berkasrekeningescrow" => $newfilenameberkasrekeningescrow,
+                "berkasskkemenkumham" => $newfilenameberkasskkemenkumham,
                 "statusvalidator" => 0,
             ];
 
             $pt = new PTModel();
-            $save = $pt->save($data);
-            if ($save) { 
-                return $this->response->setJSON([
-                    'status' => 'success',
-                    'message' => 'Data berhasil disimpan!',
-                ]);
-            } else {
-                return $this->response->setJSON([
-                    'status' => 'error',
-                    'message' => [
-                        'simpan' => 'Gagal menyimpan data'
-                    ]
-                ])->setStatusCode(400);
+            if (!$pt->save($data)) {
+                throw new \RuntimeException('Failed to save data to database');
             }
 
-        } else {
+            return $this->response->setJSON([
+                'status' => 'success',
+                'message' => 'Data berhasil disimpan!',
+            ]);
+
+        } catch (\Exception $e) {
+            // Clean up any uploaded files if an error occurs
+            $this->cleanupFiles($uuid);
+            
             return $this->response->setJSON([
                 'status' => 'error',
                 'message' => [
-                    'simpan' => 'Gagal menyimpan data'
+                    'simpan' => 'Gagal menyimpan data: ' . $e->getMessage()
                 ]
             ])->setStatusCode(400);
         }
-        
     }
 
     public function form_pengajuan_dana()

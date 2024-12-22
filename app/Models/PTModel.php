@@ -27,9 +27,13 @@ class PTModel extends Model
         'berkaspengurusptnpwp',
         'aktapendirian',
         'berkasaktapendirian',
+        'berkasskkemenkumham',
         'rekening',
         'kodebank',
         'berkasrekening',
+        'kodebankescrow',
+        'rekeningescrow',
+        'berkasrekeningescrow',
         'statusvalidator',
         'validated_at',
         'validated_by',
@@ -39,12 +43,13 @@ class PTModel extends Model
     function getPengajuanPT($uuiddeveloper = null)
     {
         $builder = $this->db->table($this->table);
-        $builder->select('ref_pt.*,ref_bank.namabank,ref_provinsi.namaprovinsi,ref_kabupaten.namakabupaten,ref_kota.namakota,ref_kecamatan.namakecamatan');
+        $builder->select('ref_pt.*,ref_bank.namabank,rbb.namabank as namabankescrow,ref_provinsi.namaprovinsi,ref_kabupaten.namakabupaten,ref_kota.namakota,ref_kecamatan.namakecamatan');
         $builder->join('ref_provinsi','ref_provinsi.id = substr(ref_pt.alamatref,1,2)','left');
         $builder->join('ref_kabupaten','ref_kabupaten.id = substr(ref_pt.alamatref,1,4)','left');
         $builder->join('ref_kota','ref_kota.id = substr(ref_pt.alamatref,1,6)','left');
         $builder->join('ref_kecamatan','ref_kecamatan.id = substr(ref_pt.alamatref,1,10)','left');
         $builder->join('ref_bank','ref_bank.kodebank = ref_pt.kodebank','left');
+        $builder->join('ref_bank rbb','rbb.kodebank = ref_pt.kodebankescrow','left');
         if($uuiddeveloper != null){
             $builder->where('uuiddeveloper',$uuiddeveloper);
         }

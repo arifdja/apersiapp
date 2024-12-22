@@ -383,19 +383,39 @@ class Operator extends BaseController
         
         $uuid = $this->request->getPost('uuid');
 
-        $pengajuanmodel = new PengajuanModel();
-        $pengajuan = $pengajuanmodel->where('uuid',$uuid)->first();
+        $pengajuandetailmodel = new PengajuanDetailModel();
+        $pengajuanDetail = $pengajuandetailmodel->where('uuid',$uuid)->first();
 
-        if(empty($pengajuan)){
+        // var_dump($pengajuanDetail);
+        // die();
+
+        if(empty($pengajuanDetail)){
             return $this->response->setJSON([
                 'status' => 'error',
                 'message' => [
-                    'simpan' => 'Data pengajuan tidak ditemukan!'
+                    'simpan' => 'Unit tidak ditemukan!'
                 ],
                 'csrf' => csrf_hash(),
                 'uuid' => $uuid
             ])->setStatusCode(400);
         }
+
+        $pengajuanmodel = new PengajuanModel();
+        $pengajuan = $pengajuanmodel->where('uuid',$pengajuanDetail['uuidheader'])->first();
+
+        if(empty($pengajuan)){
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => [
+                    'simpan' => 'Pengajuan tidak ditemukan!'
+                ],
+                'csrf' => csrf_hash(),
+                'uuid' => $uuid
+            ])->setStatusCode(400);
+        }
+        // var_dump($pengajuan);
+        // die();
+
         //check status pengajuan harus 1
         if($pengajuan['submited_status'] != 1 ){
             return $this->response->setJSON([
@@ -428,8 +448,8 @@ class Operator extends BaseController
         }
 
 
-        $pt = new PengajuanDetailModel();
-        $ptData = $pt->where('uuid',$uuid)->first();
+        // $pt = new PengajuanDetailModel();
+        // $ptData = $pt->where('uuid',$uuid)->first();
 
         switch($type){
             case 'validator':

@@ -19,10 +19,8 @@
               <div class="card-header">
                 <div class="card-tools" style="margin: 0px;"><button class="btn btn-xs btn-success" id="excel"><i class="fas fa-excel"></i>Download Excel</button></div>
                 <div class="card-title">
-                    <label><input type="checkbox" class="toggle-column" data-column="2" checked> Email</label>
-                    <label><input type="checkbox" class="toggle-column" data-column="3" checked> No Telp</label>
-                    <label><input type="checkbox" class="toggle-column" data-column="4" checked> Alamat</label>
-                    <label><input type="checkbox" class="toggle-column" data-column="5" checked> KTA</label>
+                    <label><input type="checkbox" class="toggle-column" data-column="5" checked> Pengurus PT</label>
+                    <label><input type="checkbox" class="toggle-column" data-column="10" checked> Alamat</label>
                 </div>
               </div> 
               
@@ -41,10 +39,11 @@
                         <th>Penanggung<br>Jawab PT</th>
                         <th>NPWP <br>Penanggung Jawab</th>
                         <th>Pengurus<br>PT</th>
-                        <th>Akta Pendirian</th>
-                        <th>Bank</th>
-                        <th>Rekening</th>
-                        <th>Alamat</th>
+                        <th>Akta<br>Pendirian</th>
+                        <th>SK<br>Kemenkumham</th>
+                        <th>Rekening<br>Operasional</th>
+                        <th>Rekening<br>Escrow</th>
+                      <th>Alamat</th>
                         <?php if(session()->get('kdgrpuser') == "operator") : ?>
                             <th>Aksi</th>
                         <?php endif; ?>
@@ -61,13 +60,14 @@
                         <td><a href="<?= base_url() ?>/download/ktp_penanggungjawab/<?= $p['berkasktppj'] ?>" target="_blank"><?= $p['namapj'] ?></a></td>
                         <td><a href="<?= base_url() ?>/download/npwp_penanggungjawab/<?= $p['berkasnpwppj'] ?>" target="_blank"><?= $p['npwppj'] ?></a></td>
                         <td>
-                        <?= $p['penguruspt'] ?>
-                        <a href="<?= base_url() ?>/download/ktp_pengurus/<?= $p['berkaspengurusptktp'] ?>" target="_blank">KTP</a>
-                        <a href="<?= base_url() ?>/download/npwp_pengurus/<?= $p['berkaspengurusptnpwp'] ?>" target="_blank">NPWP</a>
-                      </td>
+                          <?= $p['penguruspt'] ?>
+                          <a href="<?= base_url() ?>/download/ktp_pengurus/<?= $p['berkaspengurusptktp'] ?>" target="_blank">KTP</a>
+                          <a href="<?= base_url() ?>/download/npwp_pengurus/<?= $p['berkaspengurusptnpwp'] ?>" target="_blank">NPWP</a>
+                        </td>
                         <td><a href="<?= base_url() ?>/download/akta_pendirian/<?= $p['berkasaktapendirian'] ?>" target="_blank"><?= $p['aktapendirian'] ?></a></td>
-                        <td><?= $p['kodebank'] ?> - <?= $p['namabank'] ?></td>
-                        <td><a href="<?= base_url() ?>/download/rekening/<?= $p['berkasrekening'] ?>" target="_blank"><?= $p['rekening'] ?></a></td>
+                        <td><a href="<?= base_url() ?>/download/sk_kemenkumham/<?= $p['berkasskkemenkumham'] ?>" target="_blank">Lihat</a></td>
+                      <td><a href="<?= base_url() ?>/download/rekening/<?= $p['berkasrekening'] ?>" target="_blank"><?= $p['rekening'] ?></a> <?= $p['namabank'] ?></td>
+                      <td><a href="<?= base_url() ?>/download/rekening_escrow/<?= $p['berkasrekeningescrow'] ?>" target="_blank"><?= $p['rekeningescrow'] ?></a> <?= $p['namabankescrow'] ?></td>
                         <td><?= $p['namaprovinsi'] ?> - <?= $p['namakabupaten'] ?> - <?= $p['namakecamatan'] ?> - <?= $p['alamatinput'] ?></td>
                         <?php if(session()->get('kdgrpuser') == "operator") : ?>
                         <td class="aksi<?= $p['uuid']; ?>">

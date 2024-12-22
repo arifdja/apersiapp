@@ -90,14 +90,8 @@
               </div>
               <span id="spanberasktp_penanggung_jawab" style="color: red;"></span>
             </div>
-          </div>
-      </div>
-    </div>
-  <div class="col-md-6">
-  <div class="card card-info">
-       
-          <div class="card-body">
 
+            
           
           <div class="form-group">
               <label for="npwp_penanggung_jawab">NPWP Penanggung Jawab</label>
@@ -116,9 +110,18 @@
               <span id="spanberkasnpwp_penanggung_jawab" style="color: red;"></span>
             </div>
 
+
+          </div>
+      </div>
+    </div>
+  <div class="col-md-6">
+  <div class="card card-info">
+       
+          <div class="card-body">
+
             
             <div class="form-group">
-              <label for="pengurus_pt">Nama dan JabatanPengurus PT</label>
+              <label for="pengurus_pt">Nama dan Jabatan Pengurus PT</label>
               <textarea name="pengurus_pt" id="pengurus_pt" class="form-control" rows="3" placeholder="Masukkan nama dan jabatan pengurus PT" required></textarea>
               <span id="spanpengurus_pt" style="color: red;"></span>
             </div>
@@ -173,14 +176,33 @@
               </div>
               <span id="spanberkasakta_pendirian" style="color: red;"></span>
             </div>
+
+            
+            <div class="form-group">
+              <label for="skkemenkumham">SK Kemenkumham</label>
+              <div class="input-group" style="margin-top: 10px;">
+                  <div class="custom-file">
+                        <input type="file" class="custom-file-input" name="berkasskkemenkumham" id="berkasskkemenkumham" accept=".pdf" required>
+                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                  </div>
+              </div>
+              <div class="text-muted">
+                    <small>Upload SK Kemenkumham</small><br>
+                    <small>Format file yang diizinkan: PDF</small>,
+                    <small>Maksimal ukuran file: 5 MB</small>
+              </div>
+              <span id="spanberkasskkemenkumham" style="color: red;"></span>
+            </div>
+
+
             <div class="form-group">    
-              <label for="bank">Bank</label>
+              <label for="bank">Bank (Rekening Operasional)</label>
               <?= create_dropdown('bank', $dropdownbank['bank'], old('bank'), ['class' => 'form-control', 'id' => 'bank','required' => 'required']); ?>
               <span id="spanbank" style="color: red;"></span>
             </div>
             <div class="form-group">
-              <label for="rekening">Nomor Rekening</label>
-              <input type="text" name="rekening" required class="form-control" id="rekening" placeholder="Isi Nomor Rekening" value="<?= old('rekening') ?>">
+              <label for="rekening">Nomor Rekening Operasional</label>
+              <input type="text" name="rekening" required class="form-control" id="rekening" placeholder="Isi Nomor Rekening Operasional" value="<?= old('rekening') ?>">
               <span id="spanrekening" style="color: red;"></span>
               <div class="input-group" style="margin-top: 10px;">
                   <div class="custom-file">
@@ -189,12 +211,38 @@
                   </div>
               </div>
               <div class="text-muted">
-                    <small>Upload Buku Tabungan atau Rekening Koran</small><br>
+                    <small>Rekening Koran tiga bulan terakhir</small><br>
                     <small>Format file yang diizinkan: PDF</small>,
                     <small>Maksimal ukuran file: 1 MB</small>
               </div>
               <span id="spanberkasrekening" style="color: red;"></span>
             </div>
+
+            
+            <div class="form-group">    
+              <label for="bankescrow">Bank (Rekening Escrow)</label>
+              <?= create_dropdown('bankescrow', $dropdownbank['bank'], old('bankescrow'), ['class' => 'form-control', 'id' => 'bankescrow','required' => 'required']); ?>
+              <span id="spanbankescrow" style="color: red;"></span>
+            </div>
+            
+            <div class="form-group">
+              <label for="rekeningescrow">Nomor Rekening Escrow</label>
+              <input type="text" name="rekeningescrow" required class="form-control" id="rekeningescrow" placeholder="Isi Nomor Rekening Escrow" value="<?= old('rekeningescrow') ?>">
+              <span id="spanrekeningescrow" style="color: red;"></span>
+              <div class="input-group" style="margin-top: 10px;">
+                  <div class="custom-file">
+                        <input type="file" class="custom-file-input" name="berkasrekeningescrow" id="berkasrekeningescrow" accept=".pdf" required>
+                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                  </div>
+              </div>
+              <div class="text-muted">
+                    <small>Rekening Koran tiga bulan terakhir</small><br>
+                    <small>Format file yang diizinkan: PDF</small>,
+                    <small>Maksimal ukuran file: 1 MB</small>
+              </div>
+              <span id="spanberkasrekeningescrow" style="color: red;"></span>
+            </div>
+
           </div>
           <div class="card-footer">
             <div class="form-group">
@@ -340,6 +388,10 @@
                         $('#berkasakta_pendirian').addClass('is-invalid');
                         $('#spanberkasakta_pendirian').html(xhr.responseJSON.message.berkasakta_pendirian);
                       }
+                      if(xhr.responseJSON.message.berkasskkemenkumham){
+                        $('#berkasskkemenkumham').addClass('is-invalid');
+                        $('#spanberkasskkemenkumham').html(xhr.responseJSON.message.berkasskkemenkumham);
+                      }
                       if(xhr.responseJSON.message.bank){
                         $('#bank').addClass('is-invalid');
                         $('#spanbank').html(xhr.responseJSON.message.bank);
@@ -351,6 +403,18 @@
                       if(xhr.responseJSON.message.berkasrekening){
                         $('#berkasrekening').addClass('is-invalid');
                         $('#spanberkasrekening').html(xhr.responseJSON.message.berkasrekening);
+                      }
+                      if(xhr.responseJSON.message.bankescrow){
+                        $('#bankescrow').addClass('is-invalid');
+                        $('#spanbankescrow').html(xhr.responseJSON.message.bankescrow);
+                      }
+                      if(xhr.responseJSON.message.rekeningescrow){
+                        $('#rekeningescrow').addClass('is-invalid');
+                        $('#spanrekeningescrow').html(xhr.responseJSON.message.rekeningescrow);
+                      }
+                      if(xhr.responseJSON.message.berkasrekeningescrow){
+                        $('#berkasrekeningescrow').addClass('is-invalid');
+                        $('#spanberkasrekeningescrow').html(xhr.responseJSON.message.berkasrekeningescrow);
                       }
                     }
                 }

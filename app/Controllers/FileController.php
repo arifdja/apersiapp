@@ -59,6 +59,21 @@ class FileController extends Controller
             return $this->response->download($filePath, null)->setFileName($file['berkasaktapendirian']);
 
 
+        }elseif($type == 'sk_kemenkumham'){
+
+            $model = new PTModel();
+            $file = $model->where('berkasskkemenkumham',$berkas)->first();
+            $filePath = WRITEPATH . 'uploads/' . $type . '/' . $file['berkasskkemenkumham'];
+            if (!$file) {
+                return redirect()->back()->with('error', 'File not found.');
+            }
+    
+            if (!file_exists($filePath)) {
+                return redirect()->back()->with('error', 'File not found on the server.');
+            }
+            return $this->response->download($filePath, null)->setFileName($file['berkasskkemenkumham']);
+
+
         }elseif($type == 'rekening'){
             $model = new PTModel();
             $file = $model->where('berkasrekening',$berkas)->first();
@@ -71,6 +86,19 @@ class FileController extends Controller
                 return redirect()->back()->with('error', 'File not found on the server.');
             }
             return $this->response->download($filePath, null)->setFileName($file['berkasrekening']);
+
+        }elseif($type == 'rekening_escrow'){
+            $model = new PTModel();
+            $file = $model->where('berkasrekeningescrow',$berkas)->first();
+            $filePath = WRITEPATH . 'uploads/' . $type . '/' . $file['berkasrekeningescrow'];
+            if (!$file) {
+                return redirect()->back()->with('error', 'File not found.');
+            }
+    
+            if (!file_exists($filePath)) {
+                return redirect()->back()->with('error', 'File not found on the server.');
+            }
+            return $this->response->download($filePath, null)->setFileName($file['berkasrekeningescrow']);
 
         }elseif($type == 'npwp_pt'){
             $model = new PTModel();
