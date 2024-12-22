@@ -51,13 +51,18 @@
                       </td>
                       <td><a href="<?= base_url() ?>/download/akta_pendirian/<?= $p['berkasaktapendirian'] ?>" target="_blank"><?= $p['aktapendirian'] ?></a></td>
                       <td><a href="<?= base_url() ?>/download/sk_kemenkumham/<?= $p['berkasskkemenkumham'] ?>" target="_blank">Lihat</a></td>
-                      <td><a href="<?= base_url() ?>/download/rekening/<?= $p['berkasrekening'] ?>" target="_blank"><?= $p['rekening'] ?></a> <?= $p['kodebank'] ?> - <?= $p['namabank'] ?></td>
-                      <td><a href="<?= base_url() ?>/download/rekening_escrow/<?= $p['berkasrekeningescrow'] ?>" target="_blank"><?= $p['rekeningescrow'] ?></a> <?= $p['kodebankescrow'] ?> - <?= $p['namabankescrow'] ?></td>
+                      <td><a href="<?= base_url() ?>/download/rekening/<?= $p['berkasrekening'] ?>" target="_blank"><?= $p['rekening'] ?></a> <?= $p['namabank'] ?></td>
+                      <td><a href="<?= base_url() ?>/download/rekening_escrow/<?= $p['berkasrekeningescrow'] ?>" target="_blank"><?= $p['rekeningescrow'] ?></a> <?= $p['namabankescrow'] ?></td>
                       <td><?= $p['namaprovinsi'] ?> - <?= $p['namakabupaten'] ?> - <?= $p['namakecamatan'] ?> - <?= $p['alamatinput'] ?></td>
                       <td>
                         <?= ($p['statusvalidator'] == '0' || $p['statusvalidator'] == '') ? '<span class="badge bg-warning">Menunggu Validasi</span>' : '' ?>
                         <?= ($p['statusvalidator'] == '1') ? '<span class="badge bg-success">Disetujui</span>' : '' ?>
-                        <?= ($p['statusvalidator'] == '2') ? '<span class="badge bg-danger">Ditolak</span>' : '' ?>
+                        <?php if($p['statusvalidator'] == '2') : ?>
+                          Ditolak karena : <?= $p['keteranganpenolakan'] ?><br>
+                          <button onclick="window.location.href='<?= site_url('developer/form_edit_pt?uuid=' . $p['uuid']) ?>'" class="btn btn-warning btn-xs"><i class="fas fa-pencil-alt"></i></button> 
+                          <button class="btn btn-danger btn-xs" onclick="hapusPT('<?= $p['uuid'] ?>')"><i class="fas fa-trash"></i></button>
+                        <?php endif; ?>
+                       
                       </td>
                     </tr>
                     <?php } ?>
@@ -352,5 +357,61 @@ $(document).ready(function () {
     }
     });
   });
+</script>
+
+<script>
+function hapusPT(uuid) {
+  Swal.fire({
+    title: 'Apakah anda yakin?',
+    text: "Data PT akan dihapus permanen!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Ya, hapus!',
+    cancelButtonText: 'Batal'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      let csrfName = '<?= csrf_token() ?>';
+      let csrfHash = $('#<?= csrf_token() ?>').val();
+
+      $.ajax({
+        url: '<?= site_url('developer/hapus_pt') ?>',
+        type: 'POST',
+        data: {
+          uuid: uuid,
+          [csrfName]: csrfHash
+        },
+        success: function(response) {
+          if(response.status == 'success') {
+            Swal.fire({
+              icon: 'success',
+              title: 'Berhasil!',
+              text: 'Data PT berhasil dihapus',
+              showConfirmButton: false,
+              timer: 1500
+            }).then(() => {
+              location.reload();
+            });
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: 'Gagal!',
+              text: 'Gagal menghapus data PT'
+            });
+          }
+          $('#<?= csrf_token() ?>').val(response.csrfHash);
+        },
+        error: function() {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: 'Terjadi kesalahan saat menghapus data'
+          });
+        }
+      });
+    }
+  });
+}
 </script>
 <?= $this->endSection(); ?>

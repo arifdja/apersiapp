@@ -39,6 +39,7 @@ $routes->get('/developer/form_edit_unit', 'Developer::form_edit_unit',['filter' 
 $routes->post('/developer/edit_unit_ajax', 'Developer::edit_unit_ajax',['filter' => 'auth']);
 $routes->post('/developer/delete_unit_ajax', 'Developer::delete_unit_ajax',['filter' => 'auth']);
 $routes->post('/developer/ajukan_dana_ajax', 'Developer::ajukan_dana_ajax',['filter' => 'auth']);
+$routes->post('developer/edit_pt_ajax', 'Developer::edit_pt_ajax');
 
 $routes->get('/operator', 'Operator::index',['filter' => 'auth']);
 $routes->get('/operator/approval_developer', 'Operator::approval_developer',['filter' => 'auth']);
@@ -82,3 +83,5 @@ $routes->post('/rumput/delete_pendana', 'Rumput::delete_pendana');
 $routes->post('/rumput/get_pendana', 'Rumput::get_pendana');
 
 $routes->get('/rumput/getCSRF', 'Rumput::getCSRF');
+
+$routes->get('developer/form_edit_pt', 'Developer::form_edit_pt');

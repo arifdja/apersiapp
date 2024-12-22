@@ -8,6 +8,10 @@ use App\Models\PTModel;
 use App\Models\PengajuanModel;
 use App\Models\PengajuanDetailModel;
 use App\Models\DashboardModel;
+use App\Models\KecamatanModel;
+use App\Models\KotaModel;
+use App\Models\KabupatenModel;
+
 
 class Developer extends BaseController
 {
@@ -379,6 +383,7 @@ class Developer extends BaseController
             return $this->response->setJSON([
                 'status' => 'success',
                 'message' => 'Data berhasil disimpan!',
+                'csrfHash' => csrf_hash()
             ]);
 
         } catch (\Exception $e) {
@@ -389,7 +394,8 @@ class Developer extends BaseController
                 'status' => 'error',
                 'message' => [
                     'simpan' => 'Gagal menyimpan data: ' . $e->getMessage()
-                ]
+                ],
+                'csrfHash' => csrf_hash()
             ])->setStatusCode(400);
         }
     }
@@ -1118,6 +1124,7 @@ class Developer extends BaseController
 
 
 
+
         // Ambil ID provinsi, kabupaten, kota dari alamatref
         $unit['provinsi'] = substr($unit['alamatref'], 0, 2);
         $unit['kabupaten'] = substr($unit['alamatref'], 0, 4); 
@@ -1605,6 +1612,367 @@ class Developer extends BaseController
                 'csrfToken' => csrf_token(),
                 'csrfHash' => csrf_hash()
             ])->setStatusCode(400);
+        }
+    }
+
+    public function edit_pt_ajax()
+    {
+        if (!$this->request->isAJAX()) {
+            return $this->response->setJSON(['message' => 'Invalid request'])->setStatusCode(400);
+        }    
+
+        $validationRules = [
+            'nama_pt' => [
+                'label' => 'Nama PT',
+                'rules' => 'trim|required',
+                'errors' => [
+                    'required' => '{field} harus diisi'
+                ]
+            ],
+            'lokasiref' => [
+                'label' => 'Lokasi',
+                'rules' => 'trim|required',
+                'errors' => [
+                    'required' => '{field} harus diisi'
+                ]
+            ],
+            'detail_alamat' => [
+                'label' => 'Detail Alamat', 
+                'rules' => 'trim|required',
+                'errors' => [
+                    'required' => '{field} harus diisi'
+                ]
+            ],
+            'penanggung_jawab_pt' => [
+                'label' => 'Penanggung Jawab PT',
+                'rules' => 'trim|required',
+                'errors' => [
+                    'required' => '{field} harus diisi'
+                ]
+            ],
+            'ktp_penanggung_jawab' => [
+                'label' => 'KTP Penanggung Jawab',
+                'rules' => 'trim|required|exact_length[16]|numeric',
+                'errors' => [
+                    'required' => '{field} harus diisi',
+                    'exact_length' => '{field} harus 16 angka tanpa tanda penghubung atau titik',
+                    'numeric' => '{field} harus berupa angka'
+                ]
+            ],
+            'npwp_penanggung_jawab' => [
+                'label' => 'NPWP Penanggung Jawab',
+                'rules' => 'trim|required|min_length[15]|max_length[16]|numeric',
+                'errors' => [
+                    'required' => '{field} harus diisi',
+                    'min_length' => '{field} minimal 15 angka tanpa tanda penghubung atau titik',
+                    'max_length' => '{field} maksimal 16 angka tanpa tanda penghubung atau titik',
+                    'numeric' => '{field} harus berupa angka'
+                ]
+            ],
+            'pengurus_pt' => [
+                'label' => 'Nama dan Jabatan Pengurus PT',
+                'rules' => 'trim|required|max_length[600]',
+                'errors' => [
+                    'required' => '{field} harus diisi',
+                    'max_length' => '{field} maksimal 600 karakter'
+                ]
+            ],
+            'akta_pendirian' => [
+                'label' => 'Akta Pendirian',
+                'rules' => 'trim|required',
+                'errors' => [
+                    'required' => '{field} harus diisi'
+                ]
+            ],
+            'bank' => [
+                'label' => 'Bank',
+                'rules' => 'trim|required',
+                'errors' => [
+                    'required' => '{field} harus diisi'
+                ]
+            ],
+            'rekening' => [
+                'label' => 'Nomor Rekening',
+                'rules' => 'trim|required',
+                'errors' => [
+                    'required' => '{field} harus diisi'
+                ]
+            ],
+            'bankescrow' => [
+                'label' => 'Bank Escrow',
+                'rules' => 'trim|required',
+                'errors' => [
+                    'required' => '{field} harus diisi'
+                ]
+            ],
+            'rekeningescrow' => [
+                'label' => 'Nomor Rekening Escrow',
+                'rules' => 'trim|required',
+                'errors' => [
+                    'required' => '{field} harus diisi'
+                ]
+            ]
+        ];
+
+        if (!$this->validate($validationRules)) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => $this->validator->getErrors(),
+                'csrfHash' => csrf_hash()
+            ])->setStatusCode(400);
+        }
+
+        $uuid = $this->request->getPost('uuid');
+        $pt = new PTModel();
+        $existingData = $pt->where('uuid', $uuid)->first();
+
+        if (!$existingData) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => ['Data PT tidak ditemukan'],
+                'csrfHash' => csrf_hash()
+            ])->setStatusCode(404);
+        }
+
+        try {
+            $data = [
+                "namapt" => $this->request->getVar('nama_pt'),
+                "alamatref" => $this->request->getVar('lokasiref'),
+                "alamatinput" => $this->request->getVar('detail_alamat'),
+                "namapj" => $this->request->getVar('penanggung_jawab_pt'),
+                "ktppj" => $this->request->getVar('ktp_penanggung_jawab'),
+                "npwppj" => $this->request->getVar('npwp_penanggung_jawab'),
+                "penguruspt" => $this->request->getVar('pengurus_pt'),
+                "aktapendirian" => $this->request->getVar('akta_pendirian'),
+                "rekening" => $this->request->getVar('rekening'),
+                "kodebank" => $this->request->getVar('bank'),
+                "kodebankescrow" => $this->request->getVar('bankescrow'),
+                "rekeningescrow" => $this->request->getVar('rekeningescrow'),
+                "statusvalidator" => 0
+            ];
+
+            // Handle file uploads
+            $files = ['berkasnpwppt', 'berkasktp_penanggung_jawab', 'berkasnpwp_penanggung_jawab', 
+                     'berkasnpwp_pengurus_pt', 'berkasktp_pengurus_pt', 'berkasakta_pendirian',
+                     'berkasskkemenkumham', 'berkasrekening', 'berkasrekeningescrow'];
+
+            foreach($files as $fileField) {
+                $file = $this->request->getFile($fileField);
+                if($file && $file->getSize() > 0) {
+
+                    if($fileField == 'berkasnpwppt'){
+                        $newFileName = "npwppt_".$uuid."_".$file->getRandomName();
+                        $file->move(WRITEPATH . 'uploads/npwp_pt', $newFileName);
+                        $data['berkasnpwp'] = $newFileName;
+                    }
+                    if($fileField == 'berkasktp_penanggung_jawab'){
+                        $newFileName = "ktp_penanggungjawab_".$uuid."_".$file->getRandomName();
+                        $file->move(WRITEPATH . 'uploads/ktp_penanggungjawab', $newFileName);
+                        $data['berkasktppj'] = $newFileName;
+                    }
+                    if($fileField == 'berkasnpwp_penanggung_jawab'){
+                        $newFileName = "npwp_penanggungjawab_".$uuid."_".$file->getRandomName();
+                        $file->move(WRITEPATH . 'uploads/npwp_penanggungjawab', $newFileName);
+                        $data['berkasnpwppj'] = $newFileName;
+                    }
+                    if($fileField == 'berkasktp_pengurus_pt'){
+                        $newFileName = "ktp_pengurus_".$uuid."_".$file->getRandomName();
+                        $file->move(WRITEPATH . 'uploads/ktp_pengurus', $newFileName);
+                        $data['berkaspengurusptktp'] = $newFileName;
+                    }   
+                    if($fileField == 'berkasnpwp_pengurus_pt'){
+                        $newFileName = "npwp_pengurus_".$uuid."_".$file->getRandomName();
+                        $file->move(WRITEPATH . 'uploads/npwp_pengurus', $newFileName);
+                        $data['berkaspengurusptnpwp'] = $newFileName;
+                    }  
+                    if($fileField == 'berkasakta_pendirian'){
+                        $newFileName = "akta_pendirian_".$uuid."_".$file->getRandomName();
+                        $file->move(WRITEPATH . 'uploads/akta_pendirian', $newFileName);
+                        $data['berkasaktapendirian'] = $newFileName;
+                    }   
+                    if($fileField == 'berkasskkemenkumham'){
+                        $newFileName = "kemenkumham_".$uuid."_".$file->getRandomName();
+                        $file->move(WRITEPATH . 'uploads/sk_kemenkumham', $newFileName);
+                        $data['berkasskkemenkumham'] = $newFileName;
+                    }   
+                    if($fileField == 'berkasrekening'){
+                        $newFileName = "rekening_".$uuid."_".$file->getRandomName();
+                        $file->move(WRITEPATH . 'uploads/rekening', $newFileName);
+                        $data['berkasrekening'] = $newFileName;
+                    }   
+                    if($fileField == 'berkasrekeningescrow'){
+                        $newFileName = "rekeningescrow_".$uuid."_".$file->getRandomName();
+                        $file->move(WRITEPATH . 'uploads/rekening_escrow', $newFileName);
+                        $data['berkasrekeningescrow'] = $newFileName;
+                    }   
+
+                }
+            }
+
+            if (!$pt->where('uuid', $existingData['uuid'])->set($data)->update()) {
+                throw new \RuntimeException('Gagal mengupdate data PT');
+            }
+
+            return $this->response->setJSON([
+                'status' => 'success',
+                'message' => 'Data berhasil diupdate!',
+                'csrfHash' => csrf_hash()
+            ]);
+
+        } catch (\Exception $e) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => ['Gagal mengupdate data: ' . $e->getMessage()],
+                'csrfHash' => csrf_hash()
+            ])->setStatusCode(400);
+        }
+    }
+
+    public function form_edit_pt()
+    {
+        $menu = getMenu();
+        $uuid = $this->request->getGet('uuid');
+        
+        $model = new PTModel();
+        $pt = $model->where('uuid', $uuid)->first();
+        
+        if (!$pt) {
+            throw new \CodeIgniter\Exceptions\PageNotFoundException('Data PT tidak ditemukan');
+        }
+        
+        $bankModel = new BankModel();
+        $bank = $bankModel->findAll();
+        
+        $dropdownbank['bank'] = ['' => 'Pilih Bank'];
+        foreach ($bank as $b) {
+            $dropdownbank['bank'][$b['kodebank']] = $b['kodebank'].' - '.$b['namabank'];
+        }
+        
+        // Load model wilayah
+        $provinsiModel = new ProvinsiModel();
+        $kabupatenModel = new KabupatenModel();
+        $kotaModel = new KotaModel(); 
+        $kecamatanModel = new KecamatanModel();
+        
+        // Get data wilayah
+        $provinsi = $provinsiModel->findAll();
+        $kabupaten = $kabupatenModel->where('id LIKE', substr($pt['alamatref'],0,2).'%')->findAll();
+        $kota = $kotaModel->where('idkabupaten', substr($pt['alamatref'],0,4))->findAll();
+        $kecamatan = $kecamatanModel->where('idkota', substr($pt['alamatref'],0,6))->findAll();
+        
+        // Buat dropdown
+        $dropdownprovinsi['provinsi'] = ['' => 'Pilih Provinsi'];
+        foreach ($provinsi as $p) {
+            $dropdownprovinsi['provinsi'][$p['id']] = $p['namaprovinsi'];
+        }
+        
+        $dropdownkabupaten['kabupaten'] = ['' => 'Pilih Kabupaten'];
+        foreach ($kabupaten as $k) {
+            $dropdownkabupaten['kabupaten'][$k['id']] = $k['namakabupaten'];
+        }
+        
+        $dropdownkota['kota'] = ['' => 'Pilih Kota'];
+        foreach ($kota as $k) {
+            $dropdownkota['kota'][$k['id']] = $k['namakota'];
+        }
+        
+        $dropdownkecamatan['kecamatan'] = ['' => 'Pilih Kecamatan'];
+        foreach ($kecamatan as $k) {
+            $dropdownkecamatan['kecamatan'][$k['id']] = $k['namakecamatan'];
+        }
+        
+        $data = [
+            'title' => 'Edit PT',
+            'breadcrumb' => ['Developer','Edit PT'],
+            'stringmenu' => $menu,
+            'pt' => $pt,
+            'dropdownbank' => $dropdownbank,
+            'dropdownprovinsi' => $dropdownprovinsi,
+            'dropdownkabupaten' => $dropdownkabupaten,
+            'dropdownkota' => $dropdownkota,
+            'dropdownkecamatan' => $dropdownkecamatan
+        ];
+    
+        return view('developer/form_edit_pt', $data);
+    }
+
+    public function hapus_pt()
+    {
+        // Cek apakah request adalah AJAX
+        if (!$this->request->isAJAX()) {
+            return $this->response->setStatusCode(403)->setJSON([
+                'status' => 'error',
+                'message' => 'Invalid request'
+            ]);
+        }
+
+        // Ambil UUID dari POST request
+        $uuid = $this->request->getPost('uuid');
+        
+        // Validasi UUID
+        if (empty($uuid)) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => 'UUID tidak valid',
+                'csrfHash' => csrf_hash()
+            ]);
+        }
+
+        // Load model yang diperlukan
+        $ptModel = new \App\Models\PengajuanPTModel();
+        
+        try {
+            // Cari data PT berdasarkan UUID
+            $pt = $ptModel->where('uuid', $uuid)->first();
+            
+            if (!$pt) {
+                return $this->response->setJSON([
+                    'status' => 'error',
+                    'message' => 'Data PT tidak ditemukan',
+                    'csrfHash' => csrf_hash()
+                ]);
+            }
+
+            // Hapus file-file yang terkait
+            $files = [
+                'berkasnpwp' => FCPATH . 'download/npwp_pt/',
+                'berkasktppj' => FCPATH . 'download/ktp_penanggungjawab/',
+                'berkasnpwppj' => FCPATH . 'download/npwp_penanggungjawab/',
+                'berkaspengurusptktp' => FCPATH . 'download/ktp_pengurus/',
+                'berkaspengurusptnpwp' => FCPATH . 'download/npwp_pengurus/',
+                'berkasaktapendirian' => FCPATH . 'download/akta_pendirian/',
+                'berkasskkemenkumham' => FCPATH . 'download/sk_kemenkumham/',
+                'berkasrekening' => FCPATH . 'download/rekening/',
+                'berkasrekeningescrow' => FCPATH . 'download/rekening_escrow/'
+            ];
+
+            foreach ($files as $field => $path) {
+                if (!empty($pt[$field]) && file_exists($path . $pt[$field])) {
+                    unlink($path . $pt[$field]);
+                }
+            }
+
+            // Hapus data PT dari database
+            if ($ptModel->delete($pt['id'])) {
+                return $this->response->setJSON([
+                    'status' => 'success',
+                    'message' => 'Data PT berhasil dihapus',
+                    'csrfHash' => csrf_hash()
+                ]);
+            } else {
+                return $this->response->setJSON([
+                    'status' => 'error',
+                    'message' => 'Gagal menghapus data PT',
+                    'csrfHash' => csrf_hash()
+                ]);
+            }
+
+        } catch (\Exception $e) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage(),
+                'csrfHash' => csrf_hash()
+            ]);
         }
     }
 
