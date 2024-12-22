@@ -367,9 +367,9 @@
 
       
         $('#provinsi').change(function () {
-
+          
             let csrfName = '<?= csrf_token() ?>';
-            let csrfHash = '<?= csrf_hash() ?>';
+            let csrfHash = $('#<?= csrf_token() ?>').val();
             let provinsiId = $(this).val();
 
             // Clear kabupaten_kota dropdown
@@ -400,8 +400,10 @@
                     });
                     $('#kabupaten').html(options);
                     $('#<?= csrf_token() ?>').val(response.csrfHash);
+                    Swal.close();
                 },
-                error: function () {
+                error: function (xhr, status, error) {
+                  $('#<?= csrf_token() ?>').val(xhr.responseJSON.csrfHash);
                   Swal.fire({
                     icon: 'error',
                     title: 'Error!',
@@ -444,9 +446,10 @@
                   });
                   $('#kota').html(options);
                   $('#<?= csrf_token() ?>').val(response.csrfHash);
-                 
+                  Swal.close();
                 },
-                error: function () {
+                error: function (xhr, status, error) {
+                  $('#<?= csrf_token() ?>').val(xhr.responseJSON.csrfHash);
                   Swal.fire({
                     icon: 'error',
                     title: 'Error!',
@@ -489,8 +492,10 @@
                   });
                   $('#kecamatan').html(options);
                   $('#<?= csrf_token() ?>').val(response.csrfHash);
+                  Swal.close();
                 },
-                error: function () {
+                error: function (xhr, status, error) {
+                  $('#<?= csrf_token() ?>').val(xhr.responseJSON.csrfHash);
                   $('#kabupaten').val(oldKabupatenSelection);
                   $('#kota').val(oldKotaSelection);
                   $('#kecamatan').val(oldKecamatanSelection);
