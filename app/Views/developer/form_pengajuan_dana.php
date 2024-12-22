@@ -62,13 +62,13 @@
                     <label for="kta">Lokasi Perumahan</label>
                     <?= create_dropdown('provinsi', $dropdownprovinsi['provinsi'], old('provinsi'), ['class' => 'form-control', 'id' => 'provinsi','required' => 'required']); ?>
                     <select id="kabupaten" name="kabupaten" class="form-control" style="margin-top: 10px;" required>
-                      <option value="" selected disabled>Pilih Kabupaten</option>
+                      <option value="" selected disabled>Pilih Kabupaten/Kota</option>
                     </select>
                     <select id="kota" name="kota" class="form-control" style="margin-top: 10px;" required>
-                      <option value="" selected disabled>Pilih Kota</option>
+                      <option value="" selected disabled>Pilih Kecamatan</option>
                     </select>
                     <select id="kecamatan" id="alamatperumahanref" name="alamatperumahanref" class="form-control" style="margin-top: 10px;" required>
-                        <option value="" selected disabled>Pilih Kecamatan</option>
+                        <option value="" selected disabled>Pilih Kelurahan</option>
                     </select>
                     <span id="spanalamatperumahanref" style="color: red;"></span>
 
