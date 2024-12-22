@@ -107,7 +107,12 @@
                             <span id="spansp3k" style="color: red;"></span>
                             <div class="input-group" style="margin-top: 10px;">
                                 <input type="date" name="tanggalsp3k" class="form-control" id="tanggalsp3k" required>
+                                
                             </div>
+                            
+                            <div class="text-muted">
+                                  <small>Diisi tanggal SP3K</small>
+                              </div>
                             <div class="input-group" style="margin-top: 10px;">
                                 <div class="custom-file">
                                     <input type="file" class="custom-file-input" name="berkassp3k" id="berkassp3k" accept=".pdf" required>
