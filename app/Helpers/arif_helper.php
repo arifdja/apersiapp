@@ -985,7 +985,7 @@ if (!function_exists('sendMail')) {
     {
         $email = \Config\Services::email();
 
-        $email->setFrom('readonlysistem@gmail.com', SITE_NAME);
+        $email->setFrom('admin@sirakyat.id', SITE_NAME);
         $email->setTo($recipient);
         $email->setSubject($subject);
         $email->setMessage($message);

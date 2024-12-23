@@ -51,6 +51,7 @@
                       <th>Disetujui Operator</th>
                       <th>Disetujui Approver</th>
                       <th>Aksi</th>
+                      <th>Pilih<br>Pendana</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -106,6 +107,20 @@
                                       -
                                     <?php endif; ?>
                           <?php endif; ?>
+                        </td>
+                        <td>
+                        <?php if(session()->get('kdgrpuser')=='approver' && $p['submited_status']==4) : ?>
+                        <form action="<?= site_url('approver/setujui_pengajuan_dana') ?>" method="post" id="form-setujui-<?= $p['uuid'] ?>">
+                          <?= csrf_field() ?>
+                          <input type="hidden" name="uuid" value="<?= $p['uuid'] ?>">
+                          <select name="pendana" class="form-control form-control-sm">
+                            <?php foreach($dropdownpendana['pendana'] as $key => $value): ?>
+                              <option value="<?= $key ?>"><?= $value ?></option>
+                            <?php endforeach; ?>
+                          </select>
+                          <button type="submit" class="btn btn-xs btn-success">Teruskan</button>
+                        </form>
+                        <?php endif; ?>
                         </td>
                       </tr>
                     <?php endforeach; ?>

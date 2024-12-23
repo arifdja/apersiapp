@@ -6,6 +6,7 @@ use App\Models\PTModel;
 use App\Models\PengajuanModel;
 use App\Models\PengajuanDetailModel;
 use App\Models\DashboardModel;
+use App\Models\PendanaModel;
 
 class Approver extends BaseController
 {
@@ -96,12 +97,20 @@ class Approver extends BaseController
         $model = new PengajuanModel();
         $dana = $model->getPengajuanDana($uuid);
 
+        $pendanaModel = new PendanaModel();
+        $pendana = $pendanaModel->findAll();
+
+        $dropdownpendana['pendana'] = ['' => 'Pilih Pendana'];
+        foreach ($pendana as $p) {
+            $dropdownpendana['pendana'][$p['uuid']] = $p['nama'];
+        }
 
         $data = [
 			'title' => 'Persetujuan Pengajuan Dana',
 			'breadcrumb' => ['Persetujuan','Pengajuan Dana'],
 			'stringmenu' => $menu, 
             'result' => $dana,
+            'dropdownpendana' => $dropdownpendana
         ];
         return view('operator/p_pengajuan_dana',$data);
 	}

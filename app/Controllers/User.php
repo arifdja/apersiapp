@@ -546,4 +546,6 @@ class User extends BaseController
 
         return redirect('login')->with('success', 'Password berhasil direset. Silakan login dengan password baru.');
     }
+
+  
 }
