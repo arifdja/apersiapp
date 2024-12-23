@@ -866,30 +866,6 @@ class Developer extends BaseController
                     'mime_in' => '{field} harus berformat PDF'
                 ]
             ],
-            'bank' => [
-                'label' => 'Bank',
-                'rules' => 'trim|required',
-                'errors' => [
-                    'required' => '{field} harus diisi'
-                ]
-            ],
-            'rekening' => [
-                'label' => 'Rekening Debitur',
-                'rules' => 'trim|required',
-                'errors' => [
-                    'required' => '{field} harus diisi'
-                ]
-            ],
-            'berkasrekening' => [
-                'label' => 'Berkas Rekening Debitur',
-                'rules' => 'uploaded[berkasrekening]|max_size[berkasrekening,10240]|ext_in[berkasrekening,pdf]|mime_in[berkasrekening,application/pdf]',
-                'errors' => [
-                    'uploaded' => '{field} harus diisi',
-                    'max_size' => '{field} maksimal 10 MB',
-                    'ext_in' => '{field} harus berformat PDF',
-                    'mime_in' => '{field} harus berformat PDF'
-                ]
-            ],
             'pinjaman_kpl' => [
                 'label' => 'Pinjaman KPL',
                 'rules' => 'trim|numeric|permit_empty|required_with[berkaspinjaman_kpl]',
@@ -961,7 +937,6 @@ class Developer extends BaseController
         $fileberkaspbgimb = $this->request->getFile('berkaspbgimb');
         $fileberkassp3k = $this->request->getFile('berkassp3k');
         $fileberkasktpdebitur = $this->request->getFile('berkasktpdebitur');
-        $fileberkasrekening = $this->request->getFile('berkasrekening');
         $fileberkaspinjaman_kpl = $this->request->getFile('berkaspinjaman_kpl');
         $fileberkaspinjaman_kyg = $this->request->getFile('berkaspinjaman_kyg');
         $fileberkaspinjaman_lain = $this->request->getFile('berkaspinjaman_lain');
@@ -978,7 +953,6 @@ class Developer extends BaseController
             $fileberkaspbb->isValid() && !$fileberkaspbb->hasMoved() &&
             $fileberkassp3k->isValid() && !$fileberkassp3k->hasMoved() &&
             $fileberkasktpdebitur->isValid() && !$fileberkasktpdebitur->hasMoved() &&
-            $fileberkasrekening->isValid() && !$fileberkasrekening->hasMoved() &&
             $fileberkaspbgimb->isValid() && !$fileberkaspbgimb->hasMoved()
         ) {
             $uuid = generate_uuid();
@@ -987,14 +961,12 @@ class Developer extends BaseController
             $newfilenameberkaspbb = "pbb_".$uuid."_".$fileberkaspbb->getRandomName();
             $newfilenameberkassp3k = "sp3k_".$uuid."_".$fileberkassp3k->getRandomName();
             $newfilenameberkasktpdebitur = "ktpdebitur_".$uuid."_".$fileberkasktpdebitur->getRandomName();
-            $newfilenameberkasrekening = "rekeningdebitur_".$uuid."_".$fileberkasrekening->getRandomName();
             $newfilenameberkaspbgimb = "pbgimb_".$uuid."_".$fileberkaspbgimb->getRandomName();
 
             $fileberkassertifikat->move(WRITEPATH . 'uploads/sertifikat', $newfilenameberkassertifikat);
             $fileberkaspbb->move(WRITEPATH . 'uploads/pbb', $newfilenameberkaspbb);
             $fileberkassp3k->move(WRITEPATH . 'uploads/sp3k', $newfilenameberkassp3k);
             $fileberkasktpdebitur->move(WRITEPATH . 'uploads/ktp_debitur', $newfilenameberkasktpdebitur);
-            $fileberkasrekening->move(WRITEPATH . 'uploads/rekening_debitur', $newfilenameberkasrekening);
             $fileberkaspbgimb->move(WRITEPATH . 'uploads/pbgimb', $newfilenameberkaspbgimb);
 
             $data = [
@@ -1014,9 +986,6 @@ class Developer extends BaseController
                 "berkassp3k" => $newfilenameberkassp3k,
                 "namadebitur" => $this->request->getVar('debitur'),
                 "berkasktpdebitur" => $newfilenameberkasktpdebitur,
-                "bank" => $this->request->getVar('bank'),
-                "rekening" => $this->request->getVar('rekening'),
-                "berkasrekening" => $newfilenameberkasrekening,
                 "submited_status" => 0,
                 "submited_time" => date('Y-m-d H:i:s'),
                 "submited_by" => session()->get('uuid'),
@@ -1282,20 +1251,6 @@ class Developer extends BaseController
                     'required' => '{field} harus diisi'
                 ]
             ],
-            'bank' => [
-                'label' => 'Bank',
-                'rules' => 'trim|required',
-                'errors' => [
-                    'required' => '{field} harus diisi'
-                ]
-            ],
-            'rekening' => [
-                'label' => 'Rekening Debitur',
-                'rules' => 'trim|required',
-                'errors' => [
-                    'required' => '{field} harus diisi'
-                ]
-            ],
             'pinjaman_kpl' => [
                 'label' => 'Pinjaman KPL',
                 'rules' => 'trim|numeric|permit_empty|required_with[berkaspinjaman_kpl]',
@@ -1336,8 +1291,6 @@ class Developer extends BaseController
             "nilaikredit" => $this->request->getVar('nilaikredit'),
             // "tanggalsp3k" => $this->request->getVar('tanggalsp3k'),
             "namadebitur" => $this->request->getVar('debitur'),
-            "bank" => $this->request->getVar('bank'),
-            "rekening" => $this->request->getVar('rekening'),
             "alamatref" => $this->request->getVar('lokasiref'),
             "alamatinput" => $this->request->getVar('detail_alamat'),
             "pinjamankpl" => $this->request->getVar('pinjaman_kpl'),
@@ -1359,10 +1312,6 @@ class Developer extends BaseController
             'berkasktpdebitur' => [
                 'path' => 'ktp_debitur',
                 'field' => 'berkasktpdebitur'
-            ],
-            'berkasrekening' => [
-                'path' => 'rekening_debitur',
-                'field' => 'berkasrekening'
             ],
             'berkaspinjaman_kpl' => [
                 'path' => 'pinjaman_kpl',

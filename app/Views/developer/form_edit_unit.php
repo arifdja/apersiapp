@@ -174,32 +174,6 @@
                                 <span id="spanberkasktpdebitur" style="color: red;"></span>
                             </div>
 
-                            <div class="form-group">
-                                <label>Bank</label>
-                                <?= form_dropdown('bank', $dropdownbank['bank'], $unit['bank'], ['class' => 'form-control', 'id' => 'bank', 'required' => 'required']) ?>
-                                <div class="invalid-feedback"></div>
-                                <span id="spanbank" style="color: red;"></span>
-                            </div>
-
-                            <div class="form-group">
-                                <label>Rekening Debitur</label>
-                                <input type="text" class="form-control" name="rekening" value="<?= $unit['rekening'] ?>" id="rekening" required>
-                                <div class="invalid-feedback"></div>
-                                <span id="spanrekening" style="color: red;"></span>
-                                <div class="input-group" style="margin-top: 10px;">
-                              <div class="custom-file">
-                                  <input type="file" class="custom-file-input" name="berkasrekening" id="berkasrekening" accept=".pdf">
-                                  <label class="custom-file-label labelberkasrekening" for="exampleInputFile">Unggah Rekening Debitur</label>
-                              </div>
-                          </div>
-                                <div class="text-muted">
-                                    <small class="text-muted">Biarkan kosong jika tidak ingin mengubah file</small><br>
-                                    <small>Format file yang diizinkan: PDF</small>,
-                                    <small>Maksimal ukuran file: 10 MB</small>
-                          </div>
-                          <span id="spanberkasrekening" style="color: red;"></span>
-                            </div>
-
                                 
                         <div class="form-group">
                             <label for="pinjaman_kpl">Pinjaman KPL</label>

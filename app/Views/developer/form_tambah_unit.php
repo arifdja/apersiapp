@@ -170,29 +170,6 @@
                               <span id="spanberkasktpdebitur" style="color: red;"></span>
                           </div>
 
-                      <div class="form-group">
-                          <label for="bank">Bank</label>  
-                          <?= create_dropdown('bank', $dropdownbank['bank'], old('bank'), ['class' => 'form-control', 'id' => 'bank','required' => 'required']); ?>
-                          <span id="spanbank" style="color: red;"></span>
-                      </div>
-
-                      <div class="form-group">
-                          <label for="rekening">Rekening Debitur</label>
-                          <input type="text" name="rekening" class="form-control" id="rekening" placeholder="Rekening Debitur" required>
-                          <span id="spanrekening" style="color: red;"></span>
-                          <div class="input-group" style="margin-top: 10px;">
-                              <div class="custom-file">
-                                  <input type="file" class="custom-file-input" name="berkasrekening" id="berkasrekening" accept=".pdf" required>
-                                  <label class="custom-file-label labelberkasrekening" for="exampleInputFile">Unggah Rekening Debitur</label>
-                              </div>
-                          </div>
-                          <div class="text-muted">
-                              <small>Format file yang diizinkan: PDF</small>,
-                              <small>Maksimal ukuran file: 10 MB</small>
-                          </div>
-                          <span id="spanberkasrekening" style="color: red;"></span>
-                      </div>
-
                       
                       <div class="form-group">
                         <label for="pinjaman_kpl">Pinjaman KPL</label>
