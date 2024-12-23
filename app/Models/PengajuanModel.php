@@ -34,6 +34,9 @@ class PengajuanModel extends Model
         'validated_at',
         'validated_by',
         'keteranganpenolakan',
+        'uuidpendana',
+        'senttopendana_at',
+        'senttopendana_by',
         'submited_status',
         'submited_time',
         'submited_by',
@@ -79,7 +82,7 @@ class PengajuanModel extends Model
             $builder->whereIn('trx_pengajuan.submited_status',[1,2,3,4]);
         }
         if($filter == "approver"){
-            $builder->whereIn('trx_pengajuan.submited_status',[3,4]);
+            $builder->whereIn('trx_pengajuan.submited_status',[3,4,5]);
         }
         $builder->groupBy('trx_pengajuan.uuid, ref_pt.namapt, ref_dpd.namadpd, ref_provinsi.namaprovinsi, ref_kabupaten.namakabupaten, ref_kota.namakota, ref_kecamatan.namakecamatan, trx_pengajuan.suratpermohonan, trx_pengajuan.berkassuratpermohonan, trx_pengajuan.uuidpt, trx_pengajuan.dpd, trx_pengajuan.namapj, trx_pengajuan.ktppj, trx_pengajuan.berkasktppj, trx_pengajuan.npwppj, trx_pengajuan.berkasnpwppj, trx_pengajuan.pinjamankpl, trx_pengajuan.berkaspinjamankpl, trx_pengajuan.pinjamankyg, trx_pengajuan.berkaspinjamankyg, trx_pengajuan.pinjamanlain, trx_pengajuan.berkaspinjamanlain, trx_pengajuan.validator, trx_pengajuan.alamatperumahanref, trx_pengajuan.alamatperumahaninput, trx_pengajuan.berkassiteplan, trx_pengajuan.jumlahunit, trx_pengajuan.statusvalidator, trx_pengajuan.validated_at, trx_pengajuan.validated_by, trx_pengajuan.keteranganpenolakan, trx_pengajuan.updated_at');
         $builder->orderBy('trx_pengajuan.updated_at','DESC');

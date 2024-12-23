@@ -108,18 +108,20 @@
                                     <?php endif; ?>
                           <?php endif; ?>
                         </td>
-                        <td>
+                        <td class="pendana<?= $p['uuid']; ?>">
                         <?php if(session()->get('kdgrpuser')=='approver' && $p['submited_status']==4) : ?>
-                        <form action="<?= site_url('approver/setujui_pengajuan_dana') ?>" method="post" id="form-setujui-<?= $p['uuid'] ?>">
+                        <form action="<?= site_url('approver/kirimkependana') ?>" method="post" id="form-kirimkependana-<?= $p['uuid'] ?>">
                           <?= csrf_field() ?>
                           <input type="hidden" name="uuid" value="<?= $p['uuid'] ?>">
-                          <select name="pendana" class="form-control form-control-sm">
+                          <select required name="pendana" class="form-control form-control-sm" id="pendana-<?= $p['uuid'] ?>">
                             <?php foreach($dropdownpendana['pendana'] as $key => $value): ?>
                               <option value="<?= $key ?>"><?= $value ?></option>
                             <?php endforeach; ?>
                           </select>
-                          <button type="submit" class="btn btn-xs btn-success">Teruskan</button>
+                          <button id="btn-kirimkependana-<?= $p['uuid'] ?>" kunci="<?= $p['uuid'] ?>" type="submit" class="btn btn-xs btn-success kirimkependana">Kirim ke Pendana</button>
                         </form>
+                        <?php else: ?>
+                          <?= $p['uuidpendana'] ?>
                         <?php endif; ?>
                         </td>
                       </tr>
@@ -279,6 +281,53 @@
             $(".csrf").val(response.csrfHash);
             $(".csrf").attr('name',response.csrfToken);
             $(".aksi"+response.uuid).html('<span class="badge badge-success">Disetujui</span>');
+            Swal.fire({
+              icon: 'success',
+              title: 'Sukses',
+              text: response.message
+            });
+          }
+        },
+        error: function(xhr, status, error) {
+          $(".csrf").val(xhr.responseJSON.csrfHash);
+          $(".csrf").attr('name',xhr.responseJSON.csrfToken);
+          Swal.fire({
+            icon: 'error',
+            title: 'Gagal',
+            text: response.message
+          });
+        }
+      });
+    });
+
+
+    
+    // Handle kembalikan button click  
+    $(".kirimkependana").click(function(e) {
+      e.preventDefault();
+      var uuid = $(this).attr('kunci');
+      var pendana = $("#pendana-"+uuid).val();
+      // Mendapatkan teks dari opsi yang dipilih
+      var pendanaText = $("#pendana-"+uuid+" option:selected").text();
+      var csrfHash = $(".csrf").val();
+      var csrfToken = $(".csrf").attr('name');
+
+      $.ajax({
+        type: "post", 
+        headers: {'X-Requested-With': 'XMLHttpRequest'},
+        url: "<?= base_url(); ?>/approver/kirimkependana",
+        data: {
+          [csrfToken]: csrfHash,
+          uuid: uuid,
+          pendana: pendana,
+          pendanaText: pendanaText,
+        },
+        dataType: "json",
+        success: function(response) {
+          if(response.status == 'success') {
+            $(".csrf").val(response.csrfHash);
+            $(".csrf").attr('name',response.csrfToken);
+            $(".pendana"+response.uuid).html(response.pendanaText);
             Swal.fire({
               icon: 'success',
               title: 'Sukses',

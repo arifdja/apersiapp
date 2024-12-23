@@ -37,6 +37,7 @@
                                 <thead>
                                     <tr class="table-info">
                                         <th style="width: 10px">No.</th>
+                                        <th>Detail</th>
                                         <th>Nama Developer</th>
                                         <th>Email</th>
                                         <th>No Telp</th>
@@ -46,8 +47,13 @@
                                 </thead>
                                 <tbody>
                                     <?php foreach ($result as $key => $value) : ?>
-                                        <tr class="baris" style="cursor: pointer;" data-uuid="<?= $value['uuid']; ?>" data-grpuser="<?= session()->get('kdgrpuser'); ?>">
+                                        <tr>
                                             <td><?= $key+1; ?>.</td>
+                                            <td class="text-center">
+                                                <button class="btn btn-xs btn-info toggle-alamat baris" data-uuid="<?= $value['uuid']; ?>" data-grpuser="<?= session()->get('kdgrpuser'); ?>">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                            </td>
                                             <td><?= $value['nama']; ?></td>
                                             <td><?= $value['email']; ?></td>
                                             <td><?= $value['notelp']; ?></td>

@@ -84,4 +84,6 @@ $routes->post('/rumput/get_pendana', 'Rumput::get_pendana');
 
 $routes->get('/rumput/getCSRF', 'Rumput::getCSRF');
 
+$routes->post('/approver/kirimkependana', 'Approver::kirimkependana');
+
 $routes->get('developer/form_edit_pt', 'Developer::form_edit_pt');

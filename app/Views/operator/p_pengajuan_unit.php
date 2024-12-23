@@ -47,7 +47,7 @@
                         <th align="right">Pinjaman Lain</th>
                         <th align="center" width="50px">Validasi DPP/DPD/Korwil</th>
                         <th align="center" width="50px">Validasi Sikumbang</th>
-                        <th align="center" width="50px">Validasi EFLPP</th>
+                        <th align="center" width="50px">Validasi FLPP</th>
                         <th align="center" width="50px">Validasi SP3K</th>
                       </tr>
                     </thead>

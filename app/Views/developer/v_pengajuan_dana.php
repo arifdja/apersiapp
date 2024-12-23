@@ -28,7 +28,7 @@
                   <thead>
                     <tr class="table-info">
                       <th>No.</th>
-                      <th>List<br> Unit</th>
+                      <th>Detail<br>Unit</th>
                       <th>Nama<br> PT</th>
                       <th>Surat <br>Permohonan</th>
                       <th>DPP/DPD/Korwil</th>
@@ -54,7 +54,7 @@
                       <input type="hidden" name="uuid" value="<?= $p['uuid'] ?>">
                       <td><?= $no++ ?></td>
                       <td>
-                        <a href="<?= site_url('developer/monitoring_detail_pengajuan_dana?uuid='.$p['uuid']) ?>" class="btn btn-xs btn-info"><i class="fa fa-eye"></i></a>
+                        <a href="<?= site_url('developer/monitoring_detail_pengajuan_dana?uuid='.$p['uuid']) ?>" class="btn btn-xs btn-info" data-toggle="tooltip" title="Isi detail pengajuan dana"><i class="fa fa-eye"></i></a>
                       </td>
                       <td><?= $p['namapt'] ?></td>
                       <td><a href="<?= base_url() ?>/download/surat_permohonan/<?= $p['berkassuratpermohonan'] ?>" target="_blank">Lihat</a></td>

@@ -137,6 +137,7 @@
                   </div>
               </div>
               <div class="text-muted">
+                    <small>Upload semua NPWP pengurus PT (dijadikan satu file)</small><br>
                     <small>Format file yang diizinkan: PDF</small>,
                     <small>Maksimal ukuran file: 5 MB</small>
               </div>
@@ -154,6 +155,7 @@
                   </div>
               </div>
               <div class="text-muted">
+                    <small>Upload semua KTP pengurus PT (dijadikan satu file)</small><br>
                     <small>Format file yang diizinkan: PDF</small>,
                     <small>Maksimal ukuran file: 5 MB</small>
               </div>

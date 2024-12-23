@@ -70,13 +70,13 @@
 
                         <div class="form-group">
                             <label for="harga">Harga Sesuai Persetujuan Kredit (SP3K)</label>
-                            <input type="number" name="harga" class="form-control" id="harga" placeholder="Contoh: 100.000.000" required>
+                            <input type="number" name="harga" class="form-control" id="harga" placeholder="Contoh: 100000000" required>
                             <span id="spanharga" style="color: red;"></span>
                         </div>
 
                         <div class="form-group">
                             <label for="nilaikredit">Nilai Dana Talangan</label>
-                            <input type="number" name="nilaikredit" class="form-control" id="nilaikredit" placeholder="Contoh: 70.000.000" required>
+                            <input type="number" name="nilaikredit" class="form-control" id="nilaikredit" placeholder="Contoh: 70000000" required>
                             <span id="spannilaikredit" style="color: red;"></span>
                             <div class="text-muted">
                                 <small>Maksimal 70% dari harga sesuai persetujuan kredit (SP3K)</small>
@@ -178,7 +178,7 @@
                         <div class="input-group" style="margin-top: 10px;">
                             <div class="custom-file">
                                   <input type="file" class="custom-file-input" name="berkaspinjaman_kpl" id="berkaspinjaman_kpl" accept=".pdf">
-                                  <label class="custom-file-label labelberkaspinjaman_kpl" for="exampleInputFile">Unggah Pinjaman KPL</label>
+                                  <label class="custom-file-label labelberkaspinjaman_kpl" for="exampleInputFile">Unggah Dokumen Bukti Pinjaman KPL</label>
                             </div>
                         </div>
                         <div class="text-muted">
@@ -194,7 +194,7 @@
                         <div class="input-group" style="margin-top: 10px;">
                             <div class="custom-file">
                                   <input type="file" class="custom-file-input" name="berkaspinjaman_kyg" id="berkaspinjaman_kyg" accept=".pdf">
-                                  <label class="custom-file-label labelberkaspinjaman_kyg" for="exampleInputFile">Unggah Pinjaman KYG</label>
+                                  <label class="custom-file-label labelberkaspinjaman_kyg" for="exampleInputFile">Unggah Dokumen Bukti Pinjaman KYG</label>
                             </div>
                         </div>
                         <div class="text-muted">
@@ -210,7 +210,7 @@
                         <div class="input-group" style="margin-top: 10px;">
                             <div class="custom-file">
                                   <input type="file" class="custom-file-input" name="berkaspinjaman_lain" id="berkaspinjaman_lain" accept=".pdf">
-                                  <label class="custom-file-label labelberkaspinjaman_lain" for="exampleInputFile">Unggah Pinjaman Lain</label>
+                                  <label class="custom-file-label labelberkaspinjaman_lain" for="exampleInputFile">Unggah Dokumen Bukti Pinjaman Lain</label>
                             </div>
                         </div>
                         <div class="text-muted">
@@ -310,7 +310,7 @@
                         icon: 'success',
                         showCancelButton: true,
                         confirmButtonText: 'Ya',
-                        cancelButtonText: 'Kembali ke pengajuan dana'
+                        cancelButtonText: 'Tidak'
                       }).then((result) => {
                         $('#<?= csrf_token() ?>').val(response.csrfHash);
                           if (result.isConfirmed) {
@@ -345,10 +345,9 @@
                               $('.labelberkaspbb').html('Unggah PBB tahun terakhir');
                               $('.labelberkassp3k').html('Unggah Dokumen SP3K');
                               $('.labelberkasktpdebitur').html('Unggah KTP Debitur');
-                              $('.labelberkasrekening').html('Unggah Rekening Debitur');
-                              $('.labelberkaspinjaman_kpl').html('Unggah Pinjaman KPL');
-                              $('.labelberkaspinjaman_kyg').html('Unggah Pinjaman KYG');
-                              $('.labelberkaspinjaman_lain').html('Unggah Pinjaman Lain');
+                              $('.labelberkaspinjaman_kpl').html('Unggah Dokumen Bukti Pinjaman KPL');
+                              $('.labelberkaspinjaman_kyg').html('Unggah Dokumen Bukti Pinjaman KYG');
+                              $('.labelberkaspinjaman_lain').html('Unggah Dokumen Bukti Pinjaman Lain');
                               $('input').removeClass('is-invalid');
                               $('span').html('');
                           } else {

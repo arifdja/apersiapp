@@ -19,7 +19,7 @@
               <div class="card-tools" style="margin: 0px;"><button class="btn btn-xs btn-success" id="excel"><i class="fas fa-excel"></i>Download Excel</button></div>
                 <?php if($tampilkan) : ?>
                   <div class="card-title">
-                    <button class="btn btn-info btn-xs" onclick="window.location.href='<?= site_url('developer/form_tambah_unit?uuidheader='.$uuidheader) ?>'">Tambah Unit yang diagunkan</button>
+                    <button class="btn btn-info btn-xs" onclick="window.location.href='<?= site_url('developer/form_tambah_unit?uuidheader='.$uuidheader) ?>'">Pengajuan Jumlah Dana Talangan</button>
                   </div>
                 <?php endif; ?>
                 <div class="card-title" style="margin-left: 5px;">
