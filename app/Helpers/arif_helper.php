@@ -1009,3 +1009,62 @@ if (!function_exists('delete_file')) {
         return false; // File tidak ditemukan
     }
 }
+
+if (!function_exists('tanggal_indo')) {
+    function tanggal_indo($tanggal) {
+        try {
+            if ($tanggal === null) {
+                return null;
+            }
+            
+            $bulan = array (
+                1 => 'Januari',
+                'Februari',
+                'Maret', 
+                'April',
+                'Mei',
+                'Juni',
+                'Juli',
+                'Agustus',
+                'September',
+                'Oktober',
+                'November',
+                'Desember'
+            );
+            
+            $split = explode('-', $tanggal);
+            
+            // Format tanggal jadi 2 Januari 2024
+            return $split[2] . ' ' . $bulan[(int)$split[1]] . ' ' . $split[0];
+        } catch (\Exception $e) {
+            return null;
+        }
+    }
+}
+
+if (!function_exists('hari_indo')) {
+    function hari_indo($tanggal) {
+        $hari = array ( 
+            'Sunday' => 'Minggu',
+            'Monday' => 'Senin',
+            'Tuesday' => 'Selasa',
+            'Wednesday' => 'Rabu',
+            'Thursday' => 'Kamis',
+            'Friday' => 'Jumat', 
+            'Saturday' => 'Sabtu'
+        );
+        
+        $nama_hari = date('l', strtotime($tanggal));
+        
+        return $hari[$nama_hari];
+    }
+}
+
+if (!function_exists('tanggal_hari_indo')) {
+    function tanggal_hari_indo($tanggal) {
+        $hari = hari_indo($tanggal);
+        $tanggal = tanggal_indo($tanggal);
+        
+        return "$hari, $tanggal";
+    }
+}

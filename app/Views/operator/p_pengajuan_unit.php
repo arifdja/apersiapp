@@ -32,14 +32,13 @@
                   <table class="table table-bordered table-condensed">
                     <thead>
                       <tr class="table-info">
-                        <th align="center">ID</th>
+                        <th align="center">No</th>
                         <th align="center">Sertifikat</th>
-                        <th align="center">PBG/IMB</th>
+                        <th align="center">PBG/<br>IMB</th>
                         <th align="center">PBB</th>
                         <th align="center">SP3K</th>
                         <th align="center">Nama <br>Debitur</th>
                         <th align="center">Alamat</th>
-                        <th align="center">Rekening</th>
                         <th align="right">Harga sesuai persetujuan<br>kredit (SP3K) (Rp)</th>
                         <th align="right">Nilai Dana<br> Talangan (Rp)</th>
                         <th align="right">Pinjaman KPL</th>
@@ -60,10 +59,9 @@
                       <td><a href="<?= base_url() ?>/download/sertifikat/<?= $p['berkassertifikat'] ?>" target="_blank"><?= $p['sertifikat'] ?></a></td>
                       <td><a href="<?= base_url() ?>/download/pbgimb/<?= $p['berkaspbgimb'] ?>" target="_blank">Lihat</a></td>
                       <td><a href="<?= base_url() ?>/download/pbb/<?= $p['berkaspbb'] ?>" target="_blank"><?= $p['pbb'] ?></a></td>
-                      <td><a href="<?= base_url() ?>/download/sp3k/<?= $p['berkassp3k'] ?>" target="_blank"><?= $p['nomordokumensp3k'] ?></a></td>
+                      <td><a href="<?= base_url() ?>/download/sp3k/<?= $p['berkassp3k'] ?>" target="_blank"><?= $p['nomordokumensp3k'] ?></a> <?= tanggal_indo($p['tanggalsp3k']) ?></td>
                       <td><a href="<?= base_url() ?>/download/ktp_debitur/<?= $p['berkasktpdebitur'] ?>" target="_blank"><?= $p['namadebitur'] ?></a></td>
                       <td><?= $p['namaprovinsi'] ?> - <?= $p['namakabupaten'] ?> - <?= $p['namakecamatan'] ?> - <?= $p['namakota'] ?> - <?= $p['alamatinput'] ?></td>
-                      <td><a href="<?= base_url() ?>/download/rekening_debitur/<?= $p['berkasrekening'] ?>" target="_blank"><?= $p['rekening'] ?> - <?= $p['namabank'] ?></a></td>
                       <td align="right"><?= number_format($p['harga'],0,',','.') ?></td>
                       <td align="right"><?= number_format($p['nilaikredit'],0,',','.') ?></td>
                      <td align="right">
@@ -99,7 +97,7 @@
                           <?php else : ?>
                             -
                           <?php endif; ?>
-                        <?php elseif($p['submited_status']==2 || $p['submited_status']==3 || $p['submited_status']==4) : ?>
+                        <?php elseif($p['submited_status']==2 || $p['submited_status']==3 || $p['submited_status']==4 || $p['submited_status']==5) : ?>
                           <?php if($p['statusvalidator']==0 || $p['statusvalidator']==null) : ?>
                             -
                           <?php elseif($p['statusvalidator']==1) : ?>
@@ -125,7 +123,7 @@
                           <?php else : ?>
                             -
                           <?php endif; ?>
-                        <?php elseif($p['submited_status']==2 || $p['submited_status']==3 || $p['submited_status']==4) : ?>
+                        <?php elseif($p['submited_status']==2 || $p['submited_status']==3 || $p['submited_status']==4 || $p['submited_status']==5) : ?>
                           <?php if($p['statussikumbang']==0 || $p['statussikumbang']==null) : ?>
                             -
                           <?php elseif($p['statussikumbang']==1) : ?>
@@ -151,7 +149,7 @@
                           <?php else : ?>
                             -
                           <?php endif; ?>
-                        <?php elseif($p['submited_status']==2 || $p['submited_status']==3 || $p['submited_status']==4) : ?>
+                        <?php elseif($p['submited_status']==2 || $p['submited_status']==3 || $p['submited_status']==4 || $p['submited_status']==5) : ?>
                           <?php if($p['statuseflpp']==0 || $p['statuseflpp']==null) : ?>
                             -
                           <?php elseif($p['statuseflpp']==1) : ?>
@@ -177,7 +175,7 @@
                           <?php else : ?>
                             -
                           <?php endif; ?>
-                        <?php elseif($p['submited_status']==2 || $p['submited_status']==3 || $p['submited_status']==4) : ?>
+                        <?php elseif($p['submited_status']==2 || $p['submited_status']==3 || $p['submited_status']==4 || $p['submited_status']==5) : ?>
                           <?php if($p['statussp3k']==0 || $p['statussp3k']==null) : ?>
                             -
                           <?php elseif($p['statussp3k']==1) : ?>

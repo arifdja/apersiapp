@@ -26,4 +26,15 @@ class UserModel extends Model
 		$builder->where('users.is_email_verified', 1);
 		return $builder->get()->getResultArray();
 	}
+
+	function getDeveloper2()
+	{
+		$sql = "SELECT users.uuid, users.email, users.notelp, users.nama, users.alamatinput, users.kta, users.berkaskta, users.kodepos, users.statusvalidator, ref_pt.uuid as uuidpt
+				FROM users left join ref_pt on ref_pt.uuiddeveloper = users.uuid
+				WHERE users.kdgrpuser = 'developer' 
+				AND users.statusvalidator = 1 	
+				AND users.is_email_verified = 1";
+		$query = $this->db->query($sql);
+		return $query->getResultArray();
+	}
 }

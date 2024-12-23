@@ -23,10 +23,7 @@
                             </button>
                         </div>
                         <div class="card-title">
-                            <label><input type="checkbox" class="toggle-column" data-column="2" checked> Email</label>
-                            <label><input type="checkbox" class="toggle-column" data-column="3" checked> No Telp</label>
-                            <label><input type="checkbox" class="toggle-column" data-column="4" checked> Alamat</label>
-                            <label><input type="checkbox" class="toggle-column" data-column="5" checked> KTA</label>
+                            <label><input type="checkbox" class="toggle-column" data-column="5" checked> Alamat</label>
                         </div>
                     </div>
 
@@ -37,7 +34,7 @@
                                 <thead>
                                     <tr class="table-info">
                                         <th style="width: 10px">No.</th>
-                                        <th>Detail</th>
+                                        <th>Lihat<br>Pengajuan<br> Dana</th>
                                         <th>Nama Developer</th>
                                         <th>Email</th>
                                         <th>No Telp</th>

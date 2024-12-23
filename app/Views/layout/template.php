@@ -110,6 +110,7 @@
           || session('kdgrpuser')=='operator' 
           || session('kdgrpuser')=='rumput' 
           || session('kdgrpuser')=='approver'
+          || session('kdgrpuser')=='pendana'
           )  : ?>
           <img src="<?= base_url() ?>/adminlte\dist\img\avatar5.png" class="img-circle elevation-2" alt="User Image">
           <?php else : ?>
