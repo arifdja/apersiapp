@@ -68,6 +68,8 @@ $routes->get('/approver/approval_dana/(:any)', 'Approver::approval_dana/$1',['fi
 $routes->get('/approver/dashboard', 'Approver::dashboard',['filter' => 'auth']);
 $routes->post('/approver/setujui_pengajuan_dana', 'Approver::setujui_pengajuan_dana',['filter' => 'auth']);
 $routes->get('/approver/approval_unit', 'Approver::approval_unit',['filter' => 'auth']);
+$routes->get('/pendana/permintaan_dana', 'Pendana::permintaan_dana',['filter' => 'auth']);
+$routes->get('/pendana/approval_unit', 'Pendana::approval_unit',['filter' => 'auth']);
 
 $routes->get('/rumput', 'Rumput::index',['filter' => 'auth']);
 $routes->get('/rumput/form_manajemen_akun', 'Rumput::form_manajemen_akun',['filter' => 'auth']);
@@ -90,3 +92,6 @@ $routes->get('developer/form_edit_pt', 'Developer::form_edit_pt');
 
 $routes->get('/pendana', 'Pendana::index',['filter' => 'auth']);
 $routes->get('/pendana/list_developer', 'Pendana::list_developer',['filter' => 'auth']);
+$routes->get('/pendana/developer', 'Pendana::developer',['filter' => 'auth']);
+$routes->get('/pendana/pt', 'Pendana::pt',['filter' => 'auth']);
+

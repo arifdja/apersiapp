@@ -1,6 +1,7 @@
 <?php namespace App\Models;
 
 use CodeIgniter\Model;
+use App\Models\PendanaModel;
 
 class UserModel extends Model
 {
@@ -27,14 +28,33 @@ class UserModel extends Model
 		return $builder->get()->getResultArray();
 	}
 
-	function getDeveloper2()
+	function getDeveloperByPendana()
 	{
-		$sql = "SELECT users.uuid, users.email, users.notelp, users.nama, users.alamatinput, users.kta, users.berkaskta, users.kodepos, users.statusvalidator, ref_pt.uuid as uuidpt
-				FROM users left join ref_pt on ref_pt.uuiddeveloper = users.uuid
-				WHERE users.kdgrpuser = 'developer' 
-				AND users.statusvalidator = 1 	
-				AND users.is_email_verified = 1";
-		$query = $this->db->query($sql);
-		return $query->getResultArray();
+
+		$pendanaModel = new PendanaModel();
+		$pendana = $pendanaModel->getUUIDPendanaByUUIDUser(session()->get('uuid'));
+		
+		$sql = "SELECT a.*,ref_provinsi.namaprovinsi as provinsi,ref_kabupaten.namakabupaten as kabupaten,ref_kota.namakota as kota,ref_kecamatan.namakecamatan as kecamatan FROM (
+					SELECT * 
+					FROM users t1
+					WHERE EXISTS (
+						SELECT 1 
+						FROM ref_pt t2
+						WHERE t2.uuiddeveloper = t1.uuid
+						AND EXISTS (
+							SELECT 1 
+							FROM trx_pengajuan t3
+							WHERE t3.uuidpt = t2.uuid AND
+							t3.uuidpendana = ?
+						)
+					)
+				) a
+				left join ref_provinsi on (ref_provinsi.id = substr(a.alamatref,1,2))
+				left join ref_kabupaten on (ref_kabupaten.id = substr(a.alamatref,1,4))
+				left join ref_kota on (ref_kota.id = substr(a.alamatref,1,6))
+				left join ref_kecamatan on (ref_kecamatan.id = substr(a.alamatref,1,10))
+
+				";
+		return $this->db->query($sql,$pendana)->getResultArray();
 	}
 }

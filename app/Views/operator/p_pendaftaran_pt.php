@@ -33,8 +33,9 @@
                   <table class="table table-bordered table-condensed">
                     <thead>
                       <tr class="table-info">
-                        <th>ID</th>
+                        <th>No</th>
                         <th>Nama<br>PT</th>
+                        <th>Developer</th>
                         <th>NPWP<br>PT</th>
                         <th>Penanggung<br>Jawab PT</th>
                         <th>NPWP <br>Penanggung Jawab</th>
@@ -57,6 +58,7 @@
                     <input type="hidden" class="csrf" name="<?= csrf_token() ?>" value="<?= csrf_hash() ?>" />
                         <td><?= $key+1; ?>.</td>
                         <td><?= $p['namapt']; ?></td>
+                        <td><?= $p['namadeveloper']; ?></td>
                         <td><a href="<?= base_url() ?>/download/npwp_pt/<?= $p['berkasnpwp'] ?>" target="_blank"><?= $p['npwppt'] ?></a></td>
                         <td><a href="<?= base_url() ?>/download/ktp_penanggungjawab/<?= $p['berkasktppj'] ?>" target="_blank"><?= $p['namapj'] ?></a></td>
                         <td><a href="<?= base_url() ?>/download/npwp_penanggungjawab/<?= $p['berkasnpwppj'] ?>" target="_blank"><?= $p['npwppj'] ?></a></td>

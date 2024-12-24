@@ -37,6 +37,7 @@
                   <tr class="table-info">
                     <th>No</th>
                     <th>Lihat<br>Unit</th>
+                    <th>Developer</th>
                     <th>Nama PT</th>
                     <th>Surat <br>Permohonan</th>
                     <th class="detail-column" style="display:none">DPP/DPD/Korwil</th>
@@ -69,6 +70,7 @@
                           <a href="<?= site_url('pendana/approval_unit?uuid='.$p['uuid']) ?>" class="btn btn-xs btn-info"><i class="fa fa-eye"></i></a>
                         <?php endif; ?>
                       </td>
+                      <td><?= $p['namadeveloper'] ?></td>
                       <td><?= $p['namapt'] ?></td>
                       <td><a href="<?= base_url() ?>/download/surat_permohonan/<?= $p['berkassuratpermohonan'] ?>" target="_blank">Lihat</a></td>
                       <td class="detail-column" style="display:none"><?= $p['namadpd'] ?></td>

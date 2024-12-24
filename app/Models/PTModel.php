@@ -44,7 +44,7 @@ class PTModel extends Model
     function getPengajuanPT($uuiddeveloper = null)
     {
         $builder = $this->db->table($this->table);
-        $builder->select('ref_pt.*,ref_bank.namabank,rbb.namabank as namabankescrow,ref_provinsi.namaprovinsi,ref_kabupaten.namakabupaten,ref_kota.namakota,ref_kecamatan.namakecamatan,ref_dpd.namadpd');
+        $builder->select('ref_pt.*,ref_bank.namabank,rbb.namabank as namabankescrow,ref_provinsi.namaprovinsi,ref_kabupaten.namakabupaten,ref_kota.namakota,ref_kecamatan.namakecamatan,ref_dpd.namadpd,users.nama as namadeveloper');
         $builder->join('ref_provinsi','ref_provinsi.id = substr(ref_pt.alamatref,1,2)','left');
         $builder->join('ref_kabupaten','ref_kabupaten.id = substr(ref_pt.alamatref,1,4)','left');
         $builder->join('ref_kota','ref_kota.id = substr(ref_pt.alamatref,1,6)','left');
@@ -52,14 +52,42 @@ class PTModel extends Model
         $builder->join('ref_bank','ref_bank.kodebank = ref_pt.kodebank','left');
         $builder->join('ref_bank rbb','rbb.kodebank = ref_pt.kodebankescrow','left');
         $builder->join('ref_dpd','ref_dpd.id = ref_pt.dpd','left');
+        $builder->join('users','users.uuid = ref_pt.uuiddeveloper','left');
         if($uuiddeveloper != null){
             $builder->where('uuiddeveloper',$uuiddeveloper);
         }
         if(session()->get('kdgrpuser') == "approver"){
-            $builder->where('statusvalidator', 1);
+            $builder->where('ref_pt.statusvalidator', 1);
         }
         $builder->orderBy('ref_pt.updated_at','DESC');
         return $builder->get()->getResultArray();
+    }
+
+    function getPTByPendana()
+    {
+		$pendanaModel = new PendanaModel();
+		$pendana = $pendanaModel->getUUIDPendanaByUUIDUser(session()->get('uuid'));
+		
+		$sql = "SELECT a.*,ref_provinsi.namaprovinsi,ref_kabupaten.namakabupaten,ref_kota.namakota ,ref_kecamatan.namakecamatan ,ref_bank.namabank as namabank,rbb.namabank as namabankescrow,ref_dpd.namadpd as namadpd FROM (
+                    SELECT * 
+                    FROM ref_pt t2
+                    WHERE EXISTS (
+                        SELECT 1 
+                        FROM trx_pengajuan t3
+                        WHERE t3.uuidpt = t2.uuid AND
+                        t3.uuidpendana = ?
+                    )
+				) a
+				left join ref_provinsi on (ref_provinsi.id = substr(a.alamatref,1,2))
+				left join ref_kabupaten on (ref_kabupaten.id = substr(a.alamatref,1,4))
+				left join ref_kota on (ref_kota.id = substr(a.alamatref,1,6))
+				left join ref_kecamatan on (ref_kecamatan.id = substr(a.alamatref,1,10))
+                left join ref_bank on (ref_bank.kodebank = a.kodebank)
+                left join ref_bank rbb on (rbb.kodebank = a.kodebankescrow)
+                left join ref_dpd on (ref_dpd.id = a.dpd)
+
+				";
+		return $this->db->query($sql,$pendana)->getResultArray();
     }
 
     
