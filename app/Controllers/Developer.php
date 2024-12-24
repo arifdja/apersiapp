@@ -291,7 +291,14 @@ class Developer extends BaseController
                     'ext_in' => '{field} harus berformat PDF',
                     'mime_in' => '{field} harus berformat PDF'
                 ]
-            ]
+            ],
+            'dpd' => [
+                'label' => 'DPD/DPP/Korwil',
+                'rules' => 'trim|required',
+                'errors' => [
+                    'required' => '{field} harus diisi'
+                ]
+            ],
         ];
 
         if (!$this->validate($validationRules)) {
@@ -372,6 +379,7 @@ class Developer extends BaseController
                 "berkasrekening" => $newfilenameberkasrekening,
                 "berkasrekeningescrow" => $newfilenameberkasrekeningescrow,
                 "berkasskkemenkumham" => $newfilenameberkasskkemenkumham,
+                "dpd" => $this->request->getVar('dpd'),
                 "statusvalidator" => 0,
             ];
 
@@ -415,14 +423,6 @@ class Developer extends BaseController
             $dropdownpt['pt'][$pt['uuid']] = $pt['namapt'];
         }
 
-        $model = new DPDModel();
-        $dpd = $model->findAll();
-
-        $dropdowndpd['dpd'] = ['' => 'Pilih DPD/DPP/Korwil'];
-        foreach ($dpd as $dpd) {
-            $dropdowndpd['dpd'][$dpd['id']] = $dpd['namadpd'];
-        }
-
         $model = new ProvinsiModel();
         $provinsi = $model->findAll();
 
@@ -436,7 +436,6 @@ class Developer extends BaseController
 			'breadcrumb' => ['Pengajuan','Dana'],
 			'stringmenu' => $menu, 
 			'dropdownpt' => $dropdownpt,
-			'dropdowndpd' => $dropdowndpd,
 			'dropdownprovinsi' => $dropdownprovinsi,
 			'validation' => \Config\Services::validation(), 
         ];
@@ -465,13 +464,6 @@ class Developer extends BaseController
                     'max_size' => '{field} maksimal 10 MB',
                         'ext_in' => '{field} harus berformat PDF',
                     'mime_in' => '{field} harus berformat PDF'
-                ]
-            ],
-            'dpd' => [
-                'label' => 'DPD/DPP/Korwil',
-                'rules' => 'trim|required',
-                'errors' => [
-                    'required' => '{field} harus diisi'
                 ]
             ],
             'alamatperumahanref' => [
@@ -542,7 +534,6 @@ class Developer extends BaseController
                 "berkassuratpermohonan" => $newfilenameberkassuratpermohonan,
                 "alamatperumahanref" => $this->request->getVar('alamatperumahanref'),
                 "alamatperumahaninput" => $this->request->getVar('alamatperumahaninput'),
-                "dpd" => $this->request->getVar('dpd'),
                 "berkassiteplan" => $newfilenameberkassiteplan,
                 "statusvalidator" => 0 ,
                 //daript
@@ -551,6 +542,17 @@ class Developer extends BaseController
                 "berkasktppj" => $datapt['berkasktppj'],
                 "npwppj" => $datapt['npwppj'],
                 "berkasnpwppj" => $datapt['berkasnpwppj'],
+                "penguruspt" => $datapt['penguruspt'],
+                "berkaspengurusptktp" => $datapt['berkaspengurusptktp'],
+                "berkaspengurusptnpwp" => $datapt['berkaspengurusptnpwp'],
+                "rekening" => $datapt['rekening'],
+                "kodebank" => $datapt['kodebank'],
+                "berkasrekening" => $datapt['berkasrekening'],
+                "kodebankescrow" => $datapt['kodebankescrow'],
+                "rekeningescrow" => $datapt['rekeningescrow'],
+                "berkasrekeningescrow" => $datapt['berkasrekeningescrow'],
+                "berkasskkemenkumham" => $datapt['berkasskkemenkumham'],
+                "dpd" => $datapt['dpd'],
             ];
 
             $headerpengajuan = new PengajuanModel();
@@ -594,7 +596,10 @@ class Developer extends BaseController
         }
 
         $pt = new PTModel();
-        $data = $pt->join('ref_bank','ref_bank.kodebank = ref_pt.kodebank')
+        $data = $pt->select('ref_pt.*, ref_bank.namabank, bank_escrow.namabank as namabankescrow, ref_dpd.namadpd')
+            ->join('ref_bank','ref_bank.kodebank = ref_pt.kodebank','left')
+            ->join('ref_dpd','ref_dpd.id = ref_pt.dpd','left')
+            ->join('ref_bank as bank_escrow','bank_escrow.kodebank = ref_pt.kodebankescrow','left')
             ->where('uuid', $uuid)->first();
 
         $html = '<div id="divberkas" class="form-group">
@@ -602,12 +607,18 @@ class Developer extends BaseController
                  
                     <a href="'.base_url('download/npwp_pt/'.$data['berkasnpwp']).'" class="form-control" style="text-decoration: none; background-color: #e9ecef; margin-top: 10px;">NPWP PT : '.$data['npwppt'].'</a>
                  
-                    <a href="'.base_url('download/rekening/'.$data['berkasrekening']).'" class="form-control" style="text-decoration: none; background-color: #e9ecef; margin-top: 10px;">Rekening : '.$data['rekening'].' '.$data['namabank'].'</a>
+                    <a href="'.base_url('download/rekening/'.$data['berkasrekening']).'" class="form-control" style="text-decoration: none; background-color: #e9ecef; margin-top: 10px;">Rekening Operasional : '.$data['rekening'].' '.$data['namabank'].'</a>
+
+                    <a href="'.base_url('download/rekening_escrow/'.$data['berkasrekeningescrow']).'" class="form-control" style="text-decoration: none; background-color: #e9ecef; margin-top: 10px;">Rekening Escrow : '.$data['rekeningescrow'].' '.$data['namabankescrow'].'</a>
+
+                    <a href="'.base_url('download/sk_kemenkumham/'.$data['berkasskkemenkumham']).'" class="form-control" style="text-decoration: none; background-color: #e9ecef; margin-top: 10px;">SK Kemenkumham</a>
                   
                     <a href="'.base_url('download/ktp_penanggungjawab/'.$data['berkasktppj']).'" class="form-control" style="text-decoration: none; background-color: #e9ecef; margin-top: 10px;">Penanggung Jawab : '.$data['namapj'].'</a>
                  
                     <a href="'.base_url('download/npwp_penanggungjawab/'.$data['berkasnpwppj']).'" class="form-control" style="text-decoration: none; background-color: #e9ecef; margin-top: 10px;">NPWP Penanggung Jawab : '.$data['npwppj'].'</a>
                        
+                    <a href="#" class="form-control" style="text-decoration: none; background-color: #e9ecef; margin-top: 10px;">DPD : '.$data['namadpd'].'</a>
+                    
                   </div>
                   
                   ';  
@@ -1067,14 +1078,16 @@ class Developer extends BaseController
 
     public function form_edit_unit()
     {
+        // echo "ster";exit;
         $menu = getMenu();
-        $uuid = $this->request->getGet('uuid');
-        $uuidheader = $this->request->getGet('uuidheader');
+        $uuid = $this->request->getVar('uuid');
+        $uuidheader = $this->request->getVar('uuidheader');
 
         $model = new PengajuanDetailModel();
-        $unit = $model->join('ref_bank', 'ref_bank.kodebank = trx_pengajuan_detail.bank')
-                      ->where('trx_pengajuan_detail.uuid', $uuid)
+        $unit = $model->where('trx_pengajuan_detail.uuid', $uuid)
                       ->first();
+
+        // dd($unit);
 
         if (!$unit) {
             throw new \CodeIgniter\Exceptions\PageNotFoundException('Data unit tidak ditemukan');
@@ -1675,6 +1688,13 @@ class Developer extends BaseController
                 'errors' => [
                     'required' => '{field} harus diisi'
                 ]
+            ],
+            'dpd' => [
+                'label' => 'DPD/DPP/Korwil',
+                'rules' => 'trim|required',
+                'errors' => [
+                    'required' => '{field} harus diisi'
+                ]
             ]
         ];
 
@@ -1712,6 +1732,7 @@ class Developer extends BaseController
                 "kodebank" => $this->request->getVar('bank'),
                 "kodebankescrow" => $this->request->getVar('bankescrow'),
                 "rekeningescrow" => $this->request->getVar('rekeningescrow'),
+                "dpd" => $this->request->getVar('dpd'),
                 "statusvalidator" => 0
             ];
 
@@ -1844,7 +1865,15 @@ class Developer extends BaseController
         foreach ($kecamatan as $k) {
             $dropdownkecamatan['kecamatan'][$k['id']] = $k['namakecamatan'];
         }
-        
+
+        $dpdModel = new DPDModel();
+        $dpd = $dpdModel->findAll();
+
+        $dropdowndpd['dpd'] = ['' => 'Pilih DPD/DPP/Korwil'];
+        foreach ($dpd as $d) {
+            $dropdowndpd['dpd'][$d['id']] = $d['namadpd'];
+        }
+
         $data = [
             'title' => 'Edit PT',
             'breadcrumb' => ['Developer','Edit PT'],
@@ -1854,7 +1883,8 @@ class Developer extends BaseController
             'dropdownprovinsi' => $dropdownprovinsi,
             'dropdownkabupaten' => $dropdownkabupaten,
             'dropdownkota' => $dropdownkota,
-            'dropdownkecamatan' => $dropdownkecamatan
+            'dropdownkecamatan' => $dropdownkecamatan,
+            'dropdowndpd' => $dropdowndpd
         ];
     
         return view('developer/form_edit_pt', $data);

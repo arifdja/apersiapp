@@ -63,7 +63,20 @@
 
 <div class="wrapper">
   <!-- Navbar -->
-  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+  <nav class="main-header navbar navbar-expand 
+  <?php if(session()->get('kdgrpuser') == "developer"): ?>
+  navbar-white
+  <?php elseif(session()->get('kdgrpuser') == "operator"): ?>
+  navbar-info
+  <?php elseif(session()->get('kdgrpuser') == "rumput"): ?>
+  navbar-purple
+  <?php elseif(session()->get('kdgrpuser') == "approver"): ?>
+  navbar-danger
+  <?php elseif(session()->get('kdgrpuser') == "pendana"): ?>
+  navbar-teal
+  <?php endif; ?>
+  navbar-light
+  ">
     <!-- Left navbar links -->
     <ul class="navbar-nav">
       <li class="nav-item">

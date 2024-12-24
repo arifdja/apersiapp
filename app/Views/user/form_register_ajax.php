@@ -207,321 +207,272 @@
 
 <?= $this->section('south'); ?>
 <script>
-    $(document).ready(function () {
-        // Handle form submission
-        $('#formregister').on('submit', function (e) {
-            e.preventDefault(); // Prevent the default form submission
+$(document).ready(function () {
+    // Handle form submission
+    $('#formregister').on('submit', function (e) {
+        e.preventDefault();
 
-            // Show loading indicator
-            Swal.fire({
-                title: 'Loading...',
-                text: 'Sedang memproses pendaftaran',
-                allowOutsideClick: false,
-                allowEscapeKey: false,
-                allowEnterKey: false,
-                showConfirmButton: false,
-                backdrop: true,
-                didOpen: () => {
-                    Swal.showLoading();
+        // Show loading indicator
+        Swal.fire({
+            title: 'Loading...',
+            text: 'Sedang memproses pendaftaran',
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            allowEnterKey: false,
+            showConfirmButton: false,
+            backdrop: true,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        // Create FormData object
+        var formData = new FormData(this);
+
+        // Send AJAX request
+        $.ajax({
+            url: "<?= site_url('register_ajax') ?>",
+            type: "POST",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                Swal.close();
+
+                if(response.status == 'success'){
+                    Swal.fire({
+                        icon: 'success', 
+                        title: 'Konfirmasi',
+                        text: 'Silahkan cek email anda untuk melakukan verifikasi',
+                        showConfirmButton: true,
+                        confirmButtonText: 'OK',
+                        allowOutsideClick: false
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = '<?= site_url('login') ?>';
+                        }
+                    });
                 }
-            });
-
-            // Create FormData object
-            var formData = new FormData(this);
-            
-
-            // Send AJAX request
-            $.ajax({
-                url: "<?= site_url('register_ajax') ?>", // Controller method to handle the upload
-                type: "POST",
-                data: formData,
-                contentType: false,
-                processData: false,
-                success: function (response) {
-                    // Close loading indicator
-                    Swal.close();
-
-                    // Handle success response
-                    if(response.status == 'success'){
-                      Swal.fire({
-                          icon: 'success', 
-                          title: 'Konfirmasi',
-                          text: 'Silahkan cek email anda untuk melakukan verifikasi',
-                          showConfirmButton: true,
-                          confirmButtonText: 'OK',
-                          allowOutsideClick: false
-                      }).then((result) => {
-                          if (result.isConfirmed) {
-                              window.location.href = '<?= site_url('login') ?>';
-                          }
-                      });
-                    }
-                },
-                error: function (xhr, status, error) {
-                    // Close loading indicator
-                    Swal.close();
+            },
+            error: function (xhr, status, error) {
+                clearErrors();
+                Swal.close();
+                
+                if(xhr.responseJSON.status == 'error'){
+                    const messages = xhr.responseJSON.message;
                     
-                    // Handle error response
-                    if(xhr.responseJSON.status == 'error'){
-                      if(xhr.responseJSON.message.pbru){
-                        $('#pbru').addClass('is-invalid');
-                      }
-                      if(xhr.responseJSON.message.pbru2){
-                        $('#pbru2').addClass('is-invalid');
-                      }
-                      console.log(xhr.responseJSON);
-                        if(xhr.responseJSON.message.nama){
-                        $('#nama').addClass('is-invalid');
-                        $('#spannama').html(xhr.responseJSON.message.nama);
-                      }
-                      if(xhr.responseJSON .message.email){
-                        $('#email').addClass('is-invalid');
-                        $('#spanemail').html(xhr.responseJSON.message.email);
-                      }
-                      if(xhr.responseJSON.message.telp){
-                        $('#telp').addClass('is-invalid');
-                        $('#spantelp').html(xhr.responseJSON.message.telp);
-                      }
-                      if(xhr.responseJSON.message.provinsi){
-                        $('#provinsi').addClass('is-invalid');
-                        $('#spanprovinsi').html(xhr.responseJSON.message.provinsi);
-                      }
-                      if(xhr.responseJSON.message.kabupaten){
-                        $('#kabupaten').addClass('is-invalid');
-                        $('#spankabupaten').html(xhr.responseJSON.message.kabupaten);
-                      }
-                      if(xhr.responseJSON.message.kota){
-                        $('#kota').addClass('is-invalid');
-                        $('#spankota').html(xhr.responseJSON.message.kota);
-                      }
-                      if(xhr.responseJSON.message.kecamatan){
-                        $('#kecamatan').addClass('is-invalid');
-                        $('#spankecamatan').html(xhr.responseJSON.message.kecamatan);
-                      }
-                      if(xhr.responseJSON.message.kode_pos){
-                        $('#kode_pos').addClass('is-invalid');
-                        $('#spankode_pos').html(xhr.responseJSON.message.kode_pos);
-                      }
-                      if(xhr.responseJSON.message.detail_alamat){
-                        $('#detail_alamat').addClass('is-invalid');
-                        $('#spanalamat').html(xhr.responseJSON.message.detail_alamat);
-                      }
-                      if(xhr.responseJSON.message.kta){
-                        $('#kta').addClass('is-invalid');
-                        $('#spankta').html(xhr.responseJSON.message.kta);
-                      }
-                      if(xhr.responseJSON.message.berkaskta){
-                        $('#berkaskta').addClass('is-invalid');
-                        $('#spanberkaskta').html(xhr.responseJSON.message.berkaskta);
-                      }
-                      if(xhr.responseJSON.message.pbru){
-                        $('#pbru').addClass('is-invalid');
-                        $('#spanpbru').html(xhr.responseJSON.message.pbru);
-                      }
-                      if(xhr.responseJSON.message.pbru2){
-                        $('#pbru2').addClass('is-invalid');
-                        $('#spanpbru2').html(xhr.responseJSON.message.pbru2);
-                      }
-                      if(xhr.responseJSON.message.captcha){
+                    // Handle validation errors
+                    const fields = ['pbru', 'pbru2', 'nama', 'email', 'telp', 'provinsi', 
+                                  'kabupaten', 'kota', 'kecamatan', 'kode_pos', 'detail_alamat',
+                                  'kta', 'berkaskta'];
+                                  
+                    fields.forEach(field => {
+                        if(messages[field]){
+                            $(`#${field}`).addClass('is-invalid');
+                            $(`#span${field}`).html(messages[field]);
+                        }
+                    });
+
+                    // Handle special error cases
+                    if(messages.captcha){
                         Swal.fire({
-                          icon: 'error',
-                          title: 'Error',
-                          text: 'Invalid CAPTCHA. Please try again.'
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Invalid CAPTCHA. Please try again.'
                         });
-                      }
-                      if(xhr.responseJSON.message.simpan){
+                    }
+                    
+                    if(messages.simpan){
                         Swal.fire({
-                          icon: 'error',
-                          title: 'Error',
-                          text: 'Gagal menyimpan data'
+                            icon: 'error',
+                            title: 'Error', 
+                            text: 'Gagal menyimpan data'
                         });
-                      }
                     }
                 }
-            });
+            }
         });
     });
-</script>
-<script>
-    $(document).ready(function () {
-      
 
-        // Fungsi untuk membersihkan semua input
-        $('#clear').click(function() {
-            $('#nama').val('');
-            $('#telp').val('');
-            $('#email').val('');
-            $('#pbru').val('');
-            $('#kta').val('');
-            $('#pbru2').val('');
-            $('#provinsi').val('');
-            $('#kabupaten').html('<option value="" selected disabled>Pilih Kabupaten</option>');
-            $('#kota').html('<option value="" selected disabled>Pilih Kota</option>');
-            $('#kecamatan').html('<option value="" selected disabled>Pilih Kecamatan</option>');
-            grecaptcha.reset();
+    // Clear form inputs
+    $('#clear').click(function() {
+        const fields = ['nama', 'telp', 'email', 'pbru', 'kta', 'pbru2', 'provinsi'];
+        fields.forEach(field => $(`#${field}`).val(''));
+
+        // Reset dropdowns
+        $('#kabupaten').html('<option value="" selected disabled>Pilih Kabupaten</option>');
+        $('#kota').html('<option value="" selected disabled>Pilih Kota</option>');
+        $('#kecamatan').html('<option value="" selected disabled>Pilih Kecamatan</option>');
+        
+        grecaptcha.reset();
+    });
+
+    // Store old selections
+    var oldKabupatenSelection = $('#kabupaten').val();
+    var oldKotaSelection = $('#kota').val(); 
+    var oldKecamatanSelection = $('#kecamatan').val();
+
+    // Handle province change
+    $('#provinsi').change(function () {
+        let csrfName = '<?= csrf_token() ?>';
+        let csrfHash = $('#<?= csrf_token() ?>').val();
+        let provinsiId = $(this).val();
+
+        // Reset dropdowns
+        ['kabupaten', 'kota', 'kecamatan'].forEach(field => {
+            $(`#${field}`).html('<option value="" selected disabled>Loading...</option>');
         });
 
-        var oldKabupatenSelection = $('#kabupaten').val();
-        var oldKotaSelection = $('#kota').val();
-        var oldKecamatanSelection = $('#kecamatan').val();
+        Swal.fire({
+            title: 'Mohon Tunggu',
+            html: 'Sedang memproses data...',
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            willOpen: () => {
+                Swal.showLoading()
+            },
+        });
 
-      
-        $('#provinsi').change(function () {
-          
-            let csrfName = '<?= csrf_token() ?>';
-            let csrfHash = $('#<?= csrf_token() ?>').val();
-            let provinsiId = $(this).val();
-
-            // Clear kabupaten_kota dropdown
-            $('#kabupaten').html('<option value="" selected disabled>Loading...</option>');
-            $('#kota').html('<option value="" selected disabled>Loading...</option>');
-            $('#kecamatan').html('<option value="" selected disabled>Loading...</option>');
-
-            
-            Swal.fire({
-                title: 'Mohon Tunggu',
-                html: 'Sedang memproses data...',
-                allowOutsideClick: false,
-                showConfirmButton: false,
-                willOpen: () => {
-                    Swal.showLoading()
-                },
-            });
-
-            // Fetch kabupaten/kota berdasarkan provinsi
-            $.ajax({
-                url: '<?= site_url('get_kabupaten'); ?>',
-                type: 'POST',
-                data: { provinsi_id: provinsiId, [csrfName]: csrfHash },
-                success: function (response) {
-                    let options = '<option value="" selected disabled>Pilih Kabupaten/Kota</option>';
-                    response.kabupaten.forEach(function (item) {
-                        options += `<option value="${item.id}">${item.namakabupaten}</option>`;
-                    });
-                    $('#kabupaten').html(options);
-                    $('#<?= csrf_token() ?>').val(response.csrfHash);
-                    Swal.close();
-                },
-                error: function (xhr, status, error) {
-                  $('#<?= csrf_token() ?>').val(xhr.responseJSON.csrfHash);
-                  Swal.fire({
+        // Fetch kabupaten/kota
+        $.ajax({
+            url: '<?= site_url('get_kabupaten'); ?>',
+            type: 'POST',
+            data: { provinsi_id: provinsiId, [csrfName]: csrfHash },
+            success: function (response) {
+                let options = '<option value="" selected disabled>Pilih Kabupaten/Kota</option>';
+                response.kabupaten.forEach(function (item) {
+                    options += `<option value="${item.id}">${item.namakabupaten}</option>`;
+                });
+                $('#kabupaten').html(options);
+                $('#<?= csrf_token() ?>').val(response.csrfHash);
+                Swal.close();
+            },
+            error: function (xhr) {
+                $('#<?= csrf_token() ?>').val(xhr.responseJSON.csrfHash);
+                Swal.fire({
                     icon: 'error',
                     title: 'Error!',
                     text: 'Gagal memuat data kabupaten/kota. Silakan coba lagi.'
-                  });
-                }
-            });
+                });
+            }
         });
-
-        $('#kabupaten').change(function () {
-          
-            let csrfName = '<?= csrf_token() ?>';
-            let csrfHash = $('#<?= csrf_token() ?>').val();
-            let kabupatenId = $(this).val();
-
-            // Clear kabupaten_kota dropdown
-            $('#kota').html('<option value="" selected disabled>Loading...</option>');
-            $('#kecamatan').html('<option value="" selected disabled>Loading...</option>');
-
-            
-            Swal.fire({
-                title: 'Mohon Tunggu',
-                html: 'Sedang memproses data...',
-                allowOutsideClick: false,
-                showConfirmButton: false,
-                willOpen: () => {
-                    Swal.showLoading()
-                },
-            });
-
-            // Fetch kota berdasarkan kabupaten
-            $.ajax({ 
-                url: '<?= site_url('get_kota'); ?>',
-                type: 'POST',
-                data: { kabupaten_id: kabupatenId, [csrfName]: csrfHash },
-                success: function (response) {
-                  let options = '<option value="" selected disabled>Pilih Kecamatan</option>';
-                  response.kota.forEach(function (item) {
-                    options += `<option value="${item.id}">${item.namakota}</option>`;
-                  });
-                  $('#kota').html(options);
-                  $('#<?= csrf_token() ?>').val(response.csrfHash);
-                  Swal.close();
-                },
-                error: function (xhr, status, error) {
-                  $('#<?= csrf_token() ?>').val(xhr.responseJSON.csrfHash);
-                  Swal.fire({
-                    icon: 'error',
-                    title: 'Error!',
-                    text: 'Gagal memuat data kelurahan. Silakan coba lagi.'
-                  });
-                }
-            });
-        });
-
-        
-        $('#kota').change(function () {
-
-            let csrfName = '<?= csrf_token() ?>';
-            let csrfHash = $('#<?= csrf_token() ?>').val();
-            let kotaId = $(this).val();
-
-            // Clear kabupaten_kota dropdown
-            $('#kecamatan').html('<option value="" selected disabled>Loading...</option>');
-
-            
-            Swal.fire({
-                title: 'Mohon Tunggu',
-                html: 'Sedang memproses data...',
-                allowOutsideClick: false,
-                showConfirmButton: false,
-                willOpen: () => {
-                    Swal.showLoading()
-                },
-            });
-
-            // Fetch kota berdasarkan kabupaten
-            $.ajax({ 
-                url: '<?= site_url('get_kecamatan'); ?>',
-                type: 'POST',
-                data: { kota_id: kotaId, [csrfName]: csrfHash },
-                success: function (response) {
-                  let options = '<option value="" selected disabled>Pilih Kelurahan</option>';
-                  response.kecamatan.forEach(function (item) {
-                    options += `<option value="${item.id}">${item.namakecamatan}</option>`;
-                  });
-                  $('#kecamatan').html(options);
-                  $('#<?= csrf_token() ?>').val(response.csrfHash);
-                  Swal.close();
-                },
-                error: function (xhr, status, error) {
-                  $('#<?= csrf_token() ?>').val(xhr.responseJSON.csrfHash);
-                  $('#kabupaten').val(oldKabupatenSelection);
-                  $('#kota').val(oldKotaSelection);
-                  $('#kecamatan').val(oldKecamatanSelection);
-                  Swal.fire({
-                    icon: 'error',
-                    title: 'Error!',
-                    text: 'Gagal memuat data kelurahan. Silakan coba lagi.'
-                  });
-                }
-            });
-        });
-
     });
+
+    // Handle kabupaten change  
+    $('#kabupaten').change(function () {
+        let csrfName = '<?= csrf_token() ?>';
+        let csrfHash = $('#<?= csrf_token() ?>').val();
+        let kabupatenId = $(this).val();
+
+        // Reset dropdowns
+        ['kota', 'kecamatan'].forEach(field => {
+            $(`#${field}`).html('<option value="" selected disabled>Loading...</option>');
+        });
+
+        Swal.fire({
+            title: 'Mohon Tunggu',
+            html: 'Sedang memproses data...',
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            willOpen: () => {
+                Swal.showLoading()
+            },
+        });
+
+        // Fetch kota
+        $.ajax({
+            url: '<?= site_url('get_kota'); ?>',
+            type: 'POST', 
+            data: { kabupaten_id: kabupatenId, [csrfName]: csrfHash },
+            success: function (response) {
+                let options = '<option value="" selected disabled>Pilih Kecamatan</option>';
+                response.kota.forEach(function (item) {
+                    options += `<option value="${item.id}">${item.namakota}</option>`;
+                });
+                $('#kota').html(options);
+                $('#<?= csrf_token() ?>').val(response.csrfHash);
+                Swal.close();
+            },
+            error: function (xhr) {
+                $('#<?= csrf_token() ?>').val(xhr.responseJSON.csrfHash);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'Gagal memuat data kelurahan. Silakan coba lagi.'
+                });
+            }
+        });
+    });
+
+    // Handle kota change
+    $('#kota').change(function () {
+        let csrfName = '<?= csrf_token() ?>';
+        let csrfHash = $('#<?= csrf_token() ?>').val();
+        let kotaId = $(this).val();
+
+        $('#kecamatan').html('<option value="" selected disabled>Loading...</option>');
+
+        Swal.fire({
+            title: 'Mohon Tunggu',
+            html: 'Sedang memproses data...',
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            willOpen: () => {
+                Swal.showLoading()
+            },
+        });
+
+        // Fetch kecamatan
+        $.ajax({
+            url: '<?= site_url('get_kecamatan'); ?>',
+            type: 'POST',
+            data: { kota_id: kotaId, [csrfName]: csrfHash },
+            success: function (response) {
+                let options = '<option value="" selected disabled>Pilih Kelurahan</option>';
+                response.kecamatan.forEach(function (item) {
+                    options += `<option value="${item.id}">${item.namakecamatan}</option>`;
+                });
+                $('#kecamatan').html(options);
+                $('#<?= csrf_token() ?>').val(response.csrfHash);
+                Swal.close();
+            },
+            error: function (xhr) {
+                $('#<?= csrf_token() ?>').val(xhr.responseJSON.csrfHash);
+                $('#kabupaten').val(oldKabupatenSelection);
+                $('#kota').val(oldKotaSelection);
+                $('#kecamatan').val(oldKecamatanSelection);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'Gagal memuat data kelurahan. Silakan coba lagi.'
+                });
+            }
+        });
+    });
+});
 </script>
 
 <script>
-  $(document).ready(function () {
+$(document).ready(function () {
     $('#check').click(function(){
         $(this).is(':checked') ? $('#pbru').attr('type', 'text') : $('#pbru').attr('type', 'password');
         $(this).is(':checked') ? $('#pbru2').attr('type', 'text') : $('#pbru2').attr('type', 'password');
     });
-  });
+});
 </script>
+
 <script>
 $(function () {
-  bsCustomFileInput.init();
+    bsCustomFileInput.init();
+});
+</script>
+
+<script>
+$(document).ready(function() {
+    function clearErrors() {
+        $('span[id^="span"]').text('');
+        $('.is-invalid').removeClass('is-invalid');
+    }
 });
 </script>
 <?= $this->endSection(); ?>

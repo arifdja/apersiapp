@@ -90,5 +90,3 @@ $routes->get('developer/form_edit_pt', 'Developer::form_edit_pt');
 
 $routes->get('/pendana', 'Pendana::index',['filter' => 'auth']);
 $routes->get('/pendana/list_developer', 'Pendana::list_developer',['filter' => 'auth']);
-
-

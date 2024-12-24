@@ -10,8 +10,7 @@
                         <h3 class="card-title">Edit Unit</h3>
                     </div>
                     <form id="formEditUnit">
-                    <input type="hidden" id="<?= csrf_token() ?>" name="<?= csrf_token() ?>" value="<?= csrf_hash() ?>"/>
-
+                        <input type="hidden" id="<?= csrf_token() ?>" name="<?= csrf_token() ?>" value="<?= csrf_hash() ?>"/>
                         <input type="hidden" name="uuid" value="<?= $unit['uuid'] ?>">
                         <input type="hidden" name="uuidheader" value="<?= $uuidheader ?>">
                         
@@ -22,17 +21,17 @@
                                 <div class="invalid-feedback"></div>
                                 <span id="spansertifikat" style="color: red;"></span>
                                 <div class="input-group" style="margin-top: 10px;">
-                                <div class="custom-file">
-                                    <input type="file" class="custom-file-input" name="berkassertifikat" id="berkassertifikat" accept=".pdf" disabled>
-                                    <label class="custom-file-label labelberkassertifikat" for="exampleInputFile">Unggah Sertifikat</label>
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" name="berkassertifikat" id="berkassertifikat" accept=".pdf" disabled>
+                                        <label class="custom-file-label labelberkassertifikat" for="exampleInputFile">Unggah Sertifikat</label>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="text-muted">
-                                <small class="text-muted">Biarkan kosong jika tidak ingin mengubah file</small><br>
-                                <small>Format file yang diizinkan: PDF</small>,
-                                <small>Maksimal ukuran file: 10 MB</small>
-                            </div>
-                            <span id="spanberkassertifikat" style="color: red;"></span>
+                                <div class="text-muted">
+                                    <small class="text-muted">Biarkan kosong jika tidak ingin mengubah file</small><br>
+                                    <small>Format file yang diizinkan: PDF</small>,
+                                    <small>Maksimal ukuran file: 10 MB</small>
+                                </div>
+                                <span id="spanberkassertifikat" style="color: red;"></span>
                             </div>
 
                             <div class="form-group">
@@ -57,17 +56,17 @@
                                 <div class="invalid-feedback"></div>
                                 <span id="spanpbb" style="color: red;"></span>
                                 <div class="input-group" style="margin-top: 10px;">
-                                <div class="custom-file">
-                                    <input type="file" class="custom-file-input" name="berkaspbb" id="berkaspbb" accept=".pdf">
-                                    <label class="custom-file-label labelberkaspbb" for="exampleInputFile">Unggah PBB</label>
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" name="berkaspbb" id="berkaspbb" accept=".pdf">
+                                        <label class="custom-file-label labelberkaspbb" for="exampleInputFile">Unggah PBB tahun terakhir</label>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="text-muted">
-                                <small class="text-muted">Biarkan kosong jika tidak ingin mengubah file</small><br>
-                                <small>Format file yang diizinkan: PDF</small>,
-                                <small>Maksimal ukuran file: 10 MB</small>
-                            </div>
-                            <span id="spanberkaspbb" style="color: red;"></span>
+                                <div class="text-muted">
+                                    <small class="text-muted">Biarkan kosong jika tidak ingin mengubah file</small><br>
+                                    <small>Format file yang diizinkan: PDF</small>,
+                                    <small>Maksimal ukuran file: 10 MB</small>
+                                </div>
+                                <span id="spanberkaspbb" style="color: red;"></span>
                             </div>
 
                             <div class="form-group">
@@ -82,45 +81,59 @@
                                 <div class="invalid-feedback"></div>
                             </div>
 
+                            <div class="form-group">
+                                <label for="provinsi">Provinsi</label>  
+                                <?= create_dropdown('provinsi', $dropdownprovinsi['provinsi'], $unit['provinsi'], ['class' => 'form-control', 'id' => 'provinsi','required' => 'required']); ?>
+                                <span id="spanprovinsi" style="color: red;"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="kabupaten">Kabupaten/Kota</label>
+                                <select id="kabupaten" name="kabupaten" class="form-control" required>
+                                    <?php foreach($dropdownkabupaten['kabupaten'] as $key => $value): ?>
+                                        <option value="<?= $key ?>" <?= ($key == $unit['kabupaten']) ? 'selected' : '' ?>><?= $value ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                                <span id="spankabupaten" style="color: red;"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="kota">Kecamatan</label>
+                                <select id="kota" name="kota" class="form-control" required>
+                                    <?php foreach($dropdownkota['kota'] as $key => $value): ?>
+                                        <option value="<?= $key ?>" <?= ($key == $unit['kota']) ? 'selected' : '' ?>><?= $value ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                                <span id="spankota" style="color: red;"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="kecamatan">Kelurahan</label>
+                                <select id="kecamatan" name="lokasiref" class="form-control" required>
+                                    <?php foreach($dropdownkecamatan['kecamatan'] as $key => $value): ?>
+                                        <option value="<?= $key ?>" <?= ($key == $unit['kecamatan']) ? 'selected' : '' ?>><?= $value ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="detail_alamat">Detail Alamat</label>
+                                <textarea id="detail_alamat" name="detail_alamat" class="form-control" rows="3" placeholder="Masukkan detail alamat seperti nama jalan, nomor rumah, RT/RW" required><?= $unit['alamatinput'] ?></textarea>
+                                <span id="spanalamat" style="color: red;"></span>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card card-info">
+                        <div class="card-body">
+
+                        
                             
-                            <div class="form-group">
-                            <label for="provinsi">Provinsi</label>  
-                            <?= create_dropdown('provinsi', $dropdownprovinsi['provinsi'], $unit['provinsi'], ['class' => 'form-control', 'id' => 'provinsi','required' => 'required']); ?>
-                            <span id="spanprovinsi" style="color: red;"></span>
-                            </div>
-                            <div class="form-group">
-                            <label for="kabupaten">Kabupaten/Kota</label>
-                            <select id="kabupaten" name="kabupaten" class="form-control" required>
-                                <?php foreach($dropdownkabupaten['kabupaten'] as $key => $value): ?>
-                                    <option value="<?= $key ?>" <?= ($key == $unit['kabupaten']) ? 'selected' : '' ?>><?= $value ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                            <span id="spankabupaten" style="color: red;"></span>
-                            </div>
-                            <div class="form-group">
-                            <label for="kota">Kecamatan</label>
-                            <select id="kota" name="kota" class="form-control" required>
-                                <?php foreach($dropdownkota['kota'] as $key => $value): ?>
-                                    <option value="<?= $key ?>" <?= ($key == $unit['kota']) ? 'selected' : '' ?>><?= $value ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                            <span id="spankota" style="color: red;"></span>
-                            </div>
-                            <div class="form-group">
-                            <label for="kecamatan">Kelurahan</label>
-                            <select id="kecamatan" name="lokasiref" class="form-control" required>
-                                <?php foreach($dropdownkecamatan['kecamatan'] as $key => $value): ?>
-                                    <option value="<?= $key ?>" <?= ($key == $unit['kecamatan']) ? 'selected' : '' ?>><?= $value ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                            </div>
-                            <div class="form-group">
-                            <label for="detail_alamat">Detail Alamat</label>
-                            <textarea id="detail_alamat" name="detail_alamat" class="form-control" rows="3" placeholder="Masukkan detail alamat seperti nama jalan, nomor rumah, RT/RW" required><?= $unit['alamatinput'] ?></textarea>
-                            <span id="spanalamat" style="color: red;"></span>
-                            </div>
-                            
-                            <div class="form-group">
+                        <div class="form-group">
                                 <label for="sp3k">Dokumen SP3K</label>
                                 <input type="text" name="sp3k" class="form-control" id="sp3k" placeholder="Nomor Dokumen SP3K" value="<?= $unit['nomordokumensp3k'] ?>" disabled>
                                 <div class="invalid-feedback"></div>
@@ -131,7 +144,7 @@
                                 </div>
                                 <div class="input-group" style="margin-top: 10px;">
                                     <div class="custom-file">
-                                        <input type="file"disabled class="custom-file-input" name="berkassp3k" id="berkassp3k" accept=".pdf">
+                                        <input type="file" disabled class="custom-file-input" name="berkassp3k" id="berkassp3k" accept=".pdf">
                                         <label class="custom-file-label labelberkassp3k" for="exampleInputFile">Unggah Dokumen SP3K</label>
                                     </div>
                                 </div>
@@ -143,17 +156,6 @@
                                 <span id="spanberkassp3k" style="color: red;"></span>
                             </div>
 
-                            
-
-
-
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="card card-info">
-                        <div class="card-body">
 
                             <div class="form-group">
                                 <label>Nama Debitur</label>
@@ -167,71 +169,66 @@
                                     </div>
                                 </div>
                                 <div class="text-muted">
-                                <small class="text-muted">Biarkan kosong jika tidak ingin mengubah file</small><br>
+                                    <small class="text-muted">Biarkan kosong jika tidak ingin mengubah file</small><br>
                                     <small>Format file yang diizinkan: PDF</small>,
                                     <small>Maksimal ukuran file: 10 MB</small>
                                 </div>
                                 <span id="spanberkasktpdebitur" style="color: red;"></span>
                             </div>
 
-                                
-                        <div class="form-group">
-                            <label for="pinjaman_kpl">Pinjaman KPL</label>
-                            <input type="number" name="pinjaman_kpl" class="form-control" id="pinjaman_kpl" placeholder="Total Pinjaman KPL" value="<?= $unit['pinjamankpl'] ?>" >
-                            <span id="spanpinjaman_kpl" style="color: red;"></span>
-                            <div class="input-group" style="margin-top: 10px;">
-                                <div class="custom-file">
-                                    <input type="file" class="custom-file-input" name="berkaspinjaman_kpl" id="berkaspinjaman_kpl" value="<?= $unit['berkaspinjamankpl'] ?>" accept=".pdf">
-                                    <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                            <div class="form-group">
+                                <label for="pinjaman_kpl">Pinjaman KPL</label>
+                                <input type="number" name="pinjaman_kpl" class="form-control" id="pinjaman_kpl" placeholder="Total Pinjaman KPL" value="<?= $unit['pinjamankpl'] ?>">
+                                <span id="spanpinjaman_kpl" style="color: red;"></span>
+                                <div class="input-group" style="margin-top: 10px;">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" name="berkaspinjaman_kpl" id="berkaspinjaman_kpl" value="<?= $unit['berkaspinjamankpl'] ?>" accept=".pdf">
+                                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="text-muted">
-                            <small class="text-muted">Biarkan kosong jika tidak ingin mengubah file</small><br>
-                                <small>Format file yang diizinkan: PDF</small>,
-                                <small>Maksimal ukuran file: 10 MB</small>
-                            </div>
-                            <span id="spanberkaspinjaman_kpl" style="color: red;"></span>
-                        </div>
-                        <div class="form-group">
-                            <label for="pinjaman_kyg">Pinjaman KYG</label>
-                            <input type="number" name="pinjaman_kyg" class="form-control" id="pinjaman_kyg" placeholder="Total Pinjaman KYG" value="<?= $unit['pinjamankyg'] ?>" >
-                            <span id="spanpinjaman_kyg" style="color: red;"></span>
-                            <div class="input-group" style="margin-top: 10px;">
-                                <div class="custom-file">
-                                    <input type="file" class="custom-file-input" name="berkaspinjaman_kyg" id="berkaspinjaman_kyg" value="<?= $unit['berkaspinjamankyg'] ?>" accept=".pdf">
-                                    <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                                <div class="text-muted">
+                                    <small class="text-muted">Biarkan kosong jika tidak ingin mengubah file</small><br>
+                                    <small>Format file yang diizinkan: PDF</small>,
+                                    <small>Maksimal ukuran file: 10 MB</small>
                                 </div>
+                                <span id="spanberkaspinjaman_kpl" style="color: red;"></span>
                             </div>
-                            <div class="text-muted">
-                            <small class="text-muted">Biarkan kosong jika tidak ingin mengubah file</small><br>
-                                <small>Format file yang diizinkan: PDF</small>,
-                                <small>Maksimal ukuran file: 10 MB</small>
-                            </div>
-                            <span id="spanberkaspinjaman_kyg" style="color: red;"></span>
-                        </div>
-                        <div class="form-group">
-                            <label for="pinjaman_lain">Pinjaman Lain</label>
-                            <input type="number" name="pinjaman_lain" class="form-control" id="pinjaman_lain" placeholder="Total Pinjaman Lain" value="<?= $unit['pinjamanlain'] ?>" >
-                            <span id="spanpinjaman_lain" style="color: red;"></span>
-                            <div class="input-group" style="margin-top: 10px;">
-                                <div class="custom-file">
-                                    <input type="file" class="custom-file-input" name="berkaspinjaman_lain" id="berkaspinjaman_lain"<?= $unit['berkaspinjamanlain'] ?> accept=".pdf">
-                                    <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+
+                            <div class="form-group">
+                                <label for="pinjaman_kyg">Pinjaman KYG</label>
+                                <input type="number" name="pinjaman_kyg" class="form-control" id="pinjaman_kyg" placeholder="Total Pinjaman KYG" value="<?= $unit['pinjamankyg'] ?>">
+                                <span id="spanpinjaman_kyg" style="color: red;"></span>
+                                <div class="input-group" style="margin-top: 10px;">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" name="berkaspinjaman_kyg" id="berkaspinjaman_kyg" value="<?= $unit['berkaspinjamankyg'] ?>" accept=".pdf">
+                                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                                    </div>
                                 </div>
+                                <div class="text-muted">
+                                    <small class="text-muted">Biarkan kosong jika tidak ingin mengubah file</small><br>
+                                    <small>Format file yang diizinkan: PDF</small>,
+                                    <small>Maksimal ukuran file: 10 MB</small>
+                                </div>
+                                <span id="spanberkaspinjaman_kyg" style="color: red;"></span>
                             </div>
-                            <div class="text-muted">
-                                <small class="text-muted">Biarkan kosong jika tidak ingin mengubah file</small><br>
-                                <small>Format file yang diizinkan: PDF</small>,
-                                <small>Maksimal ukuran file: 10 MB</small>
+
+                            <div class="form-group">
+                                <label for="pinjaman_lain">Pinjaman Lain</label>
+                                <input type="number" name="pinjaman_lain" class="form-control" id="pinjaman_lain" placeholder="Total Pinjaman Lain" value="<?= $unit['pinjamanlain'] ?>">
+                                <span id="spanpinjaman_lain" style="color: red;"></span>
+                                <div class="input-group" style="margin-top: 10px;">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" name="berkaspinjaman_lain" id="berkaspinjaman_lain" value="<?= $unit['berkaspinjamanlain'] ?>" accept=".pdf">
+                                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                                    </div>
+                                </div>
+                                <div class="text-muted">
+                                    <small class="text-muted">Biarkan kosong jika tidak ingin mengubah file</small><br>
+                                    <small>Format file yang diizinkan: PDF</small>,
+                                    <small>Maksimal ukuran file: 10 MB</small>
+                                </div>
+                                <span id="spanberkaspinjaman_lain" style="color: red;"></span>
                             </div>
-                            <span id="spanberkaspinjaman_lain" style="color: red;"></span>
-                        </div>
-
-
-
-
-
-
                         </div>
 
                         <div class="card-footer">
@@ -256,7 +253,7 @@ $(document).ready(function() {
         
         $.ajax({
             url: "<?= site_url('developer/edit_unit_ajax') ?>",
-            type: "POST",
+            type: "POST", 
             data: formData,
             contentType: false,
             processData: false,
@@ -274,6 +271,7 @@ $(document).ready(function() {
                 }
             },
             error: function(xhr, status, error) {
+                clearErrors();
                 if(xhr.responseJSON.status == 'error') {
                     // Reset all invalid classes
                     $('.form-control').removeClass('is-invalid');
@@ -292,163 +290,152 @@ $(document).ready(function() {
 </script>
 
 <script>
+$(document).ready(function () {
+    $('#provinsi').change(function () {
+        let csrfName = '<?= csrf_token() ?>';
+        let csrfHash = $('#<?= csrf_token() ?>').val();
+        let provinsiId = $(this).val();
 
-    $(document).ready(function () {
-      
-        $('#provinsi').change(function () {
+        // Clear kabupaten_kota dropdown
+        $('#kabupaten').html('<option value="" selected disabled>Loading...</option>');
+        $('#kota').html('<option value="" selected disabled>Loading...</option>');
+        $('#kecamatan').html('<option value="" selected disabled>Loading...</option>');
+        
+        // Tampilkan loading spinner
+        Swal.fire({
+            title: 'Mohon Tunggu',
+            html: 'Sedang memproses data...',
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            willOpen: () => {
+                Swal.showLoading()
+            },
+        });
 
-            let csrfName = '<?= csrf_token() ?>';
-            let csrfHash = $('#<?= csrf_token() ?>').val();
-            let provinsiId = $(this).val();
-
-            // Clear kabupaten_kota dropdown
-            $('#kabupaten').html('<option value="" selected disabled>Loading...</option>');
-            $('#kota').html('<option value="" selected disabled>Loading...</option>');
-            $('#kecamatan').html('<option value="" selected disabled>Loading...</option>');
-
-            
-            // Tampilkan loading spinner
-            Swal.fire({
-              title: 'Mohon Tunggu',
-              html: 'Sedang memproses data...',
-              allowOutsideClick: false,
-              showConfirmButton: false,
-              willOpen: () => {
-                  Swal.showLoading()
-              },
-            });
-
-            // Fetch kabupaten/kota berdasarkan provinsi
-            $.ajax({
-                url: '<?= site_url('get_kabupaten'); ?>',
-                type: 'POST',
-                data: { provinsi_id: provinsiId, [csrfName]: csrfHash },
-                success: function (response) {
-                    let options = '<option value="" selected disabled>Pilih Kabupaten/Kota</option>';
-                    response.kabupaten.forEach(function (item) {
-                        options += `<option value="${item.id}">${item.namakabupaten}</option>`;
-                    });
-                    $('#kabupaten').html(options);
-                    $('#<?= csrf_token() ?>').val(response.csrfHash);
-                    Swal.fire({
-                      icon: 'success',
-                      title: 'Berhasil!',
-                      text: 'Berhasil memuat data kabupaten/kota. Silakan pilih kabupaten/kota.'
-                    });
-                },
-                error: function () {
-                  Swal.fire({
+        // Fetch kabupaten/kota berdasarkan provinsi
+        $.ajax({
+            url: '<?= site_url('get_kabupaten'); ?>',
+            type: 'POST',
+            data: { provinsi_id: provinsiId, [csrfName]: csrfHash },
+            success: function (response) {
+                let options = '<option value="" selected disabled>Pilih Kabupaten/Kota</option>';
+                response.kabupaten.forEach(function (item) {
+                    options += `<option value="${item.id}">${item.namakabupaten}</option>`;
+                });
+                $('#kabupaten').html(options);
+                $('#<?= csrf_token() ?>').val(response.csrfHash);
+                Swal.close();
+            },
+            error: function () {
+                Swal.fire({
                     icon: 'error',
                     title: 'Error!',
                     text: 'Gagal memuat data kabupaten. Silakan coba lagi.'
-                  });
-                }
-            });
+                });
+            }
+        });
+    });
+
+    $('#kabupaten').change(function () {
+        let csrfName = '<?= csrf_token() ?>';
+        let csrfHash = $('#<?= csrf_token() ?>').val();
+        let kabupatenId = $(this).val();
+
+        // Clear kabupaten_kota dropdown
+        $('#kota').html('<option value="" selected disabled>Loading...</option>');
+        $('#kecamatan').html('<option value="" selected disabled>Loading...</option>');
+        
+        // Tampilkan loading spinner
+        Swal.fire({
+            title: 'Mohon Tunggu',
+            html: 'Sedang memproses data...',
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            willOpen: () => {
+                Swal.showLoading()
+            },
         });
 
-        $('#kabupaten').change(function () {
-          
-            let csrfName = '<?= csrf_token() ?>';
-            let csrfHash = $('#<?= csrf_token() ?>').val();
-            let kabupatenId = $(this).val();
-
-            // Clear kabupaten_kota dropdown
-            $('#kota').html('<option value="" selected disabled>Loading...</option>');
-            $('#kecamatan').html('<option value="" selected disabled>Loading...</option>');
-
-            
-            // Tampilkan loading spinner
-            Swal.fire({
-              title: 'Mohon Tunggu',
-              html: 'Sedang memproses data...',
-              allowOutsideClick: false,
-              showConfirmButton: false,
-              willOpen: () => {
-                  Swal.showLoading()
-              },
-            });
-
-            // Fetch kota berdasarkan kabupaten
-            $.ajax({ 
-                url: '<?= site_url('get_kota'); ?>',
-                type: 'POST',
-                data: { kabupaten_id: kabupatenId, [csrfName]: csrfHash },
-                success: function (response) {
-                  let options = '<option value="" selected disabled>Pilih Kecamatan</option>';
-                  response.kota.forEach(function (item) {
+        // Fetch kota berdasarkan kabupaten
+        $.ajax({ 
+            url: '<?= site_url('get_kota'); ?>',
+            type: 'POST',
+            data: { kabupaten_id: kabupatenId, [csrfName]: csrfHash },
+            success: function (response) {
+                let options = '<option value="" selected disabled>Pilih Kecamatan</option>';
+                response.kota.forEach(function (item) {
                     options += `<option value="${item.id}">${item.namakota}</option>`;
-                  });
-                  $('#kota').html(options);
-                  $('#<?= csrf_token() ?>').val(response.csrfHash);
-                    Swal.fire({
-                      icon: 'success',
-                      title: 'Berhasil!',
-                      text: 'Berhasil memuat data kecamatan. Silakan pilih kecamatan.'
-                    });
-                 
-                },
-                error: function () {
-                  Swal.fire({
+                });
+                $('#kota').html(options);
+                $('#<?= csrf_token() ?>').val(response.csrfHash);
+                Swal.close();
+            },
+            error: function () {
+                Swal.fire({
                     icon: 'error',
                     title: 'Error!',
                     text: 'Gagal memuat data kecamatan. Silakan coba lagi.'
-                  });
-                }
-            });
+                });
+            }
         });
+    });
+    
+    $('#kota').change(function () {
+        let csrfName = '<?= csrf_token() ?>';
+        let csrfHash = $('#<?= csrf_token() ?>').val();
+        let kotaId = $(this).val();
+
+        // Clear kabupaten_kota dropdown
+        $('#kecamatan').html('<option value="" selected disabled>Loading...</option>');
         
-        $('#kota').change(function () {
+        // Tampilkan loading spinner
+        Swal.fire({
+            title: 'Mohon Tunggu',
+            html: 'Sedang memproses data...',
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            willOpen: () => {
+                Swal.showLoading()
+            },
+        });
 
-            let csrfName = '<?= csrf_token() ?>';
-            let csrfHash = $('#<?= csrf_token() ?>').val();
-            let kotaId = $(this).val();
-
-            // Clear kabupaten_kota dropdown
-            $('#kecamatan').html('<option value="" selected disabled>Loading...</option>');
-
-            
-            // Tampilkan loading spinner
-            Swal.fire({
-              title: 'Mohon Tunggu',
-              html: 'Sedang memproses data...',
-              allowOutsideClick: false,
-              showConfirmButton: false,
-              willOpen: () => {
-                  Swal.showLoading()
-              },
-            });
-
-            // Fetch kota berdasarkan kabupaten
-            $.ajax({ 
-                url: '<?= site_url('get_kecamatan'); ?>',
-                type: 'POST',
-                data: { kota_id: kotaId, [csrfName]: csrfHash },
-                success: function (response) {
-                  let options = '<option value="" selected disabled>Pilih Kelurahan</option>';
-                  response.kecamatan.forEach(function (item) {
+        // Fetch kota berdasarkan kabupaten
+        $.ajax({ 
+            url: '<?= site_url('get_kecamatan'); ?>',
+            type: 'POST',
+            data: { kota_id: kotaId, [csrfName]: csrfHash },
+            success: function (response) {
+                let options = '<option value="" selected disabled>Pilih Kelurahan</option>';
+                response.kecamatan.forEach(function (item) {
                     options += `<option value="${item.id}">${item.namakecamatan}</option>`;
-                  });
-                  $('#kecamatan').html(options);
-                  $('#<?= csrf_token() ?>').val(response.csrfHash);
-                    Swal.fire({
-                      icon: 'success',
-                      title: 'Berhasil!',
-                      text: 'Berhasil memuat data kelurahan. Silakan pilih kelurahan.'
-                    });
-                },
-                error: function () {
-                  $('#kabupaten').val(oldKabupatenSelection);
-                  $('#kota').val(oldKotaSelection);
-                  $('#kecamatan').val(oldKecamatanSelection);
-                  Swal.fire({
+                });
+                $('#kecamatan').html(options);
+                $('#<?= csrf_token() ?>').val(response.csrfHash);
+                Swal.close();
+            },
+            error: function () {
+                $('#kabupaten').val(oldKabupatenSelection);
+                $('#kota').val(oldKotaSelection);
+                $('#kecamatan').val(oldKecamatanSelection);
+                Swal.fire({
                     icon: 'error',
                     title: 'Error!',
                     text: 'Gagal memuat data kelurahan. Silakan coba lagi.'
-                  });
-                }
-            });
+                });
+            }
         });
-
     });
+});
 </script>
-<?= $this->endSection(); ?> 
+<script>
+$(document).ready(function() {
+  function clearErrors() {
+    // Menghapus semua pesan error pada span
+    $('span[id^="span"]').text('');
+    
+    // Menghapus semua class is-invalid
+    $('.is-invalid').removeClass('is-invalid');
+  }
+});
+</script>
+<?= $this->endSection(); ?>

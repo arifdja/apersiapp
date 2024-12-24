@@ -83,7 +83,6 @@
                             </div>
                         </div>
 
-                        
                         <div class="form-group">
                           <label for="provinsi">Provinsi</label>  
                           <?= create_dropdown('provinsi', $dropdownprovinsi['provinsi'], old('provinsi'), ['class' => 'form-control', 'id' => 'provinsi','required' => 'required']); ?>
@@ -114,36 +113,6 @@
                           <textarea id="detail_alamat" name="detail_alamat" class="form-control" rows="3" placeholder="Masukkan detail alamat seperti nama jalan, nomor rumah, RT/RW" required><?= old('detail_alamat') ?></textarea>
                           <span id="spanalamat" style="color: red;"></span>
                         </div>
-                       
-
-                        <div class="form-group">
-                            <label for="sp3k">Dokumen SP3K</label>
-                            <input type="text" name="sp3k" class="form-control" id="sp3k" placeholder="Nomor Dokumen SP3K" required>
-                            <span id="spansp3k" style="color: red;"></span>
-                            <div class="input-group" style="margin-top: 10px;">
-                                <input type="date" name="tanggalsp3k" class="form-control" id="tanggalsp3k" required>
-                                
-                            </div>
-                            
-                            <div class="text-muted">
-                                  <small>Diisi tanggal SP3K</small>
-                              </div>
-                            <div class="input-group" style="margin-top: 10px;">
-                                <div class="custom-file">
-                                    <input type="file" class="custom-file-input" name="berkassp3k" id="berkassp3k" accept=".pdf" required>
-                                    <label class="custom-file-label labelberkassp3k" for="exampleInputFile">Unggah Dokumen SP3K</label>
-                                </div>
-                            </div>
-                            <div class="text-muted">
-                                <small>Format file yang diizinkan: PDF</small>,
-                                <small>Maksimal ukuran file: 10 MB</small>
-                            </div>
-                            <span id="spanberkassp3k" style="color: red;"></span>
-                        </div>
-
-                        
-
-                     
 
                     </div>
                 </div>
@@ -152,6 +121,29 @@
             <div class="col-md-6">
                 <div class="card card-info">
                     <div class="card-body">
+
+                    <div class="form-group">
+                          <label for="sp3k">Dokumen SP3K</label>
+                          <input type="text" name="sp3k" class="form-control" id="sp3k" placeholder="Nomor Dokumen SP3K" required>
+                          <span id="spansp3k" style="color: red;"></span>
+                          <div class="input-group" style="margin-top: 10px;">
+                              <input type="date" name="tanggalsp3k" class="form-control" id="tanggalsp3k" required>
+                          </div>
+                          <div class="text-muted">
+                              <small>Diisi tanggal SP3K</small>
+                          </div>
+                          <div class="input-group" style="margin-top: 10px;">
+                              <div class="custom-file">
+                                  <input type="file" class="custom-file-input" name="berkassp3k" id="berkassp3k" accept=".pdf" required>
+                                  <label class="custom-file-label labelberkassp3k" for="exampleInputFile">Unggah Dokumen SP3K</label>
+                              </div>
+                          </div>
+                          <div class="text-muted">
+                              <small>Format file yang diizinkan: PDF</small>,
+                              <small>Maksimal ukuran file: 10 MB</small>
+                          </div>
+                          <span id="spanberkassp3k" style="color: red;"></span>
+                      </div>
 
                       <div class="form-group">
                               <label for="debitur">Nama Debitur</label>
@@ -170,7 +162,6 @@
                               <span id="spanberkasktpdebitur" style="color: red;"></span>
                           </div>
 
-                      
                       <div class="form-group">
                         <label for="pinjaman_kpl">Pinjaman KPL</label>
                         <input type="number" name="pinjaman_kpl" class="form-control" id="pinjaman_kpl" placeholder="Total Pinjaman KPL">
@@ -237,7 +228,6 @@
     </div>
 </section>
     
-  
 <?= $this->endSection(); ?>
 
 <?= $this->section('south'); ?>
@@ -250,7 +240,6 @@
 
             // Create FormData object
             var formData = new FormData(this);
-            
 
             if(($('#pinjaman_kpl').val() == '' && $('#berkaspinjaman_kpl').val() != '') || ($('#pinjaman_kyg').val() == '' && $('#berkaspinjaman_kyg').val() != '') || ($('#pinjaman_lain').val() == '' && $('#berkaspinjaman_lain').val() != '')){
               Swal.fire({
@@ -363,6 +352,7 @@
                         text: 'Gagal menyimpan data'
                       });
                     $('#<?= csrf_token() ?>').val(xhr.responseJSON.csrfHash);
+                    clearErrors();
                     // Handle error response
                     if(xhr.responseJSON.status == 'error'){
                       if(xhr.responseJSON.message.sertifikat){
@@ -499,11 +489,7 @@
                     });
                     $('#kabupaten').html(options);
                     $('#<?= csrf_token() ?>').val(response.csrfHash);
-                    Swal.fire({
-                      icon: 'success',
-                      title: 'Berhasil!',
-                      text: 'Berhasil memuat data kabupaten/kota. Silakan pilih kabupaten/kota.'
-                    });
+                    Swal.close();
                 },
                 error: function () {
                   Swal.fire({
@@ -525,7 +511,6 @@
             $('#kota').html('<option value="" selected disabled>Loading...</option>');
             $('#kecamatan').html('<option value="" selected disabled>Loading...</option>');
 
-            
             // Tampilkan loading spinner
             Swal.fire({
               title: 'Mohon Tunggu',
@@ -549,11 +534,7 @@
                   });
                   $('#kota').html(options);
                   $('#<?= csrf_token() ?>').val(response.csrfHash);
-                    Swal.fire({
-                      icon: 'success',
-                      title: 'Berhasil!',
-                      text: 'Berhasil memuat data kecamatan. Silakan pilih kecamatan.'
-                    });
+                    Swal.close();
                  
                 },
                 error: function () {
@@ -575,7 +556,6 @@
             // Clear kabupaten_kota dropdown
             $('#kecamatan').html('<option value="" selected disabled>Loading...</option>');
 
-            
             // Tampilkan loading spinner
             Swal.fire({
               title: 'Mohon Tunggu',
@@ -599,11 +579,7 @@
                   });
                   $('#kecamatan').html(options);
                   $('#<?= csrf_token() ?>').val(response.csrfHash);
-                    Swal.fire({
-                      icon: 'success',
-                      title: 'Berhasil!',
-                      text: 'Berhasil memuat data kelurahan. Silakan pilih kelurahan.'
-                    });
+                    Swal.close();
                 },
                 error: function () {
                   Swal.fire({
@@ -620,6 +596,17 @@
 <script>
 $(function () {
   bsCustomFileInput.init();
+});
+</script>
+<script>
+$(document).ready(function() {
+  function clearErrors() {
+    // Menghapus semua pesan error pada span
+    $('span[id^="span"]').text('');
+    
+    // Menghapus semua class is-invalid
+    $('.is-invalid').removeClass('is-invalid');
+  }
 });
 </script>
 <?= $this->endSection(); ?>

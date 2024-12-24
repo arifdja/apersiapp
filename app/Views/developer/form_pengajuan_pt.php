@@ -8,25 +8,26 @@
 <?= $this->section('content'); ?>
 
 <section class="content">
-<div class="container-fluid">
-  <div class="row">
-  <div class="col-md-6">
-  <div class="card card-info">
-        
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card card-info">
           <div class="card-body">
+            <?= form_open_multipart('developer/pengajuan_pt', ['id' => 'formpengajuanpt', 'class' => 'form-horizontal']); ?>
+            <input type="hidden" id="<?= csrf_token() ?>" name="<?= csrf_token() ?>" value="<?= csrf_hash() ?>"/>
             
-          <?= form_open_multipart('developer/pengajuan_pt',['id' => 'formpengajuanpt', 'class' => 'form-horizontal']); ?>
-          <input type="hidden" id="<?= csrf_token() ?>" name="<?= csrf_token() ?>" value="<?= csrf_hash() ?>"/>
-          <div class="form-group">
+            <div class="form-group">
               <label for="nama_pt">Nama PT</label>
               <input type="text" name="nama_pt" required class="form-control" id="nama_pt" placeholder="Nama PT">
               <span id="spannama_pt" style="color: red;"></span>
             </div>
+
             <div class="form-group">
               <label for="provinsi">Provinsi</label>  
-              <?= create_dropdown('provinsi', $dropdownprovinsi['provinsi'], old('provinsi'), ['class' => 'form-control', 'id' => 'provinsi','required' => 'required']); ?>
+              <?= create_dropdown('provinsi', $dropdownprovinsi['provinsi'], old('provinsi'), ['class' => 'form-control', 'id' => 'provinsi', 'required' => 'required']); ?>
               <span id="spanprovinsi" style="color: red;"></span>
             </div>
+
             <div class="form-group">
               <label for="kabupaten">Kabupaten/Kota</label>
               <select id="kabupaten" name="kabupaten" class="form-control" required>
@@ -34,6 +35,7 @@
               </select>
               <span id="spankabupaten" style="color: red;"></span>
             </div>
+
             <div class="form-group">
               <label for="kota">Kecamatan</label>
               <select id="kota" name="kota" class="form-control" required>
@@ -41,6 +43,7 @@
               </select>
               <span id="spankota" style="color: red;"></span>
             </div>
+
             <div class="form-group">
               <label for="kecamatan">Kelurahan</label>
               <select id="lokasiref" name="lokasiref" class="form-control" required>
@@ -48,20 +51,22 @@
               </select>
               <span id="spanlokasiref" style="color: red;"></span>
             </div>
+
             <div class="form-group">
               <label for="detail_alamat">Detail Alamat</label>
               <textarea id="detail_alamat" name="detail_alamat" class="form-control" rows="3" placeholder="Masukkan detail alamat seperti nama jalan, nomor rumah, RT/RW" required><?= old('detail_alamat') ?></textarea>
               <span id="spanalamat" style="color: red;"></span>
             </div>
+
             <div class="form-group">
               <label for="npwp_pt">NPWP PT</label>
-              <input type="text" name="npwp_pt" required class="form-control" id="npwp_pt" placeholder="Isi Nomor NPWP PT" value="<?= old('npwp_pt') ?>">
+              <input type="number" name="npwp_pt" required class="form-control" id="npwp_pt" placeholder="Isi Nomor NPWP PT" value="<?= old('npwp_pt') ?>">
               <span id="spannpwp_pt" style="color: red;"></span>
-              <div class="input-group" style="margin-top: 10px;">
-                  <div class="custom-file">
-                        <input type="file" class="custom-file-input" name="berkasnpwppt" id="berkasnpwppt" accept=".pdf" required>
-                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-                  </div>
+              <div class="input-group mt-2">
+                <div class="custom-file">
+                  <input type="file" class="custom-file-input" name="berkasnpwppt" id="berkasnpwppt" accept=".pdf" required>
+                  <label class="custom-file-label" for="berkasnpwppt">Choose file</label>
+                </div>
               </div>
               <div class="text-muted">
                     <small>Format file yang diizinkan: PDF</small>,
@@ -69,72 +74,68 @@
               </div>
               <span id="spanberkasnpwppt" style="color: red;"></span>
             </div>
+
             <div class="form-group">
               <label for="penanggung_jawab_pt">Penanggung Jawab PT</label>
               <input type="text" name="penanggung_jawab_pt" required class="form-control" id="penanggung_jawab_pt" placeholder="Nama Penanggung Jawab PT">
               <span id="spanpenanggung_jawab_pt" style="color: red;"></span>
             </div>
-          <div class="form-group">
+
+            <div class="form-group">
               <label for="ktp_penanggung_jawab">KTP Penanggung Jawab</label>
-              <input type="text" name="ktp_penanggung_jawab" required class="form-control" id="ktp_penanggung_jawab" placeholder="Isi NIK KTP Penanggung Jawab" value="<?= old('ktp_penanggung_jawab') ?>">
+              <input type="number" name="ktp_penanggung_jawab" required class="form-control" id="ktp_penanggung_jawab" placeholder="Isi NIK KTP Penanggung Jawab" value="<?= old('ktp_penanggung_jawab') ?>">
               <span id="spanktp_penanggung_jawab" style="color: red;"></span>
-              <div class="input-group" style="margin-top: 10px;">
-                  <div class="custom-file">
-                        <input type="file" class="custom-file-input" name="berkasktp_penanggung_jawab" id="berkasktp_penanggung_jawab" accept=".pdf" required>
-                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-                  </div>
+              <div class="input-group mt-2">
+                <div class="custom-file">
+                  <input type="file" class="custom-file-input" name="berkasktp_penanggung_jawab" id="berkasktp_penanggung_jawab" accept=".pdf" required>
+                  <label class="custom-file-label" for="berkasktp_penanggung_jawab">Choose file</label>
+                </div>
               </div>
               <div class="text-muted">
-                    <small>Format file yang diizinkan: PDF</small>,
-                    <small>Maksimal ukuran file: 1 MB</small>
+                <small>Format file yang diizinkan: PDF</small>,
+                <small>Maksimal ukuran file: 1 MB</small>
               </div>
               <span id="spanberasktp_penanggung_jawab" style="color: red;"></span>
             </div>
 
-            
-          
-          <div class="form-group">
+            <div class="form-group">
               <label for="npwp_penanggung_jawab">NPWP Penanggung Jawab</label>
-              <input type="text" name="npwp_penanggung_jawab" required class="form-control" id="npwp_penanggung_jawab" placeholder="Isi Nomor NPWP Penanggung Jawab" value="<?= old('npwp_penanggung_jawab') ?>">
+              <input type="number" name="npwp_penanggung_jawab" required class="form-control" id="npwp_penanggung_jawab" placeholder="Isi Nomor NPWP Penanggung Jawab" value="<?= old('npwp_penanggung_jawab') ?>">
               <span id="spannpwp_penanggung_jawab" style="color: red;"></span>
-              <div class="input-group" style="margin-top: 10px;">
-                  <div class="custom-file">
-                        <input type="file" class="custom-file-input" name="berkasnpwp_penanggung_jawab" id="berkasnpwp_penanggung_jawab" accept=".pdf" required>
-                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-                  </div>
+              <div class="input-group mt-2">
+                <div class="custom-file">
+                  <input type="file" class="custom-file-input" name="berkasnpwp_penanggung_jawab" id="berkasnpwp_penanggung_jawab" accept=".pdf" required>
+                  <label class="custom-file-label" for="berkasnpwp_penanggung_jawab">Choose file</label>
+                </div>
               </div>
               <div class="text-muted">
-                    <small>Format file yang diizinkan: PDF</small>,
-                    <small>Maksimal ukuran file: 1 MB</small>
+                <small>Format file yang diizinkan: PDF</small>,
+                <small>Maksimal ukuran file: 1 MB</small>
               </div>
               <span id="spanberkasnpwp_penanggung_jawab" style="color: red;"></span>
             </div>
 
-
           </div>
+        </div>
       </div>
-    </div>
-  <div class="col-md-6">
-  <div class="card card-info">
-       
-          <div class="card-body">
 
-            
+      <div class="col-md-6">
+        <div class="card card-info">
+          <div class="card-body">
             <div class="form-group">
               <label for="pengurus_pt">Nama dan Jabatan Pengurus PT</label>
               <textarea name="pengurus_pt" id="pengurus_pt" class="form-control" rows="3" placeholder="Masukkan nama dan jabatan pengurus PT" required></textarea>
               <span id="spanpengurus_pt" style="color: red;"></span>
             </div>
 
-            
-          <div class="form-group">
+            <div class="form-group">
               <label for="npwp_pengurus_pt">NPWP Pengurus PT</label>
               <span id="spannpwp_pengurus_pt" style="color: red;"></span>
-              <div class="input-group" style="margin-top: 10px;">
-                  <div class="custom-file">
-                        <input type="file" class="custom-file-input" name="berkasnpwp_pengurus_pt" id="berkasnpwp_pengurus_pt" accept=".pdf" required>
-                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-                  </div>
+              <div class="input-group mt-2">
+                <div class="custom-file">
+                  <input type="file" class="custom-file-input" name="berkasnpwp_pengurus_pt" id="berkasnpwp_pengurus_pt" accept=".pdf" required>
+                  <label class="custom-file-label" for="berkasnpwp_pengurus_pt">Choose file</label>
+                </div>
               </div>
               <div class="text-muted">
                     <small>Upload semua NPWP pengurus PT (dijadikan satu file)</small><br>
@@ -144,15 +145,14 @@
               <span id="spanberkasnpwp_pengurus_pt" style="color: red;"></span>
             </div>
 
-            
-          <div class="form-group">
+            <div class="form-group">
               <label for="ktp_pengurus_pt">KTP Pengurus PT</label>
               <span id="spanktp_pengurus_pt" style="color: red;"></span>
-              <div class="input-group" style="margin-top: 10px;">
-                  <div class="custom-file">
-                        <input type="file" class="custom-file-input" name="berkasktp_pengurus_pt" id="berkasktp_pengurus_pt" accept=".pdf" required>
-                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-                  </div>
+              <div class="input-group mt-2">
+                <div class="custom-file">
+                  <input type="file" class="custom-file-input" name="berkasktp_pengurus_pt" id="berkasktp_pengurus_pt" accept=".pdf" required>
+                  <label class="custom-file-label" for="berkasktp_pengurus_pt">Choose file</label>
+                </div>
               </div>
               <div class="text-muted">
                     <small>Upload semua KTP pengurus PT (dijadikan satu file)</small><br>
@@ -161,32 +161,31 @@
               </div>
               <span id="spanberkasktp_pengurus_pt" style="color: red;"></span>
             </div>
-            
+
             <div class="form-group">
               <label for="akta_pendirian">Akta Pendirian</label>
               <input type="text" name="akta_pendirian" required class="form-control" id="akta_pendirian" placeholder="Isi Nomor Akta Pendirian" value="<?= old('akta_pendirian') ?>">
               <span id="spanakta_pendirian" style="color: red;"></span>
-              <div class="input-group" style="margin-top: 10px;">
-                  <div class="custom-file">
-                        <input type="file" class="custom-file-input" name="berkasakta_pendirian" id="berkasakta_pendirian" accept=".pdf" required>
-                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-                  </div>
+              <div class="input-group mt-2">
+                <div class="custom-file">
+                  <input type="file" class="custom-file-input" name="berkasakta_pendirian" id="berkasakta_pendirian" accept=".pdf" required>
+                  <label class="custom-file-label" for="berkasakta_pendirian">Choose file</label>
+                </div>
               </div>
               <div class="text-muted">
-                    <small>Format file yang diizinkan: PDF</small>,
-                    <small>Maksimal ukuran file: 5 MB</small>
+                <small>Format file yang diizinkan: PDF</small>,
+                <small>Maksimal ukuran file: 5 MB</small>
               </div>
               <span id="spanberkasakta_pendirian" style="color: red;"></span>
             </div>
 
-            
             <div class="form-group">
               <label for="skkemenkumham">SK Kemenkumham</label>
-              <div class="input-group" style="margin-top: 10px;">
-                  <div class="custom-file">
-                        <input type="file" class="custom-file-input" name="berkasskkemenkumham" id="berkasskkemenkumham" accept=".pdf" required>
-                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-                  </div>
+              <div class="input-group mt-2">
+                <div class="custom-file">
+                  <input type="file" class="custom-file-input" name="berkasskkemenkumham" id="berkasskkemenkumham" accept=".pdf" required>
+                  <label class="custom-file-label" for="berkasskkemenkumham">Choose file</label>
+                </div>
               </div>
               <div class="text-muted">
                     <small>Upload SK Kemenkumham</small><br>
@@ -196,21 +195,21 @@
               <span id="spanberkasskkemenkumham" style="color: red;"></span>
             </div>
 
-
             <div class="form-group">    
               <label for="bank">Bank (Rekening Operasional)</label>
-              <?= create_dropdown('bank', $dropdownbank['bank'], old('bank'), ['class' => 'form-control', 'id' => 'bank','required' => 'required']); ?>
+              <?= create_dropdown('bank', $dropdownbank['bank'], old('bank'), ['class' => 'form-control', 'id' => 'bank', 'required' => 'required']); ?>
               <span id="spanbank" style="color: red;"></span>
             </div>
+
             <div class="form-group">
               <label for="rekening">Nomor Rekening Operasional</label>
               <input type="text" name="rekening" required class="form-control" id="rekening" placeholder="Isi Nomor Rekening Operasional" value="<?= old('rekening') ?>">
               <span id="spanrekening" style="color: red;"></span>
-              <div class="input-group" style="margin-top: 10px;">
-                  <div class="custom-file">
-                        <input type="file" class="custom-file-input" name="berkasrekening" id="berkasrekening" accept=".pdf" required>
-                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-                  </div>
+              <div class="input-group mt-2">
+                <div class="custom-file">
+                  <input type="file" class="custom-file-input" name="berkasrekening" id="berkasrekening" accept=".pdf" required>
+                  <label class="custom-file-label" for="berkasrekening">Choose file</label>
+                </div>
               </div>
               <div class="text-muted">
                     <small>Rekening Koran tiga bulan terakhir</small><br>
@@ -220,22 +219,21 @@
               <span id="spanberkasrekening" style="color: red;"></span>
             </div>
 
-            
             <div class="form-group">    
               <label for="bankescrow">Bank (Rekening Escrow)</label>
-              <?= create_dropdown('bankescrow', $dropdownbank['bank'], old('bankescrow'), ['class' => 'form-control', 'id' => 'bankescrow','required' => 'required']); ?>
+              <?= create_dropdown('bankescrow', $dropdownbank['bank'], old('bankescrow'), ['class' => 'form-control', 'id' => 'bankescrow', 'required' => 'required']); ?>
               <span id="spanbankescrow" style="color: red;"></span>
             </div>
-            
+
             <div class="form-group">
               <label for="rekeningescrow">Nomor Rekening Escrow</label>
               <input type="text" name="rekeningescrow" required class="form-control" id="rekeningescrow" placeholder="Isi Nomor Rekening Escrow" value="<?= old('rekeningescrow') ?>">
               <span id="spanrekeningescrow" style="color: red;"></span>
-              <div class="input-group" style="margin-top: 10px;">
-                  <div class="custom-file">
-                        <input type="file" class="custom-file-input" name="berkasrekeningescrow" id="berkasrekeningescrow" accept=".pdf" required>
-                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-                  </div>
+              <div class="input-group mt-2">
+                <div class="custom-file">
+                  <input type="file" class="custom-file-input" name="berkasrekeningescrow" id="berkasrekeningescrow" accept=".pdf" required>
+                  <label class="custom-file-label" for="berkasrekeningescrow">Choose file</label>
+                </div>
               </div>
               <div class="text-muted">
                     <small>Rekening Koran tiga bulan terakhir</small><br>
@@ -243,6 +241,12 @@
                     <small>Maksimal ukuran file: 1 MB</small>
               </div>
               <span id="spanberkasrekeningescrow" style="color: red;"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="dropdowndpd">Pilih DPD/DPP/Korwil</label>  
+              <?= create_dropdown('dpd', $dropdowndpd['dpd'], old('dropdowndpd'), ['class' => 'form-control', 'id' => 'dropdowndpd', 'required' => 'required']); ?>
+              <span id="spandropdowndpd" style="color: red;"></span>
             </div>
 
           </div>
@@ -256,23 +260,18 @@
         </form>
       </div>
     </div>
-    <!-- /.col -->
   </div>
-  <!-- /.row -->
 </div>
-<!-- /.container-fluid -->
 </section>
-    
-  
+
 <?= $this->endSection(); ?>
 
 <?= $this->section('south'); ?>
 
 <script>
-    $(document).ready(function () {
-      
-        $('#formpengajuanpt').on('submit', function (e) {
-            e.preventDefault(); // Prevent the default form submission
+$(document).ready(function () {
+  $('#formpengajuanpt').on('submit', function (e) {
+    e.preventDefault(); // Prevent the default form submission
 
             // Create FormData object
             var formData = new FormData(this);
@@ -317,6 +316,7 @@
                       });
                     
                     $('#<?= csrf_token() ?>').val(xhr.responseJSON.csrfHash);
+                    clearForm();
                     if(xhr.responseJSON.status == 'error'){
                       if(xhr.responseJSON.message.nama_pt){
                         $('#nama_pt').addClass('is-invalid');
@@ -418,6 +418,10 @@
                         $('#berkasrekeningescrow').addClass('is-invalid');
                         $('#spanberkasrekeningescrow').html(xhr.responseJSON.message.berkasrekeningescrow);
                       }
+                      if(xhr.responseJSON.message.dpd){
+                        $('#dropdowndpd').addClass('is-invalid');
+                        $('#spandropdowndpd').html(xhr.responseJSON.message.dpd);
+                      }
                     }
                 }
             });
@@ -462,11 +466,7 @@
                             });
                             $('#kabupaten').html(options);
                             $('#<?= csrf_token() ?>').val(response.csrfHash);
-                            Swal.fire({
-                              icon: 'success',
-                              title: 'Berhasil!',
-                              text: 'Berhasil memuat data kabupaten/kota. Silakan pilih kabupaten/kota.'
-                            });
+                            Swal.close();
                         },
                         error: function () {
                           Swal.fire({
@@ -513,11 +513,7 @@
                   });
                   $('#kota').html(options);
                   $('#<?= csrf_token() ?>').val(response.csrfHash);
-                  Swal.fire({
-                    icon: 'success',
-                    title: 'Berhasil!',
-                    text: 'Berhasil memuat data kecamatan. Silakan pilih kecamatan.'
-                  });
+                  Swal.close();
                  
                 },
                 error: function () {
@@ -561,11 +557,7 @@
                   $('#lokasiref').html(options);
                   $('#<?= csrf_token() ?>').val(response.csrfHash);
                   
-                  Swal.fire({
-                    icon: 'success',
-                    title: 'Berhasil!',
-                    text: 'Berhasil memuat data kelurahan. Silakan pilih kelurahan.'
-                  });
+                  Swal.close();
 
                 },
                 error: function () {
@@ -588,4 +580,56 @@ $(function () {
   bsCustomFileInput.init();
 });
 </script>
+<script>
+function clearForm() {
+  // Menghapus semua pesan error
+  $('#spannama_pt').html('');
+  $('#spanprovinsi').html('');
+  $('#spankabupaten').html('');
+  $('#spankota').html('');
+  $('#spanlokasiref').html('');
+  $('#spanalamat').html('');
+  $('#spannpwp_pt').html('');
+  $('#spanberkasnpwppt').html('');
+  $('#spanpenanggung_jawab_pt').html('');
+  $('#spanktp_penanggung_jawab').html('');
+  $('#spanberkasktp_penanggung_jawab').html('');
+  $('#spannpwp_penanggung_jawab').html('');
+  $('#spanberkasnpwp_penanggung_jawab').html('');
+  $('#spanpengurus_pt').html('');
+  $('#spanjabatan_pengurus_pt').html('');
+  $('#spanbank').html('');
+  $('#spanrekening').html('');
+  $('#spanberkasrekening').html('');
+  $('#spanbankescrow').html('');
+  $('#spanrekeningescrow').html('');
+  $('#spanberkasrekeningescrow').html('');
+  $('#spandropdowndpd').html('');
+
+  // Menghapus class is-invalid
+  $('#nama_pt').removeClass('is-invalid');
+  $('#provinsi').removeClass('is-invalid');
+  $('#kabupaten').removeClass('is-invalid'); 
+  $('#kota').removeClass('is-invalid');
+  $('#lokasiref').removeClass('is-invalid');
+  $('#detail_alamat').removeClass('is-invalid');
+  $('#npwp_pt').removeClass('is-invalid');
+  $('#berkasnpwppt').removeClass('is-invalid');
+  $('#penanggung_jawab_pt').removeClass('is-invalid');
+  $('#ktp_penanggung_jawab').removeClass('is-invalid');
+  $('#berkasktp_penanggung_jawab').removeClass('is-invalid');
+  $('#npwp_penanggung_jawab').removeClass('is-invalid');
+  $('#berkasnpwp_penanggung_jawab').removeClass('is-invalid');
+  $('#pengurus_pt').removeClass('is-invalid');
+  $('#jabatan_pengurus_pt').removeClass('is-invalid');
+  $('#bank').removeClass('is-invalid');
+  $('#rekening').removeClass('is-invalid');
+  $('#berkasrekening').removeClass('is-invalid');
+  $('#bankescrow').removeClass('is-invalid');
+  $('#rekeningescrow').removeClass('is-invalid');
+  $('#berkasrekeningescrow').removeClass('is-invalid');
+  $('#dropdowndpd').removeClass('is-invalid');
+}
+</script>
+
 <?= $this->endSection(); ?>

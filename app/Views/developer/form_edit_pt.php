@@ -50,7 +50,7 @@
             </div>
             <div class="form-group">
               <label for="npwp_pt">NPWP PT</label>
-              <input type="text" disabled name="npwp_pt" required class="form-control" id="npwp_pt" placeholder="Isi Nomor NPWP PT" value="<?= $pt['npwppt'] ?>">
+              <input type="number" disabled name="npwp_pt" required class="form-control" id="npwp_pt" placeholder="Isi Nomor NPWP PT" value="<?= $pt['npwppt'] ?>">
               <span id="spannpwp_pt" style="color: red;"></span>
               <div class="input-group" style="margin-top: 10px;">
                   <div class="custom-file">
@@ -74,7 +74,7 @@
             </div>
             <div class="form-group">
               <label for="ktp_penanggung_jawab">KTP Penanggung Jawab</label>
-              <input type="text" name="ktp_penanggung_jawab" required class="form-control" id="ktp_penanggung_jawab" placeholder="Isi NIK KTP Penanggung Jawab" value="<?= $pt['ktppj'] ?>">
+              <input type="number" name="ktp_penanggung_jawab" required class="form-control" id="ktp_penanggung_jawab" placeholder="Isi NIK KTP Penanggung Jawab" value="<?= $pt['ktppj'] ?>">
               <span id="spanktp_penanggung_jawab" style="color: red;"></span>
               <div class="input-group" style="margin-top: 10px;">
                   <div class="custom-file">
@@ -94,11 +94,11 @@
 
             <div class="form-group">
               <label for="npwp_penanggung_jawab">NPWP Penanggung Jawab</label>
-              <input type="text" name="npwp_penanggung_jawab" required class="form-control" id="npwp_penanggung_jawab" placeholder="Isi Nomor NPWP Penanggung Jawab" value="<?= $pt['npwppj'] ?>">
+              <input type="number" name="npwp_penanggung_jawab" required class="form-control" id="npwp_penanggung_jawab" placeholder="Isi Nomor NPWP Penanggung Jawab" value="<?= $pt['npwppj'] ?>">
               <span id="spannpwp_penanggung_jawab" style="color: red;"></span>
               <div class="input-group" style="margin-top: 10px;">
                   <div class="custom-file">
-                        <input type="file" class="custom-file-input" name="berkasnpwp_penanggung_jawab" id="berkasnpwp_penanggung_jawab" accept=".pdf" required>
+                        <input type="file" class="custom-file-input" name="berkasnpwp_penanggung_jawab" id="berkasnpwp_penanggung_jawab" accept=".pdf">
                         <label class="custom-file-label" for="exampleInputFile">Choose file</label>
                   </div>
               </div>
@@ -255,6 +255,13 @@
               <span id="spanberkasrekeningescrow" style="color: red;"></span>
             </div>
 
+            
+            <div class="form-group">
+                  <label for="dropdowndpd">Pilih DPD/DPP/Korwil</label>  
+                  <?= create_dropdown('dpd', $dropdowndpd['dpd'], $pt['dpd'], ['class' => 'form-control', 'id' => 'dropdowndpd']); ?>
+                  <span id="spandropdowndpd" style="color: red;"></span>
+                </div>
+
           </div>
           <div class="card-footer">
             <div class="form-group">
@@ -310,7 +317,7 @@
                     }
                 },
                 error: function (xhr, status, error) {
-                    
+                    clearForm();
                     $('#<?= csrf_token() ?>').val(xhr.responseJSON.csrfHash);
                     Swal.fire({
                         icon: 'error',
@@ -379,11 +386,7 @@
                             });
                             $('#kabupaten').html(options);
                             $('#<?= csrf_token() ?>').val(response.csrfHash);
-                            Swal.fire({
-                              icon: 'success',
-                              title: 'Berhasil!',
-                              text: 'Berhasil memuat data kabupaten/kota. Silakan pilih kabupaten/kota.'
-                            });
+                            Swal.close();
                         },
                         error: function () {
                           Swal.fire({
@@ -430,11 +433,7 @@
                   });
                   $('#kota').html(options);
                   $('#<?= csrf_token() ?>').val(response.csrfHash);
-                  Swal.fire({
-                    icon: 'success',
-                    title: 'Berhasil!',
-                    text: 'Berhasil memuat data kecamatan. Silakan pilih kecamatan.'
-                  });
+                  Swal.close();
                  
                 },
                 error: function () {
@@ -478,11 +477,7 @@
                   $('#lokasiref').html(options);
                   $('#<?= csrf_token() ?>').val(response.csrfHash);
                   
-                  Swal.fire({
-                    icon: 'success',
-                    title: 'Berhasil!',
-                    text: 'Berhasil memuat data kelurahan. Silakan pilih kelurahan.'
-                  });
+                  Swal.close();
 
                 },
                 error: function () {
@@ -499,5 +494,12 @@
         });
 
     });
+</script>
+<script>
+  function clearForm() {
+    // Menghapus semua pesan error
+    $('span[id^="span"]').html('');
+    $('input, select, textarea').removeClass('is-invalid');
+  }
 </script>
 <?= $this->endSection(); ?> 
