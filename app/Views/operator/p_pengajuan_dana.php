@@ -83,6 +83,7 @@
                       <td align="right"><?= number_format($p['totaldisetujuioperator'],0,',','.') ?></td>
                       <td align="right"><?= number_format($p['totaldisetujuiapprover'],0,',','.') ?></td>
                       
+                     
                       <td id="status<?= $p['uuid'] ?>">
                         <?php if($p['submited_status']=='' || $p['submited_status']==null) : ?>
                           <span class="badge badge-warning">Draft</span>
@@ -96,6 +97,8 @@
                           <span class="badge badge-success">Disetujui</span>
                         <?php elseif($p['submited_status']==5) : ?>
                           <span class="badge badge-success">Terkirim ke Pendana</span>
+                        <?php elseif($p['submited_status']==6) : ?>
+                          <span class="badge badge-success">Disetujui Pendana</span>
                         <?php endif; ?>
                       </td>
                       <td class="aksi<?= $p['uuid']; ?>">

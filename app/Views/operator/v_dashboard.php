@@ -18,7 +18,7 @@
         <div class="small-box bg-info">
           <div class="inner">
             <h3 class="text-center"><?= number_format($reportunit->totalkredit,0,',','.'); ?></h3>
-            <p>Total Nilai Kredit</p>
+            <p>Total Dana Talangan</p>
           </div>
           <div class="icon">
             <i class="ion ion-bag"></i>

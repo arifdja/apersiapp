@@ -54,6 +54,7 @@ class UserModel extends Model
 		$builder->join('ref_kecamatan','ref_kecamatan.id = substr(users.alamatref,1,10)');
 		$builder->join('ref_dpd','ref_dpd.id = users.dpd');
 		$builder->where('users.kdgrpuser', 'developer');
+		$builder->where('users.is_email_verified', 1);
 		return $builder->get()->getResultArray();
 	}
 

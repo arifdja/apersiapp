@@ -94,4 +94,4 @@ $routes->get('/pendana', 'Pendana::index',['filter' => 'auth']);
 $routes->get('/pendana/list_developer', 'Pendana::list_developer',['filter' => 'auth']);
 $routes->get('/pendana/developer', 'Pendana::developer',['filter' => 'auth']);
 $routes->get('/pendana/pt', 'Pendana::pt',['filter' => 'auth']);
-
+$routes->post('/pendana/danai_pengajuan', 'Pendana::danai_pengajuan',['filter' => 'auth']);

@@ -16,13 +16,13 @@
           <div class="col-md-12">
             <div class="card">
               <div class="card-header">
-                <button class="btn btn-info btn-xs" onclick="window.location.href='<?= site_url('developer/form_pengajuan_pt') ?>'">Tambah Pengajuan PT</button>
+                <button class="btn btn-info btn-xs" onclick="window.location.href='<?= site_url('developer/form_pengajuan_pt') ?>'">Tambah PT</button>
               </div>
               <div class="card-body table-responsive p-2">
                 <table class="table table-head-fixed text-nowrap">
                   <thead>
                     <tr class="table-info">
-                      <th>ID</th>
+                      <th>No</th>
                       <th>Nama<br>PT</th>
                       <th>NPWP<br>PT</th>
                       <th>Penanggung<br>Jawab PT</th>

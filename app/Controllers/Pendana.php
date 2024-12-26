@@ -115,6 +115,140 @@ class Pendana extends BaseController
         return view('operator/p_pengajuan_unit',$data);
 	}
 
+    public function danai_pengajuan()
+    {
+
+        // echo "tes";
+        // die();
+        // Validasi request AJAX
+        if(!$this->request->isAJAX()){
+            return $this->response->setJSON(['message' => 'Invalid request'])->setStatusCode(400);
+        }
+
+        // Validasi input
+        $uuid = $this->request->getPost('uuid');
+
+        if(empty($uuid)) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => [
+                    'simpan' => 'UUID harus diisi!'
+                ],
+                'csrfHash' => csrf_hash(),
+                'csrfToken' => csrf_token()
+            ])->setStatusCode(400);
+        }
+
+        // Get data pengajuan
+        $pengajuanmodel = new PengajuanModel();
+        $pengajuan = $pengajuanmodel->where('uuid',$uuid)->first();
+
+        if(empty($pengajuan)){
+            return $this->response->setJSON([
+                'status' => 'error', 
+                'message' => [
+                    'simpan' => 'Data pengajuan tidak ditemukan!'
+                ],
+                'csrfHash' => csrf_hash(),
+                'csrfToken' => csrf_token(),
+                'uuid' => $uuid
+            ])->setStatusCode(400);
+        }
+
+        // Validasi status pengajuan
+        if($pengajuan['submited_status'] != 5){
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => [
+                    'simpan' => 'Status pengajuan tidak valid!'
+                ],
+                'csrfHash' => csrf_hash(),
+                'csrfToken' => csrf_token(),
+                'uuid' => $uuid
+            ])->setStatusCode(400);
+        }
+
+        $datetime = date('Y-m-d H:i:s');
+     
+        // Update data pengajuan
+        $data = [
+            'submited_status' => 6,
+            'submited_time' => $datetime,
+            'submited_by' => session()->get('uuid')
+        ];
+        
+        try {
+            $update = $pengajuanmodel->where('uuid',$uuid)->set($data)->update();
+            
+            if (!$update) {
+                return $this->response->setJSON([
+                    'status' => 'error',
+                    'message' => [
+                        'simpan' => 'Gagal danai pengajuan!'
+                    ],
+                    'csrfHash' => csrf_hash(),
+                    'csrfToken' => csrf_token(),
+                    'uuid' => $uuid
+                ])->setStatusCode(400);
+            }
+
+            // Update detail pengajuan
+            $datadetail = [
+                'submited_status' => 6,
+                'submited_time' => $datetime,
+                'submited_by' => session()->get('uuid'),
+            ];
+
+            $pengajuanDetail = new PengajuanDetailModel();
+            $uuidpengajuan = $pengajuanDetail->select('uuid')
+                                           ->where('uuidheader',$uuid)
+                                           ->findAll();
+           
+            if(empty($uuidpengajuan)) {
+                throw new \Exception('Detail pengajuan tidak ditemukan!');
+            }
+
+            $uuidpengajuan = array_column($uuidpengajuan,'uuid');
+            $uuidList = "'" . implode("','", $uuidpengajuan) . "'";
+            
+            $setClause = [];
+            foreach ($datadetail as $key => $value) {
+                $setClause[] = "$key = " . (is_string($value) ? "'$value'" : $value);
+            }
+            $setString = implode(", ", $setClause);
+            
+            $sql = "UPDATE trx_pengajuan_detail 
+                    SET $setString
+                    WHERE uuid IN ($uuidList)
+                    AND statusapprover = 1";
+                    
+            $updatedetail = $pengajuanDetail->query($sql);
+
+            if (!$updatedetail) {
+                throw new \Exception('Gagal update detail pengajuan!');
+            }
+
+            return $this->response->setJSON([
+                'status' => 'success',
+                'message' => 'Pengajuan berhasil danai!',
+                'csrfHash' => csrf_hash(),
+                'csrfToken' => csrf_token(),
+                'uuid' => $uuid
+            ])->setStatusCode(200);
+
+        } catch(\Exception $e) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => [
+                    'simpan' => $e->getMessage()
+                ],
+                'csrfHash' => csrf_hash(),
+                'csrfToken' => csrf_token(),
+                'uuid' => $uuid
+            ])->setStatusCode(400);
+        }
+    }
+
 
 
 }

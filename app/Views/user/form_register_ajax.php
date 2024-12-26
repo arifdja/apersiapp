@@ -186,6 +186,15 @@
                                                         <label class="form-check-label" for="exampleCheck2">Tampilkan Password</label>
                                                     </div>
                                               </div>
+                                              
+
+                                              <div id="divberkas" class="form-group">
+                                                    <div class="col-sm-12">
+                                                        <div class="h5 text-bold">
+                                                             <a href="<?= base_url('download/form_kredit') ?>" target="_blank">Download template form kredit disini</a> agar dicetak menggunakan kop surat perusahaan dan ditandatangani direktur utama di atas materai.
+                                                        </div>
+                                                    </div>
+                                                </div>
                                               <p>
                                                     <div class="g-recaptcha" data-sitekey="6LdGWZAqAAAAAF-815CNbkjzW2g3R3I6L6H_cWg4"></div>
                                               </p>
@@ -195,14 +204,6 @@
                                                       <button type="submit" class="btn btn-primary" style="background-color: #35B5FE !important; border:none">Proses Pendaftaran</button>
                                                 </div>
                                               </div>
-
-                                              <div id="divberkas" class="form-group">
-                                                    <div class="col-sm-6">
-                                                        <div class="h6 text-bold">
-                                                            Download template form kredit <a href="<?= base_url('download/form_kredit') ?>" target="_blank">disini</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
 
                                                 
                                                

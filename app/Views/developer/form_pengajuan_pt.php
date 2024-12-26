@@ -69,6 +69,7 @@
                 </div>
               </div>
               <div class="text-muted">
+                    <small>NPWP harus berisi 15/16 digit angka tanpa titik atau -</small><br>
                     <small>Format file yang diizinkan: PDF</small>,
                     <small>Maksimal ukuran file: 1 MB</small>
               </div>
@@ -92,6 +93,7 @@
                 </div>
               </div>
               <div class="text-muted">
+                <small>NIK harus berisi 16 digit angka</small><br>
                 <small>Format file yang diizinkan: PDF</small>,
                 <small>Maksimal ukuran file: 1 MB</small>
               </div>
@@ -109,6 +111,7 @@
                 </div>
               </div>
               <div class="text-muted">
+              <small>NPWP harus berisi 15/16 digit angka tanpa titik atau -</small><br>
                 <small>Format file yang diizinkan: PDF</small>,
                 <small>Maksimal ukuran file: 1 MB</small>
               </div>

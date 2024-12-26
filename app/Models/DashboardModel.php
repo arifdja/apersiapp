@@ -40,7 +40,9 @@ class DashboardModel extends Model
             SUM(CASE WHEN statusapprover = 1 THEN 1 ELSE 0 END) AS validapprover,
             count(*) AS totalunit,
             SUM(nilaikredit) AS totalkredit,
-            SUM(harga) AS totalharga
+            SUM(harga) AS totalharga,
+            SUM(CASE WHEN submited_status = 6 THEN 1 ELSE 0 END) AS disetujuipendana,
+            SUM(CASE WHEN submited_status = 5 THEN 1 ELSE 0 END) AS dikirimkependana
             FROM trx_pengajuan_detail";
         if(session()->get('kdgrpuser')=='developer'){
             $sql .= " WHERE uuid IN ('".implode("','",$uuid)."')";

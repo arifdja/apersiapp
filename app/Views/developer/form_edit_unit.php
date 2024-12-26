@@ -16,7 +16,7 @@
                         
                         <div class="card-body">
                             <div class="form-group">
-                                <label>Nomor Sertifikat</label>
+                                <label>Nomor Sertifikat per Unit</label>
                                 <input type="text" class="form-control" name="sertifikat" value="<?= $unit['sertifikat'] ?>" id="sertifikat" disabled>
                                 <div class="invalid-feedback"></div>
                                 <span id="spansertifikat" style="color: red;"></span>
@@ -51,7 +51,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label>Nomor PBB</label>
+                                <label>Nomor PBB per Unit</label>
                                 <input type="text" class="form-control" name="pbb" value="<?= $unit['pbb'] ?>" id="pbb" required>
                                 <div class="invalid-feedback"></div>
                                 <span id="spanpbb" style="color: red;"></span>
@@ -70,13 +70,13 @@
                             </div>
 
                             <div class="form-group">
-                                <label>Harga Sesuai Persetujuan Kredit (SP3K)</label>
+                                <label>Harga Sesuai Persetujuan Kredit (SP3K) per Unit</label>
                                 <input type="number" class="form-control" name="harga" value="<?= $unit['harga'] ?>">
                                 <div class="invalid-feedback"></div>
                             </div>
 
                             <div class="form-group">
-                                <label>Nilai Dana Talangan</label>
+                                <label>Nilai Dana Talangan per Unit</label>
                                 <input type="number" class="form-control" name="nilaikredit" value="<?= $unit['nilaikredit'] ?>">
                                 <div class="invalid-feedback"></div>
                             </div>
@@ -134,7 +134,7 @@
                         
                             
                         <div class="form-group">
-                                <label for="sp3k">Dokumen SP3K</label>
+                                <label for="sp3k">Dokumen SP3K per Unit</label>
                                 <input type="text" name="sp3k" class="form-control" id="sp3k" placeholder="Nomor Dokumen SP3K" value="<?= $unit['nomordokumensp3k'] ?>" disabled>
                                 <div class="invalid-feedback"></div>
                                 <span id="spansp3k" style="color: red;"></span>

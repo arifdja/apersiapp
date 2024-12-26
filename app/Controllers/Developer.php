@@ -1678,13 +1678,6 @@ class Developer extends BaseController
                 'errors' => [
                     'required' => '{field} harus diisi'
                 ]
-            ],
-            'dpd' => [
-                'label' => 'DPD/DPP/Korwil',
-                'rules' => 'trim|required',
-                'errors' => [
-                    'required' => '{field} harus diisi'
-                ]
             ]
         ];
 
@@ -1722,7 +1715,6 @@ class Developer extends BaseController
                 "kodebank" => $this->request->getVar('bank'),
                 "kodebankescrow" => $this->request->getVar('bankescrow'),
                 "rekeningescrow" => $this->request->getVar('rekeningescrow'),
-                "dpd" => $this->request->getVar('dpd'),
                 "statusvalidator" => 0
             ];
 

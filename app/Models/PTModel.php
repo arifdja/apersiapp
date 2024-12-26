@@ -44,14 +44,13 @@ class PTModel extends Model
     function getPengajuanPT($uuiddeveloper = null)
     {
         $builder = $this->db->table($this->table);
-        $builder->select('ref_pt.*,ref_bank.namabank,rbb.namabank as namabankescrow,ref_provinsi.namaprovinsi,ref_kabupaten.namakabupaten,ref_kota.namakota,ref_kecamatan.namakecamatan,ref_dpd.namadpd,users.nama as namadeveloper');
+        $builder->select('ref_pt.*,ref_bank.namabank,rbb.namabank as namabankescrow,ref_provinsi.namaprovinsi,ref_kabupaten.namakabupaten,ref_kota.namakota,ref_kecamatan.namakecamatan,users.nama as namadeveloper');
         $builder->join('ref_provinsi','ref_provinsi.id = substr(ref_pt.alamatref,1,2)','left');
         $builder->join('ref_kabupaten','ref_kabupaten.id = substr(ref_pt.alamatref,1,4)','left');
         $builder->join('ref_kota','ref_kota.id = substr(ref_pt.alamatref,1,6)','left');
         $builder->join('ref_kecamatan','ref_kecamatan.id = substr(ref_pt.alamatref,1,10)','left');
         $builder->join('ref_bank','ref_bank.kodebank = ref_pt.kodebank','left');
         $builder->join('ref_bank rbb','rbb.kodebank = ref_pt.kodebankescrow','left');
-        $builder->join('ref_dpd','ref_dpd.id = ref_pt.dpd','left');
         $builder->join('users','users.uuid = ref_pt.uuiddeveloper','left');
         if($uuiddeveloper != null){
             $builder->where('uuiddeveloper',$uuiddeveloper);
@@ -84,7 +83,6 @@ class PTModel extends Model
 				left join ref_kecamatan on (ref_kecamatan.id = substr(a.alamatref,1,10))
                 left join ref_bank on (ref_bank.kodebank = a.kodebank)
                 left join ref_bank rbb on (rbb.kodebank = a.kodebankescrow)
-                left join ref_dpd on (ref_dpd.id = a.dpd)
                 left join users on (users.uuid = a.uuiddeveloper)
 
 				";

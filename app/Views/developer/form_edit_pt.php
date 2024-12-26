@@ -256,11 +256,6 @@
             </div>
 
             
-            <div class="form-group">
-                  <label for="dropdowndpd">Pilih DPD/DPP/Korwil</label>  
-                  <?= create_dropdown('dpd', $dropdowndpd['dpd'], $pt['dpd'], ['class' => 'form-control', 'id' => 'dropdowndpd']); ?>
-                  <span id="spandropdowndpd" style="color: red;"></span>
-                </div>
 
           </div>
           <div class="card-footer">

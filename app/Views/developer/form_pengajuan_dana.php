@@ -27,7 +27,7 @@
             <div id="divberkas" class="form-group">
             </div>
             <div class="form-group">
-              <label for="suratpermohonan">Permohonan Pengajuan Pinjaman</label>
+              <label for="suratpermohonan">Upload Form Pengajuan Pinjaman</label>
               <div class="input-group" style="margin-top: 10px;">
                 <div class="custom-file">
                   <input type="file" class="custom-file-input" name="berkassuratpermohonan" id="berkassuratpermohonan" accept=".pdf" required>
@@ -35,7 +35,7 @@
                 </div>
               </div>
               <div class="text-muted" style="margin-top: 10px;">
-                Download template form kredit <a href="<?= base_url('download/form_kredit') ?>" target="_blank">disini</a><br>
+                Download template form pengajuan pinjaman <a href="<?= base_url('download/form_kredit') ?>" target="_blank">disini</a><br>
                 <small>Dokumen ditandatangani dan bermaterai</small><br>
                 <small>Format file yang diizinkan: PDF</small>,
                 <small>Maksimal ukuran file: 10 MB</small>

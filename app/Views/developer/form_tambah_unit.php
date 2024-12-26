@@ -20,7 +20,7 @@
                         <input type="hidden" name="uuidheader" value="<?= $uuidheader ?>">
 
                         <div class="form-group">
-                            <label for="sertifikat">Nomor Sertifikat</label>
+                            <label for="sertifikat">Nomor Sertifikat per Unit</label>
                             <input type="text" name="sertifikat" class="form-control" id="sertifikat" placeholder="Nomor Sertifikat" required>
                             <span id="spansertifikat" style="color: red;"></span>
                             <div class="input-group" style="margin-top: 10px;">
@@ -52,7 +52,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="pbb">Nomor PBB</label>
+                            <label for="pbb">Nomor PBB per Unit</label>
                             <input type="text" name="pbb" class="form-control" id="pbb" placeholder="Nomor PBB" required>
                             <span id="spanpbb" style="color: red;"></span>
                             <div class="input-group" style="margin-top: 10px;">
@@ -69,13 +69,13 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="harga">Harga Sesuai Persetujuan Kredit (SP3K)</label>
+                            <label for="harga">Harga Sesuai Persetujuan Kredit (SP3K) per Unit</label>
                             <input type="number" name="harga" class="form-control" id="harga" placeholder="Contoh: 100000000" required>
                             <span id="spanharga" style="color: red;"></span>
                         </div>
 
                         <div class="form-group">
-                            <label for="nilaikredit">Nilai Dana Talangan</label>
+                            <label for="nilaikredit">Nilai Dana Talangan per Unit</label>
                             <input type="number" name="nilaikredit" class="form-control" id="nilaikredit" placeholder="Contoh: 70000000" required>
                             <span id="spannilaikredit" style="color: red;"></span>
                             <div class="text-muted">
@@ -123,7 +123,7 @@
                     <div class="card-body">
 
                     <div class="form-group">
-                          <label for="sp3k">Dokumen SP3K</label>
+                          <label for="sp3k">Dokumen SP3K per Unit</label>
                           <input type="text" name="sp3k" class="form-control" id="sp3k" placeholder="Nomor Dokumen SP3K" required>
                           <span id="spansp3k" style="color: red;"></span>
                           <div class="input-group" style="margin-top: 10px;">
@@ -233,6 +233,22 @@
 <?= $this->section('south'); ?>
 <script>
     $(document).ready(function () {
+
+        // Mencegah input titik pada input number
+        $('input[type="number"]').on('keydown', function(e) {
+            // Izinkan: backspace, delete, tab, escape, enter, titik
+            if ($.inArray(e.keyCode, [46, 8, 9, 27, 13]) !== -1 ||
+                // Izinkan: Ctrl+A, Command+A
+                (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) ||
+                // Izinkan: home, end, left, right, down, up
+                (e.keyCode >= 35 && e.keyCode <= 40)) {
+                return;
+            }
+            // Pastikan itu angka dan hentikan keypress
+            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                e.preventDefault();
+            }
+        });
       
         $('#formtambahunit').on('submit', function (e) {
             e.preventDefault(); // Prevent the default form submission

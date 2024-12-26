@@ -52,6 +52,7 @@
                     <th>Pinjaman Lain</th>
                     <th>Disetujui Operator</th>
                     <th>Disetujui Approver</th>
+                    <th>Status</th>
                     <th>Aksi</th>
                     <th style="min-width: 150px;">Pendana</th>
                   </tr>
@@ -86,6 +87,24 @@
                       <td align="right"><?= number_format($p['totaldisetujuioperator'],0,',','.') ?></td>
                       <td align="right"><?= number_format($p['totaldisetujuiapprover'],0,',','.') ?></td>
                       
+                      <td id="status<?= $p['uuid'] ?>">
+                        <?php if($p['submited_status']=='' || $p['submited_status']==null) : ?>
+                          <span class="badge badge-warning">Draft</span>
+                        <?php elseif($p['submited_status']==1) : ?> 
+                          <span class="badge badge-warning">Proses Pengecekan</span>
+                        <?php elseif($p['submited_status']==2) : ?>
+                          <span class="badge badge-danger">Dikembalikan</span>
+                        <?php elseif($p['submited_status']==3) : ?>
+                          <span class="badge badge-success">Proses Persetujuan</span>
+                        <?php elseif($p['submited_status']==4) : ?>
+                          <span class="badge badge-success">Disetujui</span>
+                        <?php elseif($p['submited_status']==5) : ?>
+                          <span class="badge badge-success">Terkirim ke Pendana</span>
+                        <?php elseif($p['submited_status']==6) : ?>
+                          <span class="badge badge-success">Disetujui Pendana</span>
+                        <?php endif; ?>
+                      </td>
+                      
                       <td class="aksi<?= $p['uuid']; ?>">
                         <?php if(session()->get('kdgrpuser')=='operator') : ?>
                           <?php if($p['submited_status']==1) : ?>
@@ -106,7 +125,11 @@
                             -
                           <?php endif; ?>
                         <?php elseif(session()->get('kdgrpuser')=='pendana') : ?>
-                          -
+                          <?php if($p['submited_status']==5) : ?>
+                            <button type="button" class="btn btn-xs btn-success danai" kunci="<?= $p['uuid']; ?>">Danai</button>
+                          <?php else: ?>
+                            -
+                          <?php endif; ?>
                         <?php endif; ?>
                       </td>
                       
@@ -213,6 +236,54 @@ $(document).ready(function() {
       $(this).html('<i class="fas fa-eye"></i> Detail');
     }
   });
+});
+</script>
+<script>
+$(document).ready(function() {
+  <?php if(session()->get('kdgrpuser')=='pendana'): ?>
+    // Handle teruskan button click
+    $(".danai").click(function(e) {
+      e.preventDefault();
+      var uuid = $(this).attr('kunci');
+      var csrfHash = $(".csrf").val();
+      var csrfToken = $(".csrf").attr('name');
+      
+      $.ajax({
+        type: "post",
+        headers: {'X-Requested-With': 'XMLHttpRequest'},
+        url: "<?= base_url(); ?>/pendana/danai_pengajuan",
+        data: {
+          [csrfToken]: csrfHash,
+          uuid: uuid,
+        },
+        dataType: "json",
+        success: function(response) {
+          if(response.status == 'success') {
+            $(".csrf").val(response.csrfHash);
+            $(".csrf").attr('name',response.csrfToken);
+            $(".aksi"+response.uuid).html('-'); 
+            $("#status"+response.uuid).html('<span class="badge badge-success">Disetujui Pendana</span>');
+            Swal.fire({
+              icon: 'success',
+              title: 'Sukses',
+              text: response.message
+            });
+          }
+        },
+        error: function(xhr, status, error) {
+          $(".csrf").val(xhr.responseJSON.csrfHash);
+          $(".csrf").attr('name',xhr.responseJSON.csrfToken);
+          Swal.fire({
+            icon: 'error',
+            title: 'Gagal',
+            text: response.message
+          });
+        }
+      });
+    });
+
+  <?php endif; ?>
+  
 });
 </script>
 <?= $this->endSection(); ?>
