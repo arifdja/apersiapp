@@ -17,6 +17,7 @@
       <div class="col-md-12">
         <div class="card">
           <div class="card-header">
+          <?= view('general/v_ket_status') ?>
             <div class="card-tools" style="margin: 0px;">
               <button class="btn btn-xs btn-success" id="excel">
                 <i class="fas fa-excel"></i>Download Excel

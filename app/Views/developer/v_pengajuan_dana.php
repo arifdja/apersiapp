@@ -16,6 +16,7 @@
           <div class="col-md-12">
             <div class="card">
               <div class="card-header">
+                <?= view('general/v_ket_status') ?>
                 <button class="btn btn-info btn-xs" onclick="window.location.href='<?= site_url('developer/form_pengajuan_dana') ?>'">Tambah Pengajuan Dana</button>
               
                 <button class="btn btn-xs btn-info toggle-alamat">
@@ -145,7 +146,7 @@
           if(response.status == 'success') {
             $(".csrf_hash").val(response.csrfHash);
             $(".csrf_token").val(response.csrfToken);
-            $("#ajukan_dana"+uuid).html('<span class="badge bg-success">Proses Pengecekan</span>');
+            $("#ajukan_dana"+uuid).html('<span class="badge bg-warning">Proses Pengecekan</span>');
             $("#aksi_ajukan_dana"+uuid).html('-');
             Swal.fire({ 
               icon: 'success',
