@@ -1068,3 +1068,52 @@ if (!function_exists('tanggal_hari_indo')) {
         return "$hari, $tanggal";
     }
 }
+
+if (!function_exists('setNotifikasi')) {
+    function setNotifikasi($user_uuid, $label, $isi, $url) {
+        try {
+            $notifikasiModel = new \App\Models\NotifikasiModel();
+            
+            $data = [
+                'uuid' => $user_uuid,
+                'label' => $label,
+                'isi' => $isi,
+                'status' => 0,
+                'url' => $url
+            ];
+            
+            if($notifikasiModel->insert($data)) {
+                return true;
+            }
+            return false;
+            
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+}
+
+if (!function_exists('getNotifikasi')) {
+    function getNotifikasi($user_uuid, $unreadonly = true) {
+        try {
+            $notifikasiModel = new \App\Models\NotifikasiModel();
+            
+            $query = $notifikasiModel->where('uuid', $user_uuid);
+            
+            if ($unreadonly) {
+                $query->where('status', 0);
+            }
+            
+            $data = $query->orderBy('created_at', 'DESC')
+                         ->findAll();
+            
+            return $data;
+            
+        } catch (\Exception $e) {
+            return [];
+        }
+    }
+}
+
+
+

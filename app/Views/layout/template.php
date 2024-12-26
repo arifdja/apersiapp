@@ -34,6 +34,10 @@
         opacity: 0;
       }
     }
+    .dropdown-menu-lg
+    {
+      min-width: 400px !important;
+    }
   </style>
   <script type="text/javascript">
     // Set timeout variables.
@@ -95,27 +99,18 @@
     <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
           <i class="far fa-bell"></i>
-          <span class="badge badge-warning navbar-badge">15</span>
+          <span class="badge badge-warning navbar-badge"><?= count(getNotifikasi(session('uuid'), true)) ?></span>
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          <span class="dropdown-item dropdown-header">15 Notifications</span>
-          <div class="dropdown-divider"></div>
+          <span class="dropdown-item dropdown-header"><?= count(getNotifikasi(session('uuid'), true)) ?> Notifikasi</span>
+          <?php foreach(getNotifikasi(session('uuid'), true) as $n): ?>
+            <div class="dropdown-divider"></div>
           <a href="#" class="dropdown-item">
-            <i class="fas fa-envelope mr-2"></i> 4 new messages
-            <span class="float-right text-muted text-sm">3 mins</span>
+            <i class="fas fa-envelope mr-2"></i> <?= $n['label'] ?>
+            <span class="float-right text-muted text-sm"><?= $n['created_at'] ?></span>
           </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-users mr-2"></i> 8 friend requests
-            <span class="float-right text-muted text-sm">12 hours</span>
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-file mr-2"></i> 3 new reports
-            <span class="float-right text-muted text-sm">2 days</span>
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
+          <?php endforeach; ?>
+          <a href="/notifikasi" class="dropdown-item dropdown-footer">Tampilkan semua notifikasi</a>
         </div>
       </li>
       

@@ -95,3 +95,7 @@ $routes->get('/pendana/list_developer', 'Pendana::list_developer',['filter' => '
 $routes->get('/pendana/developer', 'Pendana::developer',['filter' => 'auth']);
 $routes->get('/pendana/pt', 'Pendana::pt',['filter' => 'auth']);
 $routes->post('/pendana/danai_pengajuan', 'Pendana::danai_pengajuan',['filter' => 'auth']);
+
+$routes->get('/notifikasi', 'Notifikasi::index');
+$routes->post('/notifikasi/tandai_dibaca', 'Notifikasi::tandai_dibaca');
+$routes->post('/notifikasi/tandai_semua_dibaca', 'Notifikasi::tandai_semua_dibaca');
