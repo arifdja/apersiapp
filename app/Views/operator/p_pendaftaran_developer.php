@@ -41,6 +41,7 @@
                         <th>No Telp</th>
                         <th>Alamat</th>
                         <th>KTA</th>
+                        <th>DPD/DPP/Korwil</th>
                         <?php if(session()->get('kdgrpuser') == "operator") : ?>
                             <th class="noExl">Aksi</th>
                         <?php endif; ?>
@@ -57,6 +58,7 @@
                         <td><?= $value['notelp']; ?></td>
                         <td><?= $value['alamatinput']; ?>, <?= $value['kecamatan']; ?>, <?= $value['kota']; ?>, <?= $value['kabupaten']; ?>, <?= $value['provinsi']; ?>, kodepos <?= $value['kodepos']; ?></td>
                         <td><a href="<?= base_url() ?>/download/kta/<?= $value['berkaskta']; ?>" target="_blank"><?= $value['kta']; ?></a></td>
+                        <td><?= $value['namadpd']; ?></td>
                         <?php if(session()->get('kdgrpuser') == "operator") : ?>
                         <td id="aksi<?= $value['uuid']; ?>">
                             <?php if ($value['statusvalidator']==0 || $value['statusvalidator']==null) : ?>

@@ -68,7 +68,7 @@ class PTModel extends Model
 		$pendanaModel = new PendanaModel();
 		$pendana = $pendanaModel->getUUIDPendanaByUUIDUser(session()->get('uuid'));
 		
-		$sql = "SELECT a.*,ref_provinsi.namaprovinsi,ref_kabupaten.namakabupaten,ref_kota.namakota ,ref_kecamatan.namakecamatan ,ref_bank.namabank as namabank,rbb.namabank as namabankescrow,ref_dpd.namadpd as namadpd FROM (
+		$sql = "SELECT a.*,ref_provinsi.namaprovinsi,ref_kabupaten.namakabupaten,ref_kota.namakota ,ref_kecamatan.namakecamatan ,ref_bank.namabank as namabank,rbb.namabank as namabankescrow,ref_dpd.namadpd as namadpd,users.nama as namadeveloper FROM (
                     SELECT * 
                     FROM ref_pt t2
                     WHERE EXISTS (
@@ -85,6 +85,7 @@ class PTModel extends Model
                 left join ref_bank on (ref_bank.kodebank = a.kodebank)
                 left join ref_bank rbb on (rbb.kodebank = a.kodebankescrow)
                 left join ref_dpd on (ref_dpd.id = a.dpd)
+                left join users on (users.uuid = a.uuiddeveloper)
 
 				";
 		return $this->db->query($sql,$pendana)->getResultArray();

@@ -40,6 +40,7 @@
                                         <th>No Telp</th>
                                         <th>Alamat</th>
                                         <th>KTA</th>
+                                        <th>DPD</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -56,6 +57,7 @@
                                             <td><?= $value['notelp']; ?></td>
                                             <td><?= $value['alamatinput']; ?>, <?= $value['kecamatan']; ?>, <?= $value['kota']; ?>, <?= $value['kabupaten']; ?>, <?= $value['provinsi']; ?>, kodepos <?= $value['kodepos']; ?></td>
                                             <td><a href="<?= base_url() ?>/download/kta/<?= $value['berkaskta']; ?>" target="_blank"><?= $value['kta']; ?></a></td>
+                                            <td><?= $value['namadpd']; ?></td>
                                         </tr>
                                     <?php endforeach; ?>
                                 </tbody>

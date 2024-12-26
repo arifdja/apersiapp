@@ -8,6 +8,7 @@ use App\Models\KotaModel;
 use App\Models\KecamatanModel;
 use App\Models\KelurahanModel;
 use App\Models\KabupatenModel;
+use App\Models\DPDModel;
 
 
 
@@ -170,12 +171,21 @@ class User extends BaseController
         foreach ($provinsi as $prov) {
             $dropdownprovinsi['provinsi'][$prov['id']] = $prov['namaprovinsi'];
         }
+
+        $model = new DPDModel();
+        $dpd = $model->findAll();
         
+
+        $dropdowndpd['dpd'] = ['' => 'Pilih DPD'];
+        foreach ($dpd as $dp) {
+            $dropdowndpd['dpd'][$dp['id']] = $dp['namadpd'];
+        }
         $data = [
 			'title' => 'Register',
 			'breadcrumb' => ['Home','Profil'],
 			'stringmenu' => $menu, 
 			'dropdownprovinsi' => $dropdownprovinsi,
+			'dropdowndpd' => $dropdowndpd,
 			'validation' => \Config\Services::validation(), 
         ];
 		return view('user/form_register_ajax',$data);
@@ -250,6 +260,13 @@ class User extends BaseController
                     'mime_in' => '{field} harus berformat PDF'
                 ]
             ],
+            'dpd' => [
+                'label' => 'DPD/DPP/Korwil',
+                'rules' => 'trim|required',
+                'errors' => [
+                    'required' => '{field} harus diisi'
+                ]
+            ],
             'pbru' => [
                 'label' => 'Password',
                 'rules' => 'required|regex_match[^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$#!%*?&])[A-Za-z\d@$#!%*?&]{8,}$]',
@@ -315,6 +332,7 @@ class User extends BaseController
                 "notelp" => $this->request->getVar('telp'),
                 "kodepos" => $this->request->getVar('kode_pos'),
                 "kta" => $this->request->getVar('kta'),
+                "dpd" => $this->request->getVar('dpd'),
                 "berkaskta" => $newFileName,
                 "statusvalidator" => 0, // pending
                 "validated_at" => date('Y-m-d H:i:s'),

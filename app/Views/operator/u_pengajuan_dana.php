@@ -85,36 +85,34 @@
                       <td align="right"><?= number_format($p['totalpinjamanlain'],0,',','.') ?></td>
                       <td align="right"><?= number_format($p['totaldisetujuioperator'],0,',','.') ?></td>
                       <td align="right"><?= number_format($p['totaldisetujuiapprover'],0,',','.') ?></td>
+                      
                       <td class="aksi<?= $p['uuid']; ?>">
                         <?php if(session()->get('kdgrpuser')=='operator') : ?>
                           <?php if($p['submited_status']==1) : ?>
                             <?php if($p['jumlahunitinput']==$p['totaldisetujuioperator'] && $p['totaldisetujuioperator']>0) : ?>
-                              <a href="#" kunci="<?= $p['uuid']; ?>" class="badge badge-success teruskan">Teruskan</a>
+                              <button type="button" class="btn btn-xs btn-success teruskan" kunci="<?= $p['uuid']; ?>">Teruskan</button>
                             <?php elseif($p['jumlahunitinput']!=$p['totaldisetujuioperator']) : ?>
-                              <a href="#" kunci="<?= $p['uuid']; ?>" class="badge badge-danger kembalikan">Kembalikan</a>
+                              <button type="button" class="btn btn-xs btn-danger kembalikan" kunci="<?= $p['uuid']; ?>">Kembalikan</button>
                             <?php else : ?>
                               -
                             <?php endif; ?>
-                          <?php elseif($p['submited_status']==3) : ?>
-                            <span class="badge badge-success">Proses Persetujuan</span>
-                          <?php elseif($p['submited_status']==4) : ?>
-                            <span class="badge badge-success">Disetujui</span>
                           <?php else: ?>
                             -
                           <?php endif; ?>
                         <?php elseif(session()->get('kdgrpuser')=='approver') : ?>
                           <?php if($p['submited_status']==3) : ?>
-                            <a href="#" kunci="<?= $p['uuid']; ?>" class="badge badge-success setujui">Proses Persetujuan</a>
-                          <?php elseif($p['submited_status']==4) : ?>
-                            <span class="badge badge-success">Disetujui</span>
+                            <button type="button" class="btn btn-xs btn-success setujui" kunci="<?= $p['uuid']; ?>">Setujui</button>
                           <?php else: ?>
                             -
                           <?php endif; ?>
+                        <?php elseif(session()->get('kdgrpuser')=='pendana') : ?>
+                          -
                         <?php endif; ?>
                       </td>
+                      
                       <td class="pendana<?= $p['uuid']; ?>">
                         <?php if(session()->get('kdgrpuser')=='approver') : ?>
-                          <?php if($p['submited_status']==4) : ?>
+                          <?php if($p['submited_status']==3) : ?>
                             <form action="<?= site_url('approver/kirimkependana') ?>" method="post" id="form-kirimkependana-<?= $p['uuid'] ?>">
                               <?= csrf_field() ?>
                               <input type="hidden" name="uuid" value="<?= $p['uuid'] ?>">
@@ -124,7 +122,24 @@
                                     <option value="<?= $key ?>"><?= $value ?></option>
                                   <?php endforeach; ?>
                                 </select>
-                                <button id="btn-kirimkependana-<?= $p['uuid'] ?>" kunci="<?= $p['uuid'] ?>" type="submit" class="btn btn-xs btn-success kirimkependana">Kirim ke Pendana</button>
+                                <div id="div-kirimkependana-<?= $p['uuid'] ?>">
+                                  <button disabled id="btn-kirimkependana-<?= $p['uuid'] ?>" kunci="<?= $p['uuid'] ?>" type="submit" class="btn btn-xs btn-success kirimkependana">Kirim ke Pendana</button>
+                                </div>
+                              </div>
+                            </form> 
+                          <?php elseif($p['submited_status']==4) : ?>
+                            <form action="<?= site_url('approver/kirimkependana') ?>" method="post" id="form-kirimkependana-<?= $p['uuid'] ?>">
+                              <?= csrf_field() ?>
+                              <input type="hidden" name="uuid" value="<?= $p['uuid'] ?>">
+                              <div class="d-flex">
+                                <select required name="pendana" class="form-control form-control-sm mr-2" id="pendana-<?= $p['uuid'] ?>">
+                                  <?php foreach($dropdownpendana['pendana'] as $key => $value): ?>
+                                    <option value="<?= $key ?>"><?= $value ?></option>
+                                  <?php endforeach; ?>
+                                </select>
+                                <div id="div-kirimkependana-<?= $p['uuid'] ?>">
+                                  <button id="btn-kirimkependana-<?= $p['uuid'] ?>" kunci="<?= $p['uuid'] ?>" type="submit" class="btn btn-xs btn-success kirimkependana">Kirim ke Pendana</button>
+                                </div>
                               </div>
                             </form> 
                           <?php elseif($p['submited_status']==5): ?>
@@ -183,175 +198,6 @@ $(function () {
   });
 });
 </script>
-
-<script>
-$(document).ready(function() {
-  // Handle teruskan button click
-  $(".kembalikan").click(function(e) {
-    e.preventDefault();
-    var uuid = $(this).attr('kunci');
-    var csrfHash = $(".csrf").val();
-    var csrfToken = $(".csrf").attr('name');
-    
-    $.ajax({
-      type: "post",
-      headers: {'X-Requested-With': 'XMLHttpRequest'},
-      url: "<?= base_url(); ?>/operator/kembalikan_pengajuan_dana",
-      data: {
-        [csrfToken]: csrfHash,
-        uuid: uuid,
-      },
-      dataType: "json",
-      success: function(response) {
-        if(response.status == 'success') {
-          $(".csrf").val(response.csrfHash);
-          $(".csrf").attr('name',response.csrfToken);
-          $(".aksi"+response.uuid).html('-');
-          Swal.fire({
-            icon: 'success',
-            title: 'Sukses',
-            text: response.message
-          });
-        }
-      },
-      error: function(xhr, status, error) {
-        $(".csrf").val(xhr.responseJSON.csrfHash);
-        $(".csrf").attr('name',xhr.responseJSON.csrfToken);
-        Swal.fire({
-          icon: 'error',
-          title: 'Gagal',
-          text: response.message
-        });
-      }
-    });
-  });
-
-  // Handle kembalikan button click  
-  $(".teruskan").click(function(e) {
-    e.preventDefault();
-    var uuid = $(this).attr('kunci');
-    var csrfHash = $(".csrf").val();
-    var csrfToken = $(".csrf").attr('name');
-    
-    $.ajax({
-      type: "post",
-      headers: {'X-Requested-With': 'XMLHttpRequest'},
-      url: "<?= base_url(); ?>/operator/teruskan_pengajuan_dana",
-      data: {
-        [csrfToken]: csrfHash,
-        uuid: uuid,
-      },
-      dataType: "json",
-      success: function(response) {
-        if(response.status == 'success') {
-          $(".csrf").val(response.csrfHash);
-          $(".csrf").attr('name',response.csrfToken);
-          $(".aksi"+response.uuid).html('-');
-          Swal.fire({
-            icon: 'success',
-            title: 'Sukses',
-            text: response.message
-          });
-        }
-      },
-      error: function(xhr, status, error) {
-        $(".csrf").val(xhr.responseJSON.csrfHash);
-        $(".csrf").attr('name',xhr.responseJSON.csrfToken);
-        Swal.fire({
-          icon: 'error',
-          title: 'Gagal',
-          text: response.message
-        });
-      }
-    });
-  });
-
-  // Handle setujui button click
-  $(".setujui").click(function(e) {
-    e.preventDefault();
-    var uuid = $(this).attr('kunci');
-    var csrfHash = $(".csrf").val();
-    var csrfToken = $(".csrf").attr('name');
-    
-    $.ajax({
-      type: "post",
-      headers: {'X-Requested-With': 'XMLHttpRequest'},
-      url: "<?= base_url(); ?>/approver/setujui_pengajuan_dana",
-      data: {
-        [csrfToken]: csrfHash,
-        uuid: uuid,
-      },
-      dataType: "json",
-      success: function(response) {
-        if(response.status == 'success') {
-          $(".csrf").val(response.csrfHash);
-          $(".csrf").attr('name',response.csrfToken);
-          $(".aksi"+response.uuid).html('<span class="badge badge-success">Disetujui</span>');
-          Swal.fire({
-            icon: 'success',
-            title: 'Sukses',
-            text: response.message
-          });
-        }
-      },
-      error: function(xhr, status, error) {
-        $(".csrf").val(xhr.responseJSON.csrfHash);
-        $(".csrf").attr('name',xhr.responseJSON.csrfToken);
-        Swal.fire({
-          icon: 'error',
-          title: 'Gagal',
-          text: response.message
-        });
-      }
-    });
-  });
-
-  // Handle kirim ke pendana button click
-  $(".kirimkependana").click(function(e) {
-    e.preventDefault();
-    var uuid = $(this).attr('kunci');
-    var pendana = $("#pendana-"+uuid).val();
-    var pendanaText = $("#pendana-"+uuid+" option:selected").text();
-    var csrfHash = $(".csrf").val();
-    var csrfToken = $(".csrf").attr('name');
-
-    $.ajax({
-      type: "post",
-      headers: {'X-Requested-With': 'XMLHttpRequest'},
-      url: "<?= base_url(); ?>/approver/kirimkependana",
-      data: {
-        [csrfToken]: csrfHash,
-        uuid: uuid,
-        pendana: pendana,
-        pendanaText: pendanaText,
-      },
-      dataType: "json",
-      success: function(response) {
-        if(response.status == 'success') {
-          $(".csrf").val(response.csrfHash);
-          $(".csrf").attr('name',response.csrfToken);
-          $(".pendana"+response.uuid).html(response.pendanaText);
-          Swal.fire({
-            icon: 'success',
-            title: 'Sukses',
-            text: response.message
-          });
-        }
-      },
-      error: function(xhr, status, error) {
-        $(".csrf").val(xhr.responseJSON.csrfHash);
-        $(".csrf").attr('name',xhr.responseJSON.csrfToken);
-        Swal.fire({
-          icon: 'error',
-          title: 'Gagal',
-          text: response.message
-        });
-      }
-    });
-  });
-});
-</script>
-
 <script>
 $(document).ready(function() {
   let alamatVisible = false;

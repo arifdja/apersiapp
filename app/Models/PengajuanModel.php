@@ -103,7 +103,7 @@ class PengajuanModel extends Model
             $builder->whereIn('uuidpt',$uuidpt);
         } 
         if($filter == "operator"){
-            $builder->whereIn('trx_pengajuan.submited_status',[1,2,3,4]);
+            $builder->whereIn('trx_pengajuan.submited_status',[1,2,3,4,5]);
         }
         if($filter == "approver"){
             $builder->whereIn('trx_pengajuan.submited_status',[3,4,5]);

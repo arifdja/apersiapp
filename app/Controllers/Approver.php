@@ -247,6 +247,9 @@ class Approver extends BaseController
     
     public function kirimkependana()
     {
+
+        // echo "tes";
+        // die();
         // Validasi request AJAX
         if(!$this->request->isAJAX()){
             return $this->response->setJSON(['message' => 'Invalid request'])->setStatusCode(400);

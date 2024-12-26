@@ -32,7 +32,6 @@
                       <th>SK<br>Kemenkumham</th>
                       <th>Rekening<br>Operasional</th>
                       <th>Rekening<br>Escrow</th>
-                      <th>DPD</th>
                       <th>Alamat</th>
                       <th>Status<br>Validator</th>
                     </tr>
@@ -54,7 +53,6 @@
                       <td><a href="<?= base_url() ?>/download/sk_kemenkumham/<?= $p['berkasskkemenkumham'] ?>" target="_blank">Lihat</a></td>
                       <td><a href="<?= base_url() ?>/download/rekening/<?= $p['berkasrekening'] ?>" target="_blank"><?= $p['rekening'] ?></a> <?= $p['namabank'] ?></td>
                       <td><a href="<?= base_url() ?>/download/rekening_escrow/<?= $p['berkasrekeningescrow'] ?>" target="_blank"><?= $p['rekeningescrow'] ?></a> <?= $p['namabankescrow'] ?></td>
-                      <td><?= $p['namadpd'] ?></td>
                       <td><?= $p['namaprovinsi'] ?> - <?= $p['namakabupaten'] ?> - <?= $p['namakecamatan'] ?> - <?= $p['alamatinput'] ?></td>
                       <td>
                         <?= ($p['statusvalidator'] == '0' || $p['statusvalidator'] == '') ? '<span class="badge bg-warning">Menunggu Validasi</span>' : '' ?>

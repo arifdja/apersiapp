@@ -114,13 +114,14 @@
                                                     <span id="spankode_pos" style="color: red;"></span>
                                               </div>
                                               
-                                          </div>
-                                          <div class="col-md-6">
                                               <div class="form-group">
                                                     <label for="detail_alamat">Detail Alamat Developer</label>
                                                     <textarea id="detail_alamat"  name="detail_alamat" class="form-control" rows="3" placeholder="Masukkan detail alamat seperti nama jalan, nomor rumah, RT/RW" required><?= old('detail_alamat') ?></textarea>
                                                     <span id="spanalamat" style="color: red;"></span>
                                               </div>
+                                              
+                                          </div>
+                                          <div class="col-md-6">
                                               <div class="form-group">
                                                     <label for="exampleInputFile">Kartu Tanda Anggota (KTA)</label>
                                                     <input type="text" name="kta" 
@@ -142,6 +143,15 @@
                                                     </div>
                                                     <span id="spanberkaskta" style="color: red;"></span>
                                               </div>
+
+                                              
+
+                                                <div class="form-group">
+                                                <label for="dropdowndpd">Pilih DPD/DPP/Korwil</label>  
+                                                <?= create_dropdown('dpd', $dropdowndpd['dpd'], old('dropdowndpd'), ['class' => 'form-control', 'id' => 'dropdowndpd', 'required' => 'required']); ?>
+                                                <span id="spandropdowndpd" style="color: red;"></span>
+                                                </div>
+
                                               <div class="form-group">
                                                     <label for="pbru">Password</label>
                                                     <input type="password" 
@@ -185,12 +195,26 @@
                                                       <button type="submit" class="btn btn-primary" style="background-color: #35B5FE !important; border:none">Proses Pendaftaran</button>
                                                 </div>
                                               </div>
+
+                                              <div id="divberkas" class="form-group">
+                                                    <div class="col-sm-6">
+                                                        <div class="h6 text-bold">
+                                                            Download template form kredit <a href="<?= base_url('download/form_kredit') ?>" target="_blank">disini</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                
+                                               
+
                                           </div>
                                     </div>
                                 </div>
                                 
                           </div>
                           <div class="card-footer">
+                            
+                           
                           <div class="form-group">
                             <div class="col-sm-6">
                              <a href="<?= site_url('login') ?>" class="btn btn-info" style="background-color: #35B5FE !important; border:none">Kembali ke Halaman Login</a>
@@ -255,7 +279,8 @@ $(document).ready(function () {
                 }
             },
             error: function (xhr, status, error) {
-                clearErrors();
+                $('span[id^="span"]').text('');
+                $('.is-invalid').removeClass('is-invalid');
                 Swal.close();
                 
                 if(xhr.responseJSON.status == 'error'){
@@ -464,15 +489,6 @@ $(document).ready(function () {
 <script>
 $(function () {
     bsCustomFileInput.init();
-});
-</script>
-
-<script>
-$(document).ready(function() {
-    function clearErrors() {
-        $('span[id^="span"]').text('');
-        $('.is-invalid').removeClass('is-invalid');
-    }
 });
 </script>
 <?= $this->endSection(); ?>

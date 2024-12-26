@@ -231,7 +231,6 @@
 <?= $this->endSection(); ?>
 
 <?= $this->section('south'); ?>
-
 <script>
     $(document).ready(function () {
       
@@ -346,13 +345,14 @@
                     }
                 },
                 error: function (xhr, status, error) {
+                  $('span[id^="span"]').text('');
+                  $('.is-invalid').removeClass('is-invalid');
                     Swal.fire({
                         icon: 'error',
-                        title: 'Error',
+                        title: 'Error', 
                         text: 'Gagal menyimpan data'
                       });
                     $('#<?= csrf_token() ?>').val(xhr.responseJSON.csrfHash);
-                    clearErrors();
                     // Handle error response
                     if(xhr.responseJSON.status == 'error'){
                       if(xhr.responseJSON.message.sertifikat){
@@ -596,17 +596,6 @@
 <script>
 $(function () {
   bsCustomFileInput.init();
-});
-</script>
-<script>
-$(document).ready(function() {
-  function clearErrors() {
-    // Menghapus semua pesan error pada span
-    $('span[id^="span"]').text('');
-    
-    // Menghapus semua class is-invalid
-    $('.is-invalid').removeClass('is-invalid');
-  }
 });
 </script>
 <?= $this->endSection(); ?>

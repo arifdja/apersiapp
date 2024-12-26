@@ -31,7 +31,6 @@
                       <th>Detail<br>Unit</th>
                       <th>Nama<br> PT</th>
                       <th>Surat <br>Permohonan</th>
-                      <th>DPP/DPD/Korwil</th>
                       <th class="alamat-column" style="display:none">Alamat<br> Perumahan</th> 
                       <th class="alamat-column" style="display:none">Detail<br>Alamat</th>
                       <th>Site<br>Plan</th>
@@ -58,7 +57,6 @@
                       </td>
                       <td><?= $p['namapt'] ?></td>
                       <td><a href="<?= base_url() ?>/download/surat_permohonan/<?= $p['berkassuratpermohonan'] ?>" target="_blank">Lihat</a></td>
-                      <td><?= $p['namadpd'] ?></td>
                       <td class="alamat-column" style="display:none"><?= $p['namaprovinsi'] ?> - <?= $p['namakabupaten'] ?> - <?= $p['namakecamatan'] ?></td>
                       <td class="alamat-column" style="display:none"><?= $p['alamatperumahaninput'] ?></td>
                       <td><a href="<?= base_url() ?>/download/site_plan/<?= $p['berkassiteplan'] ?>" target="_blank">Lihat</a></td>
@@ -70,18 +68,18 @@
                       <td align="right"><?= number_format($p['totalpinjamankyg'],0,',','.') ?></td>
                       <td align="right"><?= number_format($p['totalpinjamanlain'],0,',','.') ?></td>
                       <td id="ajukan_dana<?= $p['uuid'] ?>">
-                      <?php if($p['submited_status'] == 0 || $p['submited_status'] == ''): ?>
-                        <span class="badge bg-success">Simpan</span>
-                        <?php elseif($p['submited_status'] == 1): ?>
-                        <span class="badge bg-success">Proses Pengecekan</span>
-                        <?php elseif($p['submited_status'] == 2): ?>
-                        <span class="badge bg-danger">Dikembalikan</span>
-                        <?php elseif($p['submited_status'] == 3): ?>
-                        <span class="badge bg-success">Proses Persetujuan</span>
-                        <?php elseif($p['submited_status'] == 4): ?>
-                        <span class="badge bg-success">Disetujui</span>
-                        <?php else: ?>
-                          -
+                        <?php if($p['submited_status']=='' || $p['submited_status']==null) : ?>
+                          <span class="badge badge-warning">Draft</span>
+                        <?php elseif($p['submited_status']==1) : ?> 
+                          <span class="badge badge-warning">Proses Pengecekan</span>
+                        <?php elseif($p['submited_status']==2) : ?>
+                          <span class="badge badge-danger">Dikembalikan</span>
+                        <?php elseif($p['submited_status']==3) : ?>
+                          <span class="badge badge-success">Proses Persetujuan</span>
+                        <?php elseif($p['submited_status']==4) : ?>
+                          <span class="badge badge-success">Disetujui</span>
+                        <?php elseif($p['submited_status']==5) : ?>
+                          <span class="badge badge-success">Terkirim ke Pendana</span>
                         <?php endif; ?>
                       </td>
                       <td id="aksi_ajukan_dana<?= $p['uuid'] ?>">
@@ -145,7 +143,7 @@
           if(response.status == 'success') {
             $(".csrf_hash").val(response.csrfHash);
             $(".csrf_token").val(response.csrfToken);
-            $("#ajukan_dana"+uuid).html('<span class="badge bg-success">Proses</span>');
+            $("#ajukan_dana"+uuid).html('<span class="badge bg-success">Proses Pengecekan</span>');
             $("#aksi_ajukan_dana"+uuid).html('-');
             Swal.fire({ 
               icon: 'success',

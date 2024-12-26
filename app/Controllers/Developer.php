@@ -291,14 +291,7 @@ class Developer extends BaseController
                     'ext_in' => '{field} harus berformat PDF',
                     'mime_in' => '{field} harus berformat PDF'
                 ]
-            ],
-            'dpd' => [
-                'label' => 'DPD/DPP/Korwil',
-                'rules' => 'trim|required',
-                'errors' => [
-                    'required' => '{field} harus diisi'
-                ]
-            ],
+            ]
         ];
 
         if (!$this->validate($validationRules)) {
@@ -379,7 +372,6 @@ class Developer extends BaseController
                 "berkasrekening" => $newfilenameberkasrekening,
                 "berkasrekeningescrow" => $newfilenameberkasrekeningescrow,
                 "berkasskkemenkumham" => $newfilenameberkasskkemenkumham,
-                "dpd" => $this->request->getVar('dpd'),
                 "statusvalidator" => 0,
             ];
 
@@ -616,9 +608,7 @@ class Developer extends BaseController
                     <a href="'.base_url('download/ktp_penanggungjawab/'.$data['berkasktppj']).'" class="form-control" style="text-decoration: none; background-color: #e9ecef; margin-top: 10px;">Penanggung Jawab : '.$data['namapj'].'</a>
                  
                     <a href="'.base_url('download/npwp_penanggungjawab/'.$data['berkasnpwppj']).'" class="form-control" style="text-decoration: none; background-color: #e9ecef; margin-top: 10px;">NPWP Penanggung Jawab : '.$data['npwppj'].'</a>
-                       
-                    <a href="#" class="form-control" style="text-decoration: none; background-color: #e9ecef; margin-top: 10px;">DPD : '.$data['namadpd'].'</a>
-                    
+                                           
                   </div>
                   
                   ';  

@@ -39,7 +39,6 @@
                     <th>Lihat<br>Unit</th>
                     <th>Nama PT</th>
                     <th>Surat <br>Permohonan</th>
-                    <th class="detail-column" style="display:none">DPP/DPD/Korwil</th>
                     <th class="detail-column" style="display:none">Alamat<br> Perumahan</th>
                     <th class="detail-column" style="display:none">Detail Alamat</th>
                     <th>Site Plan</th>
@@ -51,6 +50,7 @@
                     <th>Pinjaman Lain</th>
                     <th>Disetujui Operator</th>
                     <th>Disetujui Approver</th>
+                    <th>Status</th>
                     <th>Aksi</th>
                     <th style="min-width: 150px;">Pendana</th>
                   </tr>
@@ -71,7 +71,6 @@
                       </td>
                       <td><?= $p['namapt'] ?></td>
                       <td><a href="<?= base_url() ?>/download/surat_permohonan/<?= $p['berkassuratpermohonan'] ?>" target="_blank">Lihat</a></td>
-                      <td class="detail-column" style="display:none"><?= $p['namadpd'] ?></td>
                       <td class="detail-column" style="display:none"><?= $p['namaprovinsi'] ?> - <?= $p['namakabupaten'] ?> - <?= $p['namakecamatan'] ?></td>
                       <td class="detail-column" style="display:none"><?= $p['alamatperumahaninput'] ?></td>
                       <td><a href="<?= base_url() ?>/download/site_plan/<?= $p['berkassiteplan'] ?>" target="_blank">Lihat</a></td>
@@ -83,36 +82,49 @@
                       <td align="right"><?= number_format($p['totalpinjamanlain'],0,',','.') ?></td>
                       <td align="right"><?= number_format($p['totaldisetujuioperator'],0,',','.') ?></td>
                       <td align="right"><?= number_format($p['totaldisetujuiapprover'],0,',','.') ?></td>
+                      
+                      <td id="status<?= $p['uuid'] ?>">
+                        <?php if($p['submited_status']=='' || $p['submited_status']==null) : ?>
+                          <span class="badge badge-warning">Draft</span>
+                        <?php elseif($p['submited_status']==1) : ?> 
+                          <span class="badge badge-warning">Proses Pengecekan</span>
+                        <?php elseif($p['submited_status']==2) : ?>
+                          <span class="badge badge-danger">Dikembalikan</span>
+                        <?php elseif($p['submited_status']==3) : ?>
+                          <span class="badge badge-success">Proses Persetujuan</span>
+                        <?php elseif($p['submited_status']==4) : ?>
+                          <span class="badge badge-success">Disetujui</span>
+                        <?php elseif($p['submited_status']==5) : ?>
+                          <span class="badge badge-success">Terkirim ke Pendana</span>
+                        <?php endif; ?>
+                      </td>
                       <td class="aksi<?= $p['uuid']; ?>">
                         <?php if(session()->get('kdgrpuser')=='operator') : ?>
                           <?php if($p['submited_status']==1) : ?>
                             <?php if($p['jumlahunitinput']==$p['totaldisetujuioperator'] && $p['totaldisetujuioperator']>0) : ?>
-                              <a href="#" kunci="<?= $p['uuid']; ?>" class="badge badge-success teruskan">Teruskan</a>
+                              <button type="button" class="btn btn-xs btn-success teruskan" kunci="<?= $p['uuid']; ?>">Teruskan</button>
                             <?php elseif($p['jumlahunitinput']!=$p['totaldisetujuioperator']) : ?>
-                              <a href="#" kunci="<?= $p['uuid']; ?>" class="badge badge-danger kembalikan">Kembalikan</a>
+                              <button type="button" class="btn btn-xs btn-danger kembalikan" kunci="<?= $p['uuid']; ?>">Kembalikan</button>
                             <?php else : ?>
                               -
                             <?php endif; ?>
-                          <?php elseif($p['submited_status']==3) : ?>
-                            <span class="badge badge-success">Proses Persetujuan</span>
-                          <?php elseif($p['submited_status']==4) : ?>
-                            <span class="badge badge-success">Disetujui</span>
                           <?php else: ?>
                             -
                           <?php endif; ?>
                         <?php elseif(session()->get('kdgrpuser')=='approver') : ?>
                           <?php if($p['submited_status']==3) : ?>
-                            <a href="#" kunci="<?= $p['uuid']; ?>" class="badge badge-success setujui">Proses Persetujuan</a>
-                          <?php elseif($p['submited_status']==4) : ?>
-                            <span class="badge badge-success">Disetujui</span>
+                            <button type="button" class="btn btn-xs btn-success setujui" kunci="<?= $p['uuid']; ?>">Setujui</button>
                           <?php else: ?>
                             -
                           <?php endif; ?>
+                        <?php elseif(session()->get('kdgrpuser')=='pendana') : ?>
+                          -
                         <?php endif; ?>
                       </td>
+                      
                       <td class="pendana<?= $p['uuid']; ?>">
                         <?php if(session()->get('kdgrpuser')=='approver') : ?>
-                          <?php if($p['submited_status']==4) : ?>
+                          <?php if($p['submited_status']==3) : ?>
                             <form action="<?= site_url('approver/kirimkependana') ?>" method="post" id="form-kirimkependana-<?= $p['uuid'] ?>">
                               <?= csrf_field() ?>
                               <input type="hidden" name="uuid" value="<?= $p['uuid'] ?>">
@@ -122,7 +134,24 @@
                                     <option value="<?= $key ?>"><?= $value ?></option>
                                   <?php endforeach; ?>
                                 </select>
-                                <button id="btn-kirimkependana-<?= $p['uuid'] ?>" kunci="<?= $p['uuid'] ?>" type="submit" class="btn btn-xs btn-success kirimkependana">Kirim ke Pendana</button>
+                                <div id="div-kirimkependana-<?= $p['uuid'] ?>">
+                                  <button disabled id="btn-kirimkependana-<?= $p['uuid'] ?>" kunci="<?= $p['uuid'] ?>" type="submit" class="btn btn-xs btn-success kirimkependana">Kirim ke Pendana</button>
+                                </div>
+                              </div>
+                            </form> 
+                          <?php elseif($p['submited_status']==4) : ?>
+                            <form action="<?= site_url('approver/kirimkependana') ?>" method="post" id="form-kirimkependana-<?= $p['uuid'] ?>">
+                              <?= csrf_field() ?>
+                              <input type="hidden" name="uuid" value="<?= $p['uuid'] ?>">
+                              <div class="d-flex">
+                                <select required name="pendana" class="form-control form-control-sm mr-2" id="pendana-<?= $p['uuid'] ?>">
+                                  <?php foreach($dropdownpendana['pendana'] as $key => $value): ?>
+                                    <option value="<?= $key ?>"><?= $value ?></option>
+                                  <?php endforeach; ?>
+                                </select>
+                                <div id="div-kirimkependana-<?= $p['uuid'] ?>">
+                                  <button id="btn-kirimkependana-<?= $p['uuid'] ?>" kunci="<?= $p['uuid'] ?>" type="submit" class="btn btn-xs btn-success kirimkependana">Kirim ke Pendana</button>
+                                </div>
                               </div>
                             </form> 
                           <?php elseif($p['submited_status']==5): ?>
@@ -184,6 +213,8 @@ $(function () {
 
 <script>
 $(document).ready(function() {
+  
+  <?php if(session()->get('kdgrpuser')=='operator'): ?>
   // Handle teruskan button click
   $(".kembalikan").click(function(e) {
     e.preventDefault();
@@ -204,7 +235,8 @@ $(document).ready(function() {
         if(response.status == 'success') {
           $(".csrf").val(response.csrfHash);
           $(".csrf").attr('name',response.csrfToken);
-          $(".aksi"+response.uuid).html('-');
+          $(".aksi"+response.uuid).html('-'); 
+          $("#status"+response.uuid).html('<span class="badge badge-danger">Dikembalikan</span>');
           Swal.fire({
             icon: 'success',
             title: 'Sukses',
@@ -245,6 +277,7 @@ $(document).ready(function() {
           $(".csrf").val(response.csrfHash);
           $(".csrf").attr('name',response.csrfToken);
           $(".aksi"+response.uuid).html('-');
+          $("#status"+response.uuid).html('<span class="badge badge-success">Proses Persetujuan</span>');
           Swal.fire({
             icon: 'success',
             title: 'Sukses',
@@ -263,6 +296,10 @@ $(document).ready(function() {
       }
     });
   });
+
+<?php endif; ?>
+
+<?php if(session()->get('kdgrpuser')=='approver'): ?>
 
   // Handle setujui button click
   $(".setujui").click(function(e) {
@@ -284,7 +321,9 @@ $(document).ready(function() {
         if(response.status == 'success') {
           $(".csrf").val(response.csrfHash);
           $(".csrf").attr('name',response.csrfToken);
-          $(".aksi"+response.uuid).html('<span class="badge badge-success">Disetujui</span>');
+          $(".aksi"+response.uuid).html('-');
+          $("#status"+response.uuid).html('<span class="badge badge-success">Disetujui</span>');
+          $("#btn-kirimkependana-"+response.uuid).prop('disabled', false);
           Swal.fire({
             icon: 'success',
             title: 'Sukses',
@@ -303,7 +342,6 @@ $(document).ready(function() {
       }
     });
   });
-
   // Handle kirim ke pendana button click
   $(".kirimkependana").click(function(e) {
     e.preventDefault();
@@ -329,6 +367,8 @@ $(document).ready(function() {
           $(".csrf").val(response.csrfHash);
           $(".csrf").attr('name',response.csrfToken);
           $(".pendana"+response.uuid).html(response.pendanaText);
+          $(".aksi"+response.uuid).html('-');
+          $("#status"+response.uuid).html('<span class="badge badge-success">Dikirim ke Pendana</span>');
           Swal.fire({
             icon: 'success',
             title: 'Sukses',
@@ -347,6 +387,8 @@ $(document).ready(function() {
       }
     });
   });
+  <?php endif; ?>
+
 });
 </script>
 

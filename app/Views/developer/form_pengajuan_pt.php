@@ -243,12 +243,6 @@
               <span id="spanberkasrekeningescrow" style="color: red;"></span>
             </div>
 
-            <div class="form-group">
-              <label for="dropdowndpd">Pilih DPD/DPP/Korwil</label>  
-              <?= create_dropdown('dpd', $dropdowndpd['dpd'], old('dropdowndpd'), ['class' => 'form-control', 'id' => 'dropdowndpd', 'required' => 'required']); ?>
-              <span id="spandropdowndpd" style="color: red;"></span>
-            </div>
-
           </div>
           <div class="card-footer">
             <div class="form-group">
@@ -417,10 +411,6 @@ $(document).ready(function () {
                       if(xhr.responseJSON.message.berkasrekeningescrow){
                         $('#berkasrekeningescrow').addClass('is-invalid');
                         $('#spanberkasrekeningescrow').html(xhr.responseJSON.message.berkasrekeningescrow);
-                      }
-                      if(xhr.responseJSON.message.dpd){
-                        $('#dropdowndpd').addClass('is-invalid');
-                        $('#spandropdowndpd').html(xhr.responseJSON.message.dpd);
                       }
                     }
                 }
@@ -604,7 +594,6 @@ function clearForm() {
   $('#spanbankescrow').html('');
   $('#spanrekeningescrow').html('');
   $('#spanberkasrekeningescrow').html('');
-  $('#spandropdowndpd').html('');
 
   // Menghapus class is-invalid
   $('#nama_pt').removeClass('is-invalid');
@@ -628,7 +617,6 @@ function clearForm() {
   $('#bankescrow').removeClass('is-invalid');
   $('#rekeningescrow').removeClass('is-invalid');
   $('#berkasrekeningescrow').removeClass('is-invalid');
-  $('#dropdowndpd').removeClass('is-invalid');
 }
 </script>
 
