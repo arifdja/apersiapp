@@ -402,7 +402,7 @@ class User extends BaseController
                 'email_token_expired' => null
             ];
             $userModel->where('uuid',$user['uuid'])->set($data)->update();
-            setNotifikasi(env('uuiddpp'),'Verifikasi Pendaftaran Developer',$user['email']);
+            setNotifikasi(env('uuiddpp'),'Verifikasi Pendaftaran Developer',$user['email'],'/operator/approval_developer');
             return redirect()->to('/login')->with('success', 'Email berhasil diverifikasi. Menunggu validasi admin.');
         }
 
