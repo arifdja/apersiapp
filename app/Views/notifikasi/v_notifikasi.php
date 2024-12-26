@@ -40,7 +40,7 @@
                                 <td><?= $key+1; ?></td>
                                 <td><?= $notif['label'] ?></td>
                                 <td><?= $notif['isi'] ?></td>
-                                <td><?= tanggal_hari_indo(date('Y-m-d', strtotime($notif['created_at']))) ?></td>
+                                <td><?= tanggal_hari_indo(date('Y-m-d', strtotime($notif['created_at']))) . ' Pukul ' . date('H:i', strtotime($notif['created_at'])) ?></td>
                                 <td class="notifclass" id="notif-<?= $notif['id'] ?>">
                                     <?php if($notif['status'] == 0): ?>
                                         <button type="button" class="btn btn-xs btn-info tandaiDibaca" data-id="<?= $notif['id'] ?>">
@@ -102,7 +102,7 @@ $(document).ready(function() {
             dataType: 'json',
             success: function(response) {
                 if(response.status == 'success') {
-                    $(`#notif-${id}`).html('<button type="button" class="btn btn-xs btn-info"><i class="fa fa-envelope-open"></i></button>');
+                    $(`#notif-${id}`).html('<button type="button" class="btn btn-xs btn-info"><i class="fa fa-envelope-open"></i></button><a href="<?= $notif['url'] ?>" class="btn btn-xs btn-info"><i class="fa fa-arrow-right"></i></a>');
                     // Update CSRF hash
                     $('#csrfToken').val(response.csrfToken);
                     $('#csrfHash').val(response.csrfHash);
@@ -131,7 +131,7 @@ $(document).ready(function() {
             dataType: 'json',
             success: function(response) {
                 if(response.status == 'success') {
-                    $('.notifclass').html('<button type="button" class="btn btn-xs btn-info"><i class="fa fa-envelope-open"></i></button>');
+                    $('.notifclass').html('<button type="button" class="btn btn-xs btn-info"><i class="fa fa-envelope-open"></i></button><a href="<?= $notif['url'] ?>" class="btn btn-xs btn-info"><i class="fa fa-arrow-right"></i></a>');
                     // Update CSRF hash
                     $('#csrfToken').val(response.csrfToken);
                     $('#csrfHash').val(response.csrfHash);

@@ -186,8 +186,8 @@ class Operator extends BaseController
 
         if ($update) {
             
-            $sendMail = sendMail($userData['email'],'Pengajuan PT Disetujui','Pengajuan PT '.$ptData['namapt'].' telah disetujui oleh admin.');
- 
+            // $sendMail = sendMail($userData['email'],'Pengajuan PT Disetujui','Pengajuan PT '.$ptData['namapt'].' telah disetujui oleh admin.');
+            setNotifikasi($uuiddeveloper, 'PT Baru', 'PT baru telah disetujui oleh admin', '/developer/monitoring_pengajuan_pt');
             return $this->response->setJSON([
                 'status' => 'success',
                 'message' => 'Data berhasil disetujui!',
@@ -216,6 +216,7 @@ class Operator extends BaseController
 
         $uuid = $this->request->getPost('uuid');
         $uuiddeveloper = $this->request->getPost('uuiddeveloper');
+        $keteranganpenolakan = $this->request->getPost('keteranganpenolakan');
 
         $user = new UserModel();
         $userData = $user->where('uuid',$uuiddeveloper)->first();
@@ -223,8 +224,8 @@ class Operator extends BaseController
         $pt = new PTModel();
         $ptData = $pt->where('uuid',$uuid)->first();
 
-        $sendMail = sendMail($userData['email'],'Pengajuan PT Ditolak','Pengajuan PT '.$ptData['namapt'].' ditolak oleh admin dengan keterangan penolakan '.$this->request->getPost('keteranganpenolakan'));
-
+        // $sendMail = sendMail($userData['email'],'Pengajuan PT Ditolak','Pengajuan PT '.$ptData['namapt'].' ditolak oleh admin dengan keterangan penolakan '.$this->request->getPost('keteranganpenolakan'));
+        setNotifikasi($uuiddeveloper, 'PT Baru', 'PT baru telah ditolak oleh admin karena '.$keteranganpenolakan, '/developer/monitoring_pengajuan_pt');
         // $filePath = WRITEPATH . 'uploads/kta/'.$userData['berkaskta'];
         // delete_file($filePath);
         
@@ -232,7 +233,7 @@ class Operator extends BaseController
             'statusvalidator' => 2,
             'validated_at' => date('Y-m-d H:i:s'),
             'validated_by' => session()->get('uuid'),
-            'keteranganpenolakan' => $this->request->getPost('keteranganpenolakan')
+            'keteranganpenolakan' => $keteranganpenolakan
         ];
 
         $pt = new PTModel();

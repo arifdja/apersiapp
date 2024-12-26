@@ -1085,10 +1085,10 @@ if (!function_exists('setNotifikasi')) {
             if($notifikasiModel->insert($data)) {
                 return true;
             }
-            return false;
+            return true; // tetap lanjut meskipun error
             
         } catch (\Exception $e) {
-            return false;
+            return true; // tetap lanjut meskipun error
         }
     }
 }

@@ -380,6 +380,8 @@ class Developer extends BaseController
                 throw new \RuntimeException('Failed to save data to database');
             }
 
+            setNotifikasi(env('uuiddpp'), 'PT Baru', 'PT baru telah dikirimkan untuk validasi', '/operator/approval_pt');
+
             return $this->response->setJSON([
                 'status' => 'success',
                 'message' => 'Data berhasil disimpan!',
@@ -544,13 +546,13 @@ class Developer extends BaseController
                 "rekeningescrow" => $datapt['rekeningescrow'],
                 "berkasrekeningescrow" => $datapt['berkasrekeningescrow'],
                 "berkasskkemenkumham" => $datapt['berkasskkemenkumham'],
-                "dpd" => $datapt['dpd'],
             ];
 
             $headerpengajuan = new PengajuanModel();
             $save = $headerpengajuan->save($data);
 
             if ($save) { 
+                setNotifikasi(env('uuiddpp'), 'Pengajuan Dana', 'Pengajuan dana telah dikirimkan untuk validasi', '/operator/list_developer');
                 return $this->response->setJSON([
                     'status' => 'success',
                     'message' => 'Data berhasil disimpan!',
@@ -588,9 +590,8 @@ class Developer extends BaseController
         }
 
         $pt = new PTModel();
-        $data = $pt->select('ref_pt.*, ref_bank.namabank, bank_escrow.namabank as namabankescrow, ref_dpd.namadpd')
+        $data = $pt->select('ref_pt.*, ref_bank.namabank, bank_escrow.namabank as namabankescrow')
             ->join('ref_bank','ref_bank.kodebank = ref_pt.kodebank','left')
-            ->join('ref_dpd','ref_dpd.id = ref_pt.dpd','left')
             ->join('ref_bank as bank_escrow','bank_escrow.kodebank = ref_pt.kodebankescrow','left')
             ->where('uuid', $uuid)->first();
 
@@ -1564,7 +1565,7 @@ class Developer extends BaseController
                 ])->setStatusCode(400);
             }
             
-
+            setNotifikasi(env('uuiddpp'), 'Pengajuan Dana', 'Pengajuan dana telah dikirimkan untuk validasi', '/operator/approval_dana/'.session()->get('uuid'));
             return $this->response->setJSON([
                 'status' => 'success',
                 'message' => 'Dana berhasil di ajukan. Mohon tunggu konfirmasi admin',
