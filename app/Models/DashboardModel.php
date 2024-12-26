@@ -15,9 +15,14 @@ class DashboardModel extends Model
             $uuidpt = $this->getUUIDPT(session()->get('uuid'));
             $uuidpt = array_column($uuidpt,'uuid');
 
+            if(empty($uuidpt)){
+                return [];
+            } 
+
             $model = new PengajuanModel();
             $model->whereIn('uuidpt',$uuidpt);
             $pengajuan = $model->findAll();
+            dd($pengajuan);
             $uuidheader = array_column($pengajuan,'uuid');
 
             $model = new PengajuanDetailModel();

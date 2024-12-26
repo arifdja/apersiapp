@@ -103,7 +103,7 @@
         <div class="small-box bg-warning">
           <div class="inner">
             <h3 class="text-center"><?= $reportunit->valideflpp; ?></h3>
-            <p>Unit Tervalidasi EFLPP</p>
+            <p>Unit Tervalidasi FLPP</p>
           </div>
           <div class="icon">
             <i class="ion ion-person-add"></i>

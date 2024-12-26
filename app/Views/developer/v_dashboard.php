@@ -17,7 +17,7 @@
         <!-- small box -->
         <div class="small-box bg-info">
           <div class="inner">
-            <h3 class="text-center"><?= number_format($reportunit->totalkredit,0,',','.'); ?></h3>
+            <h3 class="text-center"><?= number_format(isset($reportunit->totalkredit) ? $reportunit->totalkredit : 0,0,',','.'); ?></h3>
             <p>Total Nilai Kredit</p>
           </div>
           <div class="icon">
@@ -32,7 +32,7 @@
         <!-- small box -->
         <div class="small-box bg-success">
           <div class="inner">
-            <h3 class="text-center"><?= $reportpt->totalpt; ?></h3>
+            <h3 class="text-center"><?= number_format(isset($reportpt->totalpt) ? $reportpt->totalpt : 0,0,',','.'); ?></h3>
             <p>Jumlah PT</p>
           </div>
           <div class="icon">
@@ -46,7 +46,7 @@
         <!-- small box -->
         <div class="small-box bg-warning">
           <div class="inner">
-            <h3 class="text-center"><?= $reportunit->totalunit; ?></h3>
+            <h3 class="text-center"><?= number_format(isset($reportunit->totalunit) ? $reportunit->totalunit : 0,0,',','.') ; ?></h3>
             <p>Total Unit</p>
           </div>
           <div class="icon">
@@ -59,7 +59,7 @@
         <!-- small box -->
         <div class="small-box bg-info">
           <div class="inner">
-            <h3 class="text-center"><?= $reportunit->validoperator; ?></h3>
+            <h3 class="text-center"><?= number_format(isset($reportunit->validoperator) ? $reportunit->validoperator : 0,0,',','.') ; ?></h3>
             <p>Unit Tervalidasi DPP/DPD/Korwil</p>
           </div>
           <div class="icon">

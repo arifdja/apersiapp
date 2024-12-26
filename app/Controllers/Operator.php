@@ -54,7 +54,7 @@ class Operator extends BaseController
 	{
 		$menu = getMenu();
         $model = new UserModel();
-        $developer = $model->getDeveloper();
+        $developer = $model->getDeveloperForApproval();
 
         $data = [
 			'title' => 'Persetujuan Pendaftaran Developer',

@@ -16,9 +16,6 @@ class UserModel extends Model
 	{
 
 		$where = '';
-		if(session()->get('kdgrpuser') == "operator"){
-            $where = "AND t3.submited_status IN (1,2,3,4,5)";
-        } 
         if(session()->get('kdgrpuser') == "approver"){
             $where = "AND t3.submited_status IN (3,4,5)";
         } 
@@ -45,6 +42,19 @@ class UserModel extends Model
 
 			";
 		return $this->db->query($sql)->getResultArray();
+	}
+
+	function getDeveloperForApproval()
+	{
+		$builder = $this->db->table('users');
+		$builder->select('users.uuid,users.email,users.notelp,users.nama,users.alamatinput,users.kta,users.berkaskta,users.kodepos,users.statusvalidator,ref_provinsi.namaprovinsi as provinsi,ref_kabupaten.namakabupaten as kabupaten,ref_kota.namakota as kota,ref_kecamatan.namakecamatan as kecamatan,ref_dpd.namadpd as namadpd');
+		$builder->join('ref_provinsi','ref_provinsi.id = substr(users.alamatref,1,2)');
+		$builder->join('ref_kabupaten','ref_kabupaten.id = substr(users.alamatref,1,4)');
+		$builder->join('ref_kota','ref_kota.id = substr(users.alamatref,1,6)');
+		$builder->join('ref_kecamatan','ref_kecamatan.id = substr(users.alamatref,1,10)');
+		$builder->join('ref_dpd','ref_dpd.id = users.dpd');
+		$builder->where('users.kdgrpuser', 'developer');
+		return $builder->get()->getResultArray();
 	}
 
 	function getDeveloperByPendana()
