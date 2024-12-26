@@ -17,6 +17,7 @@
       <div class="col-md-12">
         <div class="card">
           <div class="card-header">
+            <?= view('general/v_ket_status') ?>
             <div class="card-tools" style="margin: 0px;">
               <button class="btn btn-xs btn-success" id="excel">
                 <i class="fas fa-excel"></i>Download Excel
@@ -40,7 +41,6 @@
                     <th>Developer</th>
                     <th>Nama PT</th>
                     <th>Surat <br>Permohonan</th>
-                    <th class="detail-column" style="display:none">DPP/DPD/Korwil</th>
                     <th class="detail-column" style="display:none">Alamat<br> Perumahan</th>
                     <th class="detail-column" style="display:none">Detail Alamat</th>
                     <th>Site Plan</th>
@@ -74,7 +74,6 @@
                       <td><?= $p['namadeveloper'] ?></td>
                       <td><?= $p['namapt'] ?></td>
                       <td><a href="<?= base_url() ?>/download/surat_permohonan/<?= $p['berkassuratpermohonan'] ?>" target="_blank">Lihat</a></td>
-                      <td class="detail-column" style="display:none"><?= $p['namadpd'] ?></td>
                       <td class="detail-column" style="display:none"><?= $p['namaprovinsi'] ?> - <?= $p['namakabupaten'] ?> - <?= $p['namakecamatan'] ?></td>
                       <td class="detail-column" style="display:none"><?= $p['alamatperumahaninput'] ?></td>
                       <td><a href="<?= base_url() ?>/download/site_plan/<?= $p['berkassiteplan'] ?>" target="_blank">Lihat</a></td>
@@ -88,21 +87,7 @@
                       <td align="right"><?= number_format($p['totaldisetujuiapprover'],0,',','.') ?></td>
                       
                       <td id="status<?= $p['uuid'] ?>">
-                        <?php if($p['submited_status']=='' || $p['submited_status']==null) : ?>
-                          <span class="badge badge-warning">Draft</span>
-                        <?php elseif($p['submited_status']==1) : ?> 
-                          <span class="badge badge-warning">Proses Pengecekan</span>
-                        <?php elseif($p['submited_status']==2) : ?>
-                          <span class="badge badge-danger">Dikembalikan</span>
-                        <?php elseif($p['submited_status']==3) : ?>
-                          <span class="badge badge-success">Proses Persetujuan</span>
-                        <?php elseif($p['submited_status']==4) : ?>
-                          <span class="badge badge-success">Disetujui</span>
-                        <?php elseif($p['submited_status']==5) : ?>
-                          <span class="badge badge-success">Terkirim ke Pendana</span>
-                        <?php elseif($p['submited_status']==6) : ?>
-                          <span class="badge badge-success">Disetujui Pendana</span>
-                        <?php endif; ?>
+                        <?= view('general/v_td_status', ['p' => $p]) ?>
                       </td>
                       
                       <td class="aksi<?= $p['uuid']; ?>">
