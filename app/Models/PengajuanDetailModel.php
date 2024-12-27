@@ -60,7 +60,7 @@ class PengajuanDetailModel extends Model
     ];
 
     
-    function getPengajuanUnit($uuid)
+    function getPengajuanUnit($uuid=null)
     {
         $builder = $this->db->table($this->table);
         $builder->select('trx_pengajuan_detail.*,ref_provinsi.namaprovinsi,ref_kabupaten.namakabupaten,ref_kota.namakota,ref_kecamatan.namakecamatan');
@@ -68,7 +68,7 @@ class PengajuanDetailModel extends Model
         $builder->join('ref_kabupaten','ref_kabupaten.id = SUBSTR(trx_pengajuan_detail.alamatref,1,4)','left');
         $builder->join('ref_kota','ref_kota.id = SUBSTR(trx_pengajuan_detail.alamatref,1,6)','left');
         $builder->join('ref_kecamatan','ref_kecamatan.id = SUBSTR(trx_pengajuan_detail.alamatref,1,10)','left');
-        $builder->where('uuidheader',$uuid);
+        if($uuid) $builder->where('uuidheader',$uuid);
         return $builder->get()->getResultArray();
     }
     

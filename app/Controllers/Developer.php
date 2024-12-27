@@ -1953,4 +1953,22 @@ class Developer extends BaseController
         }
     }
 
+    function monitoring_sp3k()
+    {
+        $menu = getMenu();
+        $model = new PengajuanDetailModel();
+        $pengajuanDetail = $model->select('trx_pengajuan_detail.*,trx_pengajuan_detail.uuid as uuidheader,ref_pt.namapt')
+        ->join('trx_pengajuan','trx_pengajuan.uuid = trx_pengajuan_detail.uuidheader','left')
+        ->join('ref_pt','ref_pt.uuid = trx_pengajuan.uuidpt','left')
+        ->where('trx_pengajuan_detail.submited_status',6)->findAll();
+
+        $data = [
+            'title' => 'Monitoring SP3K',
+            'breadcrumb' => ['Developer','Monitoring SP3K'],
+            'stringmenu' => $menu, 
+            'pengajuanDetail' => $pengajuanDetail,
+        ];
+        return view('developer/v_sp3k',$data);
+    }
+
 }
