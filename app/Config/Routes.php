@@ -77,18 +77,18 @@ $routes->get('/rumput/form_manajemen_pendana', 'Rumput::form_manajemen_pendana',
 
 $routes->get('/unauthorized', 'Unauthorized::index');
 $routes->get('/download/(:any)/(:any)', 'FileController::download/$1/$2',['filter' => 'auth']);
-$routes->get('/download/form_kredit', 'FileController::form_pengajuan_kredit');
+$routes->get('/download/form_kredit', 'FileController::form_pengajuan_kredit',['filter' => 'auth']);
 
-$routes->post('/rumput/save_pendana', 'Rumput::save_pendana');
-$routes->post('/rumput/update_pendana', 'Rumput::update_pendana');
-$routes->post('/rumput/delete_pendana', 'Rumput::delete_pendana');
-$routes->post('/rumput/get_pendana', 'Rumput::get_pendana');
+$routes->post('/rumput/save_pendana', 'Rumput::save_pendana',['filter' => 'auth']);
+$routes->post('/rumput/update_pendana', 'Rumput::update_pendana',['filter' => 'auth']);
+$routes->post('/rumput/delete_pendana', 'Rumput::delete_pendana',['filter' => 'auth']);
+$routes->post('/rumput/get_pendana', 'Rumput::get_pendana',['filter' => 'auth']);
 
-$routes->get('/rumput/getCSRF', 'Rumput::getCSRF');
+$routes->get('/rumput/getCSRF', 'Rumput::getCSRF',['filter' => 'auth']);
 
-$routes->post('/approver/kirimkependana', 'Approver::kirimkependana');
+$routes->post('/approver/kirimkependana', 'Approver::kirimkependana',['filter' => 'auth']);
 
-$routes->get('developer/form_edit_pt', 'Developer::form_edit_pt');
+$routes->get('developer/form_edit_pt', 'Developer::form_edit_pt',['filter' => 'auth']);
 
 $routes->get('/pendana', 'Pendana::index',['filter' => 'auth']);
 $routes->get('/pendana/list_developer', 'Pendana::list_developer',['filter' => 'auth']);
@@ -96,6 +96,13 @@ $routes->get('/pendana/developer', 'Pendana::developer',['filter' => 'auth']);
 $routes->get('/pendana/pt', 'Pendana::pt',['filter' => 'auth']);
 $routes->post('/pendana/danai_pengajuan', 'Pendana::danai_pengajuan',['filter' => 'auth']);
 
-$routes->get('/notifikasi', 'Notifikasi::index');
-$routes->post('/notifikasi/tandai_dibaca', 'Notifikasi::tandai_dibaca');
-$routes->post('/notifikasi/tandai_semua_dibaca', 'Notifikasi::tandai_semua_dibaca');
+$routes->get('/notifikasi', 'Notifikasi::index',['filter' => 'auth']);
+$routes->post('/notifikasi/tandai_dibaca', 'Notifikasi::tandai_dibaca',['filter' => 'auth']);
+$routes->post('/notifikasi/tandai_semua_dibaca', 'Notifikasi::tandai_semua_dibaca',['filter' => 'auth']);
+
+// Routes untuk manajemen user
+$routes->get('/rumput/form_manajemen_akun', 'Rumput::form_manajemen_akun',['filter' => 'auth']);
+$routes->post('/rumput/save_user', 'Rumput::save_user',['filter' => 'auth']);
+$routes->post('/rumput/update_user', 'Rumput::update_user',['filter' => 'auth']);
+$routes->post('/rumput/delete_user', 'Rumput::delete_user',['filter' => 'auth']);
+$routes->post('/rumput/get_user', 'Rumput::get_user',['filter' => 'auth']);
