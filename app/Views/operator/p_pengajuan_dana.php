@@ -46,9 +46,9 @@
                     <th>Jumlah Unit</th>
                     <th>Harga<br> SP3K</th>
                     <th>Dana<br> Talangan</th>
-                    <th>Pinjaman KPL</th>
-                    <th>Pinjaman KYG</th>
-                    <th>Pinjaman Lain</th>
+                    <th>Potongan KPL</th>
+                    <th>Potongan KYG</th>
+                    <th>Potongan Lain</th>
                     <th>Disetujui Operator</th>
                     <th>Disetujui Approver</th>
                     <th>Status</th>

@@ -76,7 +76,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label>Nilai Dana Talangan per Unit</label>
+                                <label>Nilai Dana Talangan per Unit Maksimal 70% dari harga sesuai persetujuan kredit (SP3K)</label>
                                 <input type="number" class="form-control" id="nilaikredit" name="nilaikredit" value="<?= $unit['nilaikredit'] ?>">
                                 <div class="invalid-feedback"></div>
                             </div>
@@ -158,7 +158,7 @@
 
 
                             <div class="form-group">
-                                <label>Nama Debitur</label>
+                                <label>Nama Debitur SP3K</label>
                                 <input type="text" class="form-control" name="debitur" value="<?= $unit['namadebitur'] ?>" id="debitur" required>
                                 <div class="invalid-feedback"></div>
                                 <span id="spannamadebitur" style="color: red;"></span>
@@ -177,8 +177,8 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="pinjaman_kpl">Pinjaman KPL</label>
-                                <input type="number" name="pinjaman_kpl" class="form-control" id="pinjaman_kpl" placeholder="Total Pinjaman KPL" value="<?= $unit['pinjamankpl'] ?>">
+                                <label for="pinjaman_kpl">Potongan KPL</label>
+                                <input type="number" name="pinjaman_kpl" class="form-control" id="pinjaman_kpl" placeholder="Total Potongan KPL" value="<?= $unit['pinjamankpl'] ?>">
                                 <span id="spanpinjaman_kpl" style="color: red;"></span>
                                 <div class="input-group" style="margin-top: 10px;">
                                     <div class="custom-file">
@@ -195,8 +195,8 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="pinjaman_kyg">Pinjaman KYG</label>
-                                <input type="number" name="pinjaman_kyg" class="form-control" id="pinjaman_kyg" placeholder="Total Pinjaman KYG" value="<?= $unit['pinjamankyg'] ?>">
+                                <label for="pinjaman_kyg">Potongan KYG</label>
+                                <input type="number" name="pinjaman_kyg" class="form-control" id="pinjaman_kyg" placeholder="Total Potongan KYG" value="<?= $unit['pinjamankyg'] ?>">
                                 <span id="spanpinjaman_kyg" style="color: red;"></span>
                                 <div class="input-group" style="margin-top: 10px;">
                                     <div class="custom-file">
@@ -213,8 +213,8 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="pinjaman_lain">Pinjaman Lain</label>
-                                <input type="number" name="pinjaman_lain" class="form-control" id="pinjaman_lain" placeholder="Total Pinjaman Lain" value="<?= $unit['pinjamanlain'] ?>">
+                                <label for="pinjaman_lain">Potongan Lain</label>
+                                <input type="number" name="pinjaman_lain" class="form-control" id="pinjaman_lain" placeholder="Total Potongan Lain" value="<?= $unit['pinjamanlain'] ?>">
                                 <span id="spanpinjaman_lain" style="color: red;"></span>
                                 <div class="input-group" style="margin-top: 10px;">
                                     <div class="custom-file">

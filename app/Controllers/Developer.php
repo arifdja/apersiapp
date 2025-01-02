@@ -103,9 +103,10 @@ class Developer extends BaseController
         $validationRules = [
             'nama_pt' => [
                 'label' => 'Nama PT',
-                'rules' => 'trim|required',
+                'rules' => 'trim|required|checkUniqueNamaPT',
                 'errors' => [
-                    'required' => '{field} harus diisi'
+                    'required' => '{field} harus diisi',
+                    'checkUniqueNamaPT' => '{field} sudah terdaftar'
                 ]
             ],
             'lokasiref' => [

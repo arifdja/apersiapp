@@ -17,10 +17,10 @@ class UserModel extends Model
 
 		$where = '';
         if(session()->get('kdgrpuser') == "approver"){
-            $where = "AND t3.submited_status IN (3,4,5)";
+            $where = "AND t3.submited_status IN (3,4,5,6)";
         } 
 		if(session()->get('kdgrpuser') == "operator"){
-			$where = "AND t3.submited_status IN (1,2,3,4,5)";
+			$where = "AND t3.submited_status IN (1,2,3,4,5,6)";
 		}
 
 		$sql = "SELECT a.*,ref_provinsi.namaprovinsi as provinsi,ref_kabupaten.namakabupaten as kabupaten,ref_kota.namakota as kota,ref_kecamatan.namakecamatan as kecamatan,ref_dpd.namadpd as namadpd FROM (

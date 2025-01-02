@@ -21,6 +21,18 @@ class ArifRules
     //     return true;
     // } 
 
+    public function checkUniqueNamaPT(string $str, string $field = null, array $data = null): bool
+    {
+        session();
+        $model = new PTModel();
+        $result = $model->where('namapt',$str)->where('uuiddeveloper',session('uuid'))->first();
+        if ($result) {
+            $error = "Nama PT sudah terdaftar";
+            return false;
+        }
+        return true;
+    } 
+
     
     public function checkUniqueUnit(string $str, string $field = null, array $data = null): bool
     {

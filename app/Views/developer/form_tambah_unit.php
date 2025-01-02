@@ -75,7 +75,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="nilaikredit">Nilai Dana Talangan per Unit</label>
+                            <label for="nilaikredit">Nilai Dana Talangan per Unit Maksimal 70% dari harga sesuai persetujuan kredit (SP3K)</label>
                             <input type="number" name="nilaikredit" class="form-control" id="nilaikredit" placeholder="Contoh: 70000000" required>
                             <span id="spannilaikredit" style="color: red;"></span>
                             <div class="text-muted">
@@ -146,7 +146,7 @@
                       </div>
 
                       <div class="form-group">
-                              <label for="debitur">Nama Debitur</label>
+                              <label for="debitur">Nama Debitur SP3K</label>
                               <input type="text" name="debitur" class="form-control" id="debitur" placeholder="Nama Debitur" required>
                               <span id="spandebitur" style="color: red;"></span>
                               <div class="input-group" style="margin-top: 10px;">
@@ -163,13 +163,13 @@
                           </div>
 
                       <div class="form-group">
-                        <label for="pinjaman_kpl">Pinjaman KPL</label>
-                        <input type="number" name="pinjaman_kpl" class="form-control" id="pinjaman_kpl" placeholder="Total Pinjaman KPL">
+                        <label for="pinjaman_kpl">Potongan KPL</label>
+                        <input type="number" name="pinjaman_kpl" class="form-control" id="pinjaman_kpl" placeholder="Total Potongan KPL">
                         <span id="spanpinjaman_kpl" style="color: red;"></span>
                         <div class="input-group" style="margin-top: 10px;">
                             <div class="custom-file">
                                   <input type="file" class="custom-file-input" name="berkaspinjaman_kpl" id="berkaspinjaman_kpl" accept=".pdf">
-                                  <label class="custom-file-label labelberkaspinjaman_kpl" for="exampleInputFile">Unggah Dokumen Bukti Pinjaman KPL</label>
+                                  <label class="custom-file-label labelberkaspinjaman_kpl" for="exampleInputFile">Unggah Dokumen Bukti Potongan KPL</label>
                             </div>
                         </div>
                         <div class="text-muted">
@@ -179,13 +179,13 @@
                         <span id="spanberkaspinjaman_kpl" style="color: red;"></span>
                       </div>
                       <div class="form-group">
-                        <label for="pinjaman_kyg">Pinjaman KYG</label>
-                        <input type="number" name="pinjaman_kyg" class="form-control" id="pinjaman_kyg" placeholder="Total Pinjaman KYG" >
+                        <label for="pinjaman_kyg">Potongan KYG</label>
+                        <input type="number" name="pinjaman_kyg" class="form-control" id="pinjaman_kyg" placeholder="Total Potongan KYG" >
                         <span id="spanpinjaman_kyg" style="color: red;"></span>
                         <div class="input-group" style="margin-top: 10px;">
                             <div class="custom-file">
                                   <input type="file" class="custom-file-input" name="berkaspinjaman_kyg" id="berkaspinjaman_kyg" accept=".pdf">
-                                  <label class="custom-file-label labelberkaspinjaman_kyg" for="exampleInputFile">Unggah Dokumen Bukti Pinjaman KYG</label>
+                                  <label class="custom-file-label labelberkaspinjaman_kyg" for="exampleInputFile">Unggah Dokumen Bukti Potongan KYG</label>
                             </div>
                         </div>
                         <div class="text-muted">
@@ -195,13 +195,13 @@
                         <span id="spanberkaspinjaman_kyg" style="color: red;"></span>
                       </div>
                       <div class="form-group">
-                        <label for="pinjaman_lain">Pinjaman Lain</label>
-                        <input type="number" name="pinjaman_lain" class="form-control" id="pinjaman_lain" placeholder="Total Pinjaman Lain" >
+                        <label for="pinjaman_lain">Potongan Lain</label>
+                        <input type="number" name="pinjaman_lain" class="form-control" id="pinjaman_lain" placeholder="Total Potongan Lain" >
                         <span id="spanpinjaman_lain" style="color: red;"></span>
                         <div class="input-group" style="margin-top: 10px;">
                             <div class="custom-file">
                                   <input type="file" class="custom-file-input" name="berkaspinjaman_lain" id="berkaspinjaman_lain" accept=".pdf">
-                                  <label class="custom-file-label labelberkaspinjaman_lain" for="exampleInputFile">Unggah Dokumen Bukti Pinjaman Lain</label>
+                                  <label class="custom-file-label labelberkaspinjaman_lain" for="exampleInputFile">Unggah Dokumen Bukti Potongan Lain</label>
                             </div>
                         </div>
                         <div class="text-muted">

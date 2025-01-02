@@ -38,10 +38,10 @@
                       <th>Jumlah<br>Unit</th>
                       <th>Harga<br> SP3K</th>
                       <th>Dana<br> Talangan</th>
-                      <th>Total<br>Pinjaman</th>
-                      <th>Pinjaman<br> KPL</th>
-                      <th>Pinjaman<br> KYG</th>
-                      <th>Pinjaman<br> Lain</th>
+                      <th>Total<br>Potongan</th>
+                      <th>Potongan<br> KPL</th>
+                      <th>Potongan<br> KYG</th>
+                      <th>Potongan<br> Lain</th>
                       <th>Status</th>
                       <th>Aksi</th>
                     </tr>

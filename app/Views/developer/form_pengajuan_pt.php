@@ -369,43 +369,120 @@ $(document).ready(function() {
                 $('span[id^="span"]').html('');
                 $('.is-invalid').removeClass('is-invalid');
                 if (xhr.responseJSON.status == 'error') {
-                    var errorFields = {
-                        'nama_pt': '#nama_pt',
-                        'lokasiref': '#lokasiref',
-                        'detail_alamat': '#detail_alamat',
-                        'npwp_pt': '#npwp_pt',
-                        'berkasnpwppt': '#berkasnpwppt',
-                        'penanggung_jawab_pt': '#penanggung_jawab_pt',
-                        'ktp_penanggung_jawab': '#ktp_penanggung_jawab',
-                        'berkasktp_penanggung_jawab': '#berkasktp_penanggung_jawab',
-                        'npwp_penanggung_jawab': '#npwp_penanggung_jawab',
-                        'berkasnpwp_penanggung_jawab': '#berkasnpwp_penanggung_jawab',
-                        'pengurus_pt': '#pengurus_pt',
-                        'jabatan_pengurus_pt': '#jabatan_pengurus_pt',
-                        'ktp_pengurus_pt': '#ktp_pengurus_pt',
-                        'berkasktp_pengurus_pt': '#berkasktp_pengurus_pt',
-                        'npwp_pengurus_pt': '#npwp_pengurus_pt',
-                        'berkasnpwp_pengurus_pt': '#berkasnpwp_pengurus_pt',
-                        'akta_pendirian': '#akta_pendirian',
-                        'berkasakta_pendirian': '#berkasakta_pendirian',
-                        'berkasakta_pendirian_akhir': '#berkasakta_pendirian_akhir',
-                        'berkasskkemenkumham': '#berkasskkemenkumham',
-                        'berkasskkemenkumham_akhir': '#berkasskkemenkumham_akhir',
-                        'bank': '#bank',
-                        'rekening': '#rekening',
-                        'berkasrekening': '#berkasrekening',
-                        'bankescrow': '#bankescrow',
-                        'rekeningescrow': '#rekeningescrow',
-                        'berkasrekeningescrow': '#berkasrekeningescrow',
-                        'berkaslaporankeuangan': '#berkaslaporankeuangan'
-                    };
-                    for (var field in errorFields) {
-                        if (xhr.responseJSON.message[field]) {
-                            $(errorFields[field]).addClass('is-invalid');
-                            $(`span${errorFields[field]}`).html(xhr.responseJSON.message[field]);
-                        }
+                      if(xhr.responseJSON.message.nama_pt){
+                        $('#nama_pt').addClass('is-invalid');
+                        $('#spannama_pt').html(xhr.responseJSON.message.nama_pt);
+                      }
+                      if(xhr.responseJSON.message.lokasiref){
+                        $('#lokasiref').addClass('is-invalid');
+                        $('#spanlokasiref').html(xhr.responseJSON.message.lokasiref);
+                      }
+                      if(xhr.responseJSON.message.detail_alamat){
+                        $('#detail_alamat').addClass('is-invalid');
+                        $('#spanalamat').html(xhr.responseJSON.message.detail_alamat);
+                      }
+                      if(xhr.responseJSON.message.npwp_pt){
+                        $('#npwp_pt').addClass('is-invalid');
+                        $('#spannpwp_pt').html(xhr.responseJSON.message.npwp_pt);
+                      }
+                      if(xhr.responseJSON.message.berkasnpwppt){
+                        $('#berkasnpwppt').addClass('is-invalid');
+                        $('#spanberkasnpwppt').html(xhr.responseJSON.message.berkasnpwppt);
+                      }
+                      if(xhr.responseJSON.message.penanggung_jawab_pt){
+                        $('#penanggung_jawab_pt').addClass('is-invalid');
+                        $('#spanpenanggung_jawab_pt').html(xhr.responseJSON.message.penanggung_jawab_pt);
+                      }
+                      if(xhr.responseJSON.message.ktp_penanggung_jawab){
+                        $('#ktp_penanggung_jawab').addClass('is-invalid');
+                        $('#spanktp_penanggung_jawab').html(xhr.responseJSON.message.ktp_penanggung_jawab);
+                      }
+                      if(xhr.responseJSON.message.berkasktp_penanggung_jawab){
+                        $('#berkasktp_penanggung_jawab').addClass('is-invalid');
+                        $('#spanberkasktp_penanggung_jawab').html(xhr.responseJSON.message.berkasktp_penanggung_jawab);
+                      }
+                      if(xhr.responseJSON.message.npwp_penanggung_jawab){
+                        $('#npwp_penanggung_jawab').addClass('is-invalid');
+                        $('#spannpwp_penanggung_jawab').html(xhr.responseJSON.message.npwp_penanggung_jawab);
+                      }
+                      if(xhr.responseJSON.message.berkasnpwp_penanggung_jawab){
+                        $('#berkasnpwp_penanggung_jawab').addClass('is-invalid');
+                        $('#spanberkasnpwp_penanggung_jawab').html(xhr.responseJSON.message.berkasnpwp_penanggung_jawab);
+                      }
+                      if(xhr.responseJSON.message.pengurus_pt){
+                        $('#pengurus_pt').addClass('is-invalid');
+                        $('#spanpengurus_pt').html(xhr.responseJSON.message.pengurus_pt);
+                      }
+                      if(xhr.responseJSON.message.jabatan_pengurus_pt){
+                        $('#jabatan_pengurus_pt').addClass('is-invalid');
+                        $('#spanjabatan_pengurus_pt').html(xhr.responseJSON.message.jabatan_pengurus_pt);
+                      }
+                      if(xhr.responseJSON.message.ktp_pengurus_pt){
+                        $('#ktp_pengurus_pt').addClass('is-invalid');
+                        $('#spanktp_pengurus_pt').html(xhr.responseJSON.message.ktp_pengurus_pt);
+                      }
+                      if(xhr.responseJSON.message.berkasktp_pengurus_pt){
+                        $('#berkasktp_pengurus_pt').addClass('is-invalid');
+                        $('#spanberkasktp_pengurus_pt').html(xhr.responseJSON.message.berkasktp_pengurus_pt);
+                      }
+                      if(xhr.responseJSON.message.npwp_pengurus_pt){
+                        $('#npwp_pengurus_pt').addClass('is-invalid');
+                        $('#spannpwp_pengurus_pt').html(xhr.responseJSON.message.npwp_pengurus_pt);
+                      }
+                      if(xhr.responseJSON.message.berkasnpwp_pengurus_pt){
+                        $('#berkasnpwp_pengurus_pt').addClass('is-invalid');
+                        $('#spanberkasnpwp_pengurus_pt').html(xhr.responseJSON.message.berkasnpwp_pengurus_pt);
+                      }
+                      if(xhr.responseJSON.message.akta_pendirian){
+                        $('#akta_pendirian').addClass('is-invalid');
+                        $('#spanakta_pendirian').html(xhr.responseJSON.message.akta_pendirian);
+                      }
+                      if(xhr.responseJSON.message.berkasakta_pendirian){
+                        $('#berkasakta_pendirian').addClass('is-invalid');
+                        $('#spanberkasakta_pendirian').html(xhr.responseJSON.message.berkasakta_pendirian);
+                      }
+                      if(xhr.responseJSON.message.berkasakta_pendirian_akhir){
+                        $('#berkasakta_pendirian_akhir').addClass('is-invalid');
+                        $('#spanberkasakta_pendirian_akhir').html(xhr.responseJSON.message.berkasakta_pendirian_akhir);
+                      }
+                      if(xhr.responseJSON.message.berkasskkemenkumham){
+                        $('#berkasskkemenkumham').addClass('is-invalid');
+                        $('#spanberkasskkemenkumham').html(xhr.responseJSON.message.berkasskkemenkumham);
+                      }
+                      if(xhr.responseJSON.message.berkasskkemenkumham_akhir){
+                        $('#berkasskkemenkumham_akhir').addClass('is-invalid');
+                        $('#spanberkasskkemenkumham_akhir').html(xhr.responseJSON.message.berkasskkemenkumham_akhir);
+                      }
+                      if(xhr.responseJSON.message.bank){
+                        $('#bank').addClass('is-invalid');
+                        $('#spanbank').html(xhr.responseJSON.message.bank);
+                      }
+                      if(xhr.responseJSON.message.rekening){
+                        $('#rekening').addClass('is-invalid');
+                        $('#spanrekening').html(xhr.responseJSON.message.rekening);
+                      }
+                      if(xhr.responseJSON.message.berkasrekening){
+                        $('#berkasrekening').addClass('is-invalid');
+                        $('#spanberkasrekening').html(xhr.responseJSON.message.berkasrekening);
+                      }
+                      if(xhr.responseJSON.message.bankescrow){
+                        $('#bankescrow').addClass('is-invalid');
+                        $('#spanbankescrow').html(xhr.responseJSON.message.bankescrow);
+                      }
+                      if(xhr.responseJSON.message.rekeningescrow){
+                        $('#rekeningescrow').addClass('is-invalid');
+                        $('#spanrekeningescrow').html(xhr.responseJSON.message.rekeningescrow);
+                      }
+                      if(xhr.responseJSON.message.berkasrekeningescrow){
+                        $('#berkasrekeningescrow').addClass('is-invalid');
+                        $('#spanberkasrekeningescrow').html(xhr.responseJSON.message.berkasrekeningescrow);
+                      }
+                      if(xhr.responseJSON.message.berkaslaporankeuangan){
+                        $('#berkaslaporankeuangan').addClass('is-invalid');
+                        $('#spanberkaslaporankeuangan').html(xhr.responseJSON.message.berkaslaporankeuangan);
+                      }
                     }
-                }
+                
             }
         });
     });

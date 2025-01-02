@@ -44,9 +44,9 @@
                       <th class="alamat-column" style="display:none">Alamat</th>
                       <th>Harga sesuai persetujuan<br>kredit (SP3K) (Rp)</th>
                       <th>Nilai Dana<br> Talangan (Rp)</th>
-                      <th>Pinjaman KPL</th>
-                      <th>Pinjaman KYG</th>
-                      <th>Pinjaman Lain</th>
+                      <th>Potongan KPL</th>
+                      <th>Potongan KYG</th>
+                      <th>Potongan Lain</th>
                     </tr>
                   </thead>
                   <tbody>
