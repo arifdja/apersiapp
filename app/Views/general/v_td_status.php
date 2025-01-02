@@ -7,7 +7,7 @@
 <?php elseif($p['submited_status']==3) : ?>
     <span class="badge badge-success">Proses Persetujuan</span>
 <?php elseif($p['submited_status']==4) : ?>
-    <span class="badge badge-success">Disetujui Ketum</span>
+    <span class="badge badge-success">Disetujui Approver</span>
 <?php elseif($p['submited_status']==5) : ?>
     <span class="badge badge-success">Terkirim ke Pendana</span>
 <?php elseif($p['submited_status']==6) : ?>

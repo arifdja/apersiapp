@@ -275,6 +275,26 @@ class FileController extends Controller
                 return $this->response->download($filePath, null)->setFileName($file['berkaspbgimb']);
             }
 
+        }elseif($type == 'pinjaman_kpl'){
+            $model = new PengajuanDetailModel();
+            $file = $model->where('berkaspinjamankpl',$berkas)->first();
+            $filePath = WRITEPATH . 'uploads/' . $type . '/' . $file['berkaspinjamankpl'];
+            if (!$file) {
+                return redirect()->back()->with('error', 'File not found.');
+            }
+    
+            if (!file_exists($filePath)) {
+                return redirect()->back()->with('error', 'File not found on the server.');
+            }
+            if($view == 'pdf'){
+                return $this->response
+                ->setHeader('Content-Type', 'application/pdf')
+                ->setHeader('Content-Disposition', 'inline; filename="' . $file['berkaspinjamankpl'] . '"')
+                ->setBody(file_get_contents($filePath));
+            }else{
+                return $this->response->download($filePath, null)->setFileName($file['berkaspinjamankpl']);
+            }
+
         }elseif($type == 'pinjaman_kyg'){
             $model = new PengajuanDetailModel();
             $file = $model->where('berkaspinjamankyg',$berkas)->first();
@@ -469,14 +489,8 @@ class FileController extends Controller
             if (!file_exists($filePath)) {
                 return redirect()->back()->with('error', 'File not found on the server.');
             }
-            if($view == 'pdf'){
-                return $this->response
-                ->setHeader('Content-Type', 'application/pdf')
-                ->setHeader('Content-Disposition', 'inline; filename="' . $file['berkassp3k'] . '"')
-                ->setBody(file_get_contents($filePath));
-            }else{
-                return $this->response->download($filePath, null)->setFileName('form_kredit.docx');
-            }
+            return $this->response->download($filePath, null)->setFileName('form_kredit.docx');
+           
     }
     
 }

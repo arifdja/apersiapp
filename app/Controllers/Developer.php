@@ -553,7 +553,7 @@ class Developer extends BaseController
             $save = $headerpengajuan->save($data);
 
             if ($save) { 
-                setNotifikasi(env('uuiddpp'), 'Pengajuan Dana', 'Pengajuan dana telah dikirimkan untuk validasi', '/operator/list_developer');
+                // setNotifikasi(env('uuiddpp'), 'Pengajuan Dana', 'Pengajuan dana telah dikirimkan untuk validasi', '/operator/list_developer');
                 return $this->response->setJSON([
                     'status' => 'success',
                     'message' => 'Data berhasil disimpan!',
@@ -613,9 +613,9 @@ class Developer extends BaseController
                      
                     <a href="#" class="form-control" style="text-decoration: none; background-color: #e9ecef;margin-bottom: 10px;">Pengurus PT : '.$data['penguruspt'].'</a>
 
-                    <a href="#" onclick="showPDF(\'npwp_pengurus\', \''.$data['berkaspengurusptnpwp'].'\')" data-toggle="modal" data-target="#pdfModal" class="form-control" style="text-decoration: none; background-color: #e9ecef;margin-bottom: 10px;">NPWP Pengurus PT : '.$data['npwppt'].'</a>
+                    <a href="#" onclick="showPDF(\'npwp_pengurus\', \''.$data['berkaspengurusptnpwp'].'\')" data-toggle="modal" data-target="#pdfModal" class="form-control" style="text-decoration: none; background-color: #e9ecef;margin-bottom: 10px;">NPWP Pengurus PT</a>
 
-                    <a href="#" onclick="showPDF(\'ktp_pengurus\', \''.$data['berkaspengurusptktp'].'\')" data-toggle="modal" data-target="#pdfModal" class="form-control" style="text-decoration: none; background-color: #e9ecef;margin-bottom: 10px;">NPWP Pengurus PT : '.$data['npwppt'].'</a>
+                    <a href="#" onclick="showPDF(\'ktp_pengurus\', \''.$data['berkaspengurusptktp'].'\')" data-toggle="modal" data-target="#pdfModal" class="form-control" style="text-decoration: none; background-color: #e9ecef;margin-bottom: 10px;">KTP Pengurus PT</a>
 
                   </div>
                   
@@ -1580,7 +1580,7 @@ class Developer extends BaseController
                 ])->setStatusCode(400);
             }
             
-            setNotifikasi(env('uuiddpp'), 'Pengajuan Dana', 'Pengajuan dana telah dikirimkan untuk validasi', '/operator/approval_dana/'.session()->get('uuid'));
+            setNotifikasi(env('uuiddpp'), 'Pengajuan Dana', 'Pengajuan dana '.session()->get('nama').' telah dikirimkan untuk validasi', '/operator/approval_dana/'.session()->get('uuid'));
             return $this->response->setJSON([
                 'status' => 'success',
                 'message' => 'Dana berhasil di ajukan. Mohon tunggu konfirmasi admin',

@@ -34,7 +34,6 @@ class Notifikasi extends BaseController
         }
 
         $id = $this->request->getPost('id');
-        
         $notifikasiModel = new \App\Models\NotifikasiModel();
         $update = $notifikasiModel->update($id, ['status' => 1]);
 

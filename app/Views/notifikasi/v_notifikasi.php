@@ -31,7 +31,8 @@
                             <th>Label</th>
                             <th>Isi</th>
                             <th>Tanggal</th>
-                            <th>Aksi</th>
+                            <th>Status Baca</th>
+                            <th>Terlusuri</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -51,6 +52,8 @@
                                             <i class="fa fa-envelope-open"></i>
                                         </button>
                                     <?php endif; ?>
+                                </td>
+                                <td>
                                     <a href="<?= $notif['url'] ?>" class="btn btn-xs btn-info">
                                         <i class="fa fa-arrow-right"></i>
                                     </a>
@@ -102,7 +105,7 @@ $(document).ready(function() {
             dataType: 'json',
             success: function(response) {
                 if(response.status == 'success') {
-                    $(`#notif-${id}`).html('<button type="button" class="btn btn-xs btn-info"><i class="fa fa-envelope-open"></i></button><a href="<?= $notif['url'] ?>" class="btn btn-xs btn-info"><i class="fa fa-arrow-right"></i></a>');
+                    $(`#notif-${id}`).html('<button type="button" class="btn btn-xs btn-info"><i class="fa fa-envelope-open"></i></button>');
                     // Update CSRF hash
                     $('#csrfToken').val(response.csrfToken);
                     $('#csrfHash').val(response.csrfHash);
@@ -131,7 +134,7 @@ $(document).ready(function() {
             dataType: 'json',
             success: function(response) {
                 if(response.status == 'success') {
-                    $('.notifclass').html('<button type="button" class="btn btn-xs btn-info"><i class="fa fa-envelope-open"></i></button><a href="<?= $notif['url'] ?>" class="btn btn-xs btn-info"><i class="fa fa-arrow-right"></i></a>');
+                    $('.notifclass').html('<button type="button" class="btn btn-xs btn-info"><i class="fa fa-envelope-open"></i></button>');
                     // Update CSRF hash
                     $('#csrfToken').val(response.csrfToken);
                     $('#csrfHash').val(response.csrfHash);

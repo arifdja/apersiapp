@@ -574,6 +574,11 @@ class Operator extends BaseController
         //         'message' => $validation->getError('keteranganpenolakan'),
 
         $uuid = $this->request->getPost('uuid');
+        $userModel = new UserModel();
+        $developer = $userModel->getDeveloperByUUIDPengajuan($uuid);
+        $uuiddeveloper = $developer['uuid'];
+
+       
 
         
         $pengajuanmodel = new PengajuanModel();
@@ -660,6 +665,7 @@ class Operator extends BaseController
         $updatedetail = $pengajuanDetail->query($sql);
 
         if ($updatedetail) { 
+            setNotifikasi($uuiddeveloper, 'Pengajuan Dana', 'Pengajuan dana telah dikembalikan', '/developer/monitoring_pengajuan_dana');
             return $this->response->setJSON([
                 'status' => 'success',
                 'message' => 'Data berhasil dikembalikan!',
@@ -691,6 +697,9 @@ class Operator extends BaseController
         }
 
         $uuid = $this->request->getPost('uuid');
+        $userModel = new UserModel();
+        $developer = $userModel->getDeveloperByUUIDPengajuan($uuid);
+        $uuiddeveloper = $developer['uuid'];
 
         $pengajuanmodel = new PengajuanModel();
         $pengajuan = $pengajuanmodel->where('uuid',$uuid)->first();
@@ -767,6 +776,8 @@ class Operator extends BaseController
         $updatedetail = $pengajuanDetail->query($sql);
 
         if ($updatedetail) { 
+            setNotifikasi($uuiddeveloper, 'Pengajuan Dana', 'Pengajuan dana telah diteruskan ke Approver', '/developer/monitoring_pengajuan_dana');
+            setNotifikasi(env('uuidapprover'), 'Pengajuan Dana', 'Pengajuan dana '.$developer['nama'].' telah divalidasi Operator dan siap untuk disetujui dan diteruskan ke Pendana', '/approver/approval_dana/'.$uuiddeveloper);
             return $this->response->setJSON([
                 'status' => 'success',
                 'message' => 'Data berhasil diteruskan!',

@@ -124,6 +124,9 @@ class Approver extends BaseController
         }
 
         $uuid = $this->request->getPost('uuid');
+        $userModel = new UserModel();
+        $developer = $userModel->getDeveloperByUUIDPengajuan($uuid);
+        $uuiddeveloper = $developer['uuid'];
         
         
         $pengajuanmodel = new PengajuanModel();
@@ -204,6 +207,7 @@ class Approver extends BaseController
         $updatedetail = $pengajuanDetail->query($sql);
 
         if ($updatedetail) { 
+            setNotifikasi($uuiddeveloper, 'Pengajuan Dana', 'Pengajuan dana telah disetujui oleh Approver', '/developer/monitoring_pengajuan_dana');
             return $this->response->setJSON([
                 'status' => 'success',
                 'message' => 'Data berhasil disetujui!',
@@ -257,7 +261,18 @@ class Approver extends BaseController
 
         // Validasi input
         $uuid = $this->request->getPost('uuid');
+        $userModel = new UserModel();
+        $developer = $userModel->getDeveloperByUUIDPengajuan($uuid);
+        $uuiddeveloper = $developer['uuid'];
+        
+
         $pendana = $this->request->getPost('pendana');
+        $userspendana = $userModel->getUUIDUserByUUIDPendana($pendana);
+        $uuiduserspendana = $userspendana['uuid'];
+        // var_dump($uuiduserspendana);
+        // die();
+
+
         $pendanaText = $this->request->getPost('pendanaText');
 
         if(empty($uuid) || empty($pendana)) {
@@ -358,6 +373,9 @@ class Approver extends BaseController
                     AND (concat(statusvalidator,statussikumbang,statuseflpp,statussp3k) = '1111')";
                     
             $updatedetail = $pengajuanDetail->query($sql);
+            
+            setNotifikasi($uuiddeveloper, 'Pengajuan Dana', 'Pengajuan dana telah diteruskan ke Pendana', '/developer/monitoring_pengajuan_dana');
+            setNotifikasi($uuiduserspendana, 'Pengajuan Dana', 'Pengajuan dana '.$developer['nama'].' telah divalidasi Approver dan siap didanai', '/pendana/permintaan_dana');
 
             if (!$updatedetail) {
                 throw new \Exception('Gagal update detail pengajuan!');

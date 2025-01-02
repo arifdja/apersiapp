@@ -76,7 +76,7 @@
                       <td><a href="#" onclick="showPDF('surat_permohonan', '<?= $p['berkassuratpermohonan'] ?>')" data-toggle="modal" data-target="#pdfModal"><?= $p['suratpermohonan'] ?></a></td>
                       <td class="detail-column" style="display:none"><?= $p['namaprovinsi'] ?> - <?= $p['namakabupaten'] ?> - <?= $p['namakecamatan'] ?></td>
                       <td class="detail-column" style="display:none"><?= $p['alamatperumahaninput'] ?></td>
-                      <td><a href="#" onclick="showPDF('site_plan', '<?= $p['berkassiteplan'] ?>')" data-toggle="modal" data-target="#pdfModal"><?= $p['siteplan'] ?></a></td>
+                      <td><a href="#" onclick="showPDF('site_plan', '<?= $p['berkassiteplan'] ?>')" data-toggle="modal" data-target="#pdfModal">Lihat</a></td>
                       <td><?= $p['jumlahunitinput'] ?></td>
                       <td align="right"><?= number_format($p['totalhargasp3k'],0,',','.') ?></td>
                       <td align="right"><?= number_format($p['totaldanatalangan'],0,',','.') ?></td>

@@ -8,7 +8,7 @@ class NotifikasiModel extends Model
 	protected $primariKey = 'id';
 	protected $returnType = 'array';
 	protected $useTimestamps = true;
-    protected $allowedFields = ['uuid','user_uuid','label','isi','status','url'];
+    protected $allowedFields = ['uuid','user_uuid','label','isi','status','url','email'];
     
 
 }

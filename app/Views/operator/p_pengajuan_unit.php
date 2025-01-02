@@ -17,7 +17,6 @@
         <div class="col-md-12">
             <div class="card">
               <div class="card-header">
-                <a href="<?= previous_url() ?>" class="btn btn-xs btn-warning">Kembali</a>
                 <div class="card-tools" style="margin: 0px;"><button class="btn btn-xs btn-success" id="excel"><i class="fas fa-excel"></i>Download Excel</button></div>
                 <div class="card-title">
                 </div>
@@ -57,7 +56,7 @@
                       <input type="hidden" class="csrf" name="<?= csrf_token() ?>" value="<?= csrf_hash() ?>" />
                       <td><?= $key+1; ?>.</td>
                       <td><a href="#" onclick="showPDF('sertifikat', '<?= $p['berkassertifikat'] ?>')" data-toggle="modal" data-target="#pdfModal"><?= $p['sertifikat'] ?></a></td>
-                      <td><a href="#" onclick="showPDF('pbgimb', '<?= $p['berkaspbgimb'] ?>')" data-toggle="modal" data-target="#pdfModal"><?= $p['pbgimb'] ?></a></td>
+                      <td><a href="#" onclick="showPDF('pbgimb', '<?= $p['berkaspbgimb'] ?>')" data-toggle="modal" data-target="#pdfModal">Lihat</a></td>
                       <td><a href="#" onclick="showPDF('pbb', '<?= $p['berkaspbb'] ?>')" data-toggle="modal" data-target="#pdfModal"><?= $p['pbb'] ?></a></td>
                       <td><a href="#" onclick="showPDF('sp3k', '<?= $p['berkassp3k'] ?>')" data-toggle="modal" data-target="#pdfModal"><?= $p['nomordokumensp3k'] ?></a> <?= tanggal_indo($p['tanggalsp3k']) ?></td>
                       <td><a href="#" onclick="showPDF('ktp_debitur', '<?= $p['berkasktpdebitur'] ?>')" data-toggle="modal" data-target="#pdfModal"><?= $p['namadebitur'] ?></a></td>

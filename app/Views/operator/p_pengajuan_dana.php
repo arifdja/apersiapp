@@ -62,12 +62,12 @@
                       <input type="hidden" class="csrf" name="<?= csrf_token() ?>" value="<?= csrf_hash() ?>" />
                       <td><?= $key+1; ?>.</td>
                       <td class="text-center">
-                        <?php if(session()->get('kdgrpuser')=='approver') : ?>
-                          <a href="#" onclick="showPDF('surat_permohonan', '<?= $p['berkassuratpermohonan'] ?>')" data-toggle="modal" data-target="#pdfModal" class="btn btn-xs btn-info"><i class="fa fa-eye"></i></a>
+                      <?php if(session()->get('kdgrpuser')=='approver') : ?>
+                          <a href="<?= site_url('approver/approval_unit?uuid='.$p['uuid']) ?>" class="btn btn-xs btn-info"><i class="fa fa-eye"></i></a>
                         <?php elseif(session()->get('kdgrpuser')=='operator') : ?>
-                          <a href="#" onclick="showPDF('site_plan', '<?= $p['berkassiteplan'] ?>')" data-toggle="modal" data-target="#pdfModal" class="btn btn-xs btn-info"><i class="fa fa-eye"></i></a>
+                          <a href="<?= site_url('operator/approval_unit?uuid='.$p['uuid']) ?>" class="btn btn-xs btn-info"><i class="fa fa-eye"></i></a>
                         <?php elseif(session()->get('kdgrpuser')=='pendana') : ?>
-                          <a href="#" onclick="showPDF('surat_permohonan', '<?= $p['berkassuratpermohonan'] ?>')" data-toggle="modal" data-target="#pdfModal" class="btn btn-xs btn-info"><i class="fa fa-eye"></i></a>
+                          <a href="<?= site_url('pendana/approval_unit?uuid='.$p['uuid']) ?>" class="btn btn-xs btn-info"><i class="fa fa-eye"></i></a>
                         <?php endif; ?>
                       </td>
                       <td><?= $p['namapt'] ?></td>

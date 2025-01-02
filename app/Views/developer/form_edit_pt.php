@@ -120,7 +120,13 @@
        
           <div class="card-body">
             <div class="form-group">
-              <label for="pengurus_pt">Nama dan Jabatan Pengurus PT</label>
+              <label for="pengurus_pt">Nama dan Jabatan Pengurus PT</label> 
+              <div style="margin-bottom: 10px;"><i>Contoh:</i> <br>
+                <i>Budi Setiawan Direktur Utama,</i><br>
+                <i>Rudi Wardana Direktur,</i><br>
+                <i>Ida Ayu Komisaris Utama,</i><br>
+                <i>Elliza Komisaris</i><br>
+            </div>
               <textarea name="pengurus_pt" id="pengurus_pt" class="form-control" rows="3" placeholder="Masukkan nama dan jabatan pengurus PT" required><?= $pt['penguruspt'] ?></textarea>
               <span id="spanpengurus_pt" style="color: red;"></span>
             </div>
@@ -164,7 +170,7 @@
             </div>
             
             <div class="form-group">
-              <label for="akta_pendirian">Akta Pendirian</label>
+              <label for="akta_pendirian">Akta Pendirian Awal dan Perubahan Terakhir Jika Ada</label>
               <span id="spanakta_pendirian" style="color: red;"></span>
               <div class="input-group" style="margin-top: 10px;">
                   <div class="custom-file">
@@ -183,7 +189,7 @@
             </div>
 
             <div class="form-group">
-              <label for="skkemenkumham">SK Kemenkumham</label>
+              <label for="skkemenkumham">SK Kemenkumham Awal dan Perubahan Terakhir Jika Ada</label>
               <div class="input-group" style="margin-top: 10px;">
                   <div class="custom-file">
                         <input type="file" class="custom-file-input" name="berkasskkemenkumham" id="berkasskkemenkumham" accept=".pdf">

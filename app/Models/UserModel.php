@@ -19,6 +19,9 @@ class UserModel extends Model
         if(session()->get('kdgrpuser') == "approver"){
             $where = "AND t3.submited_status IN (3,4,5)";
         } 
+		if(session()->get('kdgrpuser') == "operator"){
+			$where = "AND t3.submited_status IN (1,2,3,4,5)";
+		}
 
 		$sql = "SELECT a.*,ref_provinsi.namaprovinsi as provinsi,ref_kabupaten.namakabupaten as kabupaten,ref_kota.namakota as kota,ref_kecamatan.namakecamatan as kecamatan,ref_dpd.namadpd as namadpd FROM (
 				SELECT * 
@@ -87,5 +90,26 @@ class UserModel extends Model
 
 				";
 		return $this->db->query($sql,$pendana)->getResultArray();
+	}
+
+	function getDeveloperByUUIDPengajuan($uuid)
+	{
+		$builder = $this->db->table('users');
+		$builder->select('users.*');
+		$builder->join('ref_pt','ref_pt.uuiddeveloper = users.uuid','left');
+		$builder->join('trx_pengajuan','trx_pengajuan.uuidpt = ref_pt.uuid','left');
+		$builder->where('trx_pengajuan.uuid',$uuid);
+		$builder->where('users.statusvalidator',1);
+		$builder->where('users.is_email_verified',1);
+		return $builder->get()->getRowArray();
+	}
+
+	function getUUIDUserByUUIDPendana($uuidpendana)
+	{
+		$builder = $this->db->table('users');
+		$builder->select('users.uuid');
+		$builder->join('ref_pendana','ref_pendana.uuid = users.uuidpendana','left');
+		$builder->where('users.uuidpendana',$uuidpendana);
+		return $builder->get()->getRowArray();
 	}
 }

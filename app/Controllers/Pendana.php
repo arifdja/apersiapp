@@ -127,6 +127,9 @@ class Pendana extends BaseController
 
         // Validasi input
         $uuid = $this->request->getPost('uuid');
+        $userModel = new UserModel();
+        $developer = $userModel->getDeveloperByUUIDPengajuan($uuid);
+        $uuiddeveloper = $developer['uuid'];
 
         if(empty($uuid)) {
             return $this->response->setJSON([
@@ -223,6 +226,10 @@ class Pendana extends BaseController
                     AND statusapprover = 1";
                     
             $updatedetail = $pengajuanDetail->query($sql);
+            
+            setNotifikasi($uuiddeveloper, 'Pengajuan Dana', 'Pengajuan dana telah disetujui Pendana', '/developer/monitoring_pengajuan_dana');
+            setNotifikasi(env('uuidapprover'), 'Pengajuan Dana', 'Pengajuan dana '.$developer['nama'].' telah disetujui Pendana', '/approver/approval_dana/'.$uuiddeveloper);
+
 
             if (!$updatedetail) {
                 throw new \Exception('Gagal update detail pengajuan!');
