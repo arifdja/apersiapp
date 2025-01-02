@@ -152,6 +152,19 @@ class FileController extends Controller
             }
             return $this->response->download($filePath, null)->setFileName($file['berkaspengurusptktp']);
 
+        }elseif($type == 'laporan_keuangan'){
+            $model = new PTModel();
+            $file = $model->where('berkaslaporankeuangan',$berkas)->first();
+            $filePath = WRITEPATH . 'uploads/' . $type . '/' . $file['berkaslaporankeuangan'];
+            if (!$file) {
+                return redirect()->back()->with('error', 'File not found.');
+            }
+    
+            if (!file_exists($filePath)) {
+                return redirect()->back()->with('error', 'File not found on the server.');
+            }
+            return $this->response->download($filePath, null)->setFileName($file['berkaslaporankeuangan']);
+
         }elseif($type == 'npwp_pengurus'){
             $model = new PTModel();
             $file = $model->where('berkaspengurusptnpwp',$berkas)->first();

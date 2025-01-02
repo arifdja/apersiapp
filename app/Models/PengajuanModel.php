@@ -32,6 +32,7 @@ class PengajuanModel extends Model
         'kodebankescrow',
         'rekeningescrow', 
         'berkasrekeningescrow',
+        'berkaslaporankeuangan',
         'namapt',
         'alamatref',
         'alamatinput',

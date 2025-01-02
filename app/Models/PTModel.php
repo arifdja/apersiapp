@@ -34,6 +34,7 @@ class PTModel extends Model
         'kodebankescrow',
         'rekeningescrow',
         'berkasrekeningescrow',
+        'berkaslaporankeuangan',
         'dpd',
         'statusvalidator',
         'validated_at',

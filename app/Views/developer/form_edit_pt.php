@@ -62,7 +62,7 @@
                     <small>Format file yang diizinkan: PDF</small>,
                     <small>Maksimal ukuran file: 1 MB</small>
                     <?php if($pt['berkasnpwp']): ?>
-                    <br><small>File saat ini: <?= $pt['berkasnpwp'] ?></small>
+                    <br><small>File saat ini: <?= isset($pt['berkasnpwp']) ? $pt['berkasnpwp'] : 'Tidak ada file' ?></small>
                     <?php endif; ?>
               </div>
               <span id="spanberkasnpwppt" style="color: red;"></span>
@@ -86,7 +86,7 @@
                     <small>Format file yang diizinkan: PDF</small>,
                     <small>Maksimal ukuran file: 1 MB</small>
                     <?php if($pt['berkasktppj']): ?>
-                    <br><small>File saat ini: <?= $pt['berkasktppj'] ?></small>
+                    <br><small>File saat ini: <?= isset($pt['berkasktppj']) ? $pt['berkasktppj'] : 'Tidak ada file' ?></small>
                     <?php endif; ?>
               </div>
               <span id="spanberasktp_penanggung_jawab" style="color: red;"></span>
@@ -106,7 +106,7 @@
                     <small>Format file yang diizinkan: PDF</small>,
                     <small>Maksimal ukuran file: 1 MB</small>
                     <?php if($pt['berkasnpwppj']): ?>
-                    <br><small>File saat ini: <?= $pt['berkasnpwppj'] ?></small>
+                    <br><small>File saat ini: <?= isset($pt['berkasnpwppj']) ? $pt['berkasnpwppj'] : 'Tidak ada file' ?></small>
                     <?php endif; ?>
               </div>
               <span id="spanberkasnpwppj" style="color: red;"></span>
@@ -138,7 +138,7 @@
                     <small>Format file yang diizinkan: PDF</small>,
                     <small>Maksimal ukuran file: 5 MB</small>
                     <?php if($pt['berkaspengurusptnpwp']): ?>
-                    <br><small>File saat ini: <?= $pt['berkaspengurusptnpwp'] ?></small>
+                    <br><small>File saat ini: <?= isset($pt['berkaspengurusptnpwp']) ? $pt['berkaspengurusptnpwp'] : 'Tidak ada file' ?></small>
                     <?php endif; ?>
               </div>
               <span id="spanberkasnpwp_pengurus_pt" style="color: red;"></span>
@@ -157,7 +157,7 @@
                     <small>Format file yang diizinkan: PDF</small>,
                     <small>Maksimal ukuran file: 5 MB</small>
                     <?php if($pt['berkaspengurusptktp']): ?>
-                    <br><small>File saat ini: <?= $pt['berkaspengurusptktp'] ?></small>
+                    <br><small>File saat ini: <?= isset($pt['berkaspengurusptktp']) ? $pt['berkaspengurusptktp'] : 'Tidak ada file' ?></small>
                     <?php endif; ?>
               </div>
               <span id="spanberkasktp_pengurus_pt" style="color: red;"></span>
@@ -165,7 +165,6 @@
             
             <div class="form-group">
               <label for="akta_pendirian">Akta Pendirian</label>
-              <input type="text" name="akta_pendirian" required class="form-control" id="akta_pendirian" placeholder="Isi Nomor Akta Pendirian" value="<?= $pt['aktapendirian'] ?>">
               <span id="spanakta_pendirian" style="color: red;"></span>
               <div class="input-group" style="margin-top: 10px;">
                   <div class="custom-file">
@@ -177,7 +176,7 @@
                     <small>Format file yang diizinkan: PDF</small>,
                     <small>Maksimal ukuran file: 5 MB</small>
                     <?php if($pt['berkasaktapendirian']): ?>
-                    <br><small>File saat ini: <?= $pt['berkasaktapendirian'] ?></small>
+                    <br><small>File saat ini: <?= isset($pt['berkasaktapendirian']) ? $pt['berkasaktapendirian'] : 'Tidak ada file' ?></small>
                     <?php endif; ?>
               </div>
               <span id="spanberkasakta_pendirian" style="color: red;"></span>
@@ -196,43 +195,40 @@
                     <small>Format file yang diizinkan: PDF</small>,
                     <small>Maksimal ukuran file: 5 MB</small>
                     <?php if($pt['berkasskkemenkumham']): ?>
-                    <br><small>File saat ini: <?= $pt['berkasskkemenkumham'] ?></small>
+                    <br><small>File saat ini: <?= isset($pt['berkasskkemenkumham']) ? $pt['berkasskkemenkumham'] : 'Tidak ada file' ?></small>
                     <?php endif; ?>
               </div>
               <span id="spanberkasskkemenkumham" style="color: red;"></span>
             </div>
 
+            
+
+            <div class="form-group">
+              <label for="laporankeuangan">Laporan Keuangan 2 Tahun Terakhir</label>
+              <div class="input-group mt-2">
+                <div class="custom-file">
+                  <input type="file" class="custom-file-input" name="berkaslaporankeuangan" id="berkaslaporankeuangan" accept=".pdf">
+                  <label class="custom-file-label" for="berkaslaporankeuangan">Choose file</label>
+                </div>
+              </div>
+              <div class="text-muted">
+                    <small>Upload Laporan Keuangan 2 Tahun Terakhir</small><br>
+                    <small>Format file yang diizinkan: PDF</small>,
+                    <small>Maksimal ukuran file: 10 MB</small>
+                    <?php if($pt['berkaslaporankeuangan']): ?>
+                    <br><small>File saat ini: <?= isset($pt['berkaslaporankeuangan']) ? $pt['berkaslaporankeuangan'] : 'Tidak ada file' ?></small>
+                    <?php endif; ?>
+              </div>
+              <span id="spanberkaslaporankeuangan" style="color: red;"></span>
+            </div>
+
+            
             <div class="form-group">    
-              <label for="bank">Bank (Rekening Operasional)</label>
+              <label for="bank">Bank</label>
               <?= create_dropdown('bank', $dropdownbank['bank'], $pt['kodebank'], ['class' => 'form-control', 'id' => 'bank','required' => 'required']); ?>
               <span id="spanbank" style="color: red;"></span>
             </div>
-            <div class="form-group">
-              <label for="rekening">Nomor Rekening Operasional</label>
-              <input type="text" name="rekening" required class="form-control" id="rekening" placeholder="Isi Nomor Rekening Operasional" value="<?= $pt['rekening'] ?>">
-              <span id="spanrekening" style="color: red;"></span>
-              <div class="input-group" style="margin-top: 10px;">
-                  <div class="custom-file">
-                        <input type="file" class="custom-file-input" name="berkasrekening" id="berkasrekening" accept=".pdf">
-                        <label class="custom-file-label" for="berkasrekening">Choose file</label>
-                  </div>
-              </div>
-              <div class="text-muted">
-                    <small>Rekening Koran tiga bulan terakhir</small><br>
-                    <small>Format file yang diizinkan: PDF</small>,
-                    <small>Maksimal ukuran file: 1 MB</small>
-                    <?php if($pt['berkasrekening']): ?>
-                    <br><small>File saat ini: <?= $pt['berkasrekening'] ?></small>
-                    <?php endif; ?>
-              </div>
-              <span id="spanberkasrekening" style="color: red;"></span>
-            </div>
 
-            <div class="form-group">    
-              <label for="bankescrow">Bank (Rekening Escrow)</label>
-              <?= create_dropdown('bankescrow', $dropdownbank['bank'], $pt['kodebankescrow'], ['class' => 'form-control', 'id' => 'bankescrow','required' => 'required']); ?>
-              <span id="spanbankescrow" style="color: red;"></span>
-            </div>
             
             <div class="form-group">
               <label for="rekeningescrow">Nomor Rekening Escrow</label>
@@ -253,6 +249,27 @@
                     <?php endif; ?>
               </div>
               <span id="spanberkasrekeningescrow" style="color: red;"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="rekening">Nomor Rekening Operasional</label>
+              <input type="text" name="rekening" required class="form-control" id="rekening" placeholder="Isi Nomor Rekening Operasional" value="<?= $pt['rekening'] ?>">
+              <span id="spanrekening" style="color: red;"></span>
+              <div class="input-group" style="margin-top: 10px;">
+                  <div class="custom-file">
+                        <input type="file" class="custom-file-input" name="berkasrekening" id="berkasrekening" accept=".pdf">
+                        <label class="custom-file-label" for="berkasrekening">Choose file</label>
+                  </div>
+              </div>
+              <div class="text-muted">
+                    <small>Rekening Koran tiga bulan terakhir</small><br>
+                    <small>Format file yang diizinkan: PDF</small>,
+                    <small>Maksimal ukuran file: 1 MB</small>
+                    <?php if($pt['berkasrekening']): ?>
+                    <br><small>File saat ini: <?= $pt['berkasrekening'] ?></small>
+                    <?php endif; ?>
+              </div>
+              <span id="spanberkasrekening" style="color: red;"></span>
             </div>
 
             
@@ -312,27 +329,131 @@
                     }
                 },
                 error: function (xhr, status, error) {
-                    clearForm();
-                    $('#<?= csrf_token() ?>').val(xhr.responseJSON.csrfHash);
+                    // Handle error response
                     Swal.fire({
                         icon: 'error',
                         title: 'Error',
-                        text: 'Gagal mengupdate data'
+                        text: 'Gagal menyimpan data'
                       });
                     
-                    if(xhr.responseJSON.status == 'error'){
-                        // Reset semua pesan error
-                        $('span[id^="span"]').html('');
-                        $('input, select, textarea').removeClass('is-invalid');
-                        
-                        // Tampilkan pesan error
-                        $.each(xhr.responseJSON.message, function(field, message) {
-                            $('#span' + field).html(message);
-                            $('#' + field).addClass('is-invalid');
-                        });
-                    }
-                    
                     $('#<?= csrf_token() ?>').val(xhr.responseJSON.csrfHash);
+                   
+                    $('span[id^="span"]').html('');
+                    $('.is-invalid').removeClass('is-invalid');
+                    if(xhr.responseJSON.status == 'error'){
+                      if(xhr.responseJSON.message.nama_pt){
+                        $('#nama_pt').addClass('is-invalid');
+                        $('#spannama_pt').html(xhr.responseJSON.message.nama_pt);
+                      }
+                      if(xhr.responseJSON.message.lokasiref){
+                        $('#lokasiref').addClass('is-invalid');
+                        $('#spanlokasiref').html(xhr.responseJSON.message.lokasiref);
+                      }
+                      if(xhr.responseJSON.message.detail_alamat){
+                        $('#detail_alamat').addClass('is-invalid');
+                        $('#spanalamat').html(xhr.responseJSON.message.detail_alamat);
+                      }
+                      if(xhr.responseJSON.message.npwp_pt){
+                        $('#npwp_pt').addClass('is-invalid');
+                        $('#spannpwp_pt').html(xhr.responseJSON.message.npwp_pt);
+                      }
+                      if(xhr.responseJSON.message.berkasnpwppt){
+                        $('#berkasnpwppt').addClass('is-invalid');
+                        $('#spanberkasnpwppt').html(xhr.responseJSON.message.berkasnpwppt);
+                      }
+                      if(xhr.responseJSON.message.penanggung_jawab_pt){
+                        $('#penanggung_jawab_pt').addClass('is-invalid');
+                        $('#spanpenanggung_jawab_pt').html(xhr.responseJSON.message.penanggung_jawab_pt);
+                      }
+                      if(xhr.responseJSON.message.ktp_penanggung_jawab){
+                        $('#ktp_penanggung_jawab').addClass('is-invalid');
+                        $('#spanktp_penanggung_jawab').html(xhr.responseJSON.message.ktp_penanggung_jawab);
+                      }
+                      if(xhr.responseJSON.message.berkasktp_penanggung_jawab){
+                        $('#berkasktp_penanggung_jawab').addClass('is-invalid');
+                        $('#spanberkasktp_penanggung_jawab').html(xhr.responseJSON.message.berkasktp_penanggung_jawab);
+                      }
+                      if(xhr.responseJSON.message.npwp_penanggung_jawab){
+                        $('#npwp_penanggung_jawab').addClass('is-invalid');
+                        $('#spannpwp_penanggung_jawab').html(xhr.responseJSON.message.npwp_penanggung_jawab);
+                      }
+                      if(xhr.responseJSON.message.berkasnpwp_penanggung_jawab){
+                        $('#berkasnpwp_penanggung_jawab').addClass('is-invalid');
+                        $('#spanberkasnpwp_penanggung_jawab').html(xhr.responseJSON.message.berkasnpwp_penanggung_jawab);
+                      }
+                      if(xhr.responseJSON.message.pengurus_pt){
+                        $('#pengurus_pt').addClass('is-invalid');
+                        $('#spanpengurus_pt').html(xhr.responseJSON.message.pengurus_pt);
+                      }
+                      if(xhr.responseJSON.message.jabatan_pengurus_pt){
+                        $('#jabatan_pengurus_pt').addClass('is-invalid');
+                        $('#spanjabatan_pengurus_pt').html(xhr.responseJSON.message.jabatan_pengurus_pt);
+                      }
+                      if(xhr.responseJSON.message.ktp_pengurus_pt){
+                        $('#ktp_pengurus_pt').addClass('is-invalid');
+                        $('#spanktp_pengurus_pt').html(xhr.responseJSON.message.ktp_pengurus_pt);
+                      }
+                      if(xhr.responseJSON.message.berkasktp_pengurus_pt){
+                        $('#berkasktp_pengurus_pt').addClass('is-invalid');
+                        $('#spanberkasktp_pengurus_pt').html(xhr.responseJSON.message.berkasktp_pengurus_pt);
+                      }
+                      if(xhr.responseJSON.message.npwp_pengurus_pt){
+                        $('#npwp_pengurus_pt').addClass('is-invalid');
+                        $('#spannpwp_pengurus_pt').html(xhr.responseJSON.message.npwp_pengurus_pt);
+                      }
+                      if(xhr.responseJSON.message.berkasnpwp_pengurus_pt){
+                        $('#berkasnpwp_pengurus_pt').addClass('is-invalid');
+                        $('#spanberkasnpwp_pengurus_pt').html(xhr.responseJSON.message.berkasnpwp_pengurus_pt);
+                      }
+                      if(xhr.responseJSON.message.akta_pendirian){
+                        $('#akta_pendirian').addClass('is-invalid');
+                        $('#spanakta_pendirian').html(xhr.responseJSON.message.akta_pendirian);
+                      }
+                      if(xhr.responseJSON.message.berkasakta_pendirian){
+                        $('#berkasakta_pendirian').addClass('is-invalid');
+                        $('#spanberkasakta_pendirian').html(xhr.responseJSON.message.berkasakta_pendirian);
+                      }
+                      if(xhr.responseJSON.message.berkasakta_pendirian_akhir){
+                        $('#berkasakta_pendirian_akhir').addClass('is-invalid');
+                        $('#spanberkasakta_pendirian_akhir').html(xhr.responseJSON.message.berkasakta_pendirian_akhir);
+                      }
+                      if(xhr.responseJSON.message.berkasskkemenkumham){
+                        $('#berkasskkemenkumham').addClass('is-invalid');
+                        $('#spanberkasskkemenkumham').html(xhr.responseJSON.message.berkasskkemenkumham);
+                      }
+                      if(xhr.responseJSON.message.berkasskkemenkumham_akhir){
+                        $('#berkasskkemenkumham_akhir').addClass('is-invalid');
+                        $('#spanberkasskkemenkumham_akhir').html(xhr.responseJSON.message.berkasskkemenkumham_akhir);
+                      }
+                      if(xhr.responseJSON.message.bank){
+                        $('#bank').addClass('is-invalid');
+                        $('#spanbank').html(xhr.responseJSON.message.bank);
+                      }
+                      if(xhr.responseJSON.message.rekening){
+                        $('#rekening').addClass('is-invalid');
+                        $('#spanrekening').html(xhr.responseJSON.message.rekening);
+                      }
+                      if(xhr.responseJSON.message.berkasrekening){
+                        $('#berkasrekening').addClass('is-invalid');
+                        $('#spanberkasrekening').html(xhr.responseJSON.message.berkasrekening);
+                      }
+                      if(xhr.responseJSON.message.bankescrow){
+                        $('#bankescrow').addClass('is-invalid');
+                        $('#spanbankescrow').html(xhr.responseJSON.message.bankescrow);
+                      }
+                      if(xhr.responseJSON.message.rekeningescrow){
+                        $('#rekeningescrow').addClass('is-invalid');
+                        $('#spanrekeningescrow').html(xhr.responseJSON.message.rekeningescrow);
+                      }
+                      if(xhr.responseJSON.message.berkasrekeningescrow){
+                        $('#berkasrekeningescrow').addClass('is-invalid');
+                        $('#spanberkasrekeningescrow').html(xhr.responseJSON.message.berkasrekeningescrow);
+                      }
+                      if(xhr.responseJSON.message.berkaslaporankeuangan){
+                        $('#berkaslaporankeuangan').addClass('is-invalid');
+                        $('#spanberkaslaporankeuangan').html(xhr.responseJSON.message.berkaslaporankeuangan);
+                      }
+                    }
                 }
             });
         });

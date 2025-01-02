@@ -217,13 +217,6 @@ class Developer extends BaseController
                     'mime_in' => '{field} harus berformat PDF'
                 ]
             ],
-            'akta_pendirian' => [
-                'label' => 'Akta Pendirian',
-                'rules' => 'trim|required',
-                'errors' => [
-                    'required' => '{field} harus diisi'
-                ]
-            ],
             'berkasakta_pendirian' => [
                 'label' => 'Akta Pendirian PT',
                 'rules' => 'uploaded[berkasakta_pendirian]|max_size[berkasakta_pendirian,5120]|ext_in[berkasakta_pendirian,pdf]|mime_in[berkasakta_pendirian,application/pdf]',
@@ -244,15 +237,18 @@ class Developer extends BaseController
                     'mime_in' => '{field} harus berformat PDF'
                 ]
             ],
-            'bank' => [
-                'label' => 'Bank Operasional PT',
-                'rules' => 'trim|required',
+            'berkaslaporankeuangan' => [
+                'label' => 'Laporan Keuangan 2 Tahun Terakhir',
+                'rules' => 'uploaded[berkaslaporankeuangan]|max_size[berkaslaporankeuangan,10240]|ext_in[berkaslaporankeuangan,pdf]|mime_in[berkaslaporankeuangan,application/pdf]',
                 'errors' => [
-                    'required' => '{field} harus diisi'
+                    'uploaded' => '{field} harus diisi',
+                    'max_size' => '{field} maksimal 10 MB',
+                    'ext_in' => '{field} harus berformat PDF',
+                    'mime_in' => '{field} harus berformat PDF'
                 ]
             ],
-            'bankescrow' => [
-                'label' => 'Bank Escrow PT',
+            'bank' => [
+                'label' => 'Bank Operasional PT',
                 'rules' => 'trim|required',
                 'errors' => [
                     'required' => '{field} harus diisi'
@@ -312,13 +308,14 @@ class Developer extends BaseController
             $fileberkasskkemenkumham = $this->request->getFile('berkasskkemenkumham');
             $fileberkasrekening = $this->request->getFile('berkasrekening');
             $fileberkasrekeningescrow = $this->request->getFile('berkasrekeningescrow');
+            $fileberkaslaporankeuangan = $this->request->getFile('berkaslaporankeuangan');
 
             if (
                 !$fileberkasnpwppt->isValid() || !$fileberkasktp_penanggung_jawab->isValid() ||
                 !$fileberkasnpwp_penanggung_jawab->isValid() || !$fileberkasakta_pendirian->isValid() ||
-                !$fileberkasrekening->isValid() || !$fileberkasktp_pengurus_pt->isValid() ||
+                !$fileberkasrekening->isValid() || !$fileberkasktp_pengurus_pt->isValid() || 
                 !$fileberkasnpwp_pengurus_pt->isValid() || !$fileberkasskkemenkumham->isValid() ||
-                !$fileberkasrekeningescrow->isValid()
+                !$fileberkasrekeningescrow->isValid() || !$fileberkaslaporankeuangan->isValid()
             ) {
                 throw new \RuntimeException('One or more files are invalid');
             }
@@ -335,8 +332,9 @@ class Developer extends BaseController
             $newfilenameberkasnpwp_pengurus_pt = "npwp_pengurus_".$uuid."_".$fileberkasnpwp_pengurus_pt->getRandomName();
             $newfilenameberkasskkemenkumham = "kemenkumham_".$uuid."_".$fileberkasskkemenkumham->getRandomName();
             $newfilenameberkasrekeningescrow = "rekeningescrow_".$uuid."_".$fileberkasrekeningescrow->getRandomName();
-
-            // Move all files
+            $newfilenameberkaslaporankeuangan = "laporankeuangan_".$uuid."_".$fileberkaslaporankeuangan->getRandomName();
+           
+            // Move all required files
             $fileberkasnpwppt->move(WRITEPATH . 'uploads/npwp_pt', $newfilenameberkasnpwppt);
             $fileberkasktp_penanggung_jawab->move(WRITEPATH . 'uploads/ktp_penanggungjawab', $newfilenameberkasktp_penanggung_jawab);
             $fileberkasnpwp_penanggung_jawab->move(WRITEPATH . 'uploads/npwp_penanggungjawab', $newfilenameberkasnpwp_penanggung_jawab);
@@ -346,6 +344,8 @@ class Developer extends BaseController
             $fileberkasnpwp_pengurus_pt->move(WRITEPATH . 'uploads/npwp_pengurus', $newfilenameberkasnpwp_pengurus_pt);
             $fileberkasskkemenkumham->move(WRITEPATH . 'uploads/sk_kemenkumham', $newfilenameberkasskkemenkumham);
             $fileberkasrekeningescrow->move(WRITEPATH . 'uploads/rekening_escrow', $newfilenameberkasrekeningescrow);
+            $fileberkaslaporankeuangan->move(WRITEPATH . 'uploads/laporan_keuangan', $newfilenameberkaslaporankeuangan);
+         
 
             $data = [
                 "uuid" => $uuid,
@@ -363,15 +363,15 @@ class Developer extends BaseController
                 "penguruspt" => $this->request->getVar('pengurus_pt'),
                 "berkaspengurusptnpwp" => $newfilenameberkasnpwp_pengurus_pt,
                 "berkaspengurusptktp" => $newfilenameberkasktp_pengurus_pt,
-                "aktapendirian" => $this->request->getVar('akta_pendirian'),
                 "berkasaktapendirian" => $newfilenameberkasakta_pendirian,
                 "rekening" => $this->request->getVar('rekening'),
                 "kodebank" => $this->request->getVar('bank'),
-                "kodebankescrow" => $this->request->getVar('bankescrow'),
+                "kodebankescrow" => $this->request->getVar('bank'),
                 "rekeningescrow" => $this->request->getVar('rekeningescrow'),
                 "berkasrekening" => $newfilenameberkasrekening,
                 "berkasrekeningescrow" => $newfilenameberkasrekeningescrow,
                 "berkasskkemenkumham" => $newfilenameberkasskkemenkumham,
+                "berkaslaporankeuangan" => $newfilenameberkaslaporankeuangan,
                 "statusvalidator" => 0,
             ];
 
@@ -539,6 +539,7 @@ class Developer extends BaseController
                 "penguruspt" => $datapt['penguruspt'],
                 "berkaspengurusptktp" => $datapt['berkaspengurusptktp'],
                 "berkaspengurusptnpwp" => $datapt['berkaspengurusptnpwp'],
+                "berkasaktapendirian" => $datapt['berkasaktapendirian'],
                 "rekening" => $datapt['rekening'],
                 "kodebank" => $datapt['kodebank'],
                 "berkasrekening" => $datapt['berkasrekening'],
@@ -1653,13 +1654,6 @@ class Developer extends BaseController
                     'max_length' => '{field} maksimal 600 karakter'
                 ]
             ],
-            'akta_pendirian' => [
-                'label' => 'Akta Pendirian',
-                'rules' => 'trim|required',
-                'errors' => [
-                    'required' => '{field} harus diisi'
-                ]
-            ],
             'bank' => [
                 'label' => 'Bank',
                 'rules' => 'trim|required',
@@ -1669,13 +1663,6 @@ class Developer extends BaseController
             ],
             'rekening' => [
                 'label' => 'Nomor Rekening',
-                'rules' => 'trim|required',
-                'errors' => [
-                    'required' => '{field} harus diisi'
-                ]
-            ],
-            'bankescrow' => [
-                'label' => 'Bank Escrow',
                 'rules' => 'trim|required',
                 'errors' => [
                     'required' => '{field} harus diisi'
@@ -1719,10 +1706,9 @@ class Developer extends BaseController
                 "ktppj" => $this->request->getVar('ktp_penanggung_jawab'),
                 "npwppj" => $this->request->getVar('npwp_penanggung_jawab'),
                 "penguruspt" => $this->request->getVar('pengurus_pt'),
-                "aktapendirian" => $this->request->getVar('akta_pendirian'),
                 "rekening" => $this->request->getVar('rekening'),
                 "kodebank" => $this->request->getVar('bank'),
-                "kodebankescrow" => $this->request->getVar('bankescrow'),
+                "kodebankescrow" => $this->request->getVar('bank'),
                 "rekeningescrow" => $this->request->getVar('rekeningescrow'),
                 "statusvalidator" => 0
             ];
@@ -1730,7 +1716,7 @@ class Developer extends BaseController
             // Handle file uploads
             $files = ['berkasnpwppt', 'berkasktp_penanggung_jawab', 'berkasnpwp_penanggung_jawab', 
                      'berkasnpwp_pengurus_pt', 'berkasktp_pengurus_pt', 'berkasakta_pendirian',
-                     'berkasskkemenkumham', 'berkasrekening', 'berkasrekeningescrow'];
+                     'berkasskkemenkumham', 'berkasrekening', 'berkasrekeningescrow', 'berkaslaporankeuangan'];
 
             foreach($files as $fileField) {
                 $file = $this->request->getFile($fileField);
@@ -1781,6 +1767,12 @@ class Developer extends BaseController
                         $file->move(WRITEPATH . 'uploads/rekening_escrow', $newFileName);
                         $data['berkasrekeningescrow'] = $newFileName;
                     }   
+                    if($fileField == 'berkaslaporankeuangan'){
+                        $newFileName = "laporankeuangan_".$uuid."_".$file->getRandomName();
+                        $file->move(WRITEPATH . 'uploads/laporan_keuangan', $newFileName);
+                        $data['berkaslaporankeuangan'] = $newFileName;
+                    }   
+
 
                 }
             }
@@ -1890,7 +1882,6 @@ class Developer extends BaseController
                 'message' => 'Invalid request'
             ]);
         }
-
         // Ambil UUID dari POST request
         $uuid = $this->request->getPost('uuid');
         
@@ -1904,7 +1895,7 @@ class Developer extends BaseController
         }
 
         // Load model yang diperlukan
-        $ptModel = new \App\Models\PengajuanPTModel();
+        $ptModel = new PTModel();
         
         try {
             // Cari data PT berdasarkan UUID
@@ -1918,17 +1909,20 @@ class Developer extends BaseController
                 ]);
             }
 
+            // echo WRITEPATH . 'uploads/npwp_pt/'.$pt['berkasnpwp'];exit;
+
             // Hapus file-file yang terkait
             $files = [
-                'berkasnpwp' => FCPATH . 'download/npwp_pt/',
-                'berkasktppj' => FCPATH . 'download/ktp_penanggungjawab/',
-                'berkasnpwppj' => FCPATH . 'download/npwp_penanggungjawab/',
-                'berkaspengurusptktp' => FCPATH . 'download/ktp_pengurus/',
-                'berkaspengurusptnpwp' => FCPATH . 'download/npwp_pengurus/',
-                'berkasaktapendirian' => FCPATH . 'download/akta_pendirian/',
-                'berkasskkemenkumham' => FCPATH . 'download/sk_kemenkumham/',
-                'berkasrekening' => FCPATH . 'download/rekening/',
-                'berkasrekeningescrow' => FCPATH . 'download/rekening_escrow/'
+                'berkasnpwp' => WRITEPATH . 'uploads/npwp_pt/',
+                'berkasktppj' => WRITEPATH . 'uploads/ktp_penanggungjawab/',
+                'berkasnpwppj' => WRITEPATH . 'uploads/npwp_penanggungjawab/',
+                'berkaspengurusptktp' => WRITEPATH . 'uploads/ktp_pengurus/',
+                'berkaspengurusptnpwp' => WRITEPATH . 'uploads/npwp_pengurus/',
+                'berkasaktapendirian' => WRITEPATH . 'uploads/akta_pendirian/',
+                'berkasskkemenkumham' => WRITEPATH . 'uploads/sk_kemenkumham/',
+                'berkasrekening' => WRITEPATH . 'uploads/rekening/',
+                'berkasrekeningescrow' => WRITEPATH . 'uploads/rekening_escrow/',
+                'berkaslaporankeuangan' => WRITEPATH . 'uploads/laporan_keuangan/'
             ];
 
             foreach ($files as $field => $path) {
@@ -1938,7 +1932,7 @@ class Developer extends BaseController
             }
 
             // Hapus data PT dari database
-            if ($ptModel->delete($pt['id'])) {
+            if ($ptModel->where('uuid', $uuid)->delete()) {
                 return $this->response->setJSON([
                     'status' => 'success',
                     'message' => 'Data PT berhasil dihapus',

@@ -42,6 +42,7 @@
                         <th>Pengurus<br>PT</th>
                         <th>Akta<br>Pendirian</th>
                         <th>SK<br>Kemenkumham</th>
+                        <th>Laporan<br>Keuangan</th>
                         <th>Rekening<br>Operasional</th>
                         <th>Rekening<br>Escrow</th>
                       <th>Alamat</th>
@@ -66,8 +67,9 @@
                           <a href="<?= base_url() ?>/download/ktp_pengurus/<?= $p['berkaspengurusptktp'] ?>" target="_blank">KTP</a>
                           <a href="<?= base_url() ?>/download/npwp_pengurus/<?= $p['berkaspengurusptnpwp'] ?>" target="_blank">NPWP</a>
                         </td>
-                        <td><a href="<?= base_url() ?>/download/akta_pendirian/<?= $p['berkasaktapendirian'] ?>" target="_blank"><?= $p['aktapendirian'] ?></a></td>
+                        <td><a href="<?= base_url() ?>/download/akta_pendirian/<?= $p['berkasaktapendirian'] ?>" target="_blank">Lihat</a></td>
                         <td><a href="<?= base_url() ?>/download/sk_kemenkumham/<?= $p['berkasskkemenkumham'] ?>" target="_blank">Lihat</a></td>
+                        <td><a href="<?= base_url() ?>/download/laporan_keuangan/<?= $p['berkaslaporankeuangan'] ?>" target="_blank">Lihat</a></td>
                       <td><a href="<?= base_url() ?>/download/rekening/<?= $p['berkasrekening'] ?>" target="_blank"><?= $p['rekening'] ?></a> <?= $p['namabank'] ?></td>
                       <td><a href="<?= base_url() ?>/download/rekening_escrow/<?= $p['berkasrekeningescrow'] ?>" target="_blank"><?= $p['rekeningescrow'] ?></a> <?= $p['namabankescrow'] ?></td>
                         <td><?= $p['namaprovinsi'] ?> - <?= $p['namakabupaten'] ?> - <?= $p['namakecamatan'] ?> - <?= $p['alamatinput'] ?></td>

@@ -41,6 +41,7 @@ $routes->post('/developer/delete_unit_ajax', 'Developer::delete_unit_ajax',['fil
 $routes->post('/developer/ajukan_dana_ajax', 'Developer::ajukan_dana_ajax',['filter' => 'auth']);
 $routes->post('developer/edit_pt_ajax', 'Developer::edit_pt_ajax');
 $routes->get('/developer/monitoring_sp3k', 'Developer::monitoring_sp3k',['filter' => 'auth']);
+$routes->post('/developer/hapus_pt', 'Developer::hapus_pt',['filter' => 'auth']);
 
 $routes->get('/operator', 'Operator::index',['filter' => 'auth']);
 $routes->get('/operator/approval_developer', 'Operator::approval_developer',['filter' => 'auth']);
