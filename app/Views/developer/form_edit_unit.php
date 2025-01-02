@@ -77,7 +77,7 @@
 
                             <div class="form-group">
                                 <label>Nilai Dana Talangan per Unit</label>
-                                <input type="number" class="form-control" name="nilaikredit" value="<?= $unit['nilaikredit'] ?>">
+                                <input type="number" class="form-control" id="nilaikredit" name="nilaikredit" value="<?= $unit['nilaikredit'] ?>">
                                 <div class="invalid-feedback"></div>
                             </div>
 
@@ -246,10 +246,73 @@
 <?= $this->section('south'); ?>
 <script>
 $(document).ready(function() {
+
+     // Mencegah input titik pada input number
+     $('input[type="number"]').on('keydown', function(e) {
+            // Izinkan: backspace, delete, tab, escape, enter, titik
+            if ($.inArray(e.keyCode, [46, 8, 9, 27, 13]) !== -1 ||
+                // Izinkan: Ctrl+A, Command+A
+                (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) ||
+                // Izinkan: home, end, left, right, down, up
+                (e.keyCode >= 35 && e.keyCode <= 40)) {
+                return;
+            }
+            // Pastikan itu angka dan hentikan keypress
+            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                e.preventDefault();
+            }
+        });
+
+
     $('#formEditUnit').on('submit', function(e) {
         e.preventDefault();
         
-        var formData = new FormData(this);
+         // Create FormData object
+            var formData = new FormData(this);
+
+            if($('#nilaikredit').val() > $('#harga').val()*0.7){
+              Swal.fire({
+                  title: 'Perhatian!',
+                  text: 'Nilai dana talangan tidak boleh lebih besar dari 70% dari harga sesuai persetujuan kredit (SP3K)!',
+                  icon: 'warning',
+                  confirmButtonText: 'Ok'
+              });
+              return false;
+            }
+
+            var kpl = parseInt($('#pinjaman_kpl').val()) || 0;
+            var kyg = parseInt($('#pinjaman_kyg').val()) || 0;
+            var lain = parseInt($('#pinjaman_lain').val()) || 0;
+
+            // alert($('#nilaikredit').val());return false;
+
+            if((kpl + kyg + lain) >= $('#nilaikredit').val()){
+              Swal.fire({
+                  title: 'Perhatian!',
+                  text: 'Total Potongan KPL, KYG, dan Lain tidak boleh lebih besar dari Nilai Dana Talangan',
+                  icon: 'warning',
+                  confirmButtonText: 'Ok'
+              });
+              $('#nilaikredit').addClass('is-invalid');
+              $('#pinjaman_kpl').addClass('is-invalid');
+              $('#pinjaman_kyg').addClass('is-invalid');
+              $('#pinjaman_lain').addClass('is-invalid');
+              return false;
+            }
+
+            // Tampilkan loading alert
+            Swal.fire({
+                title: 'Sedang memproses...',
+                text: 'Mohon tunggu sebentar',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                showConfirmButton: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+
         
         $.ajax({
             url: "<?= site_url('developer/edit_unit_ajax') ?>",
@@ -271,18 +334,108 @@ $(document).ready(function() {
                 }
             },
             error: function(xhr, status, error) {
-                clearErrors();
-                if(xhr.responseJSON.status == 'error') {
-                    // Reset all invalid classes
-                    $('.form-control').removeClass('is-invalid');
-                    
-                    // Add invalid class and show error message for each field
-                    Object.keys(xhr.responseJSON.message).forEach(function(key) {
-                        $('[name="' + key + '"]').addClass('is-invalid')
-                            .siblings('.invalid-feedback')
-                            .text(xhr.responseJSON.message[key]);
-                    });
-                }
+                  $('span[id^="span"]').text('');
+                  $('.is-invalid').removeClass('is-invalid');
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error', 
+                        text: 'Gagal menyimpan data'
+                      });
+                    $('#<?= csrf_token() ?>').val(xhr.responseJSON.csrfHash);
+                    // Handle error response
+                    if(xhr.responseJSON.status == 'error'){
+                      if(xhr.responseJSON.message.sertifikat){
+                        $('#sertifikat').addClass('is-invalid');
+                        $('#spansertifikat').html(xhr.responseJSON.message.sertifikat);
+                      }
+                      if(xhr.responseJSON.message.berkassertifikat){
+                        $('#berkassertifikat').addClass('is-invalid');
+                        $('#spanberkassertifikat').html(xhr.responseJSON.message.berkassertifikat);
+                      }
+                      if(xhr.responseJSON.message.berkaspbgimb){
+                        $('#berkaspbgimb').addClass('is-invalid');
+                        $('#spanberkaspbgimb').html(xhr.responseJSON.message.berkaspbgimb);
+                      }
+                      if(xhr.responseJSON.message.pbb){
+                        $('#pbb').addClass('is-invalid');
+                        $('#spanpbb').html(xhr.responseJSON.message.pbb);
+                      }
+                      if(xhr.responseJSON.message.berkaspbb){
+                        $('#berkaspbb').addClass('is-invalid');
+                        $('#spanberkaspbb').html(xhr.responseJSON.message.berkaspbb);
+                      }
+                      if(xhr.responseJSON.message.harga){
+                        $('#harga').addClass('is-invalid');
+                        $('#spanharga').html(xhr.responseJSON.message.harga);
+                      }
+                      if(xhr.responseJSON.message.nilaikredit){
+                        $('#nilaikredit').addClass('is-invalid');
+                        $('#spannilaikredit').html(xhr.responseJSON.message.nilaikredit);
+                      }
+                      if(xhr.responseJSON.message.lokasiref){
+                        $('#lokasiref').addClass('is-invalid');
+                        $('#spanlokasiref').html(xhr.responseJSON.message.lokasiref);
+                      }
+                      if(xhr.responseJSON.message.detail_alamat){
+                        $('#detail_alamat').addClass('is-invalid');
+                        $('#spanalamat').html(xhr.responseJSON.message.detail_alamat);
+                      }
+                      if(xhr.responseJSON.message.sp3k){
+                        $('#sp3k').addClass('is-invalid');
+                        $('#spansp3k').html(xhr.responseJSON.message.sp3k);
+                      }
+                      if(xhr.responseJSON.message.berkassp3k){
+                        $('#berkassp3k').addClass('is-invalid');
+                        $('#spanberkassp3k').html(xhr.responseJSON.message.berkassp3k);
+                      }
+                      if(xhr.responseJSON.message.debitur){
+                        $('#debitur').addClass('is-invalid');
+                        $('#spandebitur').html(xhr.responseJSON.message.debitur);
+                      }
+                      if(xhr.responseJSON.message.bank){
+                        $('#bank').addClass('is-invalid');
+                        $('#spanbank').html(xhr.responseJSON.message.bank);
+                      }
+                      if(xhr.responseJSON.message.rekening){
+                        $('#rekening').addClass('is-invalid');
+                        $('#spanrekening').html(xhr.responseJSON.message.rekening);
+                      }
+                      if(xhr.responseJSON.message.berkasrekening){
+                        $('#berkasrekening').addClass('is-invalid');
+                        $('#spanberkasrekening').html(xhr.responseJSON.message.berkasrekening);
+                      }
+                      if(xhr.responseJSON.message.pinjaman_kpl){
+                        $('#pinjaman_kpl').addClass('is-invalid');
+                        $('#spanpinjaman_kpl').html(xhr.responseJSON.message.pinjaman_kpl);
+                      }
+                      if(xhr.responseJSON.message.berkaspinjaman_kpl){
+                        $('#berkaspinjaman_kpl').addClass('is-invalid');
+                        $('#spanberkaspinjaman_kpl').html(xhr.responseJSON.message.berkaspinjaman_kpl);
+                      } 
+                      if(xhr.responseJSON.message.pinjaman_kyg){
+                        $('#pinjaman_kyg').addClass('is-invalid');
+                        $('#spanpinjaman_kyg').html(xhr.responseJSON.message.pinjaman_kyg);
+                      }
+                      if(xhr.responseJSON.message.berkaspinjaman_kyg){
+                        $('#berkaspinjaman_kyg').addClass('is-invalid');
+                        $('#spanberkaspinjaman_kyg').html(xhr.responseJSON.message.berkaspinjaman_kyg);
+                      } 
+                      if(xhr.responseJSON.message.pinjaman_lain){
+                        $('#pinjaman_lain').addClass('is-invalid');
+                        $('#spanpinjaman_lain').html(xhr.responseJSON.message.pinjaman_lain);
+                      }
+                      if(xhr.responseJSON.message.berkaspinjaman_lain){
+                        $('#berkaspinjaman_lain').addClass('is-invalid');
+                        $('#spanberkaspinjaman_lain').html(xhr.responseJSON.message.berkaspinjaman_lain);
+                      }
+                    }
+                    if(xhr.responseJSON.message.simpan){
+                      Swal.fire({
+                          icon: 'error',
+                          title: 'Error',
+                          text: 'Gagal menyimpan data'
+                        });
+                    }
             }
         });
     });
@@ -425,17 +578,6 @@ $(document).ready(function () {
             }
         });
     });
-});
-</script>
-<script>
-$(document).ready(function() {
-  function clearErrors() {
-    // Menghapus semua pesan error pada span
-    $('span[id^="span"]').text('');
-    
-    // Menghapus semua class is-invalid
-    $('.is-invalid').removeClass('is-invalid');
-  }
 });
 </script>
 <?= $this->endSection(); ?>

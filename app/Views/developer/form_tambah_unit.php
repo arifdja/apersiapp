@@ -286,6 +286,24 @@
               return false;
             }
 
+            var kpl = parseInt($('#pinjaman_kpl').val()) || 0;
+            var kyg = parseInt($('#pinjaman_kyg').val()) || 0;
+            var lain = parseInt($('#pinjaman_lain').val()) || 0;
+
+            if((kpl + kyg + lain) >= $('#nilaikredit').val()){
+              Swal.fire({
+                  title: 'Perhatian!',
+                  text: 'Total Potongan KPL, KYG, dan Lain tidak boleh lebih besar dari Nilai Dana Talangan',
+                  icon: 'warning',
+                  confirmButtonText: 'Ok'
+              });
+              $('#nilaikredit').addClass('is-invalid');
+              $('#pinjaman_kpl').addClass('is-invalid');
+              $('#pinjaman_kyg').addClass('is-invalid');
+              $('#pinjaman_lain').addClass('is-invalid');
+              return false;
+            }
+
             // Tampilkan loading alert
             Swal.fire({
                 title: 'Sedang memproses...',
@@ -323,6 +341,8 @@
                               $('#berkaspbgimb').val('');
                               $('#pbb').val('');
                               $('#berkaspbb').val('');
+                              $('#pbg').val('');
+                              $('#berkaspbgimb').val('');
                               $('#harga').val('');
                               $('#nilaikredit').val('');
                               $('#sp3k').val('');
@@ -347,11 +367,12 @@
                               $('#berkaspinjaman_lain').val('');
                               $('.labelberkassertifikat').html('Unggah Sertifikat');
                               $('.labelberkaspbb').html('Unggah PBB tahun terakhir');
-                              $('.labelberkassp3k').html('Unggah Dokumen SP3K');
+                              $('.labelberkaspbgimb').html('Unggah Dokumen SP3K');
                               $('.labelberkasktpdebitur').html('Unggah KTP Debitur');
                               $('.labelberkaspinjaman_kpl').html('Unggah Dokumen Bukti Pinjaman KPL');
                               $('.labelberkaspinjaman_kyg').html('Unggah Dokumen Bukti Pinjaman KYG');
                               $('.labelberkaspinjaman_lain').html('Unggah Dokumen Bukti Pinjaman Lain');
+                              $('.labelberkaspbgimb').html('Unggah Dokumen SP3K');
                               $('input').removeClass('is-invalid');
                               $('span').html('');
                           } else {

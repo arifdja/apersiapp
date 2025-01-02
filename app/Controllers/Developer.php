@@ -870,10 +870,11 @@ class Developer extends BaseController
             ],
             'pinjaman_kpl' => [
                 'label' => 'Pinjaman KPL',
-                'rules' => 'trim|numeric|permit_empty|required_with[berkaspinjaman_kpl]',
+                'rules' => 'trim|numeric|permit_empty|required_with[berkaspinjaman_kpl]|checkDanaByKPL[nilaikredit]',
                 'errors' => [
                     'numeric' => '{field} harus berupa angka',
-                    'required_with' => '{field} harus diisi'
+                    'required_with' => '{field} harus diisi',
+                    'checkDanaByKPL' => 'Total Potongan KPL, KYG, dan Lain tidak boleh lebih besar dari Nilai Dana Talangan'
                 ]
             ],
             'berkaspinjaman_kpl' => [
@@ -888,10 +889,11 @@ class Developer extends BaseController
             ],
             'pinjaman_kyg' => [
                 'label' => 'Pinjaman KYG',
-                'rules' => 'trim|numeric|permit_empty|required_with[berkaspinjaman_kyg]',
+                'rules' => 'trim|numeric|permit_empty|required_with[berkaspinjaman_kyg]|checkDanaByKPL[nilaikredit]',
                 'errors' => [
                     'numeric' => '{field} harus berupa angka',
-                    'required_with' => '{field} harus diisi'
+                    'required_with' => '{field} harus diisi',
+                    'checkDanaByKPL' => 'Total Potongan KPL, KYG, dan Lain tidak boleh lebih besar dari Nilai Dana Talangan'
                 ]
             ],
             'berkaspinjaman_kyg' => [
@@ -906,10 +908,11 @@ class Developer extends BaseController
             ],
             'pinjaman_lain' => [
                 'label' => 'Pinjaman Lain',
-                'rules' => 'trim|numeric|permit_empty|required_with[berkaspinjaman_lain]',
+                'rules' => 'trim|numeric|permit_empty|required_with[berkaspinjaman_lain]|checkDanaByKPL[nilaikredit]',
                 'errors' => [
                     'numeric' => '{field} harus berupa angka',
-                    'required_with' => 'Berkas Pinjaman lain harus diisi'
+                    'required_with' => 'Berkas Pinjaman lain harus diisi',
+                    'checkDanaByKPL' => 'Total Potongan KPL, KYG, dan Lain tidak boleh lebih besar dari Nilai Dana Talangan'
                 ]
             ],
             'berkaspinjaman_lain' => [
@@ -1257,26 +1260,29 @@ class Developer extends BaseController
             ],
             'pinjaman_kpl' => [
                 'label' => 'Pinjaman KPL',
-                'rules' => 'trim|numeric|permit_empty|required_with[berkaspinjaman_kpl]',
+                'rules' => 'trim|numeric|permit_empty|required_with[berkaspinjaman_kpl]|checkDanaByKPL[nilaikredit]',
                 'errors' => [
                     'numeric' => '{field} harus berupa angka',
-                    'required_with' => '{field} harus diisi'
+                    'required_with' => '{field} harus diisi',
+                    'checkDanaByKPL' => 'Total Potongan KPL, KYG, dan Lain tidak boleh lebih besar dari Nilai Dana Talangan'
                 ]
             ],
             'pinjaman_kyg' => [
                 'label' => 'Pinjaman KYG',
-                'rules' => 'trim|numeric|permit_empty|required_with[berkaspinjaman_kyg]',
+                'rules' => 'trim|numeric|permit_empty|required_with[berkaspinjaman_kyg]|checkDanaByKPL[nilaikredit]',
                 'errors' => [
                     'numeric' => '{field} harus berupa angka',
-                    'required_with' => '{field} harus diisi'
+                    'required_with' => '{field} harus diisi',
+                    'checkDanaByKPL' => 'Total Potongan KPL, KYG, dan Lain tidak boleh lebih besar dari Nilai Dana Talangan'
                 ]
             ],
             'pinjaman_lain' => [
                 'label' => 'Pinjaman Lain',
-                'rules' => 'trim|numeric|permit_empty|required_with[berkaspinjaman_lain]',
+                'rules' => 'trim|numeric|permit_empty|required_with[berkaspinjaman_lain]|checkDanaByKPL[nilaikredit]',
                 'errors' => [
                     'numeric' => '{field} harus berupa angka',
-                    'required_with' => 'Berkas Pinjaman lain harus diisi'
+                    'required_with' => 'Berkas Pinjaman lain harus diisi',
+                    'checkDanaByKPL' => 'Total Potongan KPL, KYG, dan Lain tidak boleh lebih besar dari Nilai Dana Talangan'
                 ]
             ],
         ];
@@ -1284,7 +1290,9 @@ class Developer extends BaseController
         if (!$this->validate($validationRules)) {
             return $this->response->setJSON([
                 'status' => 'error',
-                'message' => $this->validator->getErrors()
+                'message' => $this->validator->getErrors(),
+                'csrfName' => csrf_token(),
+                'csrfHash' => csrf_hash(),
             ])->setStatusCode(400);
         }
 

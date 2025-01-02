@@ -62,6 +62,20 @@ class ArifRules
         return true;
     } 
 
+    
+    public function checkDanaByKPL(string $str, string $field = null, array $data = null): bool
+    {
+        //$data adalah data yang diinputkan
+        //$field adalah field yang diinputkan
+        //$str adalah value dari field yang diinputkan
+
+        if(((int)$data['pinjaman_kpl'] + (int)$data['pinjaman_kyg'] + (int)$data['pinjaman_lain']) >= (int)$data['nilaikredit']){
+            $error = "Total Potongan KPL, KYG, dan Lain tidak boleh lebih besar dari Nilai Dana Talangan";
+            return false;
+        }
+        return true;
+    } 
+
     public function checkMaxDanaTalangan(string $str, string &$error = null): bool
     {
         // var_dump($str);exit;
