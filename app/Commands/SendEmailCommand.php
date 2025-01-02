@@ -62,12 +62,14 @@ class SendEmailCommand extends BaseCommand
         $notifikasi = new NotifikasiModel();        
         $emaildata = $notifikasi->select('trx_notifikasi.id,trx_notifikasi.uuid,trx_notifikasi.label,trx_notifikasi.isi,trx_notifikasi.url,users.email')
                                 ->join('users','users.uuid = trx_notifikasi.uuid')
-                                ->where('trx_notifikasi.email IS NULL')
+                                ->where('trx_notifikasi.email',0)
                                 ->findAll();
+        
 
 
         foreach ($emaildata as $key => $value) {
-            $email = sendMail($value['email'],$value['label'],$value['isi']);
+            $isi = $value['isi']." <br> <a href='".base_url()."'>SIBERIMBANG</a>";
+            $email = sendMail($value['email'],$value['label'],$isi);
             if($email){
                 $notifikasi->where('id',$value['id'])->set(['email' => 1])->update();
                 CLI::write('Email sent successfully!', 'green');
