@@ -46,19 +46,19 @@
                       <input type="hidden" name="uuid" value="<?= $p['uuid'] ?>">
                       <td><?= $no++ ?></td>
                       <td><?= $p['namapt'] ?></td>
-                      <td><a href="<?= base_url() ?>/download/npwp_pt/<?= $p['berkasnpwp'] ?>" target="_blank"><?= $p['npwppt'] ?></a></td>
-                      <td><a href="<?= base_url() ?>/download/ktp_penanggungjawab/<?= $p['berkasktppj'] ?>" target="_blank"><?= $p['namapj'] ?></a></td>
-                      <td><a href="<?= base_url() ?>/download/npwp_penanggungjawab/<?= $p['berkasnpwppj'] ?>" target="_blank"><?= $p['npwppj'] ?></a></td>
+                      <td><a href="#" onclick="showPDF('npwp_pt', '<?= $p['berkasnpwp'] ?>')" data-toggle="modal" data-target="#pdfModal"><?= $p['npwppt'] ?></a></td>
+                      <td><a href="#" onclick="showPDF('ktp_penanggungjawab', '<?= $p['berkasktppj'] ?>')" data-toggle="modal" data-target="#pdfModal"><?= $p['namapj'] ?></a></td>
+                      <td><a href="#" onclick="showPDF('npwp_penanggungjawab', '<?= $p['berkasnpwppj'] ?>')" data-toggle="modal" data-target="#pdfModal"><?= $p['npwppj'] ?></a></td>
                       <td>
                         <?= $p['penguruspt'] ?>
-                        <a href="<?= base_url() ?>/download/ktp_pengurus/<?= $p['berkaspengurusptktp'] ?>" target="_blank">KTP</a>
-                        <a href="<?= base_url() ?>/download/npwp_pengurus/<?= $p['berkaspengurusptnpwp'] ?>" target="_blank">NPWP</a>
+                        <a href="#" onclick="showPDF('ktp_pengurus', '<?= $p['berkaspengurusptktp'] ?>')" data-toggle="modal" data-target="#pdfModal">KTP</a>
+                        <a href="#" onclick="showPDF('npwp_pengurus', '<?= $p['berkaspengurusptnpwp'] ?>')" data-toggle="modal" data-target="#pdfModal">NPWP</a>
                       </td>
-                      <td><a href="<?= base_url() ?>/download/akta_pendirian/<?= $p['berkasaktapendirian'] ?>" target="_blank">Lihat</a></td>
-                      <td><a href="<?= base_url() ?>/download/sk_kemenkumham/<?= $p['berkasskkemenkumham'] ?>" target="_blank">Lihat</a></td>
-                      <td><a href="<?= base_url() ?>/download/laporan_keuangan/<?= $p['berkaslaporankeuangan'] ?>" target="_blank">Lihat</a></td>
-                      <td><a href="<?= base_url() ?>/download/rekening/<?= $p['berkasrekening'] ?>" target="_blank"><?= $p['rekening'] ?></a> <?= $p['namabank'] ?></td>
-                      <td><a href="<?= base_url() ?>/download/rekening_escrow/<?= $p['berkasrekeningescrow'] ?>" target="_blank"><?= $p['rekeningescrow'] ?></a> <?= $p['namabankescrow'] ?></td>
+                      <td><a href="#" onclick="showPDF('akta_pendirian', '<?= $p['berkasaktapendirian'] ?>')" data-toggle="modal" data-target="#pdfModal">Lihat</a></td>
+                      <td><a href="#" onclick="showPDF('sk_kemenkumham', '<?= $p['berkasskkemenkumham'] ?>')" data-toggle="modal" data-target="#pdfModal">Lihat</a></td>
+                      <td><a href="#" onclick="showPDF('laporan_keuangan', '<?= $p['berkaslaporankeuangan'] ?>')" data-toggle="modal" data-target="#pdfModal">Lihat</a></td>
+                      <td><a href="#" onclick="showPDF('rekening', '<?= $p['berkasrekening'] ?>')" data-toggle="modal" data-target="#pdfModal"><?= $p['rekening'] ?></a> <?= $p['namabank'] ?></td>
+                      <td><a href="#" onclick="showPDF('rekening_escrow', '<?= $p['berkasrekeningescrow'] ?>')" data-toggle="modal" data-target="#pdfModal"><?= $p['rekeningescrow'] ?></a> <?= $p['namabankescrow'] ?></td>
                       <td><?= $p['namaprovinsi'] ?> - <?= $p['namakabupaten'] ?> - <?= $p['namakecamatan'] ?> - <?= $p['alamatinput'] ?></td>
                       <td>
                         <?= ($p['statusvalidator'] == '0' || $p['statusvalidator'] == '') ? '<span class="badge bg-warning">Menunggu Validasi</span>' : '' ?>
@@ -84,6 +84,22 @@
       <!-- /.container-fluid -->
     </section>
     
+    <!-- Modal -->
+    <div class="modal fade" id="pdfModal" tabindex="-1" role="dialog" aria-labelledby="pdfModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="pdfModalLabel">Dokumen</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <iframe id="pdfViewer" style="width:100%; height:800px;" frameborder="0"></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
   
 <?= $this->endSection(); ?>
 
@@ -115,6 +131,10 @@
 </script>
 
 <script>
+function showPDF(type, filename) {
+  document.getElementById('pdfViewer').src = '<?= base_url() ?>/download/' + type + '/' + filename + '/pdf';
+}
+
 $(document).ready(function () {
   $('.hapus').click(function (e) {
     e.preventDefault();

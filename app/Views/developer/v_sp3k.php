@@ -51,11 +51,11 @@
                       <input type="hidden" name="uuid" value="<?= $p['uuid'] ?>">
                       <td><?= $no++ ?></td>
                       <td><?= $p['namapt'] ?></td>
-                      <td><a href="<?= base_url() ?>/download/sertifikat/<?= $p['berkassertifikat'] ?>" target="_blank"><?= $p['sertifikat'] ?></a></td>
-                      <td><a href="<?= base_url() ?>/download/pbgimb/<?= $p['berkaspbgimb'] ?>" target="_blank">Lihat</a></td>
-                      <td><a href="<?= base_url() ?>/download/pbb/<?= $p['berkaspbb'] ?>" target="_blank"><?= $p['pbb'] ?></a></td>
-                      <td><a href="<?= base_url() ?>/download/ktp_debitur/<?= $p['berkasktpdebitur'] ?>" target="_blank"><?= $p['namadebitur'] ?></a></td>
-                      <td><a href="<?= base_url() ?>/download/sp3k/<?= $p['berkassp3k'] ?>" target="_blank"><?= $p['nomordokumensp3k'] ?></a></td>
+                      <td><a href="#" onclick="showPDF('sertifikat', '<?= $p['berkassertifikat']; ?>')" data-toggle="modal" data-target="#pdfModal"><?= $p['sertifikat'] ?></a></td>
+                      <td><a href="#" onclick="showPDF('pbgimb', '<?= $p['berkaspbgimb']; ?>')" data-toggle="modal" data-target="#pdfModal"><?= $p['pbgimb'] ?></a></td>
+                      <td><a href="#" onclick="showPDF('pbb', '<?= $p['berkaspbb']; ?>')" data-toggle="modal" data-target="#pdfModal"><?= $p['pbb'] ?></a></td>
+                      <td><a href="#" onclick="showPDF('ktp_debitur', '<?= $p['berkasktpdebitur']; ?>')" data-toggle="modal" data-target="#pdfModal"><?= $p['namadebitur'] ?></a></td>
+                      <td><a href="#" onclick="showPDF('sp3k', '<?= $p['berkassp3k']; ?>')" data-toggle="modal" data-target="#pdfModal"><?= $p['nomordokumensp3k'] ?></a></td>
                       <td align="right"><?= tanggal_indo($p['tanggalsp3k']) ?></td>
                       <td align="right"><?= number_format($p['harga'],0,',','.') ?></td>
                       <td align="right"><?= number_format($p['nilaikredit'],0,',','.') ?></td>
@@ -79,6 +79,22 @@
       </div>
       <!-- /.container-fluid -->
     </section>
+  <!-- Modal -->
+  <div class="modal fade" id="pdfModal" tabindex="-1" role="dialog" aria-labelledby="pdfModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="pdfModalLabel">Dokumen</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <iframe id="pdfViewer" style="width:100%; height:800px;" frameborder="0"></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
     
   
 <?= $this->endSection(); ?>
@@ -100,6 +116,9 @@
   });
 </script>
 <script>
+    function showPDF(type, filename) {
+      document.getElementById('pdfViewer').src = '<?= base_url() ?>/download/' + type + '/' + filename + '/pdf';
+    }
 $(document).ready(function() {
   // Status awal kolom tersembunyi
   let alamatVisible = false;

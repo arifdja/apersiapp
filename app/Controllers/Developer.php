@@ -597,20 +597,26 @@ class Developer extends BaseController
             ->where('uuid', $uuid)->first();
 
         $html = '<div id="divberkas" class="form-group">
-                    <a href="'.base_url('download/akta_pendirian/'.$data['berkasaktapendirian']).'" class="form-control" style="text-decoration: none; background-color: #e9ecef;">Akta Pendirian : '.$data['aktapendirian'].'</a>
+                    <a href="#" onclick="showPDF(\'akta_pendirian\', \''.$data['berkasaktapendirian'].'\')" data-toggle="modal" data-target="#pdfModal" class="form-control" style="text-decoration: none; background-color: #e9ecef;margin-bottom: 10px;">Akta Pendirian</a>
                  
-                    <a href="'.base_url('download/npwp_pt/'.$data['berkasnpwp']).'" class="form-control" style="text-decoration: none; background-color: #e9ecef; margin-top: 10px;">NPWP PT : '.$data['npwppt'].'</a>
+                    <a href="#" onclick="showPDF(\'npwp_pt\', \''.$data['berkasnpwp'].'\')" data-toggle="modal" data-target="#pdfModal" class="form-control" style="text-decoration: none; background-color: #e9ecef;margin-bottom: 10px;">NPWP PT : '.$data['npwppt'].'</a>
                  
-                    <a href="'.base_url('download/rekening/'.$data['berkasrekening']).'" class="form-control" style="text-decoration: none; background-color: #e9ecef; margin-top: 10px;">Rekening Operasional : '.$data['rekening'].' '.$data['namabank'].'</a>
+                    <a href="#" onclick="showPDF(\'rekening\', \''.$data['berkasrekening'].'\')" data-toggle="modal" data-target="#pdfModal" class="form-control" style="text-decoration: none; background-color: #e9ecef;margin-bottom: 10px;">Rekening Operasional : '.$data['rekening'].' '.$data['namabank'].'</a>
 
-                    <a href="'.base_url('download/rekening_escrow/'.$data['berkasrekeningescrow']).'" class="form-control" style="text-decoration: none; background-color: #e9ecef; margin-top: 10px;">Rekening Escrow : '.$data['rekeningescrow'].' '.$data['namabankescrow'].'</a>
+                    <a href="#" onclick="showPDF(\'rekening_escrow\', \''.$data['berkasrekeningescrow'].'\')" data-toggle="modal" data-target="#pdfModal" class="form-control" style="text-decoration: none; background-color: #e9ecef;margin-bottom: 10px;">Rekening Escrow : '.$data['rekeningescrow'].' '.$data['namabankescrow'].'</a>
 
-                    <a href="'.base_url('download/sk_kemenkumham/'.$data['berkasskkemenkumham']).'" class="form-control" style="text-decoration: none; background-color: #e9ecef; margin-top: 10px;">SK Kemenkumham</a>
+                    <a href="#" onclick="showPDF(\'sk_kemenkumham\', \''.$data['berkasskkemenkumham'].'\')" data-toggle="modal" data-target="#pdfModal" class="form-control" style="text-decoration: none; background-color: #e9ecef;margin-bottom: 10px;">SK Kemenkumham</a>
                   
-                    <a href="'.base_url('download/ktp_penanggungjawab/'.$data['berkasktppj']).'" class="form-control" style="text-decoration: none; background-color: #e9ecef; margin-top: 10px;">Penanggung Jawab : '.$data['namapj'].'</a>
+                    <a href="#" onclick="showPDF(\'ktp_penanggungjawab\', \''.$data['berkasktppj'].'\')" data-toggle="modal" data-target="#pdfModal" class="form-control" style="text-decoration: none; background-color: #e9ecef;margin-bottom: 10px;">Penanggung Jawab : '.$data['namapj'].'</a>
                  
-                    <a href="'.base_url('download/npwp_penanggungjawab/'.$data['berkasnpwppj']).'" class="form-control" style="text-decoration: none; background-color: #e9ecef; margin-top: 10px;">NPWP Penanggung Jawab : '.$data['npwppj'].'</a>
-                                           
+                    <a href="#" onclick="showPDF(\'npwp_penanggungjawab\', \''.$data['berkasnpwppj'].'\')" data-toggle="modal" data-target="#pdfModal" class="form-control" style="text-decoration: none; background-color: #e9ecef;margin-bottom: 10px;">NPWP Penanggung Jawab : '.$data['npwppj'].'</a>
+                     
+                    <a href="#" class="form-control" style="text-decoration: none; background-color: #e9ecef;margin-bottom: 10px;">Pengurus PT : '.$data['penguruspt'].'</a>
+
+                    <a href="#" onclick="showPDF(\'npwp_pengurus\', \''.$data['berkaspengurusptnpwp'].'\')" data-toggle="modal" data-target="#pdfModal" class="form-control" style="text-decoration: none; background-color: #e9ecef;margin-bottom: 10px;">NPWP Pengurus PT : '.$data['npwppt'].'</a>
+
+                    <a href="#" onclick="showPDF(\'ktp_pengurus\', \''.$data['berkaspengurusptktp'].'\')" data-toggle="modal" data-target="#pdfModal" class="form-control" style="text-decoration: none; background-color: #e9ecef;margin-bottom: 10px;">NPWP Pengurus PT : '.$data['npwppt'].'</a>
+
                   </div>
                   
                   ';  

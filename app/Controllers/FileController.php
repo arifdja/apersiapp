@@ -28,7 +28,7 @@ class FileController extends Controller
      * @param string $berkas Nama berkas yang akan didownload
      * @return mixed Response download file jika berhasil, redirect dengan error jika gagal
      */
-    public function download($type,$berkas)
+    public function download($type,$berkas,$view=null)
     {
         if($type == 'kta'){
 
@@ -41,8 +41,15 @@ class FileController extends Controller
     
             if (!file_exists($filePath)) {
                 return redirect()->back()->with('error', 'File not found on the server.');
+            }   
+            if($view == 'pdf'){
+                return $this->response
+                ->setHeader('Content-Type', 'application/pdf')
+                ->setHeader('Content-Disposition', 'inline; filename="' . $file['berkaskta'] . '"')
+                ->setBody(file_get_contents($filePath));
+            }else{
+                return $this->response->download($filePath, null)->setFileName($file['berkaskta']);
             }
-            return $this->response->download($filePath, null)->setFileName($file['berkaskta']);
 
         }elseif($type == 'akta_pendirian'){
 
@@ -56,7 +63,14 @@ class FileController extends Controller
             if (!file_exists($filePath)) {
                 return redirect()->back()->with('error', 'File not found on the server.');
             }
-            return $this->response->download($filePath, null)->setFileName($file['berkasaktapendirian']);
+            if($view == 'pdf'){
+                return $this->response
+                ->setHeader('Content-Type', 'application/pdf')
+                ->setHeader('Content-Disposition', 'inline; filename="' . $file['berkasaktapendirian'] . '"')
+                ->setBody(file_get_contents($filePath));
+            }else{
+                return $this->response->download($filePath, null)->setFileName($file['berkasaktapendirian']);
+            }
 
 
         }elseif($type == 'sk_kemenkumham'){
@@ -71,7 +85,14 @@ class FileController extends Controller
             if (!file_exists($filePath)) {
                 return redirect()->back()->with('error', 'File not found on the server.');
             }
-            return $this->response->download($filePath, null)->setFileName($file['berkasskkemenkumham']);
+            if($view == 'pdf'){
+                return $this->response
+                ->setHeader('Content-Type', 'application/pdf')
+                ->setHeader('Content-Disposition', 'inline; filename="' . $file['berkasskkemenkumham'] . '"')
+                ->setBody(file_get_contents($filePath));
+            }else{
+                return $this->response->download($filePath, null)->setFileName($file['berkasskkemenkumham']);
+            }
 
 
         }elseif($type == 'rekening'){
@@ -85,7 +106,14 @@ class FileController extends Controller
             if (!file_exists($filePath)) {
                 return redirect()->back()->with('error', 'File not found on the server.');
             }
-            return $this->response->download($filePath, null)->setFileName($file['berkasrekening']);
+            if($view == 'pdf'){
+                return $this->response
+                ->setHeader('Content-Type', 'application/pdf')
+                ->setHeader('Content-Disposition', 'inline; filename="' . $file['berkasrekening'] . '"')
+                ->setBody(file_get_contents($filePath));
+            }else{
+                return $this->response->download($filePath, null)->setFileName($file['berkasrekening']);
+            }
 
         }elseif($type == 'rekening_escrow'){
             $model = new PTModel();
@@ -98,7 +126,14 @@ class FileController extends Controller
             if (!file_exists($filePath)) {
                 return redirect()->back()->with('error', 'File not found on the server.');
             }
-            return $this->response->download($filePath, null)->setFileName($file['berkasrekeningescrow']);
+            if($view == 'pdf'){
+                return $this->response
+                ->setHeader('Content-Type', 'application/pdf')
+                ->setHeader('Content-Disposition', 'inline; filename="' . $file['berkasrekeningescrow'] . '"')
+                ->setBody(file_get_contents($filePath));
+            }else{
+                return $this->response->download($filePath, null)->setFileName($file['berkasrekeningescrow']);
+            }
 
         }elseif($type == 'npwp_pt'){
             $model = new PTModel();
@@ -111,7 +146,14 @@ class FileController extends Controller
             if (!file_exists($filePath)) {
                 return redirect()->back()->with('error', 'File not found on the server.');
             }
-            return $this->response->download($filePath, null)->setFileName($file['berkasnpwp']);
+            if($view == 'pdf'){
+                return $this->response
+                ->setHeader('Content-Type', 'application/pdf')
+                ->setHeader('Content-Disposition', 'inline; filename="' . $file['berkasnpwp'] . '"')
+                ->setBody(file_get_contents($filePath));
+            }else{
+                return $this->response->download($filePath, null)->setFileName($file['berkasnpwp']);
+            }
 
         }elseif($type == 'ktp_penanggungjawab'){
             $model = new PTModel();
@@ -124,7 +166,14 @@ class FileController extends Controller
             if (!file_exists($filePath)) {
                 return redirect()->back()->with('error', 'File not found on the server.');
             }
-            return $this->response->download($filePath, null)->setFileName($file['berkasktppj']);
+            if($view == 'pdf'){
+                return $this->response
+                ->setHeader('Content-Type', 'application/pdf')
+                ->setHeader('Content-Disposition', 'inline; filename="' . $file['berkasktppj'] . '"')
+                ->setBody(file_get_contents($filePath));
+            }else{
+                return $this->response->download($filePath, null)->setFileName($file['berkasktppj']);
+            }
 
         }elseif($type == 'npwp_penanggungjawab'){
             $model = new PTModel();
@@ -137,7 +186,14 @@ class FileController extends Controller
             if (!file_exists($filePath)) {
                 return redirect()->back()->with('error', 'File not found on the server.');
             }
-            return $this->response->download($filePath, null)->setFileName($file['berkasnpwppj']);
+            if($view == 'pdf'){
+                return $this->response
+                ->setHeader('Content-Type', 'application/pdf')
+                ->setHeader('Content-Disposition', 'inline; filename="' . $file['berkasnpwppj'] . '"')
+                ->setBody(file_get_contents($filePath));
+            }else{
+                return $this->response->download($filePath, null)->setFileName($file['berkasnpwppj']);
+            }
 
         }elseif($type == 'ktp_pengurus'){
             $model = new PTModel();
@@ -150,7 +206,14 @@ class FileController extends Controller
             if (!file_exists($filePath)) {
                 return redirect()->back()->with('error', 'File not found on the server.');
             }
-            return $this->response->download($filePath, null)->setFileName($file['berkaspengurusptktp']);
+            if($view == 'pdf'){
+                return $this->response
+                ->setHeader('Content-Type', 'application/pdf')
+                ->setHeader('Content-Disposition', 'inline; filename="' . $file['berkaspengurusptktp'] . '"')
+                ->setBody(file_get_contents($filePath));
+            }else{
+                return $this->response->download($filePath, null)->setFileName($file['berkaspengurusptktp']);
+            }
 
         }elseif($type == 'laporan_keuangan'){
             $model = new PTModel();
@@ -163,7 +226,14 @@ class FileController extends Controller
             if (!file_exists($filePath)) {
                 return redirect()->back()->with('error', 'File not found on the server.');
             }
-            return $this->response->download($filePath, null)->setFileName($file['berkaslaporankeuangan']);
+            if($view == 'pdf'){
+                return $this->response
+                ->setHeader('Content-Type', 'application/pdf')
+                ->setHeader('Content-Disposition', 'inline; filename="' . $file['berkaslaporankeuangan'] . '"')
+                ->setBody(file_get_contents($filePath));
+            }else{
+                return $this->response->download($filePath, null)->setFileName($file['berkaslaporankeuangan']);
+            }
 
         }elseif($type == 'npwp_pengurus'){
             $model = new PTModel();
@@ -176,7 +246,14 @@ class FileController extends Controller
             if (!file_exists($filePath)) {
                 return redirect()->back()->with('error', 'File not found on the server.');
             }
-            return $this->response->download($filePath, null)->setFileName($file['berkaspengurusptnpwp']);
+            if($view == 'pdf'){
+                return $this->response
+                ->setHeader('Content-Type', 'application/pdf')
+                ->setHeader('Content-Disposition', 'inline; filename="' . $file['berkaspengurusptnpwp'] . '"')
+                ->setBody(file_get_contents($filePath));
+            }else{
+                return $this->response->download($filePath, null)->setFileName($file['berkaspengurusptnpwp']);
+            }
         }   
         elseif($type == 'pbgimb'){
             $model = new PengajuanDetailModel();
@@ -189,7 +266,14 @@ class FileController extends Controller
             if (!file_exists($filePath)) {
                 return redirect()->back()->with('error', 'File not found on the server.');
             }
-            return $this->response->download($filePath, null)->setFileName($file['berkaspbgimb']);
+            if($view == 'pdf'){
+                return $this->response
+                ->setHeader('Content-Type', 'application/pdf')
+                ->setHeader('Content-Disposition', 'inline; filename="' . $file['berkaspbgimb'] . '"')
+                ->setBody(file_get_contents($filePath));
+            }else{
+                return $this->response->download($filePath, null)->setFileName($file['berkaspbgimb']);
+            }
 
         }elseif($type == 'pinjaman_kyg'){
             $model = new PengajuanDetailModel();
@@ -202,7 +286,14 @@ class FileController extends Controller
             if (!file_exists($filePath)) {
                 return redirect()->back()->with('error', 'File not found on the server.');
             }
-            return $this->response->download($filePath, null)->setFileName($file['berkaspinjamankyg']);
+            if($view == 'pdf'){
+                return $this->response
+                ->setHeader('Content-Type', 'application/pdf')
+                ->setHeader('Content-Disposition', 'inline; filename="' . $file['berkaspinjamankyg'] . '"')
+                ->setBody(file_get_contents($filePath));
+            }else{
+                return $this->response->download($filePath, null)->setFileName($file['berkaspinjamankyg']);
+            }
 
         }elseif($type == 'pinjaman_lain'){
             $model = new PengajuanDetailModel();
@@ -215,7 +306,14 @@ class FileController extends Controller
             if (!file_exists($filePath)) {
                 return redirect()->back()->with('error', 'File not found on the server.');
             }
-            return $this->response->download($filePath, null)->setFileName($file['berkaspinjamanlain']);
+            if($view == 'pdf'){
+                return $this->response
+                ->setHeader('Content-Type', 'application/pdf')
+                ->setHeader('Content-Disposition', 'inline; filename="' . $file['berkaspinjamanlain'] . '"')
+                ->setBody(file_get_contents($filePath));
+            }else{
+                return $this->response->download($filePath, null)->setFileName($file['berkaspinjamanlain']);
+            }
 
         }elseif($type == 'surat_permohonan'){
             $model = new PengajuanModel();
@@ -228,7 +326,14 @@ class FileController extends Controller
             if (!file_exists($filePath)) {
                 return redirect()->back()->with('error', 'File not found on the server.');
             }
-            return $this->response->download($filePath, null)->setFileName($file['berkassuratpermohonan']);
+            if($view == 'pdf'){
+                return $this->response
+                ->setHeader('Content-Type', 'application/pdf')
+                ->setHeader('Content-Disposition', 'inline; filename="' . $file['berkassuratpermohonan'] . '"')
+                ->setBody(file_get_contents($filePath));
+            }else{
+                return $this->response->download($filePath, null)->setFileName($file['berkassuratpermohonan']);
+            }
 
         } elseif($type == 'site_plan'){
             $model = new PengajuanModel();
@@ -241,7 +346,14 @@ class FileController extends Controller
             if (!file_exists($filePath)) {
                 return redirect()->back()->with('error', 'File not found on the server.');
             }
-            return $this->response->download($filePath, null)->setFileName($file['berkassiteplan']);
+            if($view == 'pdf'){
+                return $this->response
+                ->setHeader('Content-Type', 'application/pdf')
+                ->setHeader('Content-Disposition', 'inline; filename="' . $file['berkassiteplan'] . '"')
+                ->setBody(file_get_contents($filePath));
+            }else{
+                return $this->response->download($filePath, null)->setFileName($file['berkassiteplan']);
+            }
 
         } elseif($type == 'sertifikat'){
             $model = new PengajuanDetailModel();
@@ -254,7 +366,14 @@ class FileController extends Controller
             if (!file_exists($filePath)) {
                 return redirect()->back()->with('error', 'File not found on the server.');
             }
-            return $this->response->download($filePath, null)->setFileName($file['berkassertifikat']);
+            if($view == 'pdf'){
+                return $this->response
+                ->setHeader('Content-Type', 'application/pdf')
+                ->setHeader('Content-Disposition', 'inline; filename="' . $file['berkassertifikat'] . '"')
+                ->setBody(file_get_contents($filePath));
+            }else{
+                return $this->response->download($filePath, null)->setFileName($file['berkassertifikat']);
+            }
 
         } elseif($type == 'pbb'){
             $model = new PengajuanDetailModel();
@@ -267,7 +386,14 @@ class FileController extends Controller
             if (!file_exists($filePath)) {
                 return redirect()->back()->with('error', 'File not found on the server.');
             }
-            return $this->response->download($filePath, null)->setFileName($file['berkaspbb']);
+            if($view == 'pdf'){
+                return $this->response
+                ->setHeader('Content-Type', 'application/pdf')
+                ->setHeader('Content-Disposition', 'inline; filename="' . $file['berkaspbb'] . '"')
+                ->setBody(file_get_contents($filePath));
+            }else{
+                return $this->response->download($filePath, null)->setFileName($file['berkaspbb']);
+            }
 
         } elseif($type == 'ktp_debitur'){
             $model = new PengajuanDetailModel();
@@ -280,7 +406,14 @@ class FileController extends Controller
             if (!file_exists($filePath)) {
                 return redirect()->back()->with('error', 'File not found on the server.');
             }
-            return $this->response->download($filePath, null)->setFileName($file['berkasktpdebitur']);
+            if($view == 'pdf'){
+                return $this->response
+                ->setHeader('Content-Type', 'application/pdf')
+                ->setHeader('Content-Disposition', 'inline; filename="' . $file['berkasktpdebitur'] . '"')
+                ->setBody(file_get_contents($filePath));
+            }else{
+                return $this->response->download($filePath, null)->setFileName($file['berkasktpdebitur']);
+            }
 
         } elseif($type == 'rekening_debitur'){
             $model = new PengajuanDetailModel();
@@ -293,7 +426,14 @@ class FileController extends Controller
             if (!file_exists($filePath)) {
                 return redirect()->back()->with('error', 'File not found on the server.');
             }
-            return $this->response->download($filePath, null)->setFileName($file['berkasrekening']);
+            if($view == 'pdf'){
+                return $this->response
+                ->setHeader('Content-Type', 'application/pdf')
+                ->setHeader('Content-Disposition', 'inline; filename="' . $file['berkasrekening'] . '"')
+                ->setBody(file_get_contents($filePath));
+            }else{
+                return $this->response->download($filePath, null)->setFileName($file['berkasrekening']);
+            }
 
         } elseif($type == 'sp3k'){
             $model = new PengajuanDetailModel();
@@ -306,7 +446,14 @@ class FileController extends Controller
             if (!file_exists($filePath)) {
                 return redirect()->back()->with('error', 'File not found on the server.');
             }
-            return $this->response->download($filePath, null)->setFileName($file['berkassp3k']);
+            if($view == 'pdf'){
+                return $this->response
+                ->setHeader('Content-Type', 'application/pdf')
+                ->setHeader('Content-Disposition', 'inline; filename="' . $file['berkassp3k'] . '"')
+                ->setBody(file_get_contents($filePath));
+            }else{
+                return $this->response->download($filePath, null)->setFileName($file['berkassp3k']);
+            }
 
         }   else{
             return redirect()->back()->with('error', 'File not found.');
@@ -322,7 +469,14 @@ class FileController extends Controller
             if (!file_exists($filePath)) {
                 return redirect()->back()->with('error', 'File not found on the server.');
             }
-            return $this->response->download($filePath, null)->setFileName('form_kredit.docx');
+            if($view == 'pdf'){
+                return $this->response
+                ->setHeader('Content-Type', 'application/pdf')
+                ->setHeader('Content-Disposition', 'inline; filename="' . $file['berkassp3k'] . '"')
+                ->setBody(file_get_contents($filePath));
+            }else{
+                return $this->response->download($filePath, null)->setFileName('form_kredit.docx');
+            }
     }
     
 }

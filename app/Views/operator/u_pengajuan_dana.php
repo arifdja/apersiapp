@@ -73,10 +73,10 @@
                       </td>
                       <td><?= $p['namadeveloper'] ?></td>
                       <td><?= $p['namapt'] ?></td>
-                      <td><a href="<?= base_url() ?>/download/surat_permohonan/<?= $p['berkassuratpermohonan'] ?>" target="_blank">Lihat</a></td>
+                      <td><a href="#" onclick="showPDF('surat_permohonan', '<?= $p['berkassuratpermohonan'] ?>')" data-toggle="modal" data-target="#pdfModal"><?= $p['suratpermohonan'] ?></a></td>
                       <td class="detail-column" style="display:none"><?= $p['namaprovinsi'] ?> - <?= $p['namakabupaten'] ?> - <?= $p['namakecamatan'] ?></td>
                       <td class="detail-column" style="display:none"><?= $p['alamatperumahaninput'] ?></td>
-                      <td><a href="<?= base_url() ?>/download/site_plan/<?= $p['berkassiteplan'] ?>" target="_blank">Lihat</a></td>
+                      <td><a href="#" onclick="showPDF('site_plan', '<?= $p['berkassiteplan'] ?>')" data-toggle="modal" data-target="#pdfModal"><?= $p['siteplan'] ?></a></td>
                       <td><?= $p['jumlahunitinput'] ?></td>
                       <td align="right"><?= number_format($p['totalhargasp3k'],0,',','.') ?></td>
                       <td align="right"><?= number_format($p['totaldanatalangan'],0,',','.') ?></td>
@@ -173,7 +173,22 @@
     </div>
     <!-- /.container-fluid -->
 </section>
-
+  <!-- Modal -->
+  <div class="modal fade" id="pdfModal" tabindex="-1" role="dialog" aria-labelledby="pdfModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="pdfModalLabel">Dokumen</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <iframe id="pdfViewer" style="width:100%; height:800px;" frameborder="0"></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
 <?= $this->endSection(); ?>
 
 <?= $this->section('south'); ?>
@@ -224,6 +239,9 @@ $(document).ready(function() {
 });
 </script>
 <script>
+    function showPDF(type, filename) {
+      document.getElementById('pdfViewer').src = '<?= base_url() ?>/download/' + type + '/' + filename + '/pdf';
+    }
 $(document).ready(function() {
   <?php if(session()->get('kdgrpuser')=='pendana'): ?>
     // Handle teruskan button click
