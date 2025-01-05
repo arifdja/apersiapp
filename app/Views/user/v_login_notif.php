@@ -20,7 +20,7 @@
   <link rel="stylesheet" href="<?= base_url() ?>/adminlte/plugins/toastr/toastr.min.css">
   <style>
        body{
-            background: url(<?php echo base_url('assets/images/background.jpg') ?>) repeat left center fixed !important;
+            background: url(<?php echo base_url('assets/images/background.jpg') ?>) repeat center center fixed !important;
             background-color: #498BC6 !important;
             -webkit-background-size: auto;
             -moz-background-size: auto;
@@ -119,14 +119,33 @@
     </div>
 
     <!-- Kolom Informasi Penting (Kanan) -->
-    <div class="col-md-6 bg-light d-flex align-items-center justify-content-center" style="min-height: 100vh;">
-      <div class="p-1">
-        <!-- <h3 class="text-primary mb-4">Informasi Penting</h3> -->
+    <div class="col-md-6 bg-light d-flex align-items-center" style="min-height: 100vh;">
+      <div class="p-5">
+        <h3 class="text-primary mb-4">Informasi Penting</h3>
         
         <!-- Tambahkan informasi penting di sini -->
         <div class="card mb-3">
-          <div class="card-body p-0 d-flex justify-content-center align-items-center">
-            <img src="<?= base_url('flayer/persyaratan_refinancing.jpg') ?>" class="img-fluid" alt="Flayer 1">
+          <div class="card-body">
+            <h5 class="card-title">Pengumuman</h5>
+            <p class="card-text">Silakan cek pengumuman terbaru tentang sistem bridging modal pengembang di sini.</p>
+          </div>
+        </div>
+
+        <div class="card mb-3">
+          <div class="card-body">
+            <h5 class="card-title">Panduan Pengguna</h5>
+            <p class="card-text">Unduh panduan pengguna sistem untuk informasi lebih lanjut.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Kontak Support</h5>
+            <p class="card-text">Jika Anda mengalami kesulitan, silakan hubungi tim support kami:</p>
+            <ul class="list-unstyled">
+              <li><i class="fas fa-envelope mr-2"></i> support@example.com</li>
+              <li><i class="fas fa-phone mr-2"></i> (021) 1234-5678</li>
+            </ul>
           </div>
         </div>
         
