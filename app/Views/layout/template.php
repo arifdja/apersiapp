@@ -99,13 +99,14 @@
     <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
           <i class="far fa-bell"></i>
-          <span class="badge badge-warning navbar-badge"><?= count(getNotifikasi(session('uuid'), true)) ?></span>
+          <?php $totalnotif = count(getNotifikasi(session('uuid'), true)); ?>
+          <span class="badge badge-warning navbar-badge"><?= $totalnotif ?></span>
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          <span class="dropdown-item dropdown-header"><?= count(getNotifikasi(session('uuid'), true)) ?> Notifikasi</span>
-          <?php foreach(getNotifikasi(session('uuid'), true) as $n): ?>
+          <span class="dropdown-item dropdown-header"><?= $totalnotif ?> Notifikasi</span>
+          <?php foreach(getNotifikasi(session('uuid'), true, 5) as $n): ?>
             <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
+            <a href="<?= $n['url'] ?>" class="dropdown-item">
             <i class="fas fa-envelope mr-2"></i> <?= $n['label'] ?>
             <span class="float-right text-muted text-sm"><?= $n['created_at'] ?></span>
           </a>

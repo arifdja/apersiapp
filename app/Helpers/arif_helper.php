@@ -1094,7 +1094,7 @@ if (!function_exists('setNotifikasi')) {
 }
 
 if (!function_exists('getNotifikasi')) {
-    function getNotifikasi($user_uuid, $unreadonly = true) {
+    function getNotifikasi($user_uuid, $unreadonly = true,$limit = null) {
         try {
             $notifikasiModel = new \App\Models\NotifikasiModel();
             
@@ -1102,6 +1102,9 @@ if (!function_exists('getNotifikasi')) {
             
             if ($unreadonly) {
                 $query->where('status', 0);
+            }
+            if($limit != null){
+                $query->limit($limit);
             }
             
             $data = $query->orderBy('created_at', 'DESC')
