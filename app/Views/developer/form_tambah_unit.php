@@ -163,7 +163,7 @@
                           </div>
 
                       <div class="form-group">
-                        <label for="pinjaman_kpl">Potongan KPL</label>
+                        <label for="pinjaman_kpl">Potongan KPL per Unit</label>
                         <input type="number" name="pinjaman_kpl" class="form-control" id="pinjaman_kpl" placeholder="Total Potongan KPL">
                         <span id="spanpinjaman_kpl" style="color: red;"></span>
                         <div class="input-group" style="margin-top: 10px;">
@@ -179,7 +179,7 @@
                         <span id="spanberkaspinjaman_kpl" style="color: red;"></span>
                       </div>
                       <div class="form-group">
-                        <label for="pinjaman_kyg">Potongan KYG</label>
+                        <label for="pinjaman_kyg">Potongan KYG per Unit</label>
                         <input type="number" name="pinjaman_kyg" class="form-control" id="pinjaman_kyg" placeholder="Total Potongan KYG" >
                         <span id="spanpinjaman_kyg" style="color: red;"></span>
                         <div class="input-group" style="margin-top: 10px;">
@@ -195,7 +195,7 @@
                         <span id="spanberkaspinjaman_kyg" style="color: red;"></span>
                       </div>
                       <div class="form-group">
-                        <label for="pinjaman_lain">Potongan Lain</label>
+                        <label for="pinjaman_lain">Potongan Lain per Unit</label>
                         <input type="number" name="pinjaman_lain" class="form-control" id="pinjaman_lain" placeholder="Total Potongan Lain" >
                         <span id="spanpinjaman_lain" style="color: red;"></span>
                         <div class="input-group" style="margin-top: 10px;">

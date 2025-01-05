@@ -82,6 +82,23 @@
                 </div>
               </div>
               <span id="spanberkassiteplan" style="color: red;"></span>
+
+              
+              <div class="form-group">
+                <label for="berkaspsu">Foto Rumah, Prasarana, Sarana, dan Utilitas Umum</label>
+                <div class="input-group">
+                  <div class="custom-file">
+                    <input type="file" name="berkaspsu" class="custom-file-input" id="berkaspsu" accept=".pdf" required>
+                    <label class="custom-file-label" for="berkaspsu">Choose file</label>
+                  </div>
+                </div>
+                <div class="text-muted">
+                  <small>Format file yang diizinkan: PDF</small>,
+                  <small>Maksimal ukuran file: 10 MB</small>
+                </div>
+              </div>
+              <span id="spanberkaspsu" style="color: red;"></span>
+
             </div>
             <div class="card-footer">
               <div class="col-sm-6">
@@ -180,6 +197,9 @@ $(document).ready(function () {
           }
           if(xhr.responseJSON.message.jumlahunit){
             $('#jumlahunit').addClass('is-invalid');
+          }
+          if(xhr.responseJSON.message.berkaspsu){
+            $('#berkaspsu').addClass('is-invalid');
           }
         }
         if(xhr.responseJSON.message.simpan){

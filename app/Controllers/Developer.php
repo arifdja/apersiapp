@@ -11,6 +11,7 @@ use App\Models\DashboardModel;
 use App\Models\KecamatanModel;
 use App\Models\KotaModel;
 use App\Models\KabupatenModel;
+use App\Models\UserModel;
 
 
 class Developer extends BaseController
@@ -484,6 +485,16 @@ class Developer extends BaseController
                     'ext_in' => '{field} harus berformat PDF',
                     'mime_in' => '{field} harus berformat PDF'
                 ]
+            ],
+            'berkaspsu' => [
+                'label' => 'Foto Rumah, Prasarana, Sarana, dan Utilitas Umum',
+                'rules' => 'uploaded[berkaspsu]|max_size[berkaspsu,10240]|ext_in[berkaspsu,pdf]|mime_in[berkaspsu,application/pdf]',
+                'errors' => [
+                    'uploaded' => '{field} harus diisi',
+                    'max_size' => '{field} maksimal 10 MB',
+                    'ext_in' => '{field} harus berformat PDF',
+                    'mime_in' => '{field} harus berformat PDF'
+                ]
             ]
         ];
 
@@ -499,18 +510,22 @@ class Developer extends BaseController
 
         $fileberkassuratpermohonan = $this->request->getFile('berkassuratpermohonan');
         $fileberkassiteplan = $this->request->getFile('berkassiteplan');
-
+        $fileberkaspsu = $this->request->getFile('berkaspsu');
         
         if (
             $fileberkassuratpermohonan->isValid() && !$fileberkassuratpermohonan->hasMoved() &&
-            $fileberkassiteplan->isValid() && !$fileberkassiteplan->hasMoved()
+            $fileberkassiteplan->isValid() && !$fileberkassiteplan->hasMoved() &&
+            $fileberkaspsu->isValid() && !$fileberkaspsu->hasMoved()
         ) {
             $uuid = generate_uuid();
             $newfilenameberkassuratpermohonan = "suratpermohonan_".$uuid."_".$fileberkassuratpermohonan->getRandomName();
             $newfilenameberkassiteplan = "siteplan_".$uuid."_".$fileberkassiteplan->getRandomName();
-            
+            $newfilenameberkaspsu = "psu_".$uuid."_".$fileberkaspsu->getRandomName();
+
             $fileberkassuratpermohonan->move(WRITEPATH . 'uploads/surat_permohonan', $newfilenameberkassuratpermohonan);
             $fileberkassiteplan->move(WRITEPATH . 'uploads/site_plan', $newfilenameberkassiteplan);
+            $fileberkaspsu->move(WRITEPATH . 'uploads/psu', $newfilenameberkaspsu);
+
             $pt = new PTModel();
             $datapt = $pt->where('uuid',$this->request->getVar('pt'))->first();
 
@@ -530,6 +545,7 @@ class Developer extends BaseController
                 "alamatperumahanref" => $this->request->getVar('alamatperumahanref'),
                 "alamatperumahaninput" => $this->request->getVar('alamatperumahaninput'),
                 "berkassiteplan" => $newfilenameberkassiteplan,
+                "berkaspsu" => $newfilenameberkaspsu,
                 "statusvalidator" => 0 ,
                 //daript
                 "namapj" => $datapt['namapj'],
@@ -1978,6 +1994,181 @@ class Developer extends BaseController
             'pengajuanDetail' => $pengajuanDetail,
         ];
         return view('developer/v_sp3k',$data);
+    }
+
+    public function kirimkependana()
+    {
+        if(!$this->request->isAJAX()){
+            return $this->response->setJSON(['message' => 'Invalid request'])->setStatusCode(400);
+        }
+
+        $uuid = $this->request->getPost('uuid');
+        $fileberkassuratpermohonan = $this->request->getFile('berkassuratpermohonan');
+
+        if(empty($uuid) || empty($fileberkassuratpermohonan)) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => [
+                    'simpan' => 'Berkas Surat Permohonan harus diisi!'
+                ],
+                'csrfHash' => csrf_hash(),
+                'csrfToken' => csrf_token(),
+                'uuid' => $uuid
+            ])->setStatusCode(400);
+        }
+
+        $pengajuanmodel = new PengajuanModel();
+        $pengajuan = $pengajuanmodel->where('uuid',$uuid)->first();
+
+        if(empty($pengajuan)){
+            return $this->response->setJSON([
+                'status' => 'error', 
+                'message' => [
+                    'simpan' => 'Data pengajuan tidak ditemukan'
+                ],
+                'csrfHash' => csrf_hash(),
+                'csrfToken' => csrf_token(),
+                'uuid' => $uuid
+            ])->setStatusCode(400);
+        }
+
+        $userModel = new UserModel();
+        $developer = $userModel->getDeveloperByUUIDPengajuan($uuid);
+        $uuiddeveloper = $developer['uuid'];
+
+        $pendana = $pengajuan['uuidpendana'];
+        $userspendana = $userModel->getUUIDUserByUUIDPendana($pendana);
+        $uuiduserspendana = $userspendana['uuid'];
+
+        if($pengajuan['submited_status'] != 5 && $pengajuan['submited_status'] != 7){
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => [
+                    'simpan' => 'Masih dalam tahap pengajuan Approver'
+                ],
+                'csrfHash' => csrf_hash(),
+                'csrfToken' => csrf_token(),
+                'uuid' => $uuid
+            ])->setStatusCode(400);
+        }
+
+        $validationRules = [
+            'uuid' => [
+                'label' => 'UUID',
+                'rules' => 'trim|required',
+                'errors' => [
+                    'required' => '{field} harus diisi'
+                ]
+            ],
+            'berkassuratpermohonan' => [
+                'label' => 'Berkas Surat Permohonan',
+                'rules' => 'permit_empty|uploaded[berkassuratpermohonan]|max_size[berkassuratpermohonan,2048]|ext_in[berkassuratpermohonan,pdf]|mime_in[berkassuratpermohonan,application/pdf]',
+                'errors' => [
+                    'uploaded' => '{field} harus diisi',
+                    'max_size' => '{field} maksimal 2 MB',
+                    'ext_in' => '{field} harus berformat PDF',
+                    'mime_in' => '{field} harus berformat PDF'
+                ]
+            ]
+        ];
+
+        if (!$this->validate($validationRules)) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => $this->validator->getErrors(),
+                'csrfName' => csrf_token(), 
+                'csrfHash' => csrf_hash(),
+            ])->setStatusCode(400);
+        } 
+
+        $fileberkassuratpermohonan = $this->request->getFile('berkassuratpermohonan');
+
+        if($fileberkassuratpermohonan->isValid() && !$fileberkassuratpermohonan->hasMoved()){
+            $newfilenameberkassuratpermohonan = "suratpermohonan_".$uuid."_".$fileberkassuratpermohonan->getRandomName();
+            $fileberkassuratpermohonan->move(WRITEPATH . 'uploads/surat_permohonan', $newfilenameberkassuratpermohonan);
+
+            $datetime = date('Y-m-d H:i:s');
+         
+            $data = [
+                'submited_status' => 6,
+                'submited_time' => $datetime,
+                'submited_by' => session()->get('uuid'),
+                'berkassuratpermohonan' => $newfilenameberkassuratpermohonan,
+            ];
+                    
+            try {
+                $update = $pengajuanmodel->where('uuid',$uuid)->set($data)->update();
+                
+                if (!$update) {
+                    return $this->response->setJSON([
+                        'status' => 'error',
+                        'message' => [
+                            'simpan' => 'Gagal kirim ke pendana!'
+                        ],
+                        'csrfHash' => csrf_hash(),
+                        'csrfToken' => csrf_token(),
+                        'uuid' => $uuid
+                    ])->setStatusCode(400);
+                }
+
+                $datadetail = [
+                    'submited_status' => 6,
+                    'submited_time' => $datetime,
+                    'submited_by' => session()->get('uuid'),
+                ];
+
+                $pengajuanDetail = new PengajuanDetailModel();
+                $uuidpengajuan = $pengajuanDetail->select('uuid')
+                                               ->where('uuidheader',$uuid)
+                                               ->findAll();
+               
+                if(empty($uuidpengajuan)) {
+                    throw new \Exception('Detail pengajuan tidak ditemukan!');
+                }
+
+                $uuidpengajuan = array_column($uuidpengajuan,'uuid');
+                $uuidList = "'" . implode("','", $uuidpengajuan) . "'";
+                
+                $setClause = [];
+                foreach ($datadetail as $key => $value) {
+                    $setClause[] = "$key = " . (is_string($value) ? "'$value'" : $value);
+                }
+                $setString = implode(", ", $setClause);
+                
+                $sql = "UPDATE trx_pengajuan_detail 
+                        SET $setString
+                        WHERE uuid IN ($uuidList)
+                        AND (concat(statusvalidator,statussikumbang,statuseflpp,statussp3k) = '1111')";
+                        
+                $updatedetail = $pengajuanDetail->query($sql);
+                
+                // setNotifikasi($uuiddeveloper, 'Pengajuan Dana', 'Pengajuan dana telah diteruskan ke Pendana', '/developer/monitoring_pengajuan_dana');
+                setNotifikasi($uuiduserspendana, 'Pengajuan Dana', 'Pengajuan dana '.$developer['nama'].' telah divalidasi Approver dan sudah dilampirkan surat permohonan. Silahkan cek surat permohonan dan melakukan konfirmasi', '/pendana/permintaan_dana');
+
+                if (!$updatedetail) {
+                    throw new \Exception('Gagal update detail pengajuan!');
+                }
+
+                return $this->response->setJSON([
+                    'status' => 'success',
+                    'message' => 'Data berhasil dikirim ke pendana!',
+                    'csrfHash' => csrf_hash(),
+                    'csrfToken' => csrf_token(),
+                    'uuid' => $uuid,
+                ])->setStatusCode(200);
+
+            } catch(\Exception $e) {
+                return $this->response->setJSON([
+                    'status' => 'error',
+                    'message' => [
+                        'simpan' => 'Gagal kirim ke pendana!'
+                    ],
+                    'csrfHash' => csrf_hash(),
+                    'csrfToken' => csrf_token(),
+                    'uuid' => $uuid
+                ])->setStatusCode(400);
+            }
+        }
     }
 
 }

@@ -44,6 +44,7 @@
                     <th class="detail-column" style="display:none">Alamat<br> Perumahan</th>
                     <th class="detail-column" style="display:none">Detail Alamat</th>
                     <th>Site Plan</th>
+                    <th>Foto Rumah<br>dan PSU</th>
                     <th>Jumlah Unit</th>
                     <th>Harga<br> SP3K</th>
                     <th>Dana<br> Talangan</th>
@@ -55,6 +56,7 @@
                     <th>Status</th>
                     <th>Aksi</th>
                     <th style="min-width: 150px;">Pendana</th>
+                    <th>Created At</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -74,6 +76,7 @@
                       <td><?= $p['namadeveloper'] ?></td>
                       <td><?= $p['namapt'] ?></td>
                       <td><a href="#" onclick="showPDF('surat_permohonan', '<?= $p['berkassuratpermohonan'] ?>')" data-toggle="modal" data-target="#pdfModal"><?= $p['suratpermohonan'] ?></a></td>
+                      <td><a href="#" onclick="showPDF('psu', '<?= $p['berkaspsu'] ?>')" data-toggle="modal" data-target="#pdfModal">Lihat</a></td>
                       <td class="detail-column" style="display:none"><?= $p['namaprovinsi'] ?> - <?= $p['namakabupaten'] ?> - <?= $p['namakecamatan'] ?></td>
                       <td class="detail-column" style="display:none"><?= $p['alamatperumahaninput'] ?></td>
                       <td><a href="#" onclick="showPDF('site_plan', '<?= $p['berkassiteplan'] ?>')" data-toggle="modal" data-target="#pdfModal">Lihat</a></td>
@@ -110,8 +113,9 @@
                             -
                           <?php endif; ?>
                         <?php elseif(session()->get('kdgrpuser')=='pendana') : ?>
-                          <?php if($p['submited_status']==5) : ?>
+                          <?php if($p['submited_status']==6) : ?>
                             <button type="button" class="btn btn-xs btn-success danai" kunci="<?= $p['uuid']; ?>">Danai</button>
+                            <button type="button" class="btn btn-xs btn-danger dikembalikanpendana" kunci="<?= $p['uuid']; ?>">Kembalikan</button>
                           <?php else: ?>
                             -
                           <?php endif; ?>
@@ -159,6 +163,7 @@
                           <?= ($p['namapendana']==null) ? '-' : $p['namapendana'] ?>
                         <?php endif; ?>
                       </td>
+                      <td><?= $p['created_at'] ?></td>
                     </tr>
                   <?php endforeach; ?>
                 </tbody>
@@ -239,12 +244,13 @@ $(document).ready(function() {
 });
 </script>
 <script>
-    function showPDF(type, filename) {
-      document.getElementById('pdfViewer').src = '<?= base_url() ?>/download/' + type + '/' + filename + '/pdf';
-    }
+function showPDF(type, filename) {
+  document.getElementById('pdfViewer').src = '<?= base_url() ?>/download/' + type + '/' + filename + '/pdf';
+}
+
 $(document).ready(function() {
   <?php if(session()->get('kdgrpuser')=='pendana'): ?>
-    // Handle teruskan button click
+    // Handle danai button click
     $(".danai").click(function(e) {
       e.preventDefault();
       var uuid = $(this).attr('kunci');
@@ -274,8 +280,10 @@ $(document).ready(function() {
           }
         },
         error: function(xhr, status, error) {
-          $(".csrf").val(xhr.responseJSON.csrfHash);
-          $(".csrf").attr('name',xhr.responseJSON.csrfToken);
+          if(xhr.responseJSON) {
+            $(".csrf").val(xhr.responseJSON.csrfHash);
+            $(".csrf").attr('name',xhr.responseJSON.csrfToken);
+          }
           Swal.fire({
             icon: 'error',
             title: 'Gagal',
@@ -285,8 +293,73 @@ $(document).ready(function() {
       });
     });
 
+    // Handle dikembalikan button click 
+    $(".dikembalikanpendana").click(function(e) {
+      e.preventDefault();
+      var uuid = $(this).attr('kunci');
+      var csrfHash = $(".csrf").val();
+      var csrfToken = $(".csrf").attr('name');
+
+      Swal.fire({
+        text: "Keterangan pengembalian",
+        input: 'textarea',
+        showCancelButton: true,
+        confirmButtonColor: "#DC3545",
+        confirmButtonText: "Kembalikan"
+      }).then((result) => {
+        if (result.value) {
+          var keteranganpenolakan = result.value;
+          
+          Swal.fire({
+            title: 'Mohon tunggu...',
+            text: 'Sedang memproses data',
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            showConfirmButton: false,
+            didOpen: () => {
+              Swal.showLoading();
+            }
+          });
+      
+          $.ajax({
+            type: "post", 
+            headers: {'X-Requested-With': 'XMLHttpRequest'},
+            url: "<?= base_url(); ?>/pendana/kembalikan_by_pendana",
+            data: {
+              [csrfToken]: csrfHash,
+              uuid: uuid,
+              keteranganpenolakan: keteranganpenolakan
+            },
+            dataType: "json",
+            success: function(response) {
+              if(response.status == 'success') {
+                $(".csrf").val(response.csrfHash);
+                $(".csrf").attr('name',response.csrfToken);
+                $(".aksi"+response.uuid).html('-');
+                $("#status"+response.uuid).html('<span class="badge badge-danger">Dikembalikan Pendana</span>');
+                Swal.fire({
+                  icon: 'success',
+                  title: 'Sukses',
+                  text: response.message
+                });
+              }
+            },
+            error: function(xhr, status, error) {
+              if(xhr.responseJSON) {
+                $(".csrf").val(xhr.responseJSON.csrfHash);
+                $(".csrf").attr('name',xhr.responseJSON.csrfToken);
+              }
+              Swal.fire({
+                icon: 'error',
+                title: 'Gagal',
+                text: 'Terjadi kesalahan saat memproses data'
+              });
+            }
+          });
+        }
+      });
+    });
   <?php endif; ?>
-  
 });
 </script>
 <?= $this->endSection(); ?>

@@ -25,6 +25,7 @@ class PengajuanModel extends Model
         'alamatperumahanref',
         'alamatperumahaninput',
         'berkassiteplan',
+        'berkaspsu',
         'berkasskkemenkumham',
         'rekening',
         'kodebank',
@@ -44,6 +45,7 @@ class PengajuanModel extends Model
         'validated_at',
         'validated_by',
         'keteranganpenolakan',
+        'keteranganpenolakanpendana',
         'uuidpendana',
         'senttopendana_at',
         'senttopendana_by',
@@ -74,6 +76,9 @@ class PengajuanModel extends Model
         if(session()->get('kdgrpuser') == "approver"){
             $filter = "approver";
         }
+        if(session()->get('kdgrpuser') == "pendana"){
+            $filter = "pendana";
+        }
         
         $builder = $this->db->table('ref_pt');
         $builder->select('ref_pt.uuid');
@@ -101,10 +106,13 @@ class PengajuanModel extends Model
             $builder->whereIn('uuidpt',$uuidpt);
         } 
         if($filter == "operator"){
-            $builder->whereIn('trx_pengajuan.submited_status',[1,2,3,4,5,6]);
+            $builder->whereIn('trx_pengajuan.submited_status',[1,2,3,4,5,6,7,8,9]);
         }
         if($filter == "approver"){
-            $builder->whereIn('trx_pengajuan.submited_status',[3,4,5,6]);
+            $builder->whereIn('trx_pengajuan.submited_status',[3,4,5,6,7,8,9]);
+        }
+        if($filter == "pendana"){
+            $builder->whereIn('trx_pengajuan.submited_status',[6,7,8,9]);
         }
         if(!empty($uuidpendana)){
             $builder->where('trx_pengajuan.uuidpendana',$uuidpendana);

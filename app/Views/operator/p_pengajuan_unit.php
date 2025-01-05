@@ -9,9 +9,7 @@
 <?= $this->endSection(); ?>
 
 <?= $this->section('content'); ?>
-
-     <!-- Main content -->
-     <section class="content">
+<section class="content">
       <div class="container-fluid">
         <div class="row">
         <div class="col-md-12">
@@ -20,13 +18,8 @@
                 <div class="card-tools" style="margin: 0px;"><button class="btn btn-xs btn-success" id="excel"><i class="fas fa-excel"></i>Download Excel</button></div>
                 <div class="card-title">
                 </div>
-              </div> 
-              
-               
-
-              <!-- /.card-header -->
+              </div>
               <div class="card-body">
-             
                 <div class="table-responsive">
                   <table class="table table-bordered table-condensed">
                     <thead>
@@ -52,7 +45,6 @@
                     <tbody>
                     <?php foreach ($result as $key => $p) : ?>
                       <tr class="baris<?= $p['uuid']; ?>">
-                        
                       <input type="hidden" class="csrf" name="<?= csrf_token() ?>" value="<?= csrf_hash() ?>" />
                       <td><?= $key+1; ?>.</td>
                       <td><a href="#" onclick="showPDF('sertifikat', '<?= $p['berkassertifikat'] ?>')" data-toggle="modal" data-target="#pdfModal"><?= $p['sertifikat'] ?></a></td>
@@ -193,20 +185,11 @@
                     </tbody>
                   </table>
                 </div>
-
-              <!-- /.card-body -->
             </div>
-            <!-- /.card -->
-
           </div>
-          <!-- /.col -->
         </div>
-        <!-- /.row -->
       </div>
-      <!-- /.container-fluid -->
     </section>
-    
-    <!-- Modal -->
     <div class="modal fade" id="pdfModal" tabindex="-1" role="dialog" aria-labelledby="pdfModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">

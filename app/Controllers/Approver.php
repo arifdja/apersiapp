@@ -267,8 +267,8 @@ class Approver extends BaseController
         
 
         $pendana = $this->request->getPost('pendana');
-        $userspendana = $userModel->getUUIDUserByUUIDPendana($pendana);
-        $uuiduserspendana = $userspendana['uuid'];
+        // $userspendana = $userModel->getUUIDUserByUUIDPendana($pendana);
+        // $uuiduserspendana = $userspendana['uuid'];
         // var_dump($uuiduserspendana);
         // die();
 
@@ -374,8 +374,8 @@ class Approver extends BaseController
                     
             $updatedetail = $pengajuanDetail->query($sql);
             
-            setNotifikasi($uuiddeveloper, 'Pengajuan Dana', 'Pengajuan dana telah diteruskan ke Pendana', '/developer/monitoring_pengajuan_dana');
-            setNotifikasi($uuiduserspendana, 'Pengajuan Dana', 'Pengajuan dana '.$developer['nama'].' telah divalidasi Approver dan siap didanai', '/pendana/permintaan_dana');
+            setNotifikasi($uuiddeveloper, 'Pengajuan Dana', 'Telah dipilihkan pendana silahkan upload surat permohonan sesuai dengan format yang telah ditentukan pendana', '/developer/monitoring_pengajuan_dana');
+            // setNotifikasi($uuiduserspendana, 'Pengajuan Dana', 'Pengajuan dana '.$developer['nama'].' telah divalidasi Approver dan siap didanai', '/pendana/permintaan_dana');
 
             if (!$updatedetail) {
                 throw new \Exception('Gagal update detail pengajuan!');

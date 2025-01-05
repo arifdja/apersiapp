@@ -355,6 +355,26 @@ class FileController extends Controller
                 return $this->response->download($filePath, null)->setFileName($file['berkassuratpermohonan']);
             }
 
+        } elseif($type == 'psu'){
+            $model = new PengajuanModel();
+            $file = $model->where('berkaspsu',$berkas)->first();
+            $filePath = WRITEPATH . 'uploads/' . $type . '/' . $file['berkaspsu'];
+            if (!$file) {
+                return redirect()->back()->with('error', 'File not found.');
+            }
+    
+            if (!file_exists($filePath)) {
+                return redirect()->back()->with('error', 'File not found on the server.');
+            }
+            if($view == 'pdf'){
+                return $this->response
+                ->setHeader('Content-Type', 'application/pdf')
+                ->setHeader('Content-Disposition', 'inline; filename="' . $file['berkaspsu'] . '"')
+                ->setBody(file_get_contents($filePath));
+            }else{
+                return $this->response->download($filePath, null)->setFileName($file['berkaspsu']);
+            }
+
         } elseif($type == 'site_plan'){
             $model = new PengajuanModel();
             $file = $model->where('berkassiteplan',$berkas)->first();

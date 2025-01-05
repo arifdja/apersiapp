@@ -42,6 +42,7 @@ $routes->post('/developer/ajukan_dana_ajax', 'Developer::ajukan_dana_ajax',['fil
 $routes->post('developer/edit_pt_ajax', 'Developer::edit_pt_ajax');
 $routes->get('/developer/monitoring_sp3k', 'Developer::monitoring_sp3k',['filter' => 'auth']);
 $routes->post('/developer/hapus_pt', 'Developer::hapus_pt',['filter' => 'auth']);
+$routes->post('/developer/kirimkependana', 'Developer::kirimkependana',['filter' => 'auth']);
 
 $routes->get('/operator', 'Operator::index',['filter' => 'auth']);
 $routes->get('/operator/approval_developer', 'Operator::approval_developer',['filter' => 'auth']);
@@ -97,6 +98,7 @@ $routes->get('/pendana/list_developer', 'Pendana::list_developer',['filter' => '
 $routes->get('/pendana/developer', 'Pendana::developer',['filter' => 'auth']);
 $routes->get('/pendana/pt', 'Pendana::pt',['filter' => 'auth']);
 $routes->post('/pendana/danai_pengajuan', 'Pendana::danai_pengajuan',['filter' => 'auth']);
+$routes->post('/pendana/kembalikan_by_pendana', 'Pendana::kembalikan_by_pendana',['filter' => 'auth']);
 
 $routes->get('/notifikasi', 'Notifikasi::index',['filter' => 'auth']);
 $routes->post('/notifikasi/tandai_dibaca', 'Notifikasi::tandai_dibaca',['filter' => 'auth']);

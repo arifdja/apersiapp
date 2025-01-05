@@ -43,6 +43,7 @@
                     <th class="detail-column" style="display:none">Alamat<br> Perumahan</th>
                     <th class="detail-column" style="display:none">Detail Alamat</th>
                     <th>Site Plan</th>
+                    <th>Foto Rumah<br>dan PSU</th>
                     <th>Jumlah Unit</th>
                     <th>Harga<br> SP3K</th>
                     <th>Dana<br> Talangan</th>
@@ -54,6 +55,7 @@
                     <th>Status</th>
                     <th>Aksi</th>
                     <th style="min-width: 150px;">Pendana</th>
+                    <th>Created At</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -72,6 +74,7 @@
                       </td>
                       <td><?= $p['namapt'] ?></td>
                       <td><a href="#" onclick="showPDF('surat_permohonan', '<?= $p['berkassuratpermohonan'] ?>')" data-toggle="modal" data-target="#pdfModal">Lihat</a></td>
+                      <td><a href="#" onclick="showPDF('psu', '<?= $p['berkaspsu'] ?>')" data-toggle="modal" data-target="#pdfModal">Lihat</a></td>
                       <td class="detail-column" style="display:none"><?= $p['namaprovinsi'] ?> - <?= $p['namakabupaten'] ?> - <?= $p['namakecamatan'] ?></td>
                       <td class="detail-column" style="display:none"><?= $p['alamatperumahaninput'] ?></td>
                       <td><a href="#" onclick="showPDF('site_plan', '<?= $p['berkassiteplan'] ?>')" data-toggle="modal" data-target="#pdfModal">Lihat</a></td>
@@ -125,7 +128,7 @@
                                   <?php endforeach; ?>
                                 </select>
                                 <div id="div-kirimkependana-<?= $p['uuid'] ?>">
-                                  <button disabled id="btn-kirimkependana-<?= $p['uuid'] ?>" kunci="<?= $p['uuid'] ?>" type="submit" class="btn btn-xs btn-success kirimkependana">Kirim ke Pendana</button>
+                                  <button disabled id="btn-kirimkependana-<?= $p['uuid'] ?>" kunci="<?= $p['uuid'] ?>" type="submit" class="btn btn-xs btn-success kirimkependana">Pilihkan Pendana</button>
                                 </div>
                               </div>
                             </form> 
@@ -140,7 +143,7 @@
                                   <?php endforeach; ?>
                                 </select>
                                 <div id="div-kirimkependana-<?= $p['uuid'] ?>">
-                                  <button id="btn-kirimkependana-<?= $p['uuid'] ?>" kunci="<?= $p['uuid'] ?>" type="submit" class="btn btn-xs btn-success kirimkependana">Kirim ke Pendana</button>
+                                  <button id="btn-kirimkependana-<?= $p['uuid'] ?>" kunci="<?= $p['uuid'] ?>" type="submit" class="btn btn-xs btn-success kirimkependana">Pilihkan Pendana</button>
                                 </div>
                               </div>
                             </form> 
@@ -153,6 +156,7 @@
                           <?= ($p['namapendana']==null) ? '-' : $p['namapendana'] ?>
                         <?php endif; ?>
                       </td>
+                      <td><?= $p['created_at'] ?></td>
                     </tr>
                   <?php endforeach; ?>
                 </tbody>
@@ -222,6 +226,10 @@ $(function () {
       document.getElementById('pdfViewer').src = '<?= base_url() ?>/download/' + type + '/' + filename + '/pdf';
     }
 $(document).ready(function() {
+
+  
+    
+  
   
   <?php if(session()->get('kdgrpuser')=='operator'): ?>
   // Handle teruskan button click
@@ -331,7 +339,7 @@ $(document).ready(function() {
           $(".csrf").val(response.csrfHash);
           $(".csrf").attr('name',response.csrfToken);
           $(".aksi"+response.uuid).html('-');
-          $("#status"+response.uuid).html('<span class="badge badge-success">Disetujui</span>');
+          $("#status"+response.uuid).html('<span class="badge badge-success">Disetujui Approver</span>');
           $("#btn-kirimkependana-"+response.uuid).prop('disabled', false);
           Swal.fire({
             icon: 'success',
@@ -377,7 +385,7 @@ $(document).ready(function() {
           $(".csrf").attr('name',response.csrfToken);
           $(".pendana"+response.uuid).html(response.pendanaText);
           $(".aksi"+response.uuid).html('-');
-          $("#status"+response.uuid).html('<span class="badge badge-success">Dikirim ke Pendana</span>');
+          $("#status"+response.uuid).html('<span class="badge badge-success">Dipilihkan Pendana dan<br> Proses Upload Surat Permohonan</span>');
           Swal.fire({
             icon: 'success',
             title: 'Sukses',
