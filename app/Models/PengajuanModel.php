@@ -93,12 +93,8 @@ class PengajuanModel extends Model
         }
 
         $builder = $this->db->table($this->table);
-        $builder->select('trx_pengajuan.*, ref_pt.namapt, ref_provinsi.namaprovinsi, ref_kabupaten.namakabupaten, ref_kota.namakota, ref_kecamatan.namakecamatan,ref_pendana.nama as namapendana,users.nama as namadeveloper, COUNT(trx_pengajuan_detail.uuid) AS jumlahunitinput, SUM(trx_pengajuan_detail.nilaikredit) AS totalnilaikredit, SUM(trx_pengajuan_detail.pinjamankpl) AS totalpinjamankpl, SUM(trx_pengajuan_detail.pinjamankyg) AS totalpinjamankyg, SUM(trx_pengajuan_detail.pinjamanlain) AS totalpinjamanlain, SUM(trx_pengajuan_detail.nilaikredit) AS totaldanatalangan, SUM(trx_pengajuan_detail.harga) AS totalhargasp3k,COUNT(CASE  WHEN trx_pengajuan_detail.statusvalidator = 1 AND trx_pengajuan_detail.statussikumbang = 1 AND trx_pengajuan_detail.statuseflpp = 1 AND trx_pengajuan_detail.statussp3k = 1 THEN 1 END) AS totaldisetujuioperator,COUNT(CASE  WHEN trx_pengajuan_detail.statusvalidator = 1 AND trx_pengajuan_detail.statussikumbang = 1 AND trx_pengajuan_detail.statuseflpp = 1 AND trx_pengajuan_detail.statussp3k = 1 AND trx_pengajuan_detail.statusapprover = 1 THEN 1 END) AS totaldisetujuiapprover');
+        $builder->select('trx_pengajuan.*, ref_pt.namapt,ref_pendana.nama as namapendana,users.nama as namadeveloper, COUNT(trx_pengajuan_detail.uuid) AS jumlahunitinput, SUM(trx_pengajuan_detail.nilaikredit) AS totalnilaikredit, SUM(trx_pengajuan_detail.pinjamankpl) AS totalpinjamankpl, SUM(trx_pengajuan_detail.pinjamankyg) AS totalpinjamankyg, SUM(trx_pengajuan_detail.pinjamanlain) AS totalpinjamanlain, SUM(trx_pengajuan_detail.nilaikredit) AS totaldanatalangan, SUM(trx_pengajuan_detail.harga) AS totalhargasp3k,COUNT(CASE  WHEN trx_pengajuan_detail.statusvalidator = 1 AND trx_pengajuan_detail.statussikumbang = 1 AND trx_pengajuan_detail.statuseflpp = 1 AND trx_pengajuan_detail.statussp3k = 1 THEN 1 END) AS totaldisetujuioperator,COUNT(CASE  WHEN trx_pengajuan_detail.statusvalidator = 1 AND trx_pengajuan_detail.statussikumbang = 1 AND trx_pengajuan_detail.statuseflpp = 1 AND trx_pengajuan_detail.statussp3k = 1 AND trx_pengajuan_detail.statusapprover = 1 THEN 1 END) AS totaldisetujuiapprover');
         $builder->join('ref_pt','ref_pt.uuid = trx_pengajuan.uuidpt','left');
-        $builder->join('ref_provinsi','ref_provinsi.id = SUBSTR(trx_pengajuan.alamatperumahanref,1,2)','left');
-        $builder->join('ref_kabupaten','ref_kabupaten.id = SUBSTR(trx_pengajuan.alamatperumahanref,1,4)','left');
-        $builder->join('ref_kota','ref_kota.id = SUBSTR(trx_pengajuan.alamatperumahanref,1,6)','left');
-        $builder->join('ref_kecamatan','ref_kecamatan.id = SUBSTR(trx_pengajuan.alamatperumahanref,1,10)','left');
         $builder->join('trx_pengajuan_detail','trx_pengajuan_detail.uuidheader = trx_pengajuan.uuid','left');
         $builder->join('ref_pendana','ref_pendana.uuid = trx_pengajuan.uuidpendana','left');
         $builder->join('users','users.uuid = ref_pt.uuiddeveloper','left');
@@ -117,10 +113,10 @@ class PengajuanModel extends Model
         if(!empty($uuidpendana)){
             $builder->where('trx_pengajuan.uuidpendana',$uuidpendana);
         }
-        $builder->groupBy('trx_pengajuan.uuid, ref_pt.namapt, ref_provinsi.namaprovinsi, ref_kabupaten.namakabupaten, ref_kota.namakota, ref_kecamatan.namakecamatan, trx_pengajuan.suratpermohonan, trx_pengajuan.berkassuratpermohonan, trx_pengajuan.uuidpt, trx_pengajuan.namapj, trx_pengajuan.ktppj, trx_pengajuan.berkasktppj, trx_pengajuan.npwppj, trx_pengajuan.berkasnpwppj, trx_pengajuan.validator, trx_pengajuan.alamatperumahanref, trx_pengajuan.alamatperumahaninput, trx_pengajuan.berkassiteplan, trx_pengajuan.statusvalidator, trx_pengajuan.validated_at, trx_pengajuan.validated_by, trx_pengajuan.keteranganpenolakan, trx_pengajuan.updated_at');
+        $builder->groupBy('trx_pengajuan.uuid, ref_pt.namapt, trx_pengajuan.suratpermohonan, trx_pengajuan.berkassuratpermohonan, trx_pengajuan.uuidpt, trx_pengajuan.namapj, trx_pengajuan.ktppj, trx_pengajuan.berkasktppj, trx_pengajuan.npwppj, trx_pengajuan.berkasnpwppj, trx_pengajuan.validator, trx_pengajuan.alamatperumahanref, trx_pengajuan.alamatperumahaninput, trx_pengajuan.berkassiteplan, trx_pengajuan.statusvalidator, trx_pengajuan.validated_at, trx_pengajuan.validated_by, trx_pengajuan.keteranganpenolakan, trx_pengajuan.updated_at');
         $builder->orderBy('trx_pengajuan.updated_at','DESC');
         $pengajuandana = $builder->get()->getResultArray();
-        
+        $pengajuandana = addNamaWilayah($pengajuandana,'alamatperumahanref');
         return $pengajuandana; 
 
     }

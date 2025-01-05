@@ -30,12 +30,12 @@
             </div>
             <div class="form-group">
               <label for="kabupaten">Kabupaten/Kota</label>
-              <?= create_dropdown('kabupaten', $dropdownkabupaten['kabupaten'], substr($pt['alamatref'],0,4), ['class' => 'form-control', 'id' => 'kabupaten','required' => 'required']); ?>
+              <?= create_dropdown('kabupaten', $dropdownkabupaten['kabupaten'], substr($pt['alamatref'],0,5), ['class' => 'form-control', 'id' => 'kabupaten','required' => 'required']); ?>
               <span id="spankabupaten" style="color: red;"></span>
             </div>
             <div class="form-group">
               <label for="kota">Kecamatan</label>
-              <?= create_dropdown('kota', $dropdownkota['kota'], substr($pt['alamatref'],0,6), ['class' => 'form-control', 'id' => 'kota','required' => 'required']); ?>
+              <?= create_dropdown('kota', $dropdownkota['kota'], substr($pt['alamatref'],0,8), ['class' => 'form-control', 'id' => 'kota','required' => 'required']); ?>
               <span id="spankota" style="color: red;"></span>
             </div>
             <div class="form-group">

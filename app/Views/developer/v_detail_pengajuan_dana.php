@@ -76,7 +76,7 @@
                       </td>
                       <td>
                         <?php if($p['submited_status'] == '0' || $p['submited_status'] == '') { ?>
-                          <span class="badge bg-success">Simpan</span>
+                          <span class="badge bg-warning">Draft</span>
                         <?php } elseif($p['submited_status'] == '1') { ?>
                           <span class="badge bg-success">Proses Pengecekan</span>
                         <?php } elseif($p['submited_status'] == '2' && ($p['statusvalidator'] != 1 || $p['statussikumbang'] != 1 || $p['statuseflpp'] != 1 || $p['statussp3k'] != 1)) { ?>
@@ -92,12 +92,18 @@
                             <?php if (!empty($p['kettolaksp3k'])) : ?>
                               <strong>SP3K:</strong> <?= $p['kettolaksp3k'].".<br>" ?>
                             <?php endif; ?>
-                        <?php } elseif($p['submited_status'] == '2' && $p['statusvalidator'] == 1 && $p['statussikumbang'] == 1 && $p['statuseflpp'] == 1 && $p['statussp3k'] == 1) { ?>
-                          <span class="badge bg-success">Disetujui</span>
                         <?php } elseif($p['submited_status'] == '3') { ?>
                           <span class="badge bg-success">Proses Persetujuan</span>
                         <?php } elseif($p['submited_status'] == '4') { ?>
                           <span class="badge bg-success">Disetujui</span>
+                        <?php } elseif($p['submited_status']==5) { ?>
+                          <span class="badge bg-success">Dipilihkan Pendana dan<br> Proses Upload Surat Permohonan</span>
+                        <?php } elseif($p['submited_status']==6) { ?>
+                          <span class="badge bg-success">Dikirim ke Pendana</span>
+                        <?php } elseif($p['submited_status']==7) { ?>
+                          <span class="badge bg-danger">Dikembalikan Pendana</span>
+                        <?php } elseif($p['submited_status']==8) { ?>
+                          <span class="badge bg-success">Disetujui Pendana</span>
                         <?php } else { ?>
                           -
                         <?php } ?>
@@ -107,7 +113,7 @@
                       <td><a href="#" onclick="showPDF('pbb', '<?= $p['berkaspbb'] ?>')" data-toggle="modal" data-target="#pdfModal">Lihat</a></td>
                       <td><a href="#" onclick="showPDF('sp3k', '<?= $p['berkassp3k'] ?>')" data-toggle="modal" data-target="#pdfModal">Lihat</a></td>
                       <td><a href="#" onclick="showPDF('ktp_debitur', '<?= $p['berkasktpdebitur'] ?>')" data-toggle="modal" data-target="#pdfModal">Lihat</a></td>
-                      <td class="alamat-column" style="display:none"><?= $p['namaprovinsi'] ?> - <?= $p['namakabupaten'] ?> - <?= $p['namakecamatan'] ?> - <?= $p['namakota'] ?> - <?= $p['alamatinput'] ?></td>
+                      <td class="alamat-column" style="display:none"><?= $p['provinsi'] ?> - <?= $p['kabupaten'] ?> - <?= $p['kota'] ?> - <?= $p['kecamatan'] ?> - <?= $p['alamatinput'] ?></td>
                       
                       <td align="right"><?= number_format($p['harga'],0,',','.') ?></td>
                       <td align="right"><?= number_format($p['nilaikredit'],0,',','.') ?></td>

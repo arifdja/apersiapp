@@ -1,19 +1,13 @@
 <?php
 
 namespace App\Controllers;
-use App\Models\ProvinsiModel;
-use App\Models\DPDModel;
-use App\Models\BankModel;
-use App\Models\PTModel;
-use App\Models\PengajuanModel;
-use App\Models\PengajuanDetailModel;
 use App\Models\DashboardModel;
 use App\Models\UserModel;
 use App\Models\PendanaModel;
 
 class Rumput extends BaseController
 {
-    
+        
     public function __construct()
     {
         $access = ['rumput'];

@@ -56,10 +56,16 @@
                       </td>
                       <td><a href="#" onclick="showPDF('akta_pendirian', '<?= $p['berkasaktapendirian'] ?>')" data-toggle="modal" data-target="#pdfModal">Lihat</a></td>
                       <td><a href="#" onclick="showPDF('sk_kemenkumham', '<?= $p['berkasskkemenkumham'] ?>')" data-toggle="modal" data-target="#pdfModal">Lihat</a></td>
-                      <td><a href="#" onclick="showPDF('laporan_keuangan', '<?= $p['berkaslaporankeuangan'] ?>')" data-toggle="modal" data-target="#pdfModal">Lihat</a></td>
+                      <td>
+                        <?php if($p['berkaslaporankeuangan'] != '') : ?>
+                          <a href="#" onclick="showPDF('laporan_keuangan', '<?= $p['berkaslaporankeuangan'] ?>')" data-toggle="modal" data-target="#pdfModal">Lihat</a>
+                        <?php else : ?>
+                          -
+                        <?php endif; ?>
+                      </td>
                       <td><a href="#" onclick="showPDF('rekening', '<?= $p['berkasrekening'] ?>')" data-toggle="modal" data-target="#pdfModal"><?= $p['rekening'] ?></a> <?= $p['namabank'] ?></td>
                       <td><a href="#" onclick="showPDF('rekening_escrow', '<?= $p['berkasrekeningescrow'] ?>')" data-toggle="modal" data-target="#pdfModal"><?= $p['rekeningescrow'] ?></a> <?= $p['namabankescrow'] ?></td>
-                      <td><?= $p['namaprovinsi'] ?> - <?= $p['namakabupaten'] ?> - <?= $p['namakecamatan'] ?> - <?= $p['alamatinput'] ?></td>
+                      <td><?= $p['provinsi'] ?> - <?= $p['kabupaten'] ?> - <?= $p['kota'] ?> - <?= $p['kecamatan'] ?> - <?= $p['alamatinput'] ?></td>
                       <td>
                         <?= ($p['statusvalidator'] == '0' || $p['statusvalidator'] == '') ? '<span class="badge bg-warning">Menunggu Validasi</span>' : '' ?>
                         <?= ($p['statusvalidator'] == '1') ? '<span class="badge bg-success">Disetujui</span>' : '' ?>

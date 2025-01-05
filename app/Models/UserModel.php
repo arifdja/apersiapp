@@ -23,7 +23,7 @@ class UserModel extends Model
 			$where = "AND t3.submited_status IN (1,2,3,4,5,6,7,8)";
 		}
 
-		$sql = "SELECT a.*,ref_provinsi.namaprovinsi as provinsi,ref_kabupaten.namakabupaten as kabupaten,ref_kota.namakota as kota,ref_kecamatan.namakecamatan as kecamatan,ref_dpd.namadpd as namadpd FROM (
+		$sql = "SELECT a.* FROM (
 				SELECT * 
 				FROM users t1
 				WHERE t1.statusvalidator = 1 AND t1.is_email_verified = 1 AND EXISTS (
@@ -37,28 +37,26 @@ class UserModel extends Model
 					)
 				)
 			) a
-			left join ref_provinsi on (ref_provinsi.id = substr(a.alamatref,1,2))
-			left join ref_kabupaten on (ref_kabupaten.id = substr(a.alamatref,1,4))
-			left join ref_kota on (ref_kota.id = substr(a.alamatref,1,6))
-			left join ref_kecamatan on (ref_kecamatan.id = substr(a.alamatref,1,10))
-			left join ref_dpd on (ref_dpd.id = a.dpd)
 
 			";
-		return $this->db->query($sql)->getResultArray();
+		$result = $this->db->query($sql)->getResultArray();
+		$result = addNamaWilayah($result);
+		$result = addNamaDPD($result);
+		return $result;
 	}
 
 	function getDeveloperForApproval()
 	{
 		$builder = $this->db->table('users');
-		$builder->select('users.uuid,users.email,users.notelp,users.nama,users.alamatinput,users.kta,users.berkaskta,users.kodepos,users.statusvalidator,ref_provinsi.namaprovinsi as provinsi,ref_kabupaten.namakabupaten as kabupaten,ref_kota.namakota as kota,ref_kecamatan.namakecamatan as kecamatan,ref_dpd.namadpd as namadpd');
-		$builder->join('ref_provinsi','ref_provinsi.id = substr(users.alamatref,1,2)');
-		$builder->join('ref_kabupaten','ref_kabupaten.id = substr(users.alamatref,1,4)');
-		$builder->join('ref_kota','ref_kota.id = substr(users.alamatref,1,6)');
-		$builder->join('ref_kecamatan','ref_kecamatan.id = substr(users.alamatref,1,10)');
-		$builder->join('ref_dpd','ref_dpd.id = users.dpd');
+		$builder->select('users.uuid,users.email,users.notelp,users.nama,users.alamatinput,users.alamatref,users.kta,users.berkaskta,users.kodepos,users.statusvalidator,users.dpd');
 		$builder->where('users.kdgrpuser', 'developer');
 		$builder->where('users.is_email_verified', 1);
-		return $builder->get()->getResultArray();
+		$result = $builder->get()->getResultArray();
+
+		$result = addNamaWilayah($result);
+		$result = addNamaDPD($result);
+
+		return $result;
 	}
 
 	function getDeveloperByPendana()
@@ -67,7 +65,7 @@ class UserModel extends Model
 		$pendanaModel = new PendanaModel();
 		$pendana = $pendanaModel->getUUIDPendanaByUUIDUser(session()->get('uuid'));
 		
-		$sql = "SELECT a.*,ref_provinsi.namaprovinsi as provinsi,ref_kabupaten.namakabupaten as kabupaten,ref_kota.namakota as kota,ref_kecamatan.namakecamatan as kecamatan,ref_dpd.namadpd as namadpd FROM (
+		$sql = "SELECT a.* FROM (
 					SELECT * 
 					FROM users t1
 					WHERE EXISTS (
@@ -82,14 +80,12 @@ class UserModel extends Model
 						)
 					)
 				) a
-				left join ref_provinsi on (ref_provinsi.id = substr(a.alamatref,1,2))
-				left join ref_kabupaten on (ref_kabupaten.id = substr(a.alamatref,1,4))
-				left join ref_kota on (ref_kota.id = substr(a.alamatref,1,6))
-				left join ref_kecamatan on (ref_kecamatan.id = substr(a.alamatref,1,10))
-				left join ref_dpd on (ref_dpd.id = a.dpd)
 
 				";
-		return $this->db->query($sql,$pendana)->getResultArray();
+		$result = $this->db->query($sql,$pendana)->getResultArray();
+		$result = addNamaWilayah($result,'alamatref');
+		$result = addNamaDPD($result);
+		return $result;
 	}
 
 	function getDeveloperByUUIDPengajuan($uuid)

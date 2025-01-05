@@ -60,7 +60,7 @@
                       </td>
                       <td><?= $p['namapt'] ?></td>
                       <td><a href="#" onclick="showPDF('psu', '<?= $p['berkaspsu'] ?>')" data-toggle="modal" data-target="#pdfModal">Lihat</a></td>
-                      <td class="alamat-column" style="display:none"><?= $p['namaprovinsi'] ?> - <?= $p['namakabupaten'] ?> - <?= $p['namakecamatan'] ?></td>
+                      <td class="alamat-column" style="display:none"><?= $p['provinsi'] ?> - <?= $p['kabupaten'] ?> - <?= $p['kota'] ?> - <?= $p['kecamatan'] ?></td>
                       <td class="alamat-column" style="display:none"><?= $p['alamatperumahaninput'] ?></td>
                       <td><a href="#" onclick="showPDF('site_plan', '<?= $p['berkassiteplan'] ?>')" data-toggle="modal" data-target="#pdfModal">Lihat</a></td>
                       <td id="jumlahunitinput<?= $p['uuid'] ?>"><?= $p['jumlahunitinput'] ?></td>
@@ -70,7 +70,13 @@
                       <td align="right"><?= number_format($p['totalpinjamankpl'],0,',','.') ?></td>
                       <td align="right"><?= number_format($p['totalpinjamankyg'],0,',','.') ?></td>
                       <td align="right"><?= number_format($p['totalpinjamanlain'],0,',','.') ?></td>
-                      <td><a href="#" onclick="showPDF('surat_permohonan', '<?= $p['berkassuratpermohonan'] ?>')" data-toggle="modal" data-target="#pdfModal">Lihat</a></td>
+                      <td>
+                        <?php if(!empty($p['berkassuratpermohonan'])): ?>
+                          <a href="#" onclick="showPDF('surat_permohonan', '<?= $p['berkassuratpermohonan'] ?>')" data-toggle="modal" data-target="#pdfModal">Lihat</a>
+                        <?php else: ?>
+                          -
+                        <?php endif; ?>
+                      </td>
                       <td id="ajukan_dana<?= $p['uuid'] ?>">
                         <?= view('general/v_td_status', ['p' => $p]) ?>
                       </td>
@@ -151,34 +157,47 @@
         return false;
       }
 
-      $.ajax({
-        type: 'POST',
-        headers: {'X-Requested-With': 'XMLHttpRequest'},
-        url: '<?= site_url('developer/ajukan_dana_ajax') ?>',
-        data: {uuid: uuid, jumlahunit: jumlahunit, [csrfToken]: csrfHash},
-        dataType: 'json',
-        success: function(response) {
-          if(response.status == 'success') {
-            $(".csrf_hash").val(response.csrfHash);
-            $(".csrf_token").val(response.csrfToken);
-            $("#ajukan_dana"+uuid).html('<span class="badge bg-warning">Proses Pengecekan</span>');
-            $("#aksi_ajukan_dana"+uuid).html('-');
-            Swal.fire({ 
-              icon: 'success',
-              title: 'Berhasil',
-              text: response.message,
-            });
-          }
-        },
-        error: function(xhr, status, error) {
-          if(xhr.responseJSON) {
-            $(".csrf_hash").val(xhr.responseJSON.csrfHash);
-            $(".csrf_token").val(xhr.responseJSON.csrfToken);
-          }
-          Swal.fire({
-            icon: 'error', 
-            title: 'Gagal',
-            text: 'Dana gagal di ajukan. Mohon coba lagi',
+      Swal.fire({
+        title: 'Konfirmasi',
+        text: "Apakah anda yakin ingin mengajukan dana ini?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ya, Ajukan',
+        cancelButtonText: 'Batal'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          $.ajax({
+            type: 'POST',
+            headers: {'X-Requested-With': 'XMLHttpRequest'},
+            url: '<?= site_url('developer/ajukan_dana_ajax') ?>',
+            data: {uuid: uuid, jumlahunit: jumlahunit, [csrfToken]: csrfHash},
+            dataType: 'json',
+            success: function(response) {
+              if(response.status == 'success') {
+                $(".csrf_hash").val(response.csrfHash);
+                $(".csrf_token").val(response.csrfToken);
+                $("#ajukan_dana"+uuid).html('<span class="badge bg-warning">Proses Pengecekan</span>');
+                $("#aksi_ajukan_dana"+uuid).html('-');
+                Swal.fire({ 
+                  icon: 'success',
+                  title: 'Berhasil',
+                  text: response.message,
+                });
+              }
+            },
+            error: function(xhr, status, error) {
+              if(xhr.responseJSON) {
+                $(".csrf_hash").val(xhr.responseJSON.csrfHash);
+                $(".csrf_token").val(xhr.responseJSON.csrfToken);
+              }
+              Swal.fire({
+                icon: 'error', 
+                title: 'Gagal',
+                text: 'Dana gagal di ajukan. Mohon coba lagi',
+              });
+            }
           });
         }
       });

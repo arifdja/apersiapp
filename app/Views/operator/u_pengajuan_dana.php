@@ -75,9 +75,15 @@
                       </td>
                       <td><?= $p['namadeveloper'] ?></td>
                       <td><?= $p['namapt'] ?></td>
-                      <td><a href="#" onclick="showPDF('surat_permohonan', '<?= $p['berkassuratpermohonan'] ?>')" data-toggle="modal" data-target="#pdfModal"><?= $p['suratpermohonan'] ?></a></td>
+                      <td>
+                        <?php if(!empty($p['berkassuratpermohonan'])): ?>
+                          <a href="#" onclick="showPDF('surat_permohonan', '<?= $p['berkassuratpermohonan'] ?>')" data-toggle="modal" data-target="#pdfModal"><?= $p['suratpermohonan'] ?></a>
+                        <?php else: ?>
+                          -
+                        <?php endif; ?>
+                      </td>
                       <td><a href="#" onclick="showPDF('psu', '<?= $p['berkaspsu'] ?>')" data-toggle="modal" data-target="#pdfModal">Lihat</a></td>
-                      <td class="detail-column" style="display:none"><?= $p['namaprovinsi'] ?> - <?= $p['namakabupaten'] ?> - <?= $p['namakecamatan'] ?></td>
+                      <td class="detail-column" style="display:none"><?= $p['provinsi'] ?> - <?= $p['kabupaten'] ?> - <?= $p['kota'] ?> - <?= $p['kecamatan'] ?></td>
                       <td class="detail-column" style="display:none"><?= $p['alamatperumahaninput'] ?></td>
                       <td><a href="#" onclick="showPDF('site_plan', '<?= $p['berkassiteplan'] ?>')" data-toggle="modal" data-target="#pdfModal">Lihat</a></td>
                       <td><?= $p['jumlahunitinput'] ?></td>
@@ -254,40 +260,53 @@ $(document).ready(function() {
     $(".danai").click(function(e) {
       e.preventDefault();
       var uuid = $(this).attr('kunci');
-      var csrfHash = $(".csrf").val();
+      var csrfHash = $(".csrf").val(); 
       var csrfToken = $(".csrf").attr('name');
-      
-      $.ajax({
-        type: "post",
-        headers: {'X-Requested-With': 'XMLHttpRequest'},
-        url: "<?= base_url(); ?>/pendana/danai_pengajuan",
-        data: {
-          [csrfToken]: csrfHash,
-          uuid: uuid,
-        },
-        dataType: "json",
-        success: function(response) {
-          if(response.status == 'success') {
-            $(".csrf").val(response.csrfHash);
-            $(".csrf").attr('name',response.csrfToken);
-            $(".aksi"+response.uuid).html('-'); 
-            $("#status"+response.uuid).html('<span class="badge badge-success">Disetujui Pendana</span>');
-            Swal.fire({
-              icon: 'success',
-              title: 'Sukses',
-              text: response.message
-            });
-          }
-        },
-        error: function(xhr, status, error) {
-          if(xhr.responseJSON) {
-            $(".csrf").val(xhr.responseJSON.csrfHash);
-            $(".csrf").attr('name',xhr.responseJSON.csrfToken);
-          }
-          Swal.fire({
-            icon: 'error',
-            title: 'Gagal',
-            text: response.message
+
+      Swal.fire({
+        title: 'Konfirmasi',
+        text: "Apakah anda yakin ingin menyetujui pengajuan dana ini?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ya, Setujui',
+        cancelButtonText: 'Batal'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          $.ajax({
+            type: "post",
+            headers: {'X-Requested-With': 'XMLHttpRequest'},
+            url: "<?= base_url(); ?>/pendana/danai_pengajuan",
+            data: {
+              [csrfToken]: csrfHash,
+              uuid: uuid,
+            },
+            dataType: "json",
+            success: function(response) {
+              if(response.status == 'success') {
+                $(".csrf").val(response.csrfHash);
+                $(".csrf").attr('name',response.csrfToken);
+                $(".aksi"+response.uuid).html('-'); 
+                $("#status"+response.uuid).html('<span class="badge badge-success">Disetujui Pendana</span>');
+                Swal.fire({
+                  icon: 'success',
+                  title: 'Sukses',
+                  text: response.message
+                });
+              }
+            },
+            error: function(xhr, status, error) {
+              if(xhr.responseJSON) {
+                $(".csrf").val(xhr.responseJSON.csrfHash);
+                $(".csrf").attr('name',xhr.responseJSON.csrfToken);
+              }
+              Swal.fire({
+                icon: 'error',
+                title: 'Gagal',
+                text: response.message
+              });
+            }
           });
         }
       });

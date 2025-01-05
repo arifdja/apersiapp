@@ -208,7 +208,7 @@
               <label for="laporankeuangan">Laporan Keuangan 2 Tahun Terakhir</label>
               <div class="input-group mt-2">
                 <div class="custom-file">
-                  <input type="file" class="custom-file-input" name="berkaslaporankeuangan" id="berkaslaporankeuangan" accept=".pdf" required>
+                  <input type="file" class="custom-file-input" name="berkaslaporankeuangan" id="berkaslaporankeuangan" accept=".pdf">
                   <label class="custom-file-label" for="berkaslaporankeuangan">Choose file</label>
                 </div>
               </div>

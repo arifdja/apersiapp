@@ -22,7 +22,7 @@ class DashboardModel extends Model
             $model = new PengajuanModel();
             $model->whereIn('uuidpt',$uuidpt);
             $pengajuan = $model->findAll();
-            dd($pengajuan);
+            // dd($pengajuan);
             $uuidheader = array_column($pengajuan,'uuid');
 
             $model = new PengajuanDetailModel();

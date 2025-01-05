@@ -1,18 +1,14 @@
 <?php
 
 namespace App\Controllers;
-use App\Models\ProvinsiModel;
 use App\Models\DPDModel;
 use App\Models\BankModel;
 use App\Models\PTModel;
 use App\Models\PengajuanModel;
 use App\Models\PengajuanDetailModel;
 use App\Models\DashboardModel;
-use App\Models\KecamatanModel;
-use App\Models\KotaModel;
-use App\Models\KabupatenModel;
 use App\Models\UserModel;
-
+use App\Models\WilayahModel;
 
 class Developer extends BaseController
 {
@@ -59,37 +55,14 @@ class Developer extends BaseController
     public function form_pengajuan_pt()
 	{
         $menu = getMenu();
-        $model = new ProvinsiModel();
-        $provinsi = $model->findAll();
-
-        $model = new DPDModel();
-        $dpd = $model->findAll();
-
-        $model = new BankModel();
-        $bank = $model->findAll();
-
-        $dropdownprovinsi['provinsi'] = ['' => 'Pilih Provinsi'];
-        foreach ($provinsi as $prov) {
-            $dropdownprovinsi['provinsi'][$prov['id']] = $prov['namaprovinsi'];
-        }
-
-        $dropdowndpd['dpd'] = ['' => 'Pilih DPD'];
-        foreach ($dpd as $dp) {
-            $dropdowndpd['dpd'][$dp['id']] = $dp['namadpd'];
-        }
-
-        $dropdownbank['bank'] = ['' => 'Pilih Bank'];
-        foreach ($bank as $b) {
-            $dropdownbank['bank'][$b['kodebank']] = $b['kodebank'].' - '.$b['namabank'];
-        }
         
         $data = [
 			'title' => 'Form Pengajuan PT',
 			'breadcrumb' => ['Pengajuan','PT'],
 			'stringmenu' => $menu, 
-			'dropdownprovinsi' => $dropdownprovinsi,
-			'dropdowndpd' => $dropdowndpd,
-			'dropdownbank' => $dropdownbank,
+			'dropdownprovinsi' => getDropdownProvinsi(),
+			'dropdowndpd' => getDropdownDPD(),
+			'dropdownbank' => getDropdownBank(),
 			'validation' => \Config\Services::validation(), 
         ];
 		return view('developer/form_pengajuan_pt',$data);
@@ -137,7 +110,7 @@ class Developer extends BaseController
             ],
             'berkasnpwppt' => [
                 'label' => 'NPWP PT',
-                'rules' => 'uploaded[berkasnpwppt]|max_size[berkasnpwppt,1024]|ext_in[berkasnpwppt,pdf]|mime_in[berkasnpwppt,application/pdf]',
+                'rules' => 'uploaded[berkasnpwppt]|max_size[berkasnpwppt,1024]|ext_in[berkasnpwppt,pdf]|mime_in[berkasnpwppt,application/pdf,application/force-download,application/x-download,application/x-pdf,application/acrobat,applications/vnd.pdf,text/pdf,text/x-pdf]',
                 'errors' => [
                     'uploaded' => '{field} harus diisi',
                     'max_size' => '{field} maksimal 1 MB',
@@ -163,7 +136,7 @@ class Developer extends BaseController
             ],
             'berkasktp_penanggung_jawab' => [
                 'label' => 'KTP Penanggung Jawab',
-                'rules' => 'uploaded[berkasktp_penanggung_jawab]|max_size[berkasktp_penanggung_jawab,1024]|ext_in[berkasktp_penanggung_jawab,pdf]|mime_in[berkasktp_penanggung_jawab,application/pdf]',
+                'rules' => 'uploaded[berkasktp_penanggung_jawab]|max_size[berkasktp_penanggung_jawab,1024]|ext_in[berkasktp_penanggung_jawab,pdf]|mime_in[berkasktp_penanggung_jawab,application/pdf,application/force-download,application/x-download,application/x-pdf,application/acrobat,applications/vnd.pdf,text/pdf,text/x-pdf]',
                 'errors' => [
                     'uploaded' => '{field} harus diisi',
                     'max_size' => '{field} maksimal 1 MB',
@@ -183,7 +156,7 @@ class Developer extends BaseController
             ],
             'berkasnpwp_penanggung_jawab' => [
                 'label' => 'NPWP Penanggung Jawab',
-                'rules' => 'uploaded[berkasnpwp_penanggung_jawab]|max_size[berkasnpwp_penanggung_jawab,1024]|ext_in[berkasnpwp_penanggung_jawab,pdf]|mime_in[berkasnpwp_penanggung_jawab,application/pdf]',
+                'rules' => 'uploaded[berkasnpwp_penanggung_jawab]|max_size[berkasnpwp_penanggung_jawab,1024]|ext_in[berkasnpwp_penanggung_jawab,pdf]|mime_in[berkasnpwp_penanggung_jawab,application/pdf,application/force-download,application/x-download,application/x-pdf,application/acrobat,applications/vnd.pdf,text/pdf,text/x-pdf]',
                 'errors' => [
                     'uploaded' => '{field} harus diisi',
                     'max_size' => '{field} maksimal 1 MB',
@@ -201,7 +174,7 @@ class Developer extends BaseController
             ],
             'berkasnpwp_pengurus_pt' => [
                 'label' => 'NPWP Pengurus PT',
-                'rules' => 'uploaded[berkasnpwp_pengurus_pt]|max_size[berkasnpwp_pengurus_pt,5120]|ext_in[berkasnpwp_pengurus_pt,pdf]|mime_in[berkasnpwp_pengurus_pt,application/pdf]',
+                'rules' => 'uploaded[berkasnpwp_pengurus_pt]|max_size[berkasnpwp_pengurus_pt,5120]|ext_in[berkasnpwp_pengurus_pt,pdf]|mime_in[berkasnpwp_pengurus_pt,application/pdf,application/force-download,application/x-download,application/x-pdf,application/acrobat,applications/vnd.pdf,text/pdf,text/x-pdf]',
                 'errors' => [
                     'uploaded' => '{field} harus diisi',
                     'max_size' => '{field} maksimal 5 MB',
@@ -211,7 +184,7 @@ class Developer extends BaseController
             ],
             'berkasktp_pengurus_pt' => [
                 'label' => 'KTP Pengurus PT',
-                'rules' => 'uploaded[berkasktp_pengurus_pt]|max_size[berkasktp_pengurus_pt,5120]|ext_in[berkasktp_pengurus_pt,pdf]|mime_in[berkasktp_pengurus_pt,application/pdf]',
+                'rules' => 'uploaded[berkasktp_pengurus_pt]|max_size[berkasktp_pengurus_pt,5120]|ext_in[berkasktp_pengurus_pt,pdf]|mime_in[berkasktp_pengurus_pt,application/pdf,application/force-download,application/x-download,application/x-pdf,application/acrobat,applications/vnd.pdf,text/pdf,text/x-pdf]',
                 'errors' => [
                     'uploaded' => '{field} harus diisi',
                     'max_size' => '{field} maksimal 5 MB',
@@ -221,7 +194,7 @@ class Developer extends BaseController
             ],
             'berkasakta_pendirian' => [
                 'label' => 'Akta Pendirian PT',
-                'rules' => 'uploaded[berkasakta_pendirian]|max_size[berkasakta_pendirian,5120]|ext_in[berkasakta_pendirian,pdf]|mime_in[berkasakta_pendirian,application/pdf]',
+                'rules' => 'uploaded[berkasakta_pendirian]|max_size[berkasakta_pendirian,5120]|ext_in[berkasakta_pendirian,pdf]|mime_in[berkasakta_pendirian,application/pdf,application/force-download,application/x-download,application/x-pdf,application/acrobat,applications/vnd.pdf,text/pdf,text/x-pdf]',
                 'errors' => [
                     'uploaded' => '{field} harus diisi',
                     'max_size' => '{field} maksimal 5 MB',
@@ -231,7 +204,7 @@ class Developer extends BaseController
             ],
             'berkasskkemenkumham' => [
                 'label' => 'SK Kemenkumham',
-                'rules' => 'uploaded[berkasskkemenkumham]|max_size[berkasskkemenkumham,5120]|ext_in[berkasskkemenkumham,pdf]|mime_in[berkasskkemenkumham,application/pdf]',
+                'rules' => 'uploaded[berkasskkemenkumham]|max_size[berkasskkemenkumham,5120]|ext_in[berkasskkemenkumham,pdf]|mime_in[berkasskkemenkumham,application/pdf,application/force-download,application/x-download,application/x-pdf,application/acrobat,applications/vnd.pdf,text/pdf,text/x-pdf]',
                 'errors' => [
                     'uploaded' => '{field} harus diisi',
                     'max_size' => '{field} maksimal 5 MB',
@@ -241,9 +214,8 @@ class Developer extends BaseController
             ],
             'berkaslaporankeuangan' => [
                 'label' => 'Laporan Keuangan 2 Tahun Terakhir',
-                'rules' => 'uploaded[berkaslaporankeuangan]|max_size[berkaslaporankeuangan,10240]|ext_in[berkaslaporankeuangan,pdf]|mime_in[berkaslaporankeuangan,application/pdf]',
+                'rules' => 'permit_empty|max_size[berkaslaporankeuangan,10240]|ext_in[berkaslaporankeuangan,pdf]|mime_in[berkaslaporankeuangan,application/pdf,application/force-download,application/x-download,application/x-pdf,application/acrobat,applications/vnd.pdf,text/pdf,text/x-pdf]',
                 'errors' => [
-                    'uploaded' => '{field} harus diisi',
                     'max_size' => '{field} maksimal 10 MB',
                     'ext_in' => '{field} harus berformat PDF',
                     'mime_in' => '{field} harus berformat PDF'
@@ -272,7 +244,7 @@ class Developer extends BaseController
             ],
             'berkasrekening' => [
                 'label' => 'Rekening PT',
-                'rules' => 'uploaded[berkasrekening]|max_size[berkasrekening,1024]|ext_in[berkasrekening,pdf]|mime_in[berkasrekening,application/pdf]',
+                'rules' => 'uploaded[berkasrekening]|max_size[berkasrekening,1024]|ext_in[berkasrekening,pdf]|mime_in[berkasrekening,application/pdf,application/force-download,application/x-download,application/x-pdf,application/acrobat,applications/vnd.pdf,text/pdf,text/x-pdf]',
                 'errors' => [
                     'uploaded' => '{field} harus diisi',
                     'max_size' => '{field} maksimal 1 MB',
@@ -282,7 +254,7 @@ class Developer extends BaseController
             ],
             'berkasrekeningescrow' => [
                 'label' => 'Rekening Escrow',
-                'rules' => 'uploaded[berkasrekeningescrow]|max_size[berkasrekeningescrow,1024]|ext_in[berkasrekeningescrow,pdf]|mime_in[berkasrekeningescrow,application/pdf]',
+                'rules' => 'uploaded[berkasrekeningescrow]|max_size[berkasrekeningescrow,1024]|ext_in[berkasrekeningescrow,pdf]|mime_in[berkasrekeningescrow,application/pdf,application/force-download,application/x-download,application/x-pdf,application/acrobat,applications/vnd.pdf,text/pdf,text/x-pdf]',
                 'errors' => [
                     'uploaded' => '{field} harus diisi',
                     'max_size' => '{field} maksimal 1 MB',
@@ -317,7 +289,7 @@ class Developer extends BaseController
                 !$fileberkasnpwp_penanggung_jawab->isValid() || !$fileberkasakta_pendirian->isValid() ||
                 !$fileberkasrekening->isValid() || !$fileberkasktp_pengurus_pt->isValid() || 
                 !$fileberkasnpwp_pengurus_pt->isValid() || !$fileberkasskkemenkumham->isValid() ||
-                !$fileberkasrekeningescrow->isValid() || !$fileberkaslaporankeuangan->isValid()
+                !$fileberkasrekeningescrow->isValid()
             ) {
                 throw new \RuntimeException('One or more files are invalid');
             }
@@ -334,7 +306,13 @@ class Developer extends BaseController
             $newfilenameberkasnpwp_pengurus_pt = "npwp_pengurus_".$uuid."_".$fileberkasnpwp_pengurus_pt->getRandomName();
             $newfilenameberkasskkemenkumham = "kemenkumham_".$uuid."_".$fileberkasskkemenkumham->getRandomName();
             $newfilenameberkasrekeningescrow = "rekeningescrow_".$uuid."_".$fileberkasrekeningescrow->getRandomName();
-            $newfilenameberkaslaporankeuangan = "laporankeuangan_".$uuid."_".$fileberkaslaporankeuangan->getRandomName();
+            
+            // Handle optional laporan keuangan file
+            $newfilenameberkaslaporankeuangan = null;
+            if ($fileberkaslaporankeuangan && $fileberkaslaporankeuangan->isValid()) {
+                $newfilenameberkaslaporankeuangan = "laporankeuangan_".$uuid."_".$fileberkaslaporankeuangan->getRandomName();
+                $fileberkaslaporankeuangan->move(WRITEPATH . 'uploads/laporan_keuangan', $newfilenameberkaslaporankeuangan);
+            }
            
             // Move all required files
             $fileberkasnpwppt->move(WRITEPATH . 'uploads/npwp_pt', $newfilenameberkasnpwppt);
@@ -346,8 +324,6 @@ class Developer extends BaseController
             $fileberkasnpwp_pengurus_pt->move(WRITEPATH . 'uploads/npwp_pengurus', $newfilenameberkasnpwp_pengurus_pt);
             $fileberkasskkemenkumham->move(WRITEPATH . 'uploads/sk_kemenkumham', $newfilenameberkasskkemenkumham);
             $fileberkasrekeningescrow->move(WRITEPATH . 'uploads/rekening_escrow', $newfilenameberkasrekeningescrow);
-            $fileberkaslaporankeuangan->move(WRITEPATH . 'uploads/laporan_keuangan', $newfilenameberkaslaporankeuangan);
-         
 
             $data = [
                 "uuid" => $uuid,
@@ -419,20 +395,13 @@ class Developer extends BaseController
             $dropdownpt['pt'][$pt['uuid']] = $pt['namapt'];
         }
 
-        $model = new ProvinsiModel();
-        $provinsi = $model->findAll();
-
-        $dropdownprovinsi['provinsi'] = ['' => 'Pilih Provinsi'];
-        foreach ($provinsi as $prov) {
-            $dropdownprovinsi['provinsi'][$prov['id']] = $prov['namaprovinsi'];
-        }
         
         $data = [
 			'title' => 'Form Pengajuan Dana',
 			'breadcrumb' => ['Pengajuan','Dana'],
 			'stringmenu' => $menu, 
 			'dropdownpt' => $dropdownpt,
-			'dropdownprovinsi' => $dropdownprovinsi,
+			'dropdownprovinsi' => getDropdownProvinsi(),
 			'validation' => \Config\Services::validation(), 
         ];
 		return view('developer/form_pengajuan_dana',$data);
@@ -452,16 +421,6 @@ class Developer extends BaseController
                     'required' => '{field} harus diisi'
                 ]
             ],
-            'berkassuratpermohonan' => [
-                'label' => 'Berkas Permohonan Pengajuan Pinjaman',
-                'rules' => 'uploaded[berkassuratpermohonan]|max_size[berkassuratpermohonan,10240]|ext_in[berkassuratpermohonan,pdf]|mime_in[berkassuratpermohonan,application/pdf]',
-                'errors' => [
-                    'uploaded' => '{field} harus diisi',
-                    'max_size' => '{field} maksimal 10 MB',
-                        'ext_in' => '{field} harus berformat PDF',
-                    'mime_in' => '{field} harus berformat PDF'
-                ]
-            ],
             'alamatperumahanref' => [
                 'label' => 'Lokasi',
                 'rules' => 'trim|required',
@@ -478,7 +437,7 @@ class Developer extends BaseController
             ],
             'berkassiteplan' => [
                 'label' => 'Site Plan',
-                'rules' => 'uploaded[berkassiteplan]|max_size[berkassiteplan,10240]|ext_in[berkassiteplan,pdf]|mime_in[berkassiteplan,application/pdf]',
+                'rules' => 'uploaded[berkassiteplan]|max_size[berkassiteplan,10240]|ext_in[berkassiteplan,pdf]|mime_in[berkassiteplan,application/pdf,application/force-download,application/x-download,application/x-pdf,application/acrobat,applications/vnd.pdf,text/pdf,text/x-pdf]',
                 'errors' => [
                     'uploaded' => '{field} harus diisi',
                     'max_size' => '{field} maksimal 10 MB',
@@ -488,7 +447,7 @@ class Developer extends BaseController
             ],
             'berkaspsu' => [
                 'label' => 'Foto Rumah, Prasarana, Sarana, dan Utilitas Umum',
-                'rules' => 'uploaded[berkaspsu]|max_size[berkaspsu,10240]|ext_in[berkaspsu,pdf]|mime_in[berkaspsu,application/pdf]',
+                'rules' => 'uploaded[berkaspsu]|max_size[berkaspsu,10240]|ext_in[berkaspsu,pdf]|mime_in[berkaspsu,application/pdf,application/force-download,application/x-download,application/x-pdf,application/acrobat,applications/vnd.pdf,text/pdf,text/x-pdf]',
                 'errors' => [
                     'uploaded' => '{field} harus diisi',
                     'max_size' => '{field} maksimal 10 MB',
@@ -508,21 +467,17 @@ class Developer extends BaseController
 
         
 
-        $fileberkassuratpermohonan = $this->request->getFile('berkassuratpermohonan');
         $fileberkassiteplan = $this->request->getFile('berkassiteplan');
         $fileberkaspsu = $this->request->getFile('berkaspsu');
         
         if (
-            $fileberkassuratpermohonan->isValid() && !$fileberkassuratpermohonan->hasMoved() &&
             $fileberkassiteplan->isValid() && !$fileberkassiteplan->hasMoved() &&
             $fileberkaspsu->isValid() && !$fileberkaspsu->hasMoved()
         ) {
             $uuid = generate_uuid();
-            $newfilenameberkassuratpermohonan = "suratpermohonan_".$uuid."_".$fileberkassuratpermohonan->getRandomName();
             $newfilenameberkassiteplan = "siteplan_".$uuid."_".$fileberkassiteplan->getRandomName();
             $newfilenameberkaspsu = "psu_".$uuid."_".$fileberkaspsu->getRandomName();
 
-            $fileberkassuratpermohonan->move(WRITEPATH . 'uploads/surat_permohonan', $newfilenameberkassuratpermohonan);
             $fileberkassiteplan->move(WRITEPATH . 'uploads/site_plan', $newfilenameberkassiteplan);
             $fileberkaspsu->move(WRITEPATH . 'uploads/psu', $newfilenameberkaspsu);
 
@@ -541,7 +496,6 @@ class Developer extends BaseController
             $data = [
                 "uuid" => $uuid,
                 "uuidpt" => $this->request->getVar('pt'),
-                "berkassuratpermohonan" => $newfilenameberkassuratpermohonan,
                 "alamatperumahanref" => $this->request->getVar('alamatperumahanref'),
                 "alamatperumahaninput" => $this->request->getVar('alamatperumahaninput'),
                 "berkassiteplan" => $newfilenameberkassiteplan,
@@ -698,39 +652,15 @@ class Developer extends BaseController
 	{
         $uuidheader = $this->request->getGet('uuidheader');
         
-
         $menu = getMenu();
-        $model = new ProvinsiModel();
-        $provinsi = $model->findAll();
-
-        $model = new DPDModel();
-        $dpd = $model->findAll();
-
-        $model = new BankModel();
-        $bank = $model->findAll();
-
-        $dropdownprovinsi['provinsi'] = ['' => 'Pilih Provinsi'];
-        foreach ($provinsi as $prov) {
-            $dropdownprovinsi['provinsi'][$prov['id']] = $prov['namaprovinsi'];
-        }
-
-        $dropdowndpd['dpd'] = ['' => 'Pilih DPD'];
-        foreach ($dpd as $dp) {
-            $dropdowndpd['dpd'][$dp['id']] = $dp['namadpd'];
-        }
-
-        $dropdownbank['bank'] = ['' => 'Pilih Bank'];
-        foreach ($bank as $b) {
-            $dropdownbank['bank'][$b['kodebank']] = $b['kodebank'].' - '.$b['namabank'];
-        }
         
         $data = [
 			'title' => 'Form Tambah Unit',
 			'breadcrumb' => ['Developer','Tambah Unit'],
 			'stringmenu' => $menu, 
-			'dropdownprovinsi' => $dropdownprovinsi,
-			'dropdowndpd' => $dropdowndpd,
-			'dropdownbank' => $dropdownbank,
+			'dropdownprovinsi' => getDropdownProvinsi(),
+			'dropdowndpd' => getDropdownDPD(),
+			'dropdownbank' => getDropdownBank(),
 			'uuidheader' => $uuidheader,
 			'validation' => \Config\Services::validation(), 
         ];
@@ -756,7 +686,7 @@ class Developer extends BaseController
             ])->setStatusCode(400);
         }
         //check status pengajuan harus 0 atau 2
-        if($pengajuan['submited_status'] == 1 || $pengajuan['submited_status'] == 3 || $pengajuan['submited_status'] == 4){
+        if($pengajuan['submited_status'] == 1 || $pengajuan['submited_status'] == 3 || $pengajuan['submited_status'] == 4 || $pengajuan['submited_status'] == 5 || $pengajuan['submited_status'] == 6 || $pengajuan['submited_status'] == 7 || $pengajuan['submited_status'] == 8){
             return $this->response->setJSON([
                 'status' => 'error',
                 'message' => 'Pengajuan sudah dikirim ke validator atau sudah disetujui',
@@ -783,7 +713,7 @@ class Developer extends BaseController
             ],
             'berkassertifikat' => [
                 'label' => 'Sertifikat',
-                'rules' => 'uploaded[berkassertifikat]|max_size[berkassertifikat,10240]|ext_in[berkassertifikat,pdf]|mime_in[berkassertifikat,application/pdf]',
+                'rules' => 'uploaded[berkassertifikat]|max_size[berkassertifikat,10240]|ext_in[berkassertifikat,pdf]|mime_in[berkassertifikat,application/pdf,application/force-download,application/x-download,application/x-pdf,application/acrobat,applications/vnd.pdf,text/pdf,text/x-pdf]',
                 'errors' => [
                     'uploaded' => '{field} harus diisi',
                     'max_size' => '{field} maksimal 10 MB',
@@ -793,7 +723,7 @@ class Developer extends BaseController
             ],
             'berkaspbgimb' => [
                 'label' => 'PBG/IMB',
-                'rules' => 'uploaded[berkaspbgimb]|max_size[berkaspbgimb,10240]|ext_in[berkaspbgimb,pdf]|mime_in[berkaspbgimb,application/pdf]',
+                'rules' => 'uploaded[berkaspbgimb]|max_size[berkaspbgimb,10240]|ext_in[berkaspbgimb,pdf]|mime_in[berkaspbgimb,application/pdf,application/force-download,application/x-download,application/x-pdf,application/acrobat,applications/vnd.pdf,text/pdf,text/x-pdf]',
                 'errors' => [
                     'uploaded' => '{field} harus diisi',
                     'max_size' => '{field} maksimal 10 MB',
@@ -810,7 +740,7 @@ class Developer extends BaseController
             ],
             'berkaspbb' => [
                 'label' => 'BerkasPBB',
-                'rules' => 'uploaded[berkaspbb]|max_size[berkaspbb,10240]|ext_in[berkaspbb,pdf]|mime_in[berkaspbb,application/pdf]',
+                'rules' => 'uploaded[berkaspbb]|max_size[berkaspbb,10240]|ext_in[berkaspbb,pdf]|mime_in[berkaspbb,application/pdf,application/force-download,application/x-download,application/x-pdf,application/acrobat,applications/vnd.pdf,text/pdf,text/x-pdf]',
                 'errors' => [
                     'uploaded' => '{field} harus diisi',
                     'max_size' => '{field} maksimal 10 MB',
@@ -867,7 +797,7 @@ class Developer extends BaseController
             ],
             'berkassp3k' => [
                 'label' => 'Dokumen SP3K',
-                'rules' => 'uploaded[berkassp3k]|max_size[berkassp3k,10240]|ext_in[berkassp3k,pdf]|mime_in[berkassp3k,application/pdf]',
+                'rules' => 'uploaded[berkassp3k]|max_size[berkassp3k,10240]|ext_in[berkassp3k,pdf]|mime_in[berkassp3k,application/pdf,application/force-download,application/x-download,application/x-pdf,application/acrobat,applications/vnd.pdf,text/pdf,text/x-pdf]',
                 'errors' => [
                     'uploaded' => '{field} harus diisi',
                     'max_size' => '{field} maksimal 10 MB',
@@ -884,7 +814,7 @@ class Developer extends BaseController
             ],
             'berkasktpdebitur' => [
                 'label' => 'KTP Debitur',
-                'rules' => 'uploaded[berkasktpdebitur]|max_size[berkasktpdebitur,10240]|ext_in[berkasktpdebitur,pdf]|mime_in[berkasktpdebitur,application/pdf]',
+                'rules' => 'uploaded[berkasktpdebitur]|max_size[berkasktpdebitur,10240]|ext_in[berkasktpdebitur,pdf]|mime_in[berkasktpdebitur,application/pdf,application/force-download,application/x-download,application/x-pdf,application/acrobat,applications/vnd.pdf,text/pdf,text/x-pdf]',
                 'errors' => [
                     'uploaded' => '{field} harus diisi',
                     'max_size' => '{field} maksimal 10 MB',
@@ -903,7 +833,7 @@ class Developer extends BaseController
             ],
             'berkaspinjaman_kpl' => [
                 'label' => 'Berkas Pinjaman KPL',
-                'rules' => 'permit_empty|uploaded[berkaspinjaman_kpl]|max_size[berkaspinjaman_kpl,10240]|ext_in[berkaspinjaman_kpl,pdf]|mime_in[berkaspinjaman_kpl,application/pdf]',
+                'rules' => 'permit_empty|uploaded[berkaspinjaman_kpl]|max_size[berkaspinjaman_kpl,10240]|ext_in[berkaspinjaman_kpl,pdf]|mime_in[berkaspinjaman_kpl,application/pdf,application/force-download,application/x-download,application/x-pdf,application/acrobat,applications/vnd.pdf,text/pdf,text/x-pdf]',
                 'errors' => [
                     'uploaded' => '{field} harus diisi',
                     'max_size' => '{field} maksimal 10 MB',
@@ -922,7 +852,7 @@ class Developer extends BaseController
             ],
             'berkaspinjaman_kyg' => [
                 'label' => 'Berkas Pinjaman KYG',
-                'rules' => 'permit_empty|uploaded[berkaspinjaman_kyg]|max_size[berkaspinjaman_kyg,10240]|ext_in[berkaspinjaman_kyg,pdf]|mime_in[berkaspinjaman_kyg,application/pdf]',
+                'rules' => 'permit_empty|uploaded[berkaspinjaman_kyg]|max_size[berkaspinjaman_kyg,10240]|ext_in[berkaspinjaman_kyg,pdf]|mime_in[berkaspinjaman_kyg,application/pdf,application/force-download,application/x-download,application/x-pdf,application/acrobat,applications/vnd.pdf,text/pdf,text/x-pdf]',
                 'errors' => [
                     'uploaded' => '{field} harus diisi',
                     'max_size' => '{field} maksimal 10 MB',
@@ -941,7 +871,7 @@ class Developer extends BaseController
             ],
             'berkaspinjaman_lain' => [
                 'label' => 'Berkas Pinjaman Lain',
-                'rules' => 'permit_empty|uploaded[berkaspinjaman_lain]|max_size[berkaspinjaman_lain,10240]|ext_in[berkaspinjaman_lain,pdf]|mime_in[berkaspinjaman_lain,application/pdf]',
+                'rules' => 'permit_empty|uploaded[berkaspinjaman_lain]|max_size[berkaspinjaman_lain,10240]|ext_in[berkaspinjaman_lain,pdf]|mime_in[berkaspinjaman_lain,application/pdf,application/force-download,application/x-download,application/x-pdf,application/acrobat,applications/vnd.pdf,text/pdf,text/x-pdf]',
                 'errors' => [
                     'uploaded' => '{field} harus diisi',
                     'max_size' => '{field} maksimal 10 MB',
@@ -1111,72 +1041,24 @@ class Developer extends BaseController
             throw new \CodeIgniter\Exceptions\PageNotFoundException('Data unit tidak ditemukan');
         }
 
-        $model = new BankModel();
-        $bank = $model->findAll();
-
-        $dropdownbank['bank'] = ['' => 'Pilih Bank'];
-        foreach ($bank as $b) {
-            $dropdownbank['bank'][$b['kodebank']] = $b['kodebank'].' - '.$b['namabank'];
-        }
-
-        
-        $model = new ProvinsiModel();
-        $provinsi = $model->findAll();
-
-
-
-        $dropdownprovinsi['provinsi'] = ['' => 'Pilih Provinsi'];
-        foreach ($provinsi as $prov) {
-            $dropdownprovinsi['provinsi'][$prov['id']] = $prov['namaprovinsi'];
-        }
-
-
-
-
-        // Ambil ID provinsi, kabupaten, kota dari alamatref
+        // // Ambil ID provinsi, kabupaten, kota dari alamatref
         $unit['provinsi'] = substr($unit['alamatref'], 0, 2);
-        $unit['kabupaten'] = substr($unit['alamatref'], 0, 4); 
-        $unit['kota'] = substr($unit['alamatref'], 0, 6);
-        $unit['kecamatan'] = $unit['alamatref'];
-
-        // Load model yang diperlukan
-        $kabupatenModel = new \App\Models\KabupatenModel();
-        $kotaModel = new \App\Models\KotaModel();
-        $kecamatanModel = new \App\Models\KecamatanModel();
-
-        // Get data kabupaten, kota, kecamatan yang sudah dipilih sebelumnya
-        $kabupaten = $kabupatenModel->where('id LIKE', $unit['provinsi'].'%')->findAll();
-        $kota = $kotaModel->where('idkabupaten', $unit['kabupaten'])->findAll();
-        $kecamatan = $kecamatanModel->where('idkota', $unit['kota'])->findAll();
-
-        // Buat dropdown untuk kabupaten, kota, kecamatan
-        $dropdownkabupaten['kabupaten'] = ['' => 'Pilih Kabupaten'];
-        foreach ($kabupaten as $kab) {
-            $dropdownkabupaten['kabupaten'][$kab['id']] = $kab['namakabupaten'];
-        }
-
-        $dropdownkota['kota'] = ['' => 'Pilih Kota'];
-        foreach ($kota as $k) {
-            $dropdownkota['kota'][$k['id']] = $k['namakota'];
-        }
-
-        $dropdownkecamatan['kecamatan'] = ['' => 'Pilih Kecamatan'];
-        foreach ($kecamatan as $kec) {
-            $dropdownkecamatan['kecamatan'][$kec['id']] = $kec['namakecamatan'];
-        }
+        $unit['kabupaten'] = substr($unit['alamatref'], 0, 5); 
+        $unit['kota'] = substr($unit['alamatref'], 0, 8);
+        $unit['kecamatan'] = substr($unit['alamatref'], 0, 13);
 
         $data = [
             'title' => 'Form Edit Unit',
             'breadcrumb' => ['Developer','Edit Unit'],
             'stringmenu' => $menu,
-            'dropdownbank' => $dropdownbank,
+            'dropdownbank' => getDropdownBank(),
             'uuidheader' => $uuidheader,
             'unit' => $unit,
-            'dropdownprovinsi' => $dropdownprovinsi,
+            'dropdownprovinsi' => getDropdownProvinsi(),
             'validation' => \Config\Services::validation(),
-            'dropdownkabupaten' => $dropdownkabupaten,
-            'dropdownkota' => $dropdownkota, 
-            'dropdownkecamatan' => $dropdownkecamatan,
+            'dropdownkabupaten' => getDropdownKabupaten($unit['provinsi']),
+            'dropdownkota' => getDropdownKota($unit['kabupaten']), 
+            'dropdownkecamatan' => getDropdownKecamatan($unit['kota']),
         ];
         return view('developer/form_edit_unit', $data);
     }
@@ -1830,67 +1712,23 @@ class Developer extends BaseController
         if (!$pt) {
             throw new \CodeIgniter\Exceptions\PageNotFoundException('Data PT tidak ditemukan');
         }
-        
-        $bankModel = new BankModel();
-        $bank = $bankModel->findAll();
-        
-        $dropdownbank['bank'] = ['' => 'Pilih Bank'];
-        foreach ($bank as $b) {
-            $dropdownbank['bank'][$b['kodebank']] = $b['kodebank'].' - '.$b['namabank'];
-        }
-        
-        // Load model wilayah
-        $provinsiModel = new ProvinsiModel();
-        $kabupatenModel = new KabupatenModel();
-        $kotaModel = new KotaModel(); 
-        $kecamatanModel = new KecamatanModel();
-        
-        // Get data wilayah
-        $provinsi = $provinsiModel->findAll();
-        $kabupaten = $kabupatenModel->where('id LIKE', substr($pt['alamatref'],0,2).'%')->findAll();
-        $kota = $kotaModel->where('idkabupaten', substr($pt['alamatref'],0,4))->findAll();
-        $kecamatan = $kecamatanModel->where('idkota', substr($pt['alamatref'],0,6))->findAll();
-        
-        // Buat dropdown
-        $dropdownprovinsi['provinsi'] = ['' => 'Pilih Provinsi'];
-        foreach ($provinsi as $p) {
-            $dropdownprovinsi['provinsi'][$p['id']] = $p['namaprovinsi'];
-        }
-        
-        $dropdownkabupaten['kabupaten'] = ['' => 'Pilih Kabupaten'];
-        foreach ($kabupaten as $k) {
-            $dropdownkabupaten['kabupaten'][$k['id']] = $k['namakabupaten'];
-        }
-        
-        $dropdownkota['kota'] = ['' => 'Pilih Kota'];
-        foreach ($kota as $k) {
-            $dropdownkota['kota'][$k['id']] = $k['namakota'];
-        }
-        
-        $dropdownkecamatan['kecamatan'] = ['' => 'Pilih Kecamatan'];
-        foreach ($kecamatan as $k) {
-            $dropdownkecamatan['kecamatan'][$k['id']] = $k['namakecamatan'];
-        }
 
-        $dpdModel = new DPDModel();
-        $dpd = $dpdModel->findAll();
-
-        $dropdowndpd['dpd'] = ['' => 'Pilih DPD/DPP/Korwil'];
-        foreach ($dpd as $d) {
-            $dropdowndpd['dpd'][$d['id']] = $d['namadpd'];
-        }
-
+        $pt['provinsi'] = substr($pt['alamatref'], 0, 2);
+        $pt['kabupaten'] = substr($pt['alamatref'], 0, 5); 
+        $pt['kota'] = substr($pt['alamatref'], 0, 8);
+        $pt['kecamatan'] = substr($pt['alamatref'], 0, 13);
+    
         $data = [
             'title' => 'Edit PT',
             'breadcrumb' => ['Developer','Edit PT'],
             'stringmenu' => $menu,
             'pt' => $pt,
-            'dropdownbank' => $dropdownbank,
-            'dropdownprovinsi' => $dropdownprovinsi,
-            'dropdownkabupaten' => $dropdownkabupaten,
-            'dropdownkota' => $dropdownkota,
-            'dropdownkecamatan' => $dropdownkecamatan,
-            'dropdowndpd' => $dropdowndpd
+            'dropdownbank' => getDropdownBank(),
+            'dropdownprovinsi' => getDropdownProvinsi(),
+            'dropdownkabupaten' => getDropdownKabupaten($pt['provinsi']),
+            'dropdownkota' => getDropdownKota($pt['kabupaten']),
+            'dropdownkecamatan' => getDropdownKecamatan($pt['kota']),
+            'dropdowndpd' => getDropdownDpd()
         ];
     
         return view('developer/form_edit_pt', $data);
@@ -2062,7 +1900,7 @@ class Developer extends BaseController
             ],
             'berkassuratpermohonan' => [
                 'label' => 'Berkas Surat Permohonan',
-                'rules' => 'permit_empty|uploaded[berkassuratpermohonan]|max_size[berkassuratpermohonan,2048]|ext_in[berkassuratpermohonan,pdf]|mime_in[berkassuratpermohonan,application/pdf]',
+                'rules' => 'permit_empty|uploaded[berkassuratpermohonan]|max_size[berkassuratpermohonan,2048]|ext_in[berkassuratpermohonan,pdf]|mime_in[berkassuratpermohonan,application/pdf,application/force-download,application/x-download,application/x-pdf,application/acrobat,applications/vnd.pdf,text/pdf,text/x-pdf]',
                 'errors' => [
                     'uploaded' => '{field} harus diisi',
                     'max_size' => '{field} maksimal 2 MB',

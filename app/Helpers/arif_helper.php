@@ -70,113 +70,6 @@ if (! function_exists('getMenu'))
 }
 
 
-//--------------------------------------------------------------------
-
-if (! function_exists('getNamaDept'))
-{
-	
-	function getNamaDept($kddept = "001",$dbgroup = "default")
-	{
-
-        $db      = \Config\Database::connect($dbgroup);
-        $builder = $db->table('t_dept');
-        $builder->select('nmdept');
-        $builder->where('kddept', $kddept);
-        $querymm = $builder->get();
-        $nmdept = $querymm->getRowArray();
-        return isset($nmdept['nmdept']) ? $nmdept['nmdept'] : "" ;
-    }
-}
-
-
-if (! function_exists('getNamaUnit'))
-{
-	
-	function getNamaUnit($kddept = "001",$kdunit = "01",$dbgroup = "default")
-	{
-
-        $db      = \Config\Database::connect($dbgroup);
-        $builder = $db->table('t_unit');
-        $builder->select('nmunit');
-        $builder->where('kddept', $kddept);
-        $builder->where('kdunit', $kdunit);
-        $querymm = $builder->get();
-        $nmdept = $querymm->getRowArray();
-        return isset($nmdept['nmunit']) ? $nmdept['nmunit'] : "" ;
-    }
-}
-
-
-if (! function_exists('getNamaSatker'))
-{
-	
-	function getNamaSatker($kdsatker = "630931",$dbgroup = "default")
-	{
-
-        $db      = \Config\Database::connect($dbgroup);
-        $builder = $db->table('t_satker');
-        $builder->select('nmsatker');
-        $builder->where('kdsatker', $kdsatker);
-        $querymm = $builder->get();
-        $nmdept = $querymm->getRowArray();
-        return isset($nmdept['nmsatker']) ? $nmdept['nmsatker'] : "" ;
-    }
-}
-
-
-if (! function_exists('getNamaProgram'))
-{
-	
-	function getNamaProgram($kddept,$kdunit,$kdprogram,$dbgroup = "default")
-	{
-
-        $db      = \Config\Database::connect($dbgroup);
-        $builder = $db->table('t_program');
-        $builder->select('nmprogram');
-        $builder->where('kddept', $kddept);
-        $builder->where('kdunit', $kdunit);
-        $builder->where('kdprogram', $kdprogram);
-        $querymm = $builder->get();
-        $nmdept = $querymm->getRowArray();
-        return isset($nmdept['nmprogram']) ? $nmdept['nmprogram'] : "" ;
-    }
-}
-
-
-if (! function_exists('getNamaGiat'))
-{
-	
-	function getNamaGiat($kdgiat,$dbgroup = "default")
-	{
-
-        $db      = \Config\Database::connect($dbgroup);
-        $builder = $db->table('t_giat');
-        $builder->select('nmgiat');
-        $builder->where('kdgiat', $kdgiat);
-        $querymm = $builder->get();
-        $nmdept = $querymm->getRowArray();
-        return isset($nmdept['nmgiat']) ? $nmdept['nmgiat'] : "" ;
-    }
-}
-
-
-if (! function_exists('getNamaKRO'))
-{
-	
-	function getNamaKRO($kdgiat,$kdoutput,$dbgroup = "default")
-	{
-
-        $db      = \Config\Database::connect($dbgroup);
-        $builder = $db->table('t_output');
-        $builder->select('nmoutput');
-        $builder->where('kdgiat', $kdgiat);
-        $builder->where('kdoutput', $kdoutput);
-        $querymm = $builder->get();
-        $nmdept = $querymm->getRowArray();
-        return isset($nmdept['nmoutput']) ? $nmdept['nmoutput'] : "" ;
-    }
-}
-
 
 if (! function_exists('diencrypt'))
 {
@@ -1117,6 +1010,359 @@ if (!function_exists('getNotifikasi')) {
         }
     }
 }
+
+
+if (! function_exists('getDropdownDPD'))
+{
+    function getDropdownDPD($id = null, $dbgroup = "default") 
+    {
+        $db = \Config\Database::connect($dbgroup);
+        $builder = $db->table('ref_dpd');
+        $builder->select('id, namadpd');
+
+        if ($id !== null) {
+            $builder->where('id', $id);
+            $query = $builder->get();
+            $result = $query->getRowArray();
+            return isset($result['namadpd']) ? $result['namadpd'] : "";
+        }
+        
+        $builder->orderBy('id', 'ASC');
+        $query = $builder->get()->getResultArray();
+        $dropdowndpd['dpd'] = ['' => 'Pilih DPD'];
+        foreach ($query as $dpd) {
+            $dropdowndpd['dpd'][$dpd['id']] = $dpd['namadpd'];
+        }
+        return $dropdowndpd;
+    }
+}
+
+if (! function_exists('getProvinsi'))
+{
+    function getProvinsi($kdprovinsi = null, $dbgroup = "default") 
+    {
+        $db = \Config\Database::connect($dbgroup);
+        $builder = $db->table('ref_wilayah');
+        $builder->select('kode as id, nama as namaprovinsi');
+        $builder->where('LENGTH(kode)', 2);
+        
+        if ($kdprovinsi !== null) {
+            $builder->where('kode', $kdprovinsi);
+            $query = $builder->get();
+            $result = $query->getRowArray();
+            return isset($result['nama']) ? $result['nama'] : "";
+        }
+        
+        $builder->orderBy('kode', 'ASC');
+        $query = $builder->get()->getResultArray();
+        return $query;
+    }
+}
+
+
+if (! function_exists('getDropdownProvinsi'))
+{
+    function getDropdownProvinsi($kdprovinsi = null, $dbgroup = "default") 
+    {
+        $db = \Config\Database::connect($dbgroup);
+        $builder = $db->table('ref_wilayah');
+        $builder->select('kode, nama');
+        $builder->where('LENGTH(kode)', 2);
+        
+        if ($kdprovinsi !== null) {
+            $builder->where('kode', $kode);
+            $query = $builder->get();
+            $result = $query->getRowArray();
+            return isset($result['nama']) ? $result['nama'] : "";
+        }
+        
+        $builder->orderBy('kode', 'ASC');
+        $query = $builder->get()->getResultArray();
+        $dropdownprovinsi['provinsi'] = ['' => 'Pilih Provinsi'];
+        foreach ($query as $prov) {
+            $dropdownprovinsi['provinsi'][$prov['kode']] = $prov['nama'];
+        }
+        return $dropdownprovinsi;
+    }
+}
+
+if (! function_exists('getKabupaten'))
+{
+    function getKabupaten($kdkabupaten = null, $kdprovinsi = null, $dbgroup = "default") 
+    {
+        $db = \Config\Database::connect($dbgroup);
+        $builder = $db->table('ref_wilayah');
+        $builder->select('kode as id, nama as namakabupaten');
+        $builder->where('LENGTH(kode)', 5);
+        
+        if ($kdkabupaten !== null) {
+            $builder->where('kode', $kdkabupaten);
+            $query = $builder->get();
+            $result = $query->getRowArray();
+            return isset($result['nama']) ? $result['nama'] : "";
+        }
+
+        if ($kdprovinsi !== null) {
+            $builder->where('LEFT(kode,2)', $kdprovinsi);
+        }
+        
+        $builder->orderBy('kode', 'ASC');
+        $query = $builder->get()->getResultArray();
+        return $query;
+    }
+}
+
+if (! function_exists('getDropdownKabupaten'))
+{
+    function getDropdownKabupaten($kdprovinsi = null, $dbgroup = "default") 
+    {
+        $db = \Config\Database::connect($dbgroup);
+        $builder = $db->table('ref_wilayah');
+        $builder->select('kode, nama');
+        $builder->where('LENGTH(kode)', 5);
+        
+        if ($kdprovinsi !== null) {
+            $builder->where('LEFT(kode,2)', $kdprovinsi);
+        }
+        
+        $builder->orderBy('kode', 'ASC');
+        $query = $builder->get()->getResultArray();
+        $dropdownkabupaten['kabupaten'] = ['' => 'Pilih Kabupaten'];
+        foreach ($query as $kab) {
+            $dropdownkabupaten['kabupaten'][$kab['kode']] = $kab['nama'];
+        }
+        return $dropdownkabupaten;
+    }
+}
+
+
+if (! function_exists('getKota'))
+{
+    function getKota($kdkota = null, $kdkabupaten = null, $dbgroup = "default") 
+    {
+        $db = \Config\Database::connect($dbgroup);
+        $builder = $db->table('ref_wilayah');
+        $builder->select('kode as id, nama as namakota');
+        $builder->where('LENGTH(kode)', 8);
+        
+        if ($kdkota !== null) {
+            $builder->where('kode', $kdkota);
+            $query = $builder->get();
+            $result = $query->getRowArray();
+            return isset($result['nama']) ? $result['nama'] : "";
+        }
+
+        if ($kdkabupaten !== null) {
+            $builder->where('LEFT(kode,5)', $kdkabupaten);
+        }
+        
+        $builder->orderBy('kode', 'ASC');
+        $query = $builder->get()->getResultArray();
+        return $query;
+    }
+}
+
+if (! function_exists('getDropdownKota'))
+{
+    function getDropdownKota($kdkabupaten = null, $dbgroup = "default") 
+    {
+        $db = \Config\Database::connect($dbgroup);
+        $builder = $db->table('ref_wilayah');
+        $builder->select('kode, nama');
+        $builder->where('LENGTH(kode)', 8);
+        
+        if ($kdkabupaten !== null) {
+            $builder->where('LEFT(kode,5)', $kdkabupaten);
+        }
+        
+        $builder->orderBy('kode', 'ASC');
+        $query = $builder->get()->getResultArray();
+        $dropdownkota['kota'] = ['' => 'Pilih Kota'];
+        foreach ($query as $kota) {
+            $dropdownkota['kota'][$kota['kode']] = $kota['nama'];
+        }
+        return $dropdownkota;
+    }
+}
+
+
+if (! function_exists('getKecamatan'))
+{
+    function getKecamatan($kdkecamatan = null, $kdkota = null, $dbgroup = "default") 
+    {
+        $db = \Config\Database::connect($dbgroup);
+        $builder = $db->table('ref_wilayah');
+        $builder->select('kode as id, nama as namakecamatan');
+        $builder->where('LENGTH(kode)', 13);
+        
+        if ($kdkecamatan !== null) {
+            $builder->where('kode', $kdkecamatan);
+            $query = $builder->get();
+            $result = $query->getRowArray();
+            return isset($result['nama']) ? $result['nama'] : "";
+        }
+
+        if ($kdkota !== null) {
+            $builder->where('LEFT(kode,8)', $kdkota);
+        }
+        
+        $builder->orderBy('kode', 'ASC');
+        $query = $builder->get()->getResultArray();
+        return $query;
+    }
+}
+
+if (! function_exists('getDropdownKecamatan'))
+{
+    function getDropdownKecamatan($kdkota = null, $dbgroup = "default") 
+    {
+        $db = \Config\Database::connect($dbgroup);
+        $builder = $db->table('ref_wilayah');
+        $builder->select('kode, nama');
+        $builder->where('LENGTH(kode)', 13);
+        
+        if ($kdkota !== null) {
+            $builder->where('LEFT(kode,8)', $kdkota);
+        }
+        
+        $builder->orderBy('kode', 'ASC');
+        $query = $builder->get()->getResultArray();
+        $dropdownkecamatan['kecamatan'] = ['' => 'Pilih Kecamatan'];
+        foreach ($query as $kecamatan) {
+            $dropdownkecamatan['kecamatan'][$kecamatan['kode']] = $kecamatan['nama'];
+        }
+        return $dropdownkecamatan;
+    }
+}
+
+if (! function_exists('getBank'))
+{
+    function getBank($kodebank = null, $dbgroup = "default") 
+    {
+        $db = \Config\Database::connect($dbgroup);
+        $builder = $db->table('ref_bank');
+        $builder->select('kodebank, namabank');
+        
+        if ($kodebank !== null) {
+            $builder->where('kodebank', $kodebank);
+            $query = $builder->get();
+            $result = $query->getRowArray();
+            return isset($result['namabank']) ? $result['namabank'] : "";
+        }
+        
+        $builder->orderBy('namabank', 'ASC');
+        $query = $builder->get()->getResultArray();
+        return $query;
+    }
+}
+
+
+
+if (! function_exists('getDropdownBank'))
+{
+    function getDropdownBank($dbgroup = "default") 
+    {
+        $db = \Config\Database::connect($dbgroup);
+        $builder = $db->table('ref_bank');
+        $builder->select('kodebank, namabank');
+        $builder->orderBy('namabank', 'ASC');
+        $bank = $builder->get()->getResultArray();
+
+        $dropdownbank['bank'] = ['' => 'Pilih Bank'];
+        foreach ($bank as $b) {
+            $dropdownbank['bank'][$b['kodebank']] = $b['kodebank'].' - '.$b['namabank'];
+        }
+
+        return $dropdownbank;
+    }
+}
+
+
+if (! function_exists('addNamaWilayah'))
+{
+    function addNamaWilayah($data, $varalamat = "alamatref", $dbgroup = "default") 
+    {
+        $db = \Config\Database::connect($dbgroup);
+        $builder = $db->table('ref_wilayah');
+
+        $provinsi = $builder->select('kode,nama')->where('LENGTH(kode)', 2)->get()->getResultArray();
+        $kabupaten = $builder->select('kode,nama')->where('LENGTH(kode)', 5)->get()->getResultArray();
+        $kota = $builder->select('kode,nama')->where('LENGTH(kode)', 8)->get()->getResultArray();
+        $kecamatan = $builder->select('kode,nama')->where('LENGTH(kode)', 13)->get()->getResultArray();
+
+        // dd($provinsi);
+
+        foreach ($data as $key => $row) {
+            if (!empty($row[$varalamat])) {
+
+                // Tambahkan nama wilayah ke array data
+                foreach ($provinsi as $prov) {
+                    if ($prov['kode'] == substr($row[$varalamat], 0, 2)) {
+                        $data[$key]['provinsi'] = $prov['nama'];
+                    }
+                }
+
+                foreach ($kabupaten as $kab) {
+                    if ($kab['kode'] == substr($row[$varalamat], 0, 5)) {
+                        $data[$key]['kabupaten'] = $kab['nama'];
+                    }
+                }
+
+                foreach ($kota as $kot) {
+                    if ($kot['kode'] == substr($row[$varalamat], 0, 8)) {
+                        $data[$key]['kota'] = $kot['nama'];
+                    }
+                }
+
+                foreach ($kecamatan as $kec) {
+                    if ($kec['kode'] == substr($row[$varalamat], 0, 13)) {
+                        $data[$key]['kecamatan'] = $kec['nama'];
+                    }
+                }
+            } else {
+                $data[$key]['provinsi'] = '';
+                $data[$key]['kabupaten'] = '';
+                $data[$key]['kota'] = '';
+                $data[$key]['kecamatan'] = '';
+            }
+        }
+
+        return $data;
+    }
+}
+
+if (!function_exists('addNamaDPD')) {
+    function addNamaDPD($data, $dbgroup = 'default') 
+    {
+        $db = \Config\Database::connect($dbgroup);
+        $builder = $db->table('ref_dpd');
+
+        $dpd = $builder->select('id,namadpd')->get()->getResultArray();
+
+        foreach ($data as $key => $row) {
+            if (!empty($row['dpd'])) {
+                foreach ($dpd as $d) {
+                    if ($d['id'] == $row['dpd']) {
+                        $data[$key]['namadpd'] = $d['namadpd'];
+                    }
+                }
+            } else {
+                $data[$key]['namadpd'] = '';
+            }
+        }
+
+        return $data;
+    }
+}
+
+
+
+
+
+
+
+
+
 
 
 

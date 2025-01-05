@@ -9,6 +9,7 @@ use App\Models\KecamatanModel;
 use App\Models\KelurahanModel;
 use App\Models\KabupatenModel;
 use App\Models\DPDModel;
+use App\Models\WilayahModel;
 
 
 
@@ -87,6 +88,7 @@ class User extends BaseController
                     'alamatinput' => $data['alamatinput'],
                     'kodepos' => $data['kodepos'],
                     'kta' => $data['kta'],
+                    'dpd' => $data['dpd'],
                     'berkaskta' => $data['berkaskta'],
                     'logged_in' => true
                 ];
@@ -117,12 +119,9 @@ class User extends BaseController
     {
         $provinsiId = $this->request->getPost('provinsi_id');
 
-        $kabupatenModel = new KabupatenModel();
-        $kabupaten = $kabupatenModel->where('idprovinsi', $provinsiId)->findAll();
-
         return $this->response->setJSON(
             [
-                'kabupaten' => $kabupaten,
+                'kabupaten' => getKabupaten(null,$provinsiId),
                 'csrfName' => csrf_token(), 
                 'csrfHash' => csrf_hash(),
             ]
@@ -133,12 +132,9 @@ class User extends BaseController
     {
         $kabupatenId = $this->request->getPost('kabupaten_id');
 
-        $kotaModel = new KotaModel();
-        $kota = $kotaModel->where('idkabupaten', $kabupatenId)->findAll();
-
         return $this->response->setJSON(
             [
-                'kota' => $kota,
+                'kota' => getKota(null,$kabupatenId),
                 'csrfName' => csrf_token(), 
                 'csrfHash' => csrf_hash(),
             ]
@@ -148,13 +144,9 @@ class User extends BaseController
     public function get_kecamatan()
     {
         $kotaId = $this->request->getPost('kota_id');
-
-        $kecamatanModel = new KecamatanModel();
-        $kecamatan = $kecamatanModel->where('idkota', $kotaId)->findAll();
-
         return $this->response->setJSON(
             [
-                'kecamatan' => $kecamatan,
+                'kecamatan' => getKecamatan(null,$kotaId)   ,
                 'csrfName' => csrf_token(), 
                 'csrfHash' => csrf_hash(),
             ]
@@ -164,28 +156,13 @@ class User extends BaseController
     public function form_register()
 	{
         $menu = "";
-        $model = new ProvinsiModel();
-        $provinsi = $model->findAll();
 
-        $dropdownprovinsi['provinsi'] = ['' => 'Pilih Provinsi'];
-        foreach ($provinsi as $prov) {
-            $dropdownprovinsi['provinsi'][$prov['id']] = $prov['namaprovinsi'];
-        }
-
-        $model = new DPDModel();
-        $dpd = $model->findAll();
-        
-
-        $dropdowndpd['dpd'] = ['' => 'Pilih DPD'];
-        foreach ($dpd as $dp) {
-            $dropdowndpd['dpd'][$dp['id']] = $dp['namadpd'];
-        }
         $data = [
 			'title' => 'Register',
 			'breadcrumb' => ['Home','Profil'],
 			'stringmenu' => $menu, 
-			'dropdownprovinsi' => $dropdownprovinsi,
-			'dropdowndpd' => $dropdowndpd,
+			'dropdownprovinsi' => getDropdownProvinsi(),
+			'dropdowndpd' => getDropdownDPD(),
 			'validation' => \Config\Services::validation(), 
         ];
 		return view('user/form_register_ajax',$data);

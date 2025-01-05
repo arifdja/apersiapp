@@ -39,7 +39,6 @@
                     <th>No</th>
                     <th>Lihat<br>Unit</th>
                     <th>Nama PT</th>
-                    <th>Surat <br>Permohonan</th>
                     <th class="detail-column" style="display:none">Alamat<br> Perumahan</th>
                     <th class="detail-column" style="display:none">Detail Alamat</th>
                     <th>Site Plan</th>
@@ -52,6 +51,7 @@
                     <th>Potongan Lain</th>
                     <th>Disetujui Operator</th>
                     <th>Disetujui Approver</th>
+                    <th>Surat <br>Permohonan</th>
                     <th>Status</th>
                     <th>Aksi</th>
                     <th style="min-width: 150px;">Pendana</th>
@@ -73,10 +73,9 @@
                         <?php endif; ?>
                       </td>
                       <td><?= $p['namapt'] ?></td>
-                      <td><a href="#" onclick="showPDF('surat_permohonan', '<?= $p['berkassuratpermohonan'] ?>')" data-toggle="modal" data-target="#pdfModal">Lihat</a></td>
-                      <td><a href="#" onclick="showPDF('psu', '<?= $p['berkaspsu'] ?>')" data-toggle="modal" data-target="#pdfModal">Lihat</a></td>
-                      <td class="detail-column" style="display:none"><?= $p['namaprovinsi'] ?> - <?= $p['namakabupaten'] ?> - <?= $p['namakecamatan'] ?></td>
+                      <td class="detail-column" style="display:none"><?= $p['provinsi'] ?> <?= $p['kabupaten'] ?> <?= $p['kota'] ?> <br> <?= $p['kecamatan'] ?></td>
                       <td class="detail-column" style="display:none"><?= $p['alamatperumahaninput'] ?></td>
+                      <td><a href="#" onclick="showPDF('psu', '<?= $p['berkaspsu'] ?>')" data-toggle="modal" data-target="#pdfModal">Lihat</a></td>
                       <td><a href="#" onclick="showPDF('site_plan', '<?= $p['berkassiteplan'] ?>')" data-toggle="modal" data-target="#pdfModal">Lihat</a></td>
                       <td><?= $p['jumlahunitinput'] ?></td>
                       <td align="right"><?= number_format($p['totalhargasp3k'],0,',','.') ?></td>
@@ -87,6 +86,13 @@
                       <td align="right"><?= number_format($p['totaldisetujuioperator'],0,',','.') ?></td>
                       <td align="right"><?= number_format($p['totaldisetujuiapprover'],0,',','.') ?></td>
                       
+                      <td>
+                        <?php if(!empty($p['berkassuratpermohonan'])): ?>
+                          <a href="#" onclick="showPDF('surat_permohonan', '<?= $p['berkassuratpermohonan'] ?>')" data-toggle="modal" data-target="#pdfModal">Lihat</a>
+                        <?php else: ?>
+                          -
+                        <?php endif; ?>
+                      </td>
                      
                       <td id="status<?= $p['uuid'] ?>">
                         <?= view('general/v_td_status', ['p' => $p]) ?>
@@ -279,36 +285,49 @@ $(document).ready(function() {
     var uuid = $(this).attr('kunci');
     var csrfHash = $(".csrf").val();
     var csrfToken = $(".csrf").attr('name');
-    
-    $.ajax({
-      type: "post",
-      headers: {'X-Requested-With': 'XMLHttpRequest'},
-      url: "<?= base_url(); ?>/operator/teruskan_pengajuan_dana",
-      data: {
-        [csrfToken]: csrfHash,
-        uuid: uuid,
-      },
-      dataType: "json",
-      success: function(response) {
-        if(response.status == 'success') {
-          $(".csrf").val(response.csrfHash);
-          $(".csrf").attr('name',response.csrfToken);
-          $(".aksi"+response.uuid).html('-');
-          $("#status"+response.uuid).html('<span class="badge badge-success">Proses Persetujuan</span>');
-          Swal.fire({
-            icon: 'success',
-            title: 'Sukses',
-            text: response.message
-          });
-        }
-      },
-      error: function(xhr, status, error) {
-        $(".csrf").val(xhr.responseJSON.csrfHash);
-        $(".csrf").attr('name',xhr.responseJSON.csrfToken);
-        Swal.fire({
-          icon: 'error',
-          title: 'Gagal',
-          text: response.message
+
+    Swal.fire({
+      title: 'Konfirmasi',
+      text: "Apakah anda yakin ingin meneruskan pengajuan dana ini?",
+      icon: 'warning', 
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Ya, Teruskan',
+      cancelButtonText: 'Batal'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $.ajax({
+          type: "post",
+          headers: {'X-Requested-With': 'XMLHttpRequest'},
+          url: "<?= base_url(); ?>/operator/teruskan_pengajuan_dana",
+          data: {
+            [csrfToken]: csrfHash,
+            uuid: uuid,
+          },
+          dataType: "json",
+          success: function(response) {
+            if(response.status == 'success') {
+              $(".csrf").val(response.csrfHash);
+              $(".csrf").attr('name',response.csrfToken);
+              $(".aksi"+response.uuid).html('-');
+              $("#status"+response.uuid).html('<span class="badge badge-success">Proses Persetujuan</span>');
+              Swal.fire({
+                icon: 'success',
+                title: 'Sukses',
+                text: response.message
+              });
+            }
+          },
+          error: function(xhr, status, error) {
+            $(".csrf").val(xhr.responseJSON.csrfHash);
+            $(".csrf").attr('name',xhr.responseJSON.csrfToken);
+            Swal.fire({
+              icon: 'error',
+              title: 'Gagal', 
+              text: response.message
+            });
+          }
         });
       }
     });
@@ -324,37 +343,50 @@ $(document).ready(function() {
     var uuid = $(this).attr('kunci');
     var csrfHash = $(".csrf").val();
     var csrfToken = $(".csrf").attr('name');
-    
-    $.ajax({
-      type: "post",
-      headers: {'X-Requested-With': 'XMLHttpRequest'},
-      url: "<?= base_url(); ?>/approver/setujui_pengajuan_dana",
-      data: {
-        [csrfToken]: csrfHash,
-        uuid: uuid,
-      },
-      dataType: "json",
-      success: function(response) {
-        if(response.status == 'success') {
-          $(".csrf").val(response.csrfHash);
-          $(".csrf").attr('name',response.csrfToken);
-          $(".aksi"+response.uuid).html('-');
-          $("#status"+response.uuid).html('<span class="badge badge-success">Disetujui Approver</span>');
-          $("#btn-kirimkependana-"+response.uuid).prop('disabled', false);
-          Swal.fire({
-            icon: 'success',
-            title: 'Sukses',
-            text: response.message
-          });
-        }
-      },
-      error: function(xhr, status, error) {
-        $(".csrf").val(xhr.responseJSON.csrfHash);
-        $(".csrf").attr('name',xhr.responseJSON.csrfToken);
-        Swal.fire({
-          icon: 'error',
-          title: 'Gagal',
-          text: response.message
+
+    Swal.fire({
+      title: 'Konfirmasi',
+      text: "Apakah anda yakin ingin menyetujui pengajuan dana ini?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Ya, Setujui',
+      cancelButtonText: 'Batal'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $.ajax({
+          type: "post",
+          headers: {'X-Requested-With': 'XMLHttpRequest'},
+          url: "<?= base_url(); ?>/approver/setujui_pengajuan_dana",
+          data: {
+            [csrfToken]: csrfHash,
+            uuid: uuid,
+          },
+          dataType: "json",
+          success: function(response) {
+            if(response.status == 'success') {
+              $(".csrf").val(response.csrfHash);
+              $(".csrf").attr('name',response.csrfToken);
+              $(".aksi"+response.uuid).html('-');
+              $("#status"+response.uuid).html('<span class="badge badge-success">Disetujui Approver</span>');
+              $("#btn-kirimkependana-"+response.uuid).prop('disabled', false);
+              Swal.fire({
+                icon: 'success',
+                title: 'Sukses',
+                text: response.message
+              });
+            }
+          },
+          error: function(xhr, status, error) {
+            $(".csrf").val(xhr.responseJSON.csrfHash);
+            $(".csrf").attr('name',xhr.responseJSON.csrfToken);
+            Swal.fire({
+              icon: 'error',
+              title: 'Gagal',
+              text: response.message
+            });
+          }
         });
       }
     });
@@ -368,38 +400,60 @@ $(document).ready(function() {
     var csrfHash = $(".csrf").val();
     var csrfToken = $(".csrf").attr('name');
 
-    $.ajax({
-      type: "post",
-      headers: {'X-Requested-With': 'XMLHttpRequest'},
-      url: "<?= base_url(); ?>/approver/kirimkependana",
-      data: {
-        [csrfToken]: csrfHash,
-        uuid: uuid,
-        pendana: pendana,
-        pendanaText: pendanaText,
-      },
-      dataType: "json",
-      success: function(response) {
-        if(response.status == 'success') {
-          $(".csrf").val(response.csrfHash);
-          $(".csrf").attr('name',response.csrfToken);
-          $(".pendana"+response.uuid).html(response.pendanaText);
-          $(".aksi"+response.uuid).html('-');
-          $("#status"+response.uuid).html('<span class="badge badge-success">Dipilihkan Pendana dan<br> Proses Upload Surat Permohonan</span>');
-          Swal.fire({
-            icon: 'success',
-            title: 'Sukses',
-            text: response.message
-          });
-        }
-      },
-      error: function(xhr, status, error) {
-        $(".csrf").val(xhr.responseJSON.csrfHash);
-        $(".csrf").attr('name',xhr.responseJSON.csrfToken);
-        Swal.fire({
-          icon: 'error',
-          title: 'Gagal',
-          text: response.message
+    if(!pendana) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Peringatan',
+        text: 'Silakan pilih pendana terlebih dahulu'
+      });
+      return false;
+    }
+
+    Swal.fire({
+      title: 'Konfirmasi',
+      text: "Apakah anda yakin ingin mengirim ke "+pendanaText+" ?",
+      icon: 'warning', 
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Ya, Kirim',
+      cancelButtonText: 'Batal'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $.ajax({
+          type: "post",
+          headers: {'X-Requested-With': 'XMLHttpRequest'},
+          url: "<?= base_url(); ?>/approver/kirimkependana",
+          data: {
+            [csrfToken]: csrfHash,
+            uuid: uuid,
+            pendana: pendana,
+            pendanaText: pendanaText,
+          },
+          dataType: "json",
+          success: function(response) {
+            if(response.status == 'success') {
+              $(".csrf").val(response.csrfHash);
+              $(".csrf").attr('name',response.csrfToken);
+              $(".pendana"+response.uuid).html(response.pendanaText);
+              $(".aksi"+response.uuid).html('-');
+              $("#status"+response.uuid).html('<span class="badge badge-success">Dipilihkan Pendana dan<br> Proses Upload Surat Permohonan</span>');
+              Swal.fire({
+                icon: 'success',
+                title: 'Sukses',
+                text: response.message
+              });
+            }
+          },
+          error: function(xhr, status, error) {
+            $(".csrf").val(xhr.responseJSON.csrfHash);
+            $(".csrf").attr('name',xhr.responseJSON.csrfToken);
+            Swal.fire({
+              icon: 'error',
+              title: 'Gagal', 
+              text: response.message
+            });
+          }
         });
       }
     });

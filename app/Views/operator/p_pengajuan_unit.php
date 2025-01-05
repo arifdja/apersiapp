@@ -52,7 +52,7 @@
                       <td><a href="#" onclick="showPDF('pbb', '<?= $p['berkaspbb'] ?>')" data-toggle="modal" data-target="#pdfModal"><?= $p['pbb'] ?></a></td>
                       <td><a href="#" onclick="showPDF('sp3k', '<?= $p['berkassp3k'] ?>')" data-toggle="modal" data-target="#pdfModal"><?= $p['nomordokumensp3k'] ?></a> <?= tanggal_indo($p['tanggalsp3k']) ?></td>
                       <td><a href="#" onclick="showPDF('ktp_debitur', '<?= $p['berkasktpdebitur'] ?>')" data-toggle="modal" data-target="#pdfModal"><?= $p['namadebitur'] ?></a></td>
-                      <td><?= $p['namaprovinsi'] ?> - <?= $p['namakabupaten'] ?> - <?= $p['namakecamatan'] ?> - <?= $p['namakota'] ?> - <?= $p['alamatinput'] ?></td>
+                      <td><?= $p['provinsi'] ?> <?= $p['kabupaten'] ?> <?= $p['kota'] ?> <br> <?= $p['kecamatan'] ?> - <?= $p['alamatinput'] ?></td>
                       <td align="right"><?= number_format($p['harga'],0,',','.') ?></td>
                       <td align="right"><?= number_format($p['nilaikredit'],0,',','.') ?></td>
                      <td align="right">
