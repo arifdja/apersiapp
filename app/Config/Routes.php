@@ -80,7 +80,8 @@ $routes->get('/rumput/form_manajemen_pendana', 'Rumput::form_manajemen_pendana',
 
 $routes->get('/unauthorized', 'Unauthorized::index');
 $routes->get('/download/(:any)/(:any)', 'FileController::download/$1/$2',['filter' => 'auth']);
-$routes->get('/download/form_kredit', 'FileController::form_pengajuan_kredit');
+$routes->get('/form_pengajuan_kredit/(:any)', 'FileController::form_pengajuan_kredit/$1');
+
 
 $routes->post('/rumput/save_pendana', 'Rumput::save_pendana',['filter' => 'auth']);
 $routes->post('/rumput/update_pendana', 'Rumput::update_pendana',['filter' => 'auth']);

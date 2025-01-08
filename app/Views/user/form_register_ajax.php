@@ -190,10 +190,14 @@
 
                                               <div id="divberkas" class="form-group">
                                                     <div class="col-sm-12">
-                                                        <div class="h5 text-bold">
-                                                             <a href="<?= base_url('download/form_kredit') ?>" target="_blank">Download template form kredit disini</a> agar dicetak menggunakan kop surat perusahaan dan ditandatangani direktur utama di atas materai.
+                                                        <div class="h6 text-bold">
+                                                            Download template form kredit disini agar dicetak menggunakan kop surat perusahaan dan ditandatangani direktur utama di atas materai.
                                                         </div>
                                                     </div>
+                                                    <ul>
+                                                        <li><a href="<?= base_url('form_pengajuan_kredit/danai_id') ?>" style="font-size: 1.2em">Template Form Kredit Danai.id</a></li>
+                                                        <li><a href="<?= base_url('form_pengajuan_kredit/kb_bank') ?>" style="font-size: 1.2em">Template Form Kredit KB Bank</a></li>
+                                                    </ul>
                                                 </div>
                                               <p>
                                                     <div class="g-recaptcha" data-sitekey="6LdGWZAqAAAAAF-815CNbkjzW2g3R3I6L6H_cWg4"></div>

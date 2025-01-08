@@ -502,14 +502,23 @@ class FileController extends Controller
        
     }
 
-    public function form_pengajuan_kredit(){
+    public function form_pengajuan_kredit($pendana=null){
+
        
-            $filePath = WRITEPATH . 'uploads/template/form_kredit.docx';
+        if($pendana == 'danai_id'){
+            $filePath = WRITEPATH . 'uploads/template/form_pengajuan_kredit_talangan_danai_id.docx';
+        }elseif($pendana == 'kb_bank'){
+            $filePath = WRITEPATH . 'uploads/template/form_pengajuan_kredit_talangan_kb_bank.docx';
+        }
 
             if (!file_exists($filePath)) {
                 return redirect()->back()->with('error', 'File not found on the server.');
             }
-            return $this->response->download($filePath, null)->setFileName('form_kredit.docx');
+            if($pendana == 'danai_id'){
+                return $this->response->download($filePath, null)->setFileName('form_kredit_danai_id.docx');
+            }elseif($pendana == 'kb_bank'){
+                return $this->response->download($filePath, null)->setFileName('form_kredit_kb_bank.docx');
+            }
            
     }
     
