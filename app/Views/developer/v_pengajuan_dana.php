@@ -22,6 +22,14 @@
                 <button class="btn btn-xs btn-info toggle-alamat">
                           <i class="fas fa-eye"></i> Alamat
                         </button>
+
+                <button class="btn btn-xs btn-info dropdown-toggle" type="button" id="downloadDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i class="fas fa-download"></i> Download Form Pengajuan Kredit
+                </button>
+                <div class="dropdown-menu" aria-labelledby="downloadDropdown">
+                  <a class="dropdown-item" href="<?= base_url('form_pengajuan_kredit/danai_id') ?>">Template Form Kredit Danai.id</a>
+                  <a class="dropdown-item" href="<?= base_url('form_pengajuan_kredit/kb_bank') ?>">Template Form Kredit KB Bank</a>
+                </div>
               </div>
               <!-- /.card-header -->
               <div class="card-body table-responsive p-2">  
