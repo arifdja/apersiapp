@@ -49,6 +49,9 @@ class PTModel extends Model
         $builder->join('ref_bank','ref_bank.kodebank = ref_pt.kodebank','left');
         $builder->join('ref_bank rbb','rbb.kodebank = ref_pt.kodebankescrow','left');
         $builder->join('users','users.uuid = ref_pt.uuiddeveloper','left');
+        if($uuiddeveloper != null){
+            $builder->where('ref_pt.uuiddeveloper',$uuiddeveloper);
+        }
         $builder->orderBy('ref_pt.updated_at','DESC');
         $result = $builder->get()->getResultArray();
         $result = addNamaWilayah($result,'alamatref');
